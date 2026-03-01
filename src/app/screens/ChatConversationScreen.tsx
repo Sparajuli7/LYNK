@@ -4,8 +4,9 @@ import { ChevronLeft, Users } from 'lucide-react'
 import { useChatStore, useAuthStore } from '@/stores'
 import { MessageBubble, formatDateSeparator } from '@/app/components/MessageBubble'
 import { ChatInput } from '@/app/components/ChatInput'
-import { uploadChatImage } from '@/lib/api/chat'
+import { uploadChatImage, uploadChatVideo } from '@/lib/api/chat'
 import type { MessageWithSender } from '@/lib/api/chat'
+import type { ReactionType } from '@/lib/database.types'
 
 function isSameDay(a: string, b: string): boolean {
   return new Date(a).toDateString() === new Date(b).toDateString()
@@ -31,16 +32,26 @@ export function ChatConversationScreen() {
   const messages = useChatStore((s) => s.messages)
   const isLoading = useChatStore((s) => s.isLoading)
   const hasMoreMessages = useChatStore((s) => s.hasMoreMessages)
+  const replyingTo = useChatStore((s) => s.replyingTo)
+  const editingMessage = useChatStore((s) => s.editingMessage)
+  const participants = useChatStore((s) => s.participants)
   const openConversation = useChatStore((s) => s.openConversation)
   const sendMessage = useChatStore((s) => s.sendMessage)
   const loadMoreMessages = useChatStore((s) => s.loadMoreMessages)
   const subscribeToConversation = useChatStore((s) => s.subscribeToConversation)
   const unsubscribeFromConversation = useChatStore((s) => s.unsubscribeFromConversation)
   const clearActiveConversation = useChatStore((s) => s.clearActiveConversation)
+  const setReplyingTo = useChatStore((s) => s.setReplyingTo)
+  const setEditingMessage = useChatStore((s) => s.setEditingMessage)
+  const toggleReaction = useChatStore((s) => s.toggleReaction)
+  const saveEdit = useChatStore((s) => s.saveEdit)
+  const unsendMessage = useChatStore((s) => s.unsendMessage)
+  const fetchParticipants = useChatStore((s) => s.fetchParticipants)
 
   const [isUploading, setIsUploading] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const isInitialLoad = useRef(true)
+  const messageRefs = useRef<Map<string, HTMLDivElement>>(new Map())
 
   // Open conversation and subscribe to realtime
   useEffect(() => {
@@ -54,6 +65,13 @@ export function ChatConversationScreen() {
       clearActiveConversation()
     }
   }, [conversationId, openConversation, subscribeToConversation, unsubscribeFromConversation, clearActiveConversation])
+
+  // Fetch participants for @mentions after conversation loads
+  useEffect(() => {
+    if (activeConversation) {
+      fetchParticipants()
+    }
+  }, [activeConversation?.id, fetchParticipants])
 
   // Auto-scroll to bottom on new messages
   useEffect(() => {
@@ -100,6 +118,16 @@ export function ChatConversationScreen() {
     })
   }
 
+  const scrollToMessage = (messageId: string) => {
+    const el = messageRefs.current.get(messageId)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      // Brief highlight
+      el.classList.add('bg-accent-green/10')
+      setTimeout(() => el.classList.remove('bg-accent-green/10'), 1500)
+    }
+  }
+
   const handleSend = (content: string) => {
     sendMessage(content)
     scrollToBottom()
@@ -117,6 +145,40 @@ export function ChatConversationScreen() {
     } finally {
       setIsUploading(false)
     }
+  }
+
+  const handleSendVideo = async (file: File, _caption: string) => {
+    if (!conversationId) return
+    setIsUploading(true)
+    try {
+      const mediaUrl = await uploadChatVideo(conversationId, file)
+      sendMessage('🎬 Video', 'video', mediaUrl)
+      scrollToBottom()
+    } catch (e) {
+      console.error('Failed to upload video:', e)
+    } finally {
+      setIsUploading(false)
+    }
+  }
+
+  const handleReply = (message: MessageWithSender) => {
+    setReplyingTo(message)
+  }
+
+  const handleReact = (messageId: string, reaction: ReactionType) => {
+    toggleReaction(messageId, reaction)
+  }
+
+  const handleEdit = (message: MessageWithSender) => {
+    setEditingMessage(message)
+  }
+
+  const handleDelete = (messageId: string) => {
+    unsendMessage(messageId)
+  }
+
+  const handleSaveEdit = (messageId: string, newContent: string) => {
+    saveEdit(messageId, newContent)
   }
 
   // Display name for the conversation
@@ -194,7 +256,14 @@ export function ChatConversationScreen() {
             i === 0 || !isSameDay(msg.created_at, messages[i - 1].created_at)
 
           return (
-            <div key={msg.id}>
+            <div
+              key={msg.id}
+              ref={(el) => {
+                if (el) messageRefs.current.set(msg.id, el)
+                else messageRefs.current.delete(msg.id)
+              }}
+              className="transition-colors duration-500"
+            >
               {showDateSeparator && (
                 <div className="flex justify-center py-3">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-text-muted bg-bg-elevated px-3 py-1 rounded-full">
@@ -208,6 +277,12 @@ export function ChatConversationScreen() {
                 showSender={
                   activeConversation?.type !== 'dm' && shouldShowSender(messages, i)
                 }
+                currentUserId={user?.id}
+                onReply={handleReply}
+                onReact={handleReact}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onScrollToMessage={scrollToMessage}
               />
             </div>
           )
@@ -215,7 +290,18 @@ export function ChatConversationScreen() {
       </div>
 
       {/* Input */}
-      <ChatInput onSend={handleSend} onSendImage={handleSendImage} isUploading={isUploading} />
+      <ChatInput
+        onSend={handleSend}
+        onSendImage={handleSendImage}
+        onSendVideo={handleSendVideo}
+        onCancelReply={() => setReplyingTo(null)}
+        onCancelEdit={() => setEditingMessage(null)}
+        onSaveEdit={handleSaveEdit}
+        replyingTo={replyingTo}
+        editingMessage={editingMessage}
+        participants={participants}
+        isUploading={isUploading}
+      />
     </div>
   )
 }

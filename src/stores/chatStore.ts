@@ -14,8 +14,15 @@ import {
   getOrCreateDMConversation,
   createGroupConversation,
   createCompetitionConversation,
+  addReaction as apiAddReaction,
+  removeReaction as apiRemoveReaction,
+  editMessage as apiEditMessage,
+  deleteMessage as apiDeleteMessage,
+  getConversationParticipants,
+  getReactionsForMessage,
 } from '@/lib/api/chat'
-import type { ConversationWithMeta, MessageWithSender } from '@/lib/api/chat'
+import type { ConversationWithMeta, MessageWithSender, ParticipantProfile, ReplyPreview, ReactionSummary } from '@/lib/api/chat'
+import type { ReactionType } from '@/lib/database.types'
 
 // ---------------------------------------------------------------------------
 // Module-level refs — keep channels outside React render cycles
@@ -37,12 +44,18 @@ interface ChatState {
   hasMoreMessages: boolean
   isLoading: boolean
   error: string | null
+  // Reply state
+  replyingTo: MessageWithSender | null
+  // Edit state
+  editingMessage: MessageWithSender | null
+  // Participants cache for @mentions
+  participants: ParticipantProfile[]
 }
 
 interface ChatActions {
   fetchConversations: () => Promise<void>
   openConversation: (id: string) => Promise<void>
-  sendMessage: (content: string, type?: 'text' | 'image', mediaUrl?: string) => Promise<void>
+  sendMessage: (content: string, type?: 'text' | 'image' | 'video', mediaUrl?: string) => Promise<void>
   loadMoreMessages: () => Promise<void>
   markRead: (conversationId: string) => Promise<void>
   getOrCreateGroupChat: (groupId: string) => Promise<string>
@@ -55,6 +68,16 @@ interface ChatActions {
   setOnNewMessage: (cb: ((m: Message) => void) | null) => void
   clearActiveConversation: () => void
   clearError: () => void
+  // Reply
+  setReplyingTo: (message: MessageWithSender | null) => void
+  // Reactions
+  toggleReaction: (messageId: string, reaction: ReactionType) => Promise<void>
+  // Edit / Delete
+  setEditingMessage: (message: MessageWithSender | null) => void
+  saveEdit: (messageId: string, newContent: string) => Promise<void>
+  unsendMessage: (messageId: string) => Promise<void>
+  // Participants
+  fetchParticipants: () => Promise<void>
 }
 
 export type ChatStore = ChatState & ChatActions
@@ -86,6 +109,9 @@ const useChatStore = create<ChatStore>()(
     hasMoreMessages: true,
     isLoading: false,
     error: null,
+    replyingTo: null,
+    editingMessage: null,
+    participants: [],
 
     // ---- actions ----
 
@@ -164,6 +190,12 @@ const useChatStore = create<ChatStore>()(
       const activeConv = get().activeConversation
       if (!userId || !activeConv) return
 
+      const replyingTo = get().replyingTo
+      const replyToId = replyingTo?.id
+      const replyPreview: ReplyPreview | null = replyingTo
+        ? { id: replyingTo.id, senderName: replyingTo._senderName, content: replyingTo.content, type: replyingTo.type }
+        : null
+
       // Optimistic: append message immediately
       const optimisticId = `optimistic-${Date.now()}`
       const optimisticMsg: MessageWithSender = {
@@ -173,17 +205,23 @@ const useChatStore = create<ChatStore>()(
         content,
         type,
         media_url: mediaUrl ?? null,
+        reply_to_id: replyToId ?? null,
+        edited_at: null,
+        deleted_at: null,
         created_at: new Date().toISOString(),
         _senderName: 'You',
         _senderAvatar: null,
+        _reactions: { thumbs_up: [], thumbs_down: [] },
+        _replyPreview: replyPreview,
       }
 
       set((draft) => {
         draft.messages.push(optimisticMsg)
+        draft.replyingTo = null
       })
 
       try {
-        const sent = await apiSendMessage(activeConv.id, content, type, mediaUrl)
+        const sent = await apiSendMessage(activeConv.id, content, type, mediaUrl, replyToId)
 
         set((draft) => {
           // Replace optimistic message with real one
@@ -193,6 +231,8 @@ const useChatStore = create<ChatStore>()(
               ...sent,
               _senderName: optimisticMsg._senderName,
               _senderAvatar: optimisticMsg._senderAvatar,
+              _reactions: { thumbs_up: [], thumbs_down: [] },
+              _replyPreview: replyPreview,
             }
           }
           // Update conversation preview
@@ -385,14 +425,26 @@ const useChatStore = create<ChatStore>()(
             // Enrich with sender profile
             const { data: profile } = await supabase
               .from('profiles')
-              .select('display_name, avatar_url')
+              .select('display_name, username, avatar_url')
               .eq('id', newMessage.sender_id)
               .single()
+
+            // Build reply preview if this is a reply
+            let replyPreview: ReplyPreview | null = null
+            if (newMessage.reply_to_id) {
+              const existing = get().messages.find((m) => m.id === newMessage.reply_to_id)
+              if (existing) {
+                replyPreview = { id: existing.id, senderName: existing._senderName, content: existing.content, type: existing.type }
+              }
+            }
 
             const enriched: MessageWithSender = {
               ...newMessage,
               _senderName: profile?.display_name ?? 'Unknown',
               _senderAvatar: profile?.avatar_url ?? null,
+              _senderUsername: profile?.username,
+              _reactions: { thumbs_up: [], thumbs_down: [] },
+              _replyPreview: replyPreview,
             }
 
             set((draft) => {
@@ -425,6 +477,9 @@ const useChatStore = create<ChatStore>()(
         draft.activeConversation = null
         draft.messages = []
         draft.hasMoreMessages = true
+        draft.replyingTo = null
+        draft.editingMessage = null
+        draft.participants = []
       })
     },
 
@@ -432,6 +487,135 @@ const useChatStore = create<ChatStore>()(
       set((draft) => {
         draft.error = null
       }),
+
+    // ---- Reply ----
+
+    setReplyingTo: (message) => {
+      set((draft) => {
+        draft.replyingTo = message
+        draft.editingMessage = null // cancel editing if replying
+      })
+    },
+
+    // ---- Reactions ----
+
+    toggleReaction: async (messageId, reaction) => {
+      const userId = await getCurrentUserId()
+      if (!userId) return
+
+      const msg = get().messages.find((m) => m.id === messageId)
+      if (!msg) return
+
+      const reactionList = msg._reactions[reaction]
+      const alreadyReacted = reactionList.includes(userId)
+
+      // Optimistic update
+      set((draft) => {
+        const m = draft.messages.find((m) => m.id === messageId)
+        if (!m) return
+        if (alreadyReacted) {
+          m._reactions[reaction] = m._reactions[reaction].filter((id) => id !== userId)
+        } else {
+          m._reactions[reaction].push(userId)
+        }
+      })
+
+      try {
+        if (alreadyReacted) {
+          await apiRemoveReaction(messageId, reaction)
+        } else {
+          await apiAddReaction(messageId, reaction)
+        }
+      } catch {
+        // Rollback
+        set((draft) => {
+          const m = draft.messages.find((m) => m.id === messageId)
+          if (!m) return
+          if (alreadyReacted) {
+            m._reactions[reaction].push(userId)
+          } else {
+            m._reactions[reaction] = m._reactions[reaction].filter((id) => id !== userId)
+          }
+        })
+      }
+    },
+
+    // ---- Edit / Delete ----
+
+    setEditingMessage: (message) => {
+      set((draft) => {
+        draft.editingMessage = message
+        draft.replyingTo = null // cancel reply if editing
+      })
+    },
+
+    saveEdit: async (messageId, newContent) => {
+      // Optimistic
+      const originalContent = get().messages.find((m) => m.id === messageId)?.content
+      set((draft) => {
+        const m = draft.messages.find((m) => m.id === messageId)
+        if (m) {
+          m.content = newContent
+          m.edited_at = new Date().toISOString()
+        }
+        draft.editingMessage = null
+      })
+
+      try {
+        await apiEditMessage(messageId, newContent)
+      } catch {
+        // Rollback
+        set((draft) => {
+          const m = draft.messages.find((m) => m.id === messageId)
+          if (m && originalContent !== undefined) {
+            m.content = originalContent
+            m.edited_at = null
+          }
+        })
+      }
+    },
+
+    unsendMessage: async (messageId) => {
+      const original = get().messages.find((m) => m.id === messageId)
+      if (!original) return
+
+      // Optimistic
+      set((draft) => {
+        const m = draft.messages.find((m) => m.id === messageId)
+        if (m) {
+          m.deleted_at = new Date().toISOString()
+          m.content = ''
+        }
+      })
+
+      try {
+        await apiDeleteMessage(messageId)
+      } catch {
+        // Rollback
+        set((draft) => {
+          const m = draft.messages.find((m) => m.id === messageId)
+          if (m) {
+            m.deleted_at = null
+            m.content = original.content
+          }
+        })
+      }
+    },
+
+    // ---- Participants (for @mentions) ----
+
+    fetchParticipants: async () => {
+      const activeConv = get().activeConversation
+      if (!activeConv) return
+      try {
+        const participants = await getConversationParticipants(activeConv.id)
+        set((draft) => {
+          draft.participants = participants
+        })
+      } catch {
+        // Silently fail — mention suggestions just won't work
+      }
+    },
   })),
 )
 

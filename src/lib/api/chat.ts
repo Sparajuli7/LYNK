@@ -3,7 +3,9 @@ import type {
   Conversation,
   ConversationParticipant,
   Message,
+  MessageReaction,
   ConversationType,
+  ReactionType,
 } from '@/lib/database.types'
 
 // ---------------------------------------------------------------------------
@@ -30,9 +32,31 @@ export interface ConversationWithMeta extends Conversation {
   _participantCount: number
 }
 
+export interface ReactionSummary {
+  thumbs_up: string[]   // user IDs
+  thumbs_down: string[] // user IDs
+}
+
+export interface ReplyPreview {
+  id: string
+  senderName: string
+  content: string
+  type: string
+}
+
+export interface ParticipantProfile {
+  id: string
+  username: string
+  display_name: string
+  avatar_url: string | null
+}
+
 export interface MessageWithSender extends Message {
   _senderName: string
   _senderAvatar: string | null
+  _senderUsername?: string
+  _reactions: ReactionSummary
+  _replyPreview: ReplyPreview | null
 }
 
 // ---------------------------------------------------------------------------
@@ -356,21 +380,74 @@ export async function getMessages(
   const messages = data ?? []
   if (messages.length === 0) return []
 
+  const messageIds = messages.map((m) => m.id)
+
   // Enrich with sender profiles
   const senderIds = [...new Set(messages.map((m) => m.sender_id))]
   const { data: profiles } = await supabase
     .from('profiles')
-    .select('id, display_name, avatar_url')
+    .select('id, display_name, username, avatar_url')
     .in('id', senderIds)
 
   const profileMap = new Map(
-    (profiles ?? []).map((p) => [p.id, { name: p.display_name, avatar: p.avatar_url }])
+    (profiles ?? []).map((p) => [p.id, { name: p.display_name, username: p.username, avatar: p.avatar_url }])
   )
+
+  // Fetch reactions for all messages
+  const { data: reactions } = await supabase
+    .from('message_reactions')
+    .select('*')
+    .in('message_id', messageIds)
+
+  const reactionsMap = new Map<string, ReactionSummary>()
+  for (const r of reactions ?? []) {
+    if (!reactionsMap.has(r.message_id)) {
+      reactionsMap.set(r.message_id, { thumbs_up: [], thumbs_down: [] })
+    }
+    const summary = reactionsMap.get(r.message_id)!
+    if (r.reaction === 'thumbs_up') summary.thumbs_up.push(r.user_id)
+    else if (r.reaction === 'thumbs_down') summary.thumbs_down.push(r.user_id)
+  }
+
+  // Fetch reply preview data for messages that are replies
+  const replyToIds = [...new Set(messages.filter((m) => m.reply_to_id).map((m) => m.reply_to_id!))]
+  const replyMap = new Map<string, ReplyPreview>()
+  if (replyToIds.length > 0) {
+    const { data: replyMsgs } = await supabase
+      .from('messages')
+      .select('id, sender_id, content, type')
+      .in('id', replyToIds)
+
+    if (replyMsgs) {
+      // Get sender profiles for replied messages
+      const replySenderIds = [...new Set(replyMsgs.map((m) => m.sender_id))]
+      const { data: replyProfiles } = await supabase
+        .from('profiles')
+        .select('id, display_name')
+        .in('id', replySenderIds)
+
+      const replyProfileMap = new Map(
+        (replyProfiles ?? []).map((p) => [p.id, p.display_name])
+      )
+
+      for (const rm of replyMsgs) {
+        replyMap.set(rm.id, {
+          id: rm.id,
+          senderName: replyProfileMap.get(rm.sender_id) ?? 'Unknown',
+          content: rm.content,
+          type: rm.type,
+        })
+      }
+    }
+  }
 
   return messages.map((m) => ({
     ...m,
     _senderName: profileMap.get(m.sender_id)?.name ?? 'Unknown',
     _senderAvatar: profileMap.get(m.sender_id)?.avatar ?? null,
+    _senderUsername: profileMap.get(m.sender_id)?.username,
+    _reactions: reactionsMap.get(m.id) ?? { thumbs_up: [], thumbs_down: [] },
+    _replyPreview: m.reply_to_id ? (replyMap.get(m.reply_to_id) ?? null) : null,
   }))
 }
 
@@ -394,8 +471,9 @@ export async function uploadChatImage(
 export async function sendMessage(
   conversationId: string,
   content: string,
-  type: 'text' | 'image' | 'system' = 'text',
+  type: 'text' | 'image' | 'video' | 'system' = 'text',
   mediaUrl?: string,
+  replyToId?: string,
 ): Promise<Message> {
   const userId = await getCurrentUserId()
 
@@ -407,6 +485,7 @@ export async function sendMessage(
       content,
       type,
       media_url: mediaUrl ?? null,
+      reply_to_id: replyToId ?? null,
     })
     .select()
     .single()
@@ -456,4 +535,131 @@ export async function getUnreadCount(): Promise<number> {
   }
 
   return count
+}
+
+// ---------------------------------------------------------------------------
+// Reactions
+// ---------------------------------------------------------------------------
+
+export async function addReaction(
+  messageId: string,
+  reaction: ReactionType,
+): Promise<void> {
+  const userId = await getCurrentUserId()
+
+  const { error } = await supabase
+    .from('message_reactions')
+    .insert({ message_id: messageId, user_id: userId, reaction })
+
+  // Ignore duplicate errors (already reacted)
+  if (error && !error.message.includes('duplicate')) throw error
+}
+
+export async function removeReaction(
+  messageId: string,
+  reaction: ReactionType,
+): Promise<void> {
+  const userId = await getCurrentUserId()
+
+  const { error } = await supabase
+    .from('message_reactions')
+    .delete()
+    .eq('message_id', messageId)
+    .eq('user_id', userId)
+    .eq('reaction', reaction)
+
+  if (error) throw error
+}
+
+// ---------------------------------------------------------------------------
+// Edit / Delete messages
+// ---------------------------------------------------------------------------
+
+export async function editMessage(
+  messageId: string,
+  newContent: string,
+): Promise<void> {
+  const { error } = await supabase
+    .from('messages')
+    .update({ content: newContent, edited_at: new Date().toISOString() })
+    .eq('id', messageId)
+
+  if (error) throw error
+}
+
+export async function deleteMessage(messageId: string): Promise<void> {
+  const { error } = await supabase
+    .from('messages')
+    .update({ deleted_at: new Date().toISOString(), content: '' })
+    .eq('id', messageId)
+
+  if (error) throw error
+}
+
+// ---------------------------------------------------------------------------
+// Video upload
+// ---------------------------------------------------------------------------
+
+export async function uploadChatVideo(
+  conversationId: string,
+  file: File,
+): Promise<string> {
+  const userId = await getCurrentUserId()
+  const ext = file.name.split('.').pop()?.toLowerCase() ?? 'mp4'
+  const path = `chat/${conversationId}/${userId}/${Date.now()}.${ext}`
+
+  const { error } = await supabase.storage
+    .from('proofs')
+    .upload(path, file, { upsert: true, contentType: file.type })
+  if (error) throw error
+
+  const { data } = supabase.storage.from('proofs').getPublicUrl(path)
+  return data.publicUrl
+}
+
+// ---------------------------------------------------------------------------
+// Participant search (for @mentions)
+// ---------------------------------------------------------------------------
+
+export async function getConversationParticipants(
+  conversationId: string,
+): Promise<ParticipantProfile[]> {
+  const { data: participants, error } = await supabase
+    .from('conversation_participants')
+    .select('user_id')
+    .eq('conversation_id', conversationId)
+
+  if (error) throw error
+  if (!participants || participants.length === 0) return []
+
+  const userIds = participants.map((p) => p.user_id)
+  const { data: profiles } = await supabase
+    .from('profiles')
+    .select('id, username, display_name, avatar_url')
+    .in('id', userIds)
+
+  return (profiles ?? []).map((p) => ({
+    id: p.id,
+    username: p.username,
+    display_name: p.display_name,
+    avatar_url: p.avatar_url,
+  }))
+}
+
+export async function getReactionsForMessage(
+  messageId: string,
+): Promise<ReactionSummary> {
+  const { data, error } = await supabase
+    .from('message_reactions')
+    .select('*')
+    .eq('message_id', messageId)
+
+  if (error) throw error
+
+  const summary: ReactionSummary = { thumbs_up: [], thumbs_down: [] }
+  for (const r of data ?? []) {
+    if (r.reaction === 'thumbs_up') summary.thumbs_up.push(r.user_id)
+    else if (r.reaction === 'thumbs_down') summary.thumbs_down.push(r.user_id)
+  }
+  return summary
 }

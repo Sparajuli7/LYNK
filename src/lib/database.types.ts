@@ -49,7 +49,9 @@ export type NotificationType =
 
 export type ConversationType = 'group' | 'competition' | 'dm'
 
-export type MessageType = 'text' | 'image' | 'system'
+export type MessageType = 'text' | 'image' | 'video' | 'system'
+
+export type ReactionType = 'thumbs_up' | 'thumbs_down'
 
 // ---------------------------------------------------------------------------
 // Row types — shape of a single row returned from Supabase
@@ -226,6 +228,17 @@ export interface MessageRow {
   content: string
   type: MessageType
   media_url: string | null
+  reply_to_id: string | null
+  edited_at: string | null
+  deleted_at: string | null
+  created_at: string
+}
+
+export interface MessageReactionRow {
+  id: string
+  message_id: string
+  user_id: string
+  reaction: ReactionType
   created_at: string
 }
 
@@ -287,8 +300,10 @@ export type ConversationInsert = Omit<ConversationRow, 'id' | 'created_at' | 'la
 
 export type ConversationParticipantInsert = Omit<ConversationParticipantRow, 'id' | 'joined_at' | 'last_read_at'>
 
-export type MessageInsert = Omit<MessageRow, 'id' | 'created_at'> &
-  Partial<Pick<MessageRow, 'media_url'>>
+export type MessageInsert = Omit<MessageRow, 'id' | 'created_at' | 'edited_at' | 'deleted_at'> &
+  Partial<Pick<MessageRow, 'media_url' | 'reply_to_id'>>
+
+export type MessageReactionInsert = Omit<MessageReactionRow, 'id' | 'created_at'>
 
 export type PushSubscriptionInsert = Omit<PushSubscriptionRow, 'id' | 'created_at'>
 
@@ -317,7 +332,7 @@ export type ConversationUpdate = Partial<Pick<ConversationRow, 'last_message_at'
 
 export type ConversationParticipantUpdate = Partial<Pick<ConversationParticipantRow, 'last_read_at'>>
 
-export type MessageUpdate = never
+export type MessageUpdate = Partial<Pick<MessageRow, 'content' | 'edited_at' | 'deleted_at'>>
 
 export type NotificationPreferenceUpdate = Partial<Pick<NotificationPreferenceRow, 'push_enabled'>>
 
@@ -403,6 +418,11 @@ export interface Database {
         Insert: MessageInsert
         Update: MessageUpdate
       }
+      message_reactions: {
+        Row: MessageReactionRow
+        Insert: MessageReactionInsert
+        Update: never
+      }
       push_subscriptions: {
         Row: PushSubscriptionRow
         Insert: PushSubscriptionInsert
@@ -436,6 +456,7 @@ export interface Database {
       notification_type: NotificationType
       conversation_type: ConversationType
       message_type: MessageType
+      reaction_type: ReactionType
     }
   }
 }
@@ -459,5 +480,6 @@ export type Notification = Database['public']['Tables']['notifications']['Row']
 export type Conversation = Database['public']['Tables']['conversations']['Row']
 export type ConversationParticipant = Database['public']['Tables']['conversation_participants']['Row']
 export type Message = Database['public']['Tables']['messages']['Row']
+export type MessageReaction = Database['public']['Tables']['message_reactions']['Row']
 export type PushSubscription = Database['public']['Tables']['push_subscriptions']['Row']
 export type NotificationPreference = Database['public']['Tables']['notification_preferences']['Row']
