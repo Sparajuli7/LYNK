@@ -42,7 +42,7 @@ export function AddToCalendar({ event, className }: AddToCalendarProps) {
           }
           className={btnClass}
         >
-          <span className="text-base" aria-hidden>📅</span>
+          <span className="text-base" aria-hidden></span>
           Google Calendar
         </button>
         <button
@@ -60,7 +60,7 @@ export function AddToCalendar({ event, className }: AddToCalendarProps) {
           }
           className={btnClass}
         >
-          <span className="text-base" aria-hidden>📧</span>
+          <span className="text-base" aria-hidden></span>
           Outlook
         </button>
       </PopoverContent>

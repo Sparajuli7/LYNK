@@ -83,8 +83,8 @@ export const ProofCard = forwardRef<HTMLDivElement, ProofCardProps>(
     const config = FRAME_CONFIG[frame]
     const shareUrl = betId ? getBetShareUrl(betId) : ''
     const shareText = caption
-      ? `${caption} — LYNK 🎲`
-      : `${config.badge}: "${betTitle}" by ${personName} — LYNK 🎲`
+      ? `${caption} — LYNK`
+      : `${config.badge}: "${betTitle}" by ${personName} — LYNK`
 
     const handleShare = async (e: React.MouseEvent) => {
       e.stopPropagation()

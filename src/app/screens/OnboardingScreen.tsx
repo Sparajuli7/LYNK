@@ -21,10 +21,10 @@ export function OnboardingScreen({ onNext, onSkip }: OnboardingScreenProps) {
           <div className="text-center">
             <div className="flex justify-center gap-4 mb-4">
               <div className="w-20 h-20 rounded-2xl bg-accent-green/20 border-2 border-accent-green flex items-center justify-center">
-                <span className="text-4xl">🤝</span>
+                <span className="text-4xl"></span>
               </div>
               <div className="w-20 h-20 rounded-2xl bg-accent-coral/20 border-2 border-accent-coral flex items-center justify-center">
-                <span className="text-4xl">💀</span>
+                <span className="text-4xl"></span>
               </div>
             </div>
           </div>

@@ -78,7 +78,7 @@ function ProofRingAvatar({
             aria-label="Change profile photo"
           >
             <div className="w-full h-full rounded-full flex items-center justify-center bg-black/0 group-hover:bg-black/35 transition-colors">
-              <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity text-xs">✏️</span>
+              <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity text-xs"></span>
             </div>
           </button>
         )}
@@ -129,13 +129,13 @@ function ProfileContent({
     const category = BET_CATEGORIES[bet.category]
     return {
       id: bet.id,
-      icon: category?.emoji ?? '🎯',
+      icon: category?.emoji ?? '',
       label: bet.title,
       sublabel:
         bet.status === 'active'
-          ? '🟢 Live'
+          ? 'Live'
           : bet.status === 'completed'
-            ? '✅ Done'
+            ? 'Done'
             : bet.status.replace(/_/g, ' '),
     }
   })
@@ -254,7 +254,7 @@ function ProfileContent({
               className="mt-3 pt-3 border-t border-border-subtle flex items-center justify-between gap-3"
             >
               <p className="text-xs font-bold text-amber-400">
-                ⚠️ {pendingPunishments} punishment{pendingPunishments > 1 ? 's' : ''} awaiting proof
+                {pendingPunishments} punishment{pendingPunishments > 1 ? 's' : ''} awaiting proof
               </p>
               <button
                 onClick={() => navigate('/journal')}

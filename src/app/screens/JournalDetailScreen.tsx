@@ -232,7 +232,7 @@ function BetPickerSheet({
                   </div>
 
                   {/* Emoji */}
-                  <span className="text-xl shrink-0">{category?.emoji ?? '🎯'}</span>
+                  <span className="text-xl shrink-0">{category?.emoji}</span>
 
                   {/* Info */}
                   <div className="flex-1 min-w-0">
@@ -495,7 +495,7 @@ export function JournalDetailScreen() {
           </div>
         ) : bets.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full pb-16">
-            <p className="text-4xl mb-3">📭</p>
+            <p className="text-4xl mb-3"></p>
             <p className="text-text-primary font-bold mb-1">No bets yet</p>
             <p className="text-text-muted text-sm text-center mb-6">
               Tap "Add Bets" to pick from your personal<br />challenges, groups, or any bet you're in.
@@ -528,7 +528,7 @@ export function JournalDetailScreen() {
                       onClick={() => navigate(`/bet/${bet.id}`)}
                       className="flex-1 px-3 py-3 flex items-center gap-3 text-left hover:bg-bg-elevated transition-colors"
                     >
-                      <span className="text-xl shrink-0">{category?.emoji ?? '🎯'}</span>
+                      <span className="text-xl shrink-0">{category?.emoji}</span>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold text-text-primary truncate">{bet.title}</p>
                         <p className="text-[11px] text-text-muted mt-0.5">

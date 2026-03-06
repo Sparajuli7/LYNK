@@ -40,7 +40,7 @@ export function HomeFeed({ activeScreen, onNavigate }: HomeFeedProps) {
         <button onClick={() => onNavigate?.('detail')} className="w-full text-left">
           <BetCard
             groupName="Core 4"
-            category="🏋️"
+            category=""
             countdown="2d 4h"
             claimText="I'll hit the gym 5 days this week"
             claimantName="Jordan"
@@ -49,7 +49,7 @@ export function HomeFeed({ activeScreen, onNavigate }: HomeFeedProps) {
             doubterPercent={33}
             ridersCount={4}
             doubtersCount={2}
-            stake="🔥 Medium"
+            stake="Medium"
             urgent={true}
           />
         </button>
@@ -57,7 +57,7 @@ export function HomeFeed({ activeScreen, onNavigate }: HomeFeedProps) {
         <button onClick={() => onNavigate?.('detail')} className="w-full text-left">
           <BetCard
             groupName="Weekend Warriors"
-            category="🍺"
+            category=""
             countdown="12h 22m"
             claimText="I won't drink alcohol for the next 30 days"
             claimantName="Alex"
@@ -74,7 +74,7 @@ export function HomeFeed({ activeScreen, onNavigate }: HomeFeedProps) {
         <button onClick={() => onNavigate?.('detail')} className="w-full text-left">
           <BetCard
             groupName="Roommates"
-            category="🧹"
+            category=""
             countdown="3d 8h"
             claimText="I'll deep clean the entire apartment this weekend"
             claimantName="Sam"
@@ -83,7 +83,7 @@ export function HomeFeed({ activeScreen, onNavigate }: HomeFeedProps) {
             doubterPercent={25}
             ridersCount={6}
             doubtersCount={2}
-            stake="🔥 High"
+            stake="High"
           />
         </button>
       </div>

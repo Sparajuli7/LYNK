@@ -255,7 +255,7 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
             disabled={isSubmitting}
             className="w-full bg-accent-green/10 border-2 border-accent-green/50 rounded-2xl p-5 text-left flex items-start gap-4 hover:border-accent-green active:scale-[0.99] transition-all disabled:opacity-60"
           >
-            <span className="text-4xl shrink-0 mt-0.5">✅</span>
+            <span className="text-4xl shrink-0 mt-0.5"></span>
             <div className="flex-1 min-w-0">
               <p className="text-base font-black text-text-primary mb-1">YES — Riders Win</p>
               <p className="text-sm text-text-muted leading-snug">
@@ -274,7 +274,7 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
             disabled={isSubmitting}
             className="w-full bg-accent-coral/10 border-2 border-accent-coral/50 rounded-2xl p-5 text-left flex items-start gap-4 hover:border-accent-coral active:scale-[0.99] transition-all disabled:opacity-60"
           >
-            <span className="text-4xl shrink-0 mt-0.5">❌</span>
+            <span className="text-4xl shrink-0 mt-0.5"></span>
             <div className="flex-1 min-w-0">
               <p className="text-base font-black text-text-primary mb-1">NO — Doubters Win</p>
               <p className="text-sm text-text-muted leading-snug">
@@ -450,7 +450,7 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
               className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center"
               aria-label="Flip camera"
             >
-              <span className="text-white text-lg">🔄</span>
+              <span className="text-white text-lg"></span>
             </button>
             <button
               onClick={closeCamera}

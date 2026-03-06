@@ -58,7 +58,7 @@ export function GroupJournalScreen() {
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
-          <span className="text-2xl">{group?.avatar_emoji ?? '👥'}</span>
+          <span className="text-2xl">{group?.avatar_emoji ?? ''}</span>
           <div className="flex-1 min-w-0">
             <h1 className="text-xl font-black text-text-primary truncate leading-tight">
               {group?.name ?? 'Group Journal'}
@@ -89,7 +89,7 @@ export function GroupJournalScreen() {
           </div>
         ) : bets.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full pb-16">
-            <p className="text-4xl mb-3">📭</p>
+            <p className="text-4xl mb-3"></p>
             <p className="text-text-primary font-bold mb-1">No bets yet</p>
             <p className="text-text-muted text-sm text-center mb-6">
               Create a bet in this group to get started.
@@ -112,7 +112,7 @@ export function GroupJournalScreen() {
                   onClick={() => navigate(`/bet/${bet.id}`)}
                   className="w-full bg-bg-card rounded-xl border border-border-subtle px-3 py-3 flex items-center gap-3 text-left hover:bg-bg-elevated transition-colors"
                 >
-                  <span className="text-xl shrink-0">{category?.emoji ?? '🎯'}</span>
+                  <span className="text-xl shrink-0">{category?.emoji}</span>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-text-primary truncate">{bet.title}</p>
                     <p className="text-[11px] text-text-muted mt-0.5">

@@ -183,7 +183,7 @@ export function MessageBubble({
           )}
 
           {/* Text content with @mention highlighting */}
-          {message.content && !(message.type === 'image' && message.content === '📷 Photo') && !(message.type === 'video' && message.content === '🎬 Video') && (
+          {message.content && !(message.type === 'image' && message.content === 'Photo') && !(message.type === 'video' && message.content === 'Video') && (
             <p className={`text-sm ${message.type === 'image' || message.type === 'video' ? 'mt-1' : ''} text-text-primary`}>
               <RichContent content={message.content} />
             </p>

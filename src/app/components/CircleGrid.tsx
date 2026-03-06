@@ -64,7 +64,7 @@ export function CircleGrid({
                   className="absolute -top-1 -right-1 z-10 w-5 h-5 rounded-full bg-bg-card border border-border-subtle flex items-center justify-center shadow-sm hover:scale-110 transition-transform"
                   aria-label={isPinned ? 'Unpin' : 'Pin'}
                 >
-                  <span className="text-[9px] leading-none">{isPinned ? '⭐' : '☆'}</span>
+                  <span className="text-[9px] leading-none">{isPinned ? '★' : '☆'}</span>
                 </button>
               )}
             </div>

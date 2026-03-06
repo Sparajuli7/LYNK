@@ -12,17 +12,17 @@ import { relativeTime } from '@/lib/utils/formatters'
 import type { Notification, NotificationType } from '@/lib/database.types'
 
 const NOTIFICATION_ICONS: Record<NotificationType, string> = {
-  bet_created: '📢',
-  bet_joined: '👋',
-  proof_submitted: '📸',
-  proof_confirmed: '✅',
-  proof_disputed: '⚠️',
-  outcome_resolved: '🏁',
-  punishment_assigned: '💀',
-  punishment_completed: '🎉',
-  group_invite: '👥',
-  h2h_challenge: '⚔️',
-  general: '🔔',
+  bet_created: '',
+  bet_joined: '',
+  proof_submitted: '',
+  proof_confirmed: '',
+  proof_disputed: '',
+  outcome_resolved: '',
+  punishment_assigned: '',
+  punishment_completed: '',
+  group_invite: '',
+  h2h_challenge: '',
+  general: '',
 }
 
 function getNavFromNotification(n: Notification): string | null {

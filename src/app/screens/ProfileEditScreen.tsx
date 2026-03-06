@@ -129,7 +129,7 @@ export function ProfileEditScreen() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <span className="text-4xl">📷</span>
+                <span className="text-4xl"></span>
               )}
             </button>
             <p className="text-xs text-text-muted mt-2">Tap to change photo</p>

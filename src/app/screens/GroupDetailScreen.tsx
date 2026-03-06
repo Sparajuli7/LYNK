@@ -36,7 +36,7 @@ const DEFAULT_AVATAR = 'https://images.unsplash.com/photo-1535713875002-d1d0cf37
 function formatStake(bet: BetWithSides): string {
   if (bet.stake_money) return formatMoney(bet.stake_money)
   if (bet.stake_custom_punishment) return bet.stake_custom_punishment
-  if (bet.stake_punishment_id) return '🔥 Punishment'
+  if (bet.stake_punishment_id) return 'Punishment'
   return '—'
 }
 

@@ -242,7 +242,7 @@ export function ShameProofSubmission() {
           <CheckCircle className="w-10 h-10 text-white" />
         </div>
 
-        <p className="text-2xl font-black text-white mb-1 text-center">Officially Complete! 🏆</p>
+        <p className="text-2xl font-black text-white mb-1 text-center">Officially Complete!</p>
         <p className="text-accent-green font-bold text-sm mb-1">Punishment logged on your card</p>
 
         {/* Rep bonus */}
@@ -250,7 +250,7 @@ export function ShameProofSubmission() {
           className="flex items-center gap-2 px-4 py-2 rounded-full mb-4"
           style={{ background: 'rgba(0,230,118,0.12)', border: '1px solid rgba(0,230,118,0.3)' }}
         >
-          <span className="text-lg">⚡</span>
+          <span className="text-lg"></span>
           <span className="text-sm font-black text-accent-green">+10 REP earned</span>
         </div>
 
@@ -454,7 +454,7 @@ export function ShameProofSubmission() {
               className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center"
               aria-label="Flip camera"
             >
-              <span className="text-white text-lg">🔄</span>
+              <span className="text-white text-lg"></span>
             </button>
             <button
               onClick={closeCamera}

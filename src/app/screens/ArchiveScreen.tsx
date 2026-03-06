@@ -178,7 +178,7 @@ export function ArchiveScreen() {
             </div>
           ) : sortedBets.length === 0 ? (
             <div className="py-16 text-center">
-              <p className="text-4xl mb-3">📦</p>
+              <p className="text-4xl mb-3"></p>
               <p className="text-text-primary font-bold mb-1">No bets yet</p>
               <p className="text-text-muted text-sm">Your bets will appear here once you join some.</p>
             </div>
@@ -207,7 +207,7 @@ export function ArchiveScreen() {
                           onClick={() => navigate(`/bet/${bet.id}`)}
                           className="flex-1 px-3 py-3 flex items-center gap-3 text-left hover:bg-bg-elevated transition-colors"
                         >
-                          <span className="text-xl shrink-0">{category?.emoji ?? '🎯'}</span>
+                          <span className="text-xl shrink-0">{category?.emoji}</span>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-semibold text-text-primary truncate">{bet.title}</p>
                             <p className="text-[11px] text-text-muted mt-0.5">
@@ -216,7 +216,7 @@ export function ArchiveScreen() {
                             </p>
                             {bet.status === 'completed' && (bet.stake_custom_punishment || bet.stake_punishment_id) && (
                               <p className="text-[11px] text-accent-coral mt-0.5 truncate">
-                                🔥 {bet.stake_custom_punishment || (bet.stake_punishment_id && punishmentTexts.get(bet.stake_punishment_id)) || 'Punishment'}
+                                {bet.stake_custom_punishment || (bet.stake_punishment_id && punishmentTexts.get(bet.stake_punishment_id)) || 'Punishment'}
                               </p>
                             )}
                           </div>
@@ -247,7 +247,7 @@ export function ArchiveScreen() {
             </div>
           ) : sortedGroups.length === 0 ? (
             <div className="py-16 text-center">
-              <p className="text-4xl mb-3">👥</p>
+              <p className="text-4xl mb-3"></p>
               <p className="text-text-primary font-bold mb-1">No groups yet</p>
               <p className="text-text-muted text-sm mb-4">Create or join a group to see them here.</p>
               <div className="flex gap-3 justify-center">

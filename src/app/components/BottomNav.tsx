@@ -5,10 +5,10 @@ interface BottomNavProps {
 
 export function BottomNav({ activeScreen, onNavigate }: BottomNavProps) {
   const navItems = [
-    { id: 'home', label: 'Home', icon: '📊', boost: false },
-    { id: 'compete', label: 'Competition', icon: '🏆', boost: true },
-    { id: 'shame', label: 'Shame', icon: '💀', boost: false },
-    { id: 'profile', label: 'Profile', icon: '👤', boost: false }
+    { id: 'home', label: 'Home', icon: '', boost: false },
+    { id: 'compete', label: 'Competition', icon: '', boost: true },
+    { id: 'shame', label: 'Shame', icon: '', boost: false },
+    { id: 'profile', label: 'Profile', icon: '', boost: false }
   ];
 
   return (

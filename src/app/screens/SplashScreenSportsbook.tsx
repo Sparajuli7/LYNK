@@ -17,15 +17,15 @@ export function SplashScreenSportsbook({ onEnter, onLogin }: SplashScreenSportsb
         {/* Pill badges */}
         <div className="flex items-center gap-2 mb-6">
           <span className="text-xs font-semibold px-3 py-1 bg-bg-elevated rounded-full">
-            🤝 Ride
+            Ride
           </span>
           <span className="text-text-muted">·</span>
           <span className="text-xs font-semibold px-3 py-1 bg-bg-elevated rounded-full">
-            💀 Doubt
+            Doubt
           </span>
           <span className="text-text-muted">·</span>
           <span className="text-xs font-semibold px-3 py-1 bg-bg-elevated rounded-full">
-            🔥 Forfeit
+            Forfeit
           </span>
         </div>
 

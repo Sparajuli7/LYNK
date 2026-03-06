@@ -24,7 +24,7 @@ export function ConversationRow({ conversation, onClick }: ConversationRowProps)
         {_displayAvatar ? (
           <img src={_displayAvatar} alt="" className="w-full h-full object-cover" />
         ) : (
-          <span className="text-xl">{_displayEmoji ?? '💬'}</span>
+          <span className="text-xl">{_displayEmoji ?? ''}</span>
         )}
       </div>
 

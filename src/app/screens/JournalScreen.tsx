@@ -268,7 +268,7 @@ export function JournalScreen() {
     .filter((b) => pinBets.has(b.id))
     .map((b) => {
       const category = BET_CATEGORIES[b.category]
-      return { id: `b:${b.id}`, icon: category?.emoji ?? '🎯', label: b.title }
+      return { id: `b:${b.id}`, icon: category?.emoji ?? '', label: b.title }
     })
 
   const hasPinned =
@@ -291,7 +291,7 @@ export function JournalScreen() {
       {hasPinned && (
         <div className="px-6 pt-5 pb-4 border-b border-border-subtle">
           <p className="text-[11px] font-bold uppercase tracking-wider text-text-muted flex items-center gap-1.5 mb-3">
-            <span>⭐</span> Pinned
+            Pinned
           </p>
           <CircleGrid
             items={[...pinnedJournalItems, ...pinnedGroupItems, ...pinnedBetItems]}
@@ -378,7 +378,7 @@ export function JournalScreen() {
           </div>
         ) : groups.length === 0 ? (
           <div className="bg-bg-card rounded-2xl border border-border-subtle p-4 flex items-center gap-3">
-            <span className="text-2xl">👥</span>
+            <span className="text-2xl"></span>
             <div className="flex-1">
               <p className="text-sm font-bold text-text-primary">No groups yet</p>
               <p className="text-[11px] text-text-muted">Create or join a group to track bets together.</p>
@@ -442,13 +442,13 @@ export function JournalScreen() {
                 const category = BET_CATEGORIES[bet.category]
                 return {
                   id: bet.id,
-                  icon: category?.emoji ?? '🎯',
+                  icon: category?.emoji ?? '',
                   label: bet.title,
                   sublabel:
                     bet.status === 'active'
-                      ? '🟢 Live'
+                      ? 'Live'
                       : bet.status === 'completed'
-                        ? '✅ Done'
+                        ? 'Done'
                         : bet.status.replace(/_/g, ' '),
                 }
               })}

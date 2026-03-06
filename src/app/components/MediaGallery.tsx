@@ -135,7 +135,7 @@ function Lightbox({
   const handleShareImage = async (e: React.MouseEvent) => {
     e.stopPropagation()
     if (item.type !== 'image') return
-    const text = shareText ?? 'Check this out on LYNK 🎲'
+    const text = shareText ?? 'Check this out on LYNK'
     const url = shareUrl ?? ''
     const file = await fetchImageAsFile(item.url, 'lynk-proof.jpg')
     const files = file ? [file] : []
@@ -235,7 +235,7 @@ function Lightbox({
           open={shareSheetOpen}
           onOpenChange={setShareSheetOpen}
           title="Share image"
-          text={shareText ?? 'Check this out on LYNK 🎲'}
+          text={shareText ?? 'Check this out on LYNK'}
           url={shareUrl ?? ''}
           imageUrl={item.url}
         />

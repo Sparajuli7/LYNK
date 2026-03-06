@@ -52,3 +52,5 @@ CREATE POLICY "Users can update own notification preferences"
 CREATE POLICY "Users can delete own notification preferences"
   ON notification_preferences FOR DELETE
   USING (user_id = auth.uid());
+
+  

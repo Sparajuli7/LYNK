@@ -67,7 +67,7 @@ const WinnerCard = ({ betTitle, winnerName, winnerNames, loserNames, stakeMoney,
 
       {/* Trophy + winner name */}
       <div className="text-center mb-5">
-        <div className="text-5xl mb-2">🏆</div>
+        <div className="text-5xl mb-2"></div>
         <p className="text-[10px] font-bold uppercase tracking-widest text-accent-green mb-1">
           WINNER
         </p>
@@ -231,7 +231,7 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
     setSavingImage(true)
     try {
       const blob = await captureElementAsImage(winnerCardRef.current, { scale: 2 })
-      await shareImage(blob, 'lynk-winner.png', 'I won the bet! 🏆')
+      await shareImage(blob, 'lynk-winner.png', 'I won the bet!')
     } catch { /* ignore */ }
     finally { setSavingImage(false) }
   }
@@ -322,7 +322,7 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
 
   // ── Dramatic Reveal Phase ─────────────────────────────────────────────────
   if (phase === 'revealing') {
-    const revealEmoji = result === 'claimant_succeeded' ? '👑' : result === 'claimant_failed' ? '💀' : '🎲'
+    const revealEmoji = result === 'claimant_succeeded' ? '' : result === 'claimant_failed' ? '' : ''
     const revealColor = result === 'claimant_succeeded'
       ? 'from-yellow-900/60 via-black to-black'
       : result === 'claimant_failed'
@@ -462,7 +462,7 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
                     </div>
                   )}
                 </div>
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-4xl">👑</div>
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-4xl"></div>
               </motion.div>
 
               <motion.p
@@ -523,14 +523,14 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
                     </p>
                     {isUserWinner && userWinPayout && userWinPayout.amount > 0 ? (
                       <p className="text-xl font-black text-white">
-                        You won <span style={{ color: '#00E676' }}>{formatMoney(userWinPayout.amount)}</span> 🏆
+                        You won <span style={{ color: '#00E676' }}>{formatMoney(userWinPayout.amount)}</span>
                       </p>
                     ) : isUserLoser && userLossPayout && userLossPayout.amount > 0 ? (
                       <p className="text-xl font-black text-white">
                         You owe <span style={{ color: '#FF6B35' }}>{formatMoney(userLossPayout.amount)}</span>
                       </p>
                     ) : isUserWinner ? (
-                      <p className="text-lg font-black" style={{ color: '#00E676' }}>You're in the clear 👑</p>
+                      <p className="text-lg font-black" style={{ color: '#00E676' }}>You're in the clear</p>
                     ) : (
                       <p className="text-lg font-black" style={{ color: '#FF6B35' }}>You owe the punishment</p>
                     )}
@@ -572,16 +572,16 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
               ) : (
                 <div className="space-y-2">
                   <PrimaryButton onClick={handleSubmitPunishmentProof} variant="danger">
-                    SUBMIT PUNISHMENT PROOF 💀
+                    SUBMIT PUNISHMENT PROOF
                   </PrimaryButton>
                   <p className="text-center text-[11px] text-amber-400 font-semibold">
-                    ⏳ Required to officially close this bet on your card
+                    Required to officially close this bet on your card
                   </p>
                 </div>
               )
             )}
             <PrimaryButton onClick={handleShare} variant="primary">
-              Share Result 🏆
+              Share Result
             </PrimaryButton>
             <button
               onClick={handleSaveWinnerCard}
@@ -715,16 +715,16 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
                     </p>
                     {isUserWinner && userWinPayout && userWinPayout.amount > 0 ? (
                       <p className="text-xl font-black text-white">
-                        You won <span style={{ color: '#00E676' }}>{formatMoney(userWinPayout.amount)}</span> 🏆
+                        You won <span style={{ color: '#00E676' }}>{formatMoney(userWinPayout.amount)}</span>
                       </p>
                     ) : isUserLoser && userLossPayout && userLossPayout.amount > 0 ? (
                       <p className="text-xl font-black text-white">
                         You owe <span style={{ color: '#FF6B35' }}>{formatMoney(userLossPayout.amount)}</span>
                       </p>
                     ) : isUserWinner ? (
-                      <p className="text-lg font-black" style={{ color: '#00E676' }}>You're in the clear 🎉</p>
+                      <p className="text-lg font-black" style={{ color: '#00E676' }}>You're in the clear</p>
                     ) : (
-                      <p className="text-lg font-black" style={{ color: '#FF6B35' }}>You owe the punishment 💀</p>
+                      <p className="text-lg font-black" style={{ color: '#FF6B35' }}>You owe the punishment</p>
                     )}
                   </div>
                 </motion.div>
@@ -776,17 +776,17 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
               ) : (
                 <div className="space-y-2">
                   <PrimaryButton onClick={handleSubmitPunishmentProof} variant="danger">
-                    SUBMIT PUNISHMENT PROOF 💀
+                    SUBMIT PUNISHMENT PROOF
                   </PrimaryButton>
                   <p className="text-center text-[11px] text-amber-400 font-semibold">
-                    ⏳ Required to officially close this bet on your card
+                    Required to officially close this bet on your card
                   </p>
                 </div>
               )
             )}
             {isUserWinner && (
               <div className="w-full py-3 rounded-xl border border-accent-green/40 bg-accent-green/10 text-accent-green text-sm font-bold text-center">
-                ✅ You won this one — no punishment for you!
+                You won this one — no punishment for you!
               </div>
             )}
             <button

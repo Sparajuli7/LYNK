@@ -154,15 +154,15 @@ export function ShareSheet({
             Share on Facebook
           </button>
           <button type="button" onClick={handleInstagram} disabled={igLoading} className={btnClass}>
-            <span className="text-xl" aria-hidden>📷</span>
+            <span className="text-xl" aria-hidden></span>
             {igLoading ? 'Preparing...' : imageUrl ? 'Share to Instagram' : 'Open Instagram'}
           </button>
           <button type="button" onClick={handleTikTok} disabled={tiktokLoading} className={btnClass}>
-            <span className="text-xl" aria-hidden>🎵</span>
+            <span className="text-xl" aria-hidden></span>
             {tiktokLoading ? 'Preparing...' : imageUrl ? 'Share to TikTok' : 'Open TikTok'}
           </button>
           <button type="button" onClick={handleWhatsApp} className={btnClass}>
-            <span className="text-xl" aria-hidden>💬</span>
+            <span className="text-xl" aria-hidden></span>
             Share on WhatsApp
           </button>
           <button type="button" onClick={handleSMS} className={btnClass}>
@@ -170,7 +170,7 @@ export function ShareSheet({
             Send via SMS
           </button>
           <button type="button" onClick={handleCopy} className={btnClass}>
-            <span className="text-xl" aria-hidden>🔗</span>
+            <span className="text-xl" aria-hidden></span>
             Copy link
           </button>
         </div>
