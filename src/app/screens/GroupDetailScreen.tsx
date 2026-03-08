@@ -8,6 +8,7 @@ import { getOutcome } from '@/lib/api/outcomes'
 import { getShamePostByBetId } from '@/lib/api/shame'
 import { computeBetPayouts } from '@/lib/api/betPayouts'
 import { AvatarWithRepBadge } from '@/app/components/RepBadge'
+import { Emoji } from '@/app/components/Emoji'
 import { BetCard } from '@/app/components/BetCard'
 import type { Outcome, Profile } from '@/lib/database.types'
 import {
@@ -286,7 +287,7 @@ export function GroupDetailScreen() {
       </button>
 
       <div className="px-6 pt-12 pb-6">
-        <div className="text-5xl mb-2 text-center">{group.avatar_emoji}</div>
+        <div className="text-5xl mb-2 text-center"><Emoji symbol={group.avatar_emoji} /></div>
         <h1 className="text-2xl font-black text-text-primary text-center mb-1">
           {group.name}
         </h1>

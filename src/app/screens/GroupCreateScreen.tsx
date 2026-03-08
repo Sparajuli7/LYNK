@@ -6,10 +6,12 @@ import { Input } from '@/app/components/ui/input'
 import { Button } from '@/app/components/ui/button'
 import { GROUP_EMOJIS } from '@/lib/utils/constants'
 import { ShareSheet } from '@/app/components/ShareSheet'
+import { Emoji } from '@/app/components/Emoji'
 import {
   getGroupInviteUrl,
   getGroupInviteShareText,
   shareWithNative,
+  copyToClipboard,
 } from '@/lib/share'
 
 export function GroupCreateScreen() {
@@ -48,9 +50,9 @@ export function GroupCreateScreen() {
   const inviteLink = createdGroup ? getGroupInviteUrl(createdGroup.invite_code) : ''
   const shareText = createdGroup ? getGroupInviteShareText(createdGroup.name) : ''
 
-  const handleCopyLink = () => {
+  const handleCopyLink = async () => {
     if (inviteLink) {
-      navigator.clipboard.writeText(inviteLink)
+      await copyToClipboard(inviteLink)
     }
   }
 
@@ -72,7 +74,7 @@ export function GroupCreateScreen() {
         </button>
 
         <div className="flex-1 flex flex-col justify-center pt-12">
-          <div className="text-5xl mb-4 text-center">{emoji}</div>
+          <div className="text-5xl mb-4 text-center"><Emoji symbol={emoji} /></div>
           <h1 className="text-2xl font-black text-text-primary mb-2 text-center">
             Group created!
           </h1>
@@ -173,7 +175,7 @@ export function GroupCreateScreen() {
                       : 'bg-bg-elevated border-2 border-transparent hover:bg-bg-card'
                   }`}
                 >
-                  {e}
+                  <Emoji symbol={e} />
                 </button>
               ))}
             </div>

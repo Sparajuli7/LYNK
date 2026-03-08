@@ -16,8 +16,8 @@ export function ChatInboxScreen() {
 
   return (
     <div className="h-full bg-bg-primary grain-texture flex flex-col">
-      {/* Header */}
-      <div className="shrink-0 px-6 pt-6 pb-4">
+      {/* Header — safe area for iOS */}
+      <div className="shrink-0 px-6 pt-safe-6 pb-4">
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate(-1)}
@@ -31,7 +31,8 @@ export function ChatInboxScreen() {
       </div>
 
       {/* Conversation list */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 min-h-0 overflow-y-auto"
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}>
         {isLoading && conversations.length === 0 && (
           <div className="flex items-center justify-center py-12">
             <div className="w-8 h-8 border-2 border-accent-green border-t-transparent rounded-full animate-spin" />

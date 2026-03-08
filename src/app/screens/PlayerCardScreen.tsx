@@ -437,9 +437,9 @@ export function PlayerCardScreen() {
   }
 
   return (
-    <div className="h-full overflow-y-auto pb-8 flex flex-col bg-black">
+    <div className="flex flex-col h-screen overflow-hidden bg-black">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 pt-10 pb-4">
+      <div className="flex-none flex items-center justify-between px-4 pt-10 pb-4">
         <button
           onClick={() => navigate(-1)}
           className="w-9 h-9 flex items-center justify-center rounded-sm border border-white/10 hover:border-white/20 transition-colors"
@@ -470,7 +470,10 @@ export function PlayerCardScreen() {
       </div>
 
       {/* Card */}
-      <div className="flex-1 flex flex-col items-center justify-start px-4 pb-6 gap-5">
+      <div
+        className="flex-1 overflow-y-auto flex flex-col items-center px-4 pb-6 gap-5"
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}
+      >
         <div ref={cardRef}>
           <TradingCard profile={profile} stats={stats} />
         </div>

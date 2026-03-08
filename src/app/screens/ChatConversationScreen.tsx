@@ -4,6 +4,7 @@ import { ChevronLeft, Users } from 'lucide-react'
 import { useChatStore, useAuthStore } from '@/stores'
 import { MessageBubble, formatDateSeparator } from '@/app/components/MessageBubble'
 import { ChatInput } from '@/app/components/ChatInput'
+import { Emoji } from '@/app/components/Emoji'
 import { uploadChatImage, uploadChatVideo } from '@/lib/api/chat'
 import type { MessageWithSender } from '@/lib/api/chat'
 import type { ReactionType } from '@/lib/database.types'
@@ -188,8 +189,8 @@ export function ChatConversationScreen() {
 
   return (
     <div className="h-full bg-bg-primary flex flex-col">
-      {/* Header */}
-      <div className="shrink-0 border-b border-border-subtle bg-bg-primary px-4 py-3 flex items-center gap-3">
+      {/* Header — safe area for notch/Dynamic Island on iOS */}
+      <div className="shrink-0 border-b border-border-subtle bg-bg-primary px-4 pt-safe py-3 flex items-center gap-3">
         <button
           onClick={() => navigate(-1)}
           className="p-1 -ml-1 text-text-muted hover:text-text-primary transition-colors"
@@ -199,7 +200,7 @@ export function ChatConversationScreen() {
         </button>
 
         {emoji && (
-          <span className="text-xl">{emoji}</span>
+          <span className="text-xl"><Emoji symbol={emoji} /></span>
         )}
         {activeConversation?._displayAvatar && !emoji && (
           <img
@@ -224,7 +225,7 @@ export function ChatConversationScreen() {
       <div
         ref={scrollRef}
         onScroll={handleScroll}
-        className="flex-1 overflow-y-auto px-4 py-3 space-y-1"
+        className="flex-1 min-h-0 overflow-y-auto px-4 py-3 space-y-1"
       >
         {isLoading && messages.length === 0 && (
           <div className="flex items-center justify-center h-full">
@@ -234,7 +235,7 @@ export function ChatConversationScreen() {
 
         {!isLoading && messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-center">
-            <div className="text-4xl mb-3"></div>
+            <div className="text-4xl mb-3"><Emoji symbol="💬" /></div>
             <p className="text-text-primary font-bold mb-1">No messages yet</p>
             <p className="text-text-muted text-sm">Be the first to say something!</p>
           </div>

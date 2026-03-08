@@ -10,9 +10,9 @@ export function BetCreationStakes({ onNext, onBack }: BetCreationStakesProps) {
   const [selectedType, setSelectedType] = React.useState<'money' | 'punishment' | 'both'>('punishment');
 
   return (
-    <div className="h-full bg-bg-primary grain-texture flex flex-col">
+    <div className="flex flex-col h-screen overflow-hidden bg-bg-primary">
       {/* Progress bar */}
-      <div className="px-6 pt-8 pb-4">
+      <div className="px-6 pt-8 pb-4 flex-none">
         <div className="flex items-center justify-between mb-2">
           <button onClick={onBack} className="text-text-primary">
             ← Back
@@ -24,7 +24,10 @@ export function BetCreationStakes({ onNext, onBack }: BetCreationStakesProps) {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-6 pb-8">
+      <div
+        className="flex-1 overflow-y-auto px-6 pb-8"
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}
+      >
         {/* Header */}
         <h2 className="text-[11px] font-bold uppercase tracking-[0.1em] text-text-muted mb-2">
           SET THE STAKES
@@ -175,7 +178,7 @@ export function BetCreationStakes({ onNext, onBack }: BetCreationStakesProps) {
       </div>
 
       {/* Bottom CTA */}
-      <div className="px-6 pb-8 pt-4 border-t border-border-subtle bg-bg-primary">
+      <div className="flex-none px-6 pb-8 pt-4 border-t border-border-subtle bg-bg-primary">
         <button
           onClick={onNext}
           className="w-full h-14 rounded-2xl bg-accent-green text-white font-bold text-base glow-green btn-pressed"

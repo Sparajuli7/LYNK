@@ -14,6 +14,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/app/components/ui/alert-dialog'
+import { Emoji } from '@/app/components/Emoji'
 
 export function SettingsScreen() {
   const navigate = useNavigate()
@@ -216,7 +217,7 @@ export function SettingsScreen() {
                     return (
                       <div key={g.id} className="flex items-center justify-between py-1.5">
                         <div className="flex items-center gap-2 min-w-0">
-                          <span className="text-base">{g.avatar_emoji}</span>
+                          <span className="text-base"><Emoji symbol={g.avatar_emoji} /></span>
                           <span className="text-sm text-text-primary truncate">{g.name}</span>
                         </div>
                         <button

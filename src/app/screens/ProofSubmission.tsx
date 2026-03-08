@@ -352,7 +352,7 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
           <input ref={photoInputRef} type="file" accept="image/*" multiple className="hidden" onChange={(e) => addFiles(e, 'screenshot')} />
           <input ref={videoInputRef} type="file" accept="video/*" className="hidden" onChange={(e) => addFiles(e, 'video')} />
           <input ref={docInputRef} type="file" accept=".pdf,.doc,.docx,.txt,.csv,.xls,.xlsx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" className="hidden" onChange={(e) => addFiles(e, 'document')} />
-          <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => addFiles(e, 'screenshot')} />
+          <input ref={cameraInputRef} type="file" accept="image/*" className="hidden" onChange={(e) => addFiles(e, 'screenshot')} />
         </div>
 
         {/* File previews */}

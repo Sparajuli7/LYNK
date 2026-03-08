@@ -61,7 +61,10 @@ export function AppLayout() {
 
   return (
     <div className="h-full bg-bg-primary grain-texture flex flex-col overflow-hidden">
-      <div className="flex-1 overflow-y-auto min-h-0">
+      <div
+        className="flex-1 min-h-0 overflow-y-auto"
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}
+      >
         <Outlet />
       </div>
       {/* Ad Banner */}

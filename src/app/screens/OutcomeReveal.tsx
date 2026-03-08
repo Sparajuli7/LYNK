@@ -419,7 +419,8 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
           </div>
 
           {/* Scrollable content */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 min-h-0 overflow-y-auto"
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}>
             <div className="flex flex-col items-center px-6 pt-10 pb-4">
               {/* WINNER headline */}
               <AnimatePresence>
@@ -637,7 +638,8 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
           />
 
           {/* Scrollable content */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 min-h-0 overflow-y-auto"
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}>
             <div className="flex flex-col items-center px-6 pt-10 pb-4">
               {/* LYNK headline */}
               <motion.h1

@@ -14,14 +14,14 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undef
 if (!supabaseUrl || supabaseUrl === 'https://YOUR_PROJECT.supabase.co') {
   throw new Error(
     '[supabase] VITE_SUPABASE_URL is not set. ' +
-      'Copy .env.example to .env.local and fill in your project URL.'
+      'Copy .env.example to .env and fill in your project URL.'
   )
 }
 
 if (!supabaseAnonKey || supabaseAnonKey === 'your-anon-key-here') {
   throw new Error(
     '[supabase] VITE_SUPABASE_ANON_KEY is not set. ' +
-      'Copy .env.example to .env.local and fill in your anon key.'
+      'Copy .env.example to .env and fill in your anon key.'
   )
 }
 

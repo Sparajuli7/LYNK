@@ -187,7 +187,8 @@ function BetPickerSheet({
       </div>
 
       {/* Bet list */}
-      <div className="flex-1 overflow-y-auto px-6 py-3">
+      <div className="flex-1 min-h-0 overflow-y-auto px-6 py-3"
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}>
         {loading ? (
           <div className="space-y-2">
             {[...Array(6)].map((_, i) => (
@@ -486,7 +487,8 @@ export function JournalDetailScreen() {
       </div>
 
       {/* Bet list */}
-      <div className="flex-1 overflow-y-auto px-6 py-4">
+      <div className="flex-1 min-h-0 overflow-y-auto px-6 py-4"
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}>
         {betsLoading ? (
           <div className="space-y-2">
             {[...Array(4)].map((_, i) => (

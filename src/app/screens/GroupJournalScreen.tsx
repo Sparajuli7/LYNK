@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { ChevronLeft, Users } from 'lucide-react'
 import { useGroupStore } from '@/stores'
+import { Emoji } from '@/app/components/Emoji'
 import { getGroupBets } from '@/lib/api/bets'
 import { BET_CATEGORIES } from '@/lib/utils/constants'
 import { formatMoney } from '@/lib/utils/formatters'
@@ -58,7 +59,7 @@ export function GroupJournalScreen() {
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
-          <span className="text-2xl">{group?.avatar_emoji ?? ''}</span>
+          <span className="text-2xl"><Emoji symbol={group?.avatar_emoji ?? ''} /></span>
           <div className="flex-1 min-w-0">
             <h1 className="text-xl font-black text-text-primary truncate leading-tight">
               {group?.name ?? 'Group Journal'}
@@ -80,7 +81,8 @@ export function GroupJournalScreen() {
       </div>
 
       {/* Bet list */}
-      <div className="flex-1 overflow-y-auto px-6 py-4">
+      <div className="flex-1 min-h-0 overflow-y-auto px-6 py-4"
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}>
         {loading ? (
           <div className="space-y-2">
             {[...Array(5)].map((_, i) => (

@@ -1,10 +1,10 @@
 import type { BetCategory } from '@/lib/database.types'
 
 export const BET_CATEGORIES = {
-  fitness: { label: 'Fitness', emoji: '' },
-  money: { label: 'Money', emoji: '' },
-  social: { label: 'Social', emoji: '' },
-  wildcard: { label: 'Wildcard', emoji: '' },
+  fitness: { label: 'Fitness', emoji: '💪' },
+  money: { label: 'Money', emoji: '💰' },
+  social: { label: 'Social', emoji: '🎉' },
+  wildcard: { label: 'Wildcard', emoji: '🎲' },
 } as const
 
 // ── Template System ─────────────────────────────────────────────────────────
@@ -43,7 +43,7 @@ export const TEMPLATE_CATEGORIES: TemplateCategory[] = [
   {
     id: 'drinking',
     label: 'Drinking',
-    emoji: '',
+    emoji: '🍺',
     description: 'Party drinking dares and challenges',
     templates: [
       {
@@ -141,7 +141,7 @@ export const TEMPLATE_CATEGORIES: TemplateCategory[] = [
   {
     id: 'party',
     label: 'Party',
-    emoji: '',
+    emoji: '🎉',
     description: 'Group challenges and party activities',
     templates: [
       {
@@ -239,7 +239,7 @@ export const TEMPLATE_CATEGORIES: TemplateCategory[] = [
   {
     id: 'street',
     label: 'Street',
-    emoji: '',
+    emoji: '🏙',
     description: 'Doing wild things out in public with strangers',
     templates: [
       {
@@ -337,7 +337,7 @@ export const TEMPLATE_CATEGORIES: TemplateCategory[] = [
   {
     id: 'fitness',
     label: 'Fitness',
-    emoji: '',
+    emoji: '💪',
     description: 'Physical challenges and personal records',
     templates: [
       {
@@ -435,7 +435,7 @@ export const TEMPLATE_CATEGORIES: TemplateCategory[] = [
   {
     id: 'wildcard',
     label: 'Wildcard',
-    emoji: '',
+    emoji: '🃏',
     description: 'Anything goes — the weirdest bets win',
     templates: [
       {
@@ -536,7 +536,12 @@ export const STAKE_PRESETS = [500, 1000, 2000, 5000] as const
 export const REACTION_EMOJIS = ['😭', '💀', '🔥', '🤡', '🫡'] as const
 
 /** Common emojis for group avatars */
-export const GROUP_EMOJIS = ['🔥', '💪', '🏆', '⚔️', '🎯', '💎', '🚀', '👑', '🦁', '🐺', '🦅', '⚡'] as const
+export const GROUP_EMOJIS = [
+  '⚡', '🔥', '💀', '👑', '🎯', '🏆',
+  '💎', '🎪', '🌪', '🎭', '🦁', '🐉',
+  '🎲', '⚔', '🛡', '🎸', '🚀', '💣',
+  '🎰', '🏅',
+] as const
 
 export const REP_THRESHOLDS = {
   gold: 90,

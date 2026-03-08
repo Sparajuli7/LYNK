@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router'
 import { Bell, MessageCircle, Plus, LogIn, UserPlus, Star, Megaphone, Settings } from 'lucide-react'
+import { Emoji } from '../components/Emoji'
 import { NotificationPanel } from '../components/NotificationPanel'
 import { PushPermissionBanner } from '../components/PushPermissionBanner'
 import { useGroupStore, useBetStore, useAuthStore, useNotificationStore, useChatStore } from '@/stores'
@@ -290,7 +291,7 @@ export function TheBoard() {
     return (
       <div className="h-full bg-bg-primary grain-texture flex flex-col items-center justify-center px-6 pb-6">
         <div className="text-center">
-          <div className="text-5xl mb-4"></div>
+          <div className="text-5xl mb-4"><Emoji symbol="🎯" /></div>
           <h2 className="text-xl font-black text-text-primary mb-2">
             Create or join a group to start betting
           </h2>
@@ -318,10 +319,8 @@ export function TheBoard() {
 
   return (
     <div className="relative h-full bg-bg-primary grain-texture flex flex-col overflow-hidden">
-      {/* Scrollable content */}
-      <div className="flex-1 overflow-y-auto pb-24">
-      {/* Top utility bar */}
-      <div className="flex items-center justify-end gap-2 px-4 py-3 border-b border-border-subtle">
+      {/* Top utility bar — pinned, safe area for notch/Dynamic Island on iOS */}
+      <div className="shrink-0 flex items-center justify-end gap-2 px-4 pt-safe py-3 border-b border-border-subtle">
         <button
           onClick={() => navigate('/settings')}
           className="p-2 rounded-lg hover:bg-bg-elevated transition-colors"
@@ -374,6 +373,10 @@ export function TheBoard() {
         </button>
       </div>
 
+      {/* Scrollable content */}
+      <div className="flex-1 min-h-0 overflow-y-auto pb-24"
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}>
+
       {/* Push notification prompt */}
       <PushPermissionBanner />
 
@@ -401,7 +404,7 @@ export function TheBoard() {
             stripBets.map((bet) => {
               const claimant = claimantMap.get(bet.claimant_id)
               const group = groups.find((g) => g.id === bet.group_id)
-              const groupName = group ? `${group.name} ${group.avatar_emoji}` : 'Group'
+              const groupName = group ? group.name : 'Group'
               return (
                 <BoardBetCard
                   key={bet.id}
@@ -459,8 +462,8 @@ export function TheBoard() {
       <NotificationPanel open={notificationOpen} onOpenChange={setNotificationOpen} />
       </div>{/* end scrollable content */}
 
-      {/* Quick Bet FAB — absolute inside phone frame, bottom-right */}
-      <div className="absolute bottom-[70px] right-4 z-20 flex flex-col items-end gap-2 pointer-events-none">
+      {/* Quick Bet FAB — absolute; above nav + home indicator (iOS safe area) */}
+      <div className="absolute bottom-safe-fab right-4 z-20 flex flex-col items-end gap-2 pointer-events-none">
         <span className="pointer-events-auto text-[10px] font-bold text-text-muted uppercase tracking-wider bg-bg-card px-2.5 py-1 rounded-full border border-border-subtle shadow-sm">
           Quick Bet
         </span>

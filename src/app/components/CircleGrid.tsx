@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Emoji } from './Emoji'
 
 // ---------------------------------------------------------------------------
 // CircleGrid — reusable 3-column grid of circular items with labels
@@ -56,7 +57,9 @@ export function CircleGrid({
                 onClick={() => onItemClick(item.id)}
                 className={`${circleSize} rounded-full bg-bg-elevated border border-border-subtle flex items-center justify-center transition-all hover:bg-bg-card hover:border-accent-green/40 active:scale-95`}
               >
-                <span className={iconSize}>{item.icon}</span>
+                <span className={iconSize}>
+                  {typeof item.icon === 'string' ? <Emoji symbol={item.icon} /> : item.icon}
+                </span>
               </button>
               {onPinItem && (
                 <button

@@ -146,7 +146,8 @@ export function CompetitionDetailScreen() {
 
   return (
     <div className="h-full bg-bg-primary grain-texture flex flex-col">
-      <div className="flex-1 overflow-y-auto pb-6">
+      <div className="flex-1 min-h-0 overflow-y-auto pb-6"
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}>
         <div className="absolute top-6 left-6 right-6 flex items-center justify-between z-10">
           <button
             onClick={handleBack}

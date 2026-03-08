@@ -370,7 +370,6 @@ export function ShameProofSubmission() {
             ref={cameraInputRef}
             type="file"
             accept="image/*"
-            capture="environment"
             className="hidden"
             onChange={(e) => addFiles(e, 'screenshot')}
           />

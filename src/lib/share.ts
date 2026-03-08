@@ -4,8 +4,9 @@
  * Use for sharing bets, challenges, results, and stats.
  */
 
-const APP_ORIGIN =
-  typeof window !== 'undefined' ? window.location.origin : ''
+// On Capacitor, window.location.origin is "capacitor://localhost" — useless for shareable links.
+// Always use the canonical app URL from the env variable.
+const BASE_URL = import.meta.env.VITE_APP_URL || 'https://lynk.app'
 
 // ---------------------------------------------------------------------------
 // URL builders
@@ -13,12 +14,12 @@ const APP_ORIGIN =
 
 /** Build full URL for a bet (for sharing). */
 export function getBetShareUrl(betId: string): string {
-  return `${APP_ORIGIN}/bet/${betId}`
+  return `${BASE_URL}/bet/${betId}`
 }
 
 /** Build full URL for a competition. */
 export function getCompetitionShareUrl(compId: string): string {
-  return `${APP_ORIGIN}/compete/${compId}`
+  return `${BASE_URL}/compete/${compId}`
 }
 
 // ---------------------------------------------------------------------------
@@ -27,7 +28,7 @@ export function getCompetitionShareUrl(compId: string): string {
 
 /** Build full URL for a group invite link. */
 export function getGroupInviteUrl(inviteCode: string): string {
-  return `${APP_ORIGIN}/group/join/${inviteCode}`
+  return `${BASE_URL}/group/join/${inviteCode}`
 }
 
 /** Build share text for a group invite. */

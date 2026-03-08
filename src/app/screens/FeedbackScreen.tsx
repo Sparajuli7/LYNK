@@ -91,7 +91,7 @@ export function FeedbackScreen() {
 
   if (submitted) {
     return (
-      <div className="h-full bg-black flex flex-col items-center justify-center px-8 text-center">
+      <div className="h-screen bg-black flex flex-col items-center justify-center px-8 text-center">
         <div
           className="w-14 h-14 rounded-full flex items-center justify-center mb-6"
           style={{ background: '#FFD700' }}
@@ -114,9 +114,9 @@ export function FeedbackScreen() {
   }
 
   return (
-    <div className="h-full bg-black flex flex-col overflow-hidden">
+    <div className="flex flex-col h-screen overflow-hidden bg-black">
       {/* Header */}
-      <div className="px-6 pt-6 pb-5 shrink-0">
+      <div className="px-6 pt-6 pb-5 flex-none">
         <div className="flex items-center gap-3 mb-6">
           <button
             onClick={() => navigate(-1)}
@@ -138,7 +138,10 @@ export function FeedbackScreen() {
       </div>
 
       {/* Form */}
-      <div className="flex-1 overflow-y-auto px-6 pb-8 space-y-10">
+      <div
+        className="flex-1 overflow-y-auto px-6 pb-8 space-y-10"
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}
+      >
 
         {/* 01 — Overall rating */}
         <section>

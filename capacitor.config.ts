@@ -8,7 +8,8 @@ const config: CapacitorConfig = {
     androidScheme: 'https',
   },
   ios: {
-    contentInset: 'always',
+    /* Edge-to-edge like Android so env(safe-area-inset-*) in CSS controls layout */
+    contentInset: 'never',
     backgroundColor: '#0A0A0F',
   },
   android: {

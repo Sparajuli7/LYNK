@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router'
 import { ChevronLeft, Shuffle, BookOpen, UserPlus, Check } from 'lucide-react'
+import { Emoji } from '../components/Emoji'
 import { format } from 'date-fns'
 import { motion, AnimatePresence } from 'motion/react'
 import type { DateRange } from 'react-day-picker'
@@ -327,9 +328,9 @@ export function CompetitionCreateScreen() {
   // ── Render ────────────────────────────────────────────────────────────────────
 
   return (
-    <div className="h-full bg-bg-primary grain-texture flex flex-col">
-      {/* Header */}
-      <div className="px-6 pt-8 pb-4 shrink-0">
+    <div className="flex flex-col h-screen overflow-hidden bg-bg-primary">
+      {/* Header — safe area for notch/Dynamic Island on iOS */}
+      <div className="px-6 pt-safe-4 pb-4 flex-none">
         <div className="flex items-center justify-between mb-2">
           <button onClick={handleBack} className="text-text-primary p-1 -m-1">
             <ChevronLeft className="w-5 h-5" />
@@ -345,7 +346,10 @@ export function CompetitionCreateScreen() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-6 pb-8">
+      <div
+        className="flex-1 overflow-y-auto px-6 pb-8"
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}
+      >
         <AnimatePresence mode="wait">
 
           {/* ─── Step 1 — What's the challenge? ─── */}
@@ -413,7 +417,7 @@ export function CompetitionCreateScreen() {
                         : 'border-border-subtle bg-bg-elevated'
                     }`}
                   >
-                    <span className="text-3xl"></span>
+                    <span className="text-3xl"><Emoji symbol="🏇" /></span>
                     <span className={`font-extrabold text-sm ${creatorSide === 'rider' ? 'text-accent-green' : 'text-text-primary'}`}>
                       Rider
                     </span>
@@ -429,7 +433,7 @@ export function CompetitionCreateScreen() {
                         : 'border-border-subtle bg-bg-elevated'
                     }`}
                   >
-                    <span className="text-3xl"></span>
+                    <span className="text-3xl"><Emoji symbol="🤔" /></span>
                     <span className={`font-extrabold text-sm ${creatorSide === 'doubter' ? 'text-accent-coral' : 'text-text-primary'}`}>
                       Doubter
                     </span>
@@ -521,7 +525,7 @@ export function CompetitionCreateScreen() {
                       <SelectContent>
                         {groups.map((g) => (
                           <SelectItem key={g.id} value={g.id}>
-                            {g.avatar_emoji} {g.name}
+                            <Emoji symbol={g.avatar_emoji} /> {g.name}
                           </SelectItem>
                         ))}
                       </SelectContent>

@@ -243,9 +243,31 @@ const useAuthStore = create<AuthStore>()((set, get) => ({
         set({ error: error.message, isLoading: false })
         return
       }
-      if (data.url) {
+      const url = data?.url?.trim()
+      // iOS SFSafariViewController only accepts http/https; custom schemes cause "Unable to display URL"
+      const isHttpUrl = url?.startsWith('http://') || url?.startsWith('https://')
+      if (!url || !isHttpUrl) {
+        set({
+          error: 'Google sign-in could not start. Please try again or use email.',
+          isLoading: false,
+        })
+        return
+      }
+      try {
         const { Browser } = await import('@capacitor/browser')
-        await Browser.open({ url: data.url })
+        await Browser.open({ url })
+        set({ isLoading: false })
+        Browser.addListener('browserFinished', () => {
+          set({ isLoading: false })
+        })
+      } catch (e) {
+        const message = e && typeof e === 'object' && 'message' in e ? String((e as { message: unknown }).message) : ''
+        set({
+          error: message?.includes('display URL') || message?.includes('valid URL')
+            ? 'Could not open sign-in in browser. Try again or use email/password.'
+            : message || 'Could not open sign-in. Please try again.',
+          isLoading: false,
+        })
       }
     } else {
       // On web, use standard redirect flow

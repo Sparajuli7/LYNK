@@ -26,24 +26,22 @@ export default function App() {
       // Listen for deep link callbacks (OAuth, invite links, etc.)
       import('@capacitor/app').then(({ App: CapApp }) => {
         CapApp.addListener('appUrlOpen', ({ url }) => {
-          // Handle OAuth callback deep links
+          // Handle OAuth callback deep links (Google sign-in returns to com.lynk.app://auth/callback#... or ?...)
           if (url.includes('auth/callback')) {
-            // Extract hash/query params and let Supabase process the session
-            const hashParams = url.split('#')[1]
-            if (hashParams) {
-              const params = new URLSearchParams(hashParams)
-              const accessToken = params.get('access_token')
-              const refreshToken = params.get('refresh_token')
-              if (accessToken && refreshToken) {
-                import('@supabase/supabase-js').then(() => {
-                  import('@/lib/supabase').then(({ supabase }) => {
-                    supabase.auth.setSession({
-                      access_token: accessToken,
-                      refresh_token: refreshToken,
-                    })
+            const hashPart = url.split('#')[1]
+            const queryPart = url.includes('?') ? url.split('?')[1]?.split('#')[0] : ''
+            const params = new URLSearchParams(hashPart || queryPart || '')
+            const accessToken = params.get('access_token')
+            const refreshToken = params.get('refresh_token')
+            if (accessToken && refreshToken) {
+              import('@supabase/supabase-js').then(() => {
+                import('@/lib/supabase').then(({ supabase }) => {
+                  supabase.auth.setSession({
+                    access_token: accessToken,
+                    refresh_token: refreshToken,
                   })
                 })
-              }
+              })
             }
           }
 

@@ -141,12 +141,16 @@ function ProfileContent({
   })
 
   return (
-    <div className="h-full bg-bg-primary overflow-y-auto pb-8">
+    <div className="flex flex-col h-screen overflow-hidden bg-bg-primary">
+      <div
+        className="flex-1 overflow-y-auto pb-8"
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}
+      >
 
       {/* ══════════════════════════════════════
-          COMPACT HEADER CARD
+          COMPACT HEADER CARD — safe area for iOS
           ══════════════════════════════════════ */}
-      <div className="px-4 pt-8 pb-3">
+      <div className="px-4 pt-safe-4 pb-3">
         <div className="bg-bg-card border border-border-subtle rounded-2xl p-4">
 
           {/* Row 1: avatar + identity */}
@@ -383,6 +387,7 @@ function ProfileContent({
             labelLines={2}
           />
         )}
+      </div>
       </div>
     </div>
   )
