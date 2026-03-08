@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { WALKTHROUGH_STEPS } from '@/lib/utils/walkthroughSteps'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -13,6 +14,12 @@ interface UiState {
   activeModal: string | null
   /** ID of the currently open bottom sheet (null = closed) */
   activeBottomSheet: string | null
+  /** Whether the walkthrough overlay is currently visible */
+  walkthroughActive: boolean
+  /** Current step index in the walkthrough */
+  walkthroughStep: number
+  /** Whether the user has completed or skipped the walkthrough (persisted) */
+  walkthroughCompleted: boolean
 }
 
 interface UiActions {
@@ -22,6 +29,12 @@ interface UiActions {
   closeModal: () => void
   openSheet: (id: string) => void
   closeSheet: () => void
+  startWalkthrough: () => void
+  nextWalkthroughStep: () => void
+  prevWalkthroughStep: () => void
+  skipWalkthrough: () => void
+  completeWalkthrough: () => void
+  resetWalkthrough: () => void
 }
 
 export type UiStore = UiState & UiActions
@@ -48,9 +61,12 @@ const useUiStore = create<UiStore>()(
   persist(
     (set, get) => ({
       // ---- state ----
-      theme: 'dark',           // LYNK defaults to dark
+      theme: 'dark',           // FORFEIT defaults to dark
       activeModal: null,
       activeBottomSheet: null,
+      walkthroughActive: false,
+      walkthroughStep: 0,
+      walkthroughCompleted: false,
 
       // ---- actions ----
 
@@ -70,11 +86,38 @@ const useUiStore = create<UiStore>()(
 
       openSheet: (id) => set({ activeBottomSheet: id }),
       closeSheet: () => set({ activeBottomSheet: null }),
+
+      startWalkthrough: () => set({ walkthroughActive: true, walkthroughStep: 0 }),
+
+      nextWalkthroughStep: () => {
+        const next = get().walkthroughStep + 1
+        if (next >= WALKTHROUGH_STEPS.length) {
+          set({ walkthroughActive: false, walkthroughStep: 0, walkthroughCompleted: true })
+        } else {
+          set({ walkthroughStep: next })
+        }
+      },
+
+      prevWalkthroughStep: () => {
+        const prev = get().walkthroughStep - 1
+        if (prev >= 0) set({ walkthroughStep: prev })
+      },
+
+      skipWalkthrough: () =>
+        set({ walkthroughActive: false, walkthroughStep: 0, walkthroughCompleted: true }),
+
+      completeWalkthrough: () =>
+        set({ walkthroughActive: false, walkthroughStep: 0, walkthroughCompleted: true }),
+
+      resetWalkthrough: () => set({ walkthroughCompleted: false }),
     }),
     {
-      name: 'lynk-ui',
-      // Only persist the theme — modal/sheet state should reset on page load
-      partialize: (state) => ({ theme: state.theme }),
+      name: 'forfeit-ui',
+      // Persist theme + walkthrough completion state
+      partialize: (state) => ({
+        theme: state.theme,
+        walkthroughCompleted: state.walkthroughCompleted,
+      }),
       // Re-apply the theme class after localStorage is read on startup
       onRehydrateStorage: () => (state) => {
         if (state) applyTheme(state.theme)

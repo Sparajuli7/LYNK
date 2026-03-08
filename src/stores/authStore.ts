@@ -87,27 +87,32 @@ const useAuthStore = create<AuthStore>()((set, get) => ({
   initialize: async () => {
     set({ isLoading: true, error: null })
 
-    // Hydrate from existing session
-    const {
-      data: { session },
-      error: sessionError,
-    } = await supabase.auth.getSession()
+    // Hydrate from existing session (timeout prevents infinite hang on native WebView)
+    try {
+      const { data: { session }, error: sessionError } = await Promise.race([
+        supabase.auth.getSession(),
+        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Session check timed out')), 8000)),
+      ])
 
-    if (sessionError) {
-      set({ error: sessionError.message, isLoading: false })
-      return
-    }
+      if (sessionError) {
+        set({ error: sessionError.message, isLoading: false })
+        return
+      }
 
-    if (session?.user) {
-      const profile = await loadProfile(session.user.id)
-      set({
-        user: session.user,
-        profile,
-        isAuthenticated: true,
-        isNewUser: !profile,
-        isLoading: false,
-      })
-    } else {
+      if (session?.user) {
+        const profile = await loadProfile(session.user.id)
+        set({
+          user: session.user,
+          profile,
+          isAuthenticated: true,
+          isNewUser: !profile,
+          isLoading: false,
+        })
+      } else {
+        set({ isLoading: false })
+      }
+    } catch {
+      // Timed out — proceed without session so the app isn't stuck
       set({ isLoading: false })
     }
 

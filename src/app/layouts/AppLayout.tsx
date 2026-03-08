@@ -1,9 +1,12 @@
+import { useEffect } from 'react'
 import { Outlet, useNavigate, useLocation } from 'react-router'
 import { LayoutGrid, Trophy, BookOpen, User } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { useNotifications } from '@/lib/hooks/useNotifications'
 import { useChat } from '@/lib/hooks/useChat'
+import { useUiStore } from '@/stores'
 import { AdBanner } from '../components/AdBanner'
+import { WalkthroughOverlay } from '../components/WalkthroughOverlay'
 
 interface NavItem {
   id: string
@@ -40,11 +43,21 @@ export function AppLayout() {
   const { pathname } = useLocation()
   const activeTab = resolveActiveTab(pathname)
 
+  const walkthroughCompleted = useUiStore((s) => s.walkthroughCompleted)
+  const startWalkthrough = useUiStore((s) => s.startWalkthrough)
+
   // Initialize global notification subscription (updates unreadCount, shows toast on new)
   useNotifications()
 
   // Initialize global chat subscription (updates unreadCount, shows toast on new message)
   useChat()
+
+  // Auto-start walkthrough for new users on first visit to /home
+  useEffect(() => {
+    if (!walkthroughCompleted && pathname === '/home') {
+      startWalkthrough()
+    }
+  }, [walkthroughCompleted, pathname, startWalkthrough])
 
   return (
     <div className="h-full bg-bg-primary grain-texture flex flex-col overflow-hidden">
@@ -53,8 +66,10 @@ export function AppLayout() {
       </div>
       {/* Ad Banner */}
       <AdBanner />
+      {/* Onboarding walkthrough */}
+      <WalkthroughOverlay />
       {/* Bottom Navigation */}
-      <nav className="shrink-0 h-16 bg-bg-primary border-t border-border-subtle flex items-center justify-around pb-safe">
+      <nav className="shrink-0 bg-bg-primary border-t border-border-subtle flex items-center justify-around h-16 pb-safe">
         {NAV_ITEMS.map((item) => {
           const isActive = activeTab === item.id
           const Icon = item.icon

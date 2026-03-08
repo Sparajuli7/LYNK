@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import { Capacitor } from '@capacitor/core'
 import type { Database } from './database.types'
 
 // ---------------------------------------------------------------------------
@@ -36,8 +37,8 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     persistSession: true,
     // Automatically refresh the JWT before it expires.
     autoRefreshToken: true,
-    // Listen for auth state changes in other tabs (e.g. sign-out).
-    detectSessionInUrl: true,
+    // Disable URL session detection on native — Capacitor WebView URLs cause hangs
+    detectSessionInUrl: !Capacitor.isNativePlatform(),
   },
 })
 

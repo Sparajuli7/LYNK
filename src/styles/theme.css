@@ -73,6 +73,12 @@
     @apply border-border-subtle;
   }
 
+  html, body, #root {
+    height: 100dvh;
+    height: var(--app-height, 100dvh);
+    overflow: hidden;
+  }
+
   body {
     @apply bg-bg-primary text-text-primary;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;

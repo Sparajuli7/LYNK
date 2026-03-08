@@ -62,7 +62,7 @@ export default function App() {
   // On native: full-screen rendering. On web: keep the dev preview frame.
   if (isNative) {
     return (
-      <div className="size-full bg-bg-primary overflow-hidden">
+      <div className="size-full bg-bg-primary overflow-hidden pt-safe">
         <AppRouter />
         <Toaster position="top-center" richColors />
       </div>

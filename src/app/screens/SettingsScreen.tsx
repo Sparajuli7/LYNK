@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router'
-import { ChevronLeft, Sun, Moon, LogOut, Bell, BellOff, MessageSquarePlus } from 'lucide-react'
+import { ChevronLeft, Sun, Moon, LogOut, Bell, BellOff, MessageSquarePlus, RotateCcw } from 'lucide-react'
 import { useAuthStore, useUiStore, usePushStore, useGroupStore, useCompetitionStore } from '@/stores'
 import { supabase } from '@/lib/supabase'
 import type { NotificationPreferenceRow } from '@/lib/database.types'
@@ -20,6 +20,8 @@ export function SettingsScreen() {
   const signOut = useAuthStore((s) => s.signOut)
   const theme = useUiStore((s) => s.theme)
   const toggleTheme = useUiStore((s) => s.toggleTheme)
+  const resetWalkthrough = useUiStore((s) => s.resetWalkthrough)
+  const startWalkthrough = useUiStore((s) => s.startWalkthrough)
   const user = useAuthStore((s) => s.user)
   const userId = user?.id
 
@@ -268,6 +270,25 @@ export function SettingsScreen() {
               </div>
             )}
           </div>
+
+          {/* ── Replay Walkthrough ───────────────────────────────────────── */}
+          <button
+            onClick={() => {
+              resetWalkthrough()
+              startWalkthrough()
+              navigate('/home')
+            }}
+            className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl bg-bg-card border border-border-subtle hover:bg-bg-elevated transition-colors active:scale-[0.98]"
+          >
+            <div className="flex items-center gap-3">
+              <RotateCcw className="w-4 h-4 text-text-muted" />
+              <div className="text-left">
+                <p className="text-sm font-bold text-text-primary">Replay Walkthrough</p>
+                <p className="text-xs text-text-muted mt-0.5">See the app intro again</p>
+              </div>
+            </div>
+            <span className="text-text-muted text-lg leading-none">›</span>
+          </button>
 
           {/* ── Sign out ─────────────────────────────────────────────────── */}
           <button
