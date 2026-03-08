@@ -45,5 +45,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>LYNK needs camera access to take photos and videos in group chats.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>LYNK needs microphone access to record videos in group chats.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>LYNK needs photo library access to share photos in group chats.</string>
 </dict>
 </plist>

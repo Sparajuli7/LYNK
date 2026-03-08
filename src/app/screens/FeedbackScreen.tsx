@@ -117,7 +117,7 @@ export function FeedbackScreen() {
   return (
     <div
       className="h-full bg-black flex flex-col overflow-hidden"
-      style={{ paddingTop: iosSpacing.topPadding }}
+      style={{ paddingTop: iosSpacing.stickyTopPadding }}
     >
       {/* Header */}
       <div className="px-6 pb-5 shrink-0">

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router'
-import { ChevronLeft, Shuffle, BookOpen, UserPlus, Check } from 'lucide-react'
+import { ChevronLeft, Shuffle, BookOpen, UserPlus, Check, TrendingUp, TrendingDown } from 'lucide-react'
 import { format } from 'date-fns'
 import { motion, AnimatePresence } from 'motion/react'
 import type { DateRange } from 'react-day-picker'
@@ -333,7 +333,7 @@ export function CompetitionCreateScreen() {
       {/* Header */}
       <div
         className="px-6 pb-4 shrink-0"
-        style={{ paddingTop: iosSpacing.topPadding }}
+        style={{ paddingTop: iosSpacing.stickyTopPadding }}
       >
         <div className="flex items-center justify-between mb-2">
           <button onClick={handleBack} className="text-text-primary p-1 -m-1">
@@ -421,7 +421,7 @@ export function CompetitionCreateScreen() {
                         : 'border-border-subtle bg-bg-elevated'
                     }`}
                   >
-                    <span className="text-3xl"></span>
+                    <TrendingUp className={`w-8 h-8 ${creatorSide === 'rider' ? 'text-accent-green' : 'text-text-muted'}`} />
                     <span className={`font-extrabold text-sm ${creatorSide === 'rider' ? 'text-accent-green' : 'text-text-primary'}`}>
                       Rider
                     </span>
@@ -437,7 +437,7 @@ export function CompetitionCreateScreen() {
                         : 'border-border-subtle bg-bg-elevated'
                     }`}
                   >
-                    <span className="text-3xl"></span>
+                    <TrendingDown className={`w-8 h-8 ${creatorSide === 'doubter' ? 'text-accent-coral' : 'text-text-muted'}`} />
                     <span className={`font-extrabold text-sm ${creatorSide === 'doubter' ? 'text-accent-coral' : 'text-text-primary'}`}>
                       Doubter
                     </span>

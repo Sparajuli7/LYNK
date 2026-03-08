@@ -190,7 +190,7 @@ export function ChatConversationScreen() {
   return (
     <div
       className="h-full bg-bg-primary flex flex-col"
-      style={{ paddingTop: iosSpacing.topPadding }}
+      style={{ paddingTop: iosSpacing.stickyTopPadding }}
     >
       {/* Header */}
       <div className="shrink-0 border-b border-border-subtle bg-bg-primary px-4 py-3 flex items-center gap-3">

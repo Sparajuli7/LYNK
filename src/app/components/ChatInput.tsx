@@ -256,6 +256,7 @@ export function ChatInput({
           ref={videoInputRef}
           type="file"
           accept="video/*"
+          capture="environment"
           className="hidden"
           onChange={handleVideoSelect}
         />

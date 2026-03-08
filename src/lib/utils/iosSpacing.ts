@@ -10,4 +10,5 @@ export const iosSpacing = {
     ? 'calc(env(safe-area-inset-bottom, 34px) + 80px)'
     : '80px',
   modalTopPadding: isIOS ? '24px' : '16px',
+  stickyTopPadding: isIOS ? 'env(safe-area-inset-top, 44px)' : '0px',
 }
