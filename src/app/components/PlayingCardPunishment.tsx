@@ -8,10 +8,10 @@ interface PlayingCardPunishmentProps {
   onSwipeRight?: () => void;
 }
 
-export function PlayingCardPunishment({ 
-  punishment, 
+export function PlayingCardPunishment({
+  punishment,
   difficulty,
-  category,
+  category: _category,
   completionRate,
   timesAssigned,
   onSwipeLeft,
@@ -60,11 +60,6 @@ export function PlayingCardPunishment({
         <div className="flex-1 flex flex-col items-center justify-center px-8 py-12">
           {/* Large emoji or icon */}
           <div className="text-6xl mb-6">
-            {category === 'Physical' && '💪'}
-            {category === 'Social' && '📱'}
-            {category === 'Financial' && '💸'}
-            {category === 'Humiliating' && '😬'}
-            {!category && '🔥'}
           </div>
 
           {/* Punishment text */}

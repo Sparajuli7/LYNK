@@ -49,7 +49,7 @@ function Placeholder({ name }: { name: string }) {
   return (
     <div className="h-full bg-bg-primary grain-texture flex items-center justify-center">
       <div className="text-center px-6">
-        <div className="text-5xl mb-4">🚧</div>
+        <div className="text-5xl mb-4"></div>
         <p className="text-xl font-black text-text-primary mb-2">Coming Soon</p>
         <p className="text-text-muted mb-6">{name}</p>
         <button

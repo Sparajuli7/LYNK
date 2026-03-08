@@ -44,7 +44,6 @@ export function OutcomeWin({ onShare, onBack }: OutcomeWinProps) {
             />
           </div>
           <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-4xl">
-            👑
           </div>
         </div>
 
@@ -60,7 +59,7 @@ export function OutcomeWin({ onShare, onBack }: OutcomeWinProps) {
             <div className="text-5xl font-black text-accent-green tabular-nums mb-3">
               $25
             </div>
-            <p className="text-sm text-text-muted">or punishment incoming 😈</p>
+            <p className="text-sm text-text-muted">or punishment incoming</p>
           </div>
 
           {/* Losers */}
@@ -78,7 +77,7 @@ export function OutcomeWin({ onShare, onBack }: OutcomeWinProps) {
           onClick={onShare}
           className="w-full h-14 rounded-2xl bg-gold text-bg-primary font-bold text-base btn-pressed shadow-xl"
         >
-          Share Result 🏆
+          Share Result
         </button>
         <button
           onClick={onBack}

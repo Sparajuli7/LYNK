@@ -63,7 +63,7 @@ export function BetCreation({ onNext }: BetCreationProps) {
             }}
           >
             {/* Emoji */}
-            <div className="text-7xl mb-6">😬</div>
+            <div className="text-7xl mb-6"></div>
 
             {/* Punishment Text */}
             <p className="text-white font-bold text-center text-xl mb-6 leading-tight">
@@ -72,7 +72,7 @@ export function BetCreation({ onNext }: BetCreationProps) {
 
             {/* Difficulty Badge */}
             <div className="bg-accent-coral/20 border border-accent-coral px-4 py-2 rounded-full">
-              <span className="text-accent-coral font-semibold text-sm">Medium 🔥</span>
+              <span className="text-accent-coral font-semibold text-sm">Medium</span>
             </div>
 
             {/* Swipe Hint */}
@@ -85,7 +85,7 @@ export function BetCreation({ onNext }: BetCreationProps) {
       <div className="space-y-3 pb-8">
         <button className="w-full py-3 rounded-2xl border border-border-subtle text-white font-medium flex items-center justify-center gap-2 btn-pressed">
           <Shuffle className="w-4 h-4" />
-          Randomize 🎲
+          Randomize
         </button>
         <button className="w-full text-text-muted font-medium">
           Suggest your own +

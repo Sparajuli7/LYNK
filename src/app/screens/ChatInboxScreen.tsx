@@ -40,7 +40,7 @@ export function ChatInboxScreen() {
 
         {!isLoading && conversations.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
-            <div className="text-4xl mb-3">💬</div>
+            <div className="text-4xl mb-3"></div>
             <p className="text-text-primary font-bold mb-1">No conversations yet</p>
             <p className="text-text-muted text-sm">
               Start chatting from a group, competition, or someone's profile.

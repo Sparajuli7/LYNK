@@ -6,7 +6,7 @@ export type ProfileWithRep = ProfileBasic & {
   rep_score: number
   username: string
   punishments_taken?: number
-  punishments_completed?: number
+  punishments_completed?: number  // number of punishments completed
 }
 
 export async function getProfilesByIds(

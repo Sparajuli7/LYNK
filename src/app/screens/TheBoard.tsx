@@ -290,7 +290,7 @@ export function TheBoard() {
     return (
       <div className="h-full bg-bg-primary grain-texture flex flex-col items-center justify-center px-6 pb-6">
         <div className="text-center">
-          <div className="text-5xl mb-4">👥</div>
+          <div className="text-5xl mb-4"></div>
           <h2 className="text-xl font-black text-text-primary mb-2">
             Create or join a group to start betting
           </h2>

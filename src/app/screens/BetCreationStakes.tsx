@@ -40,7 +40,7 @@ export function BetCreationStakes({ onNext, onBack }: BetCreationStakesProps) {
                 : 'bg-bg-elevated text-text-muted'
             }`}
           >
-            💵 Money
+            Money
           </button>
           <button
             onClick={() => setSelectedType('punishment')}
@@ -50,7 +50,7 @@ export function BetCreationStakes({ onNext, onBack }: BetCreationStakesProps) {
                 : 'bg-bg-elevated text-text-muted'
             }`}
           >
-            🔥 Punishment
+            Punishment
           </button>
           <button
             onClick={() => setSelectedType('both')}
@@ -60,7 +60,7 @@ export function BetCreationStakes({ onNext, onBack }: BetCreationStakesProps) {
                 : 'bg-bg-elevated text-text-muted'
             }`}
           >
-            💵🔥 Both
+            Both
           </button>
         </div>
 
@@ -143,7 +143,7 @@ export function BetCreationStakes({ onNext, onBack }: BetCreationStakesProps) {
             <div className="mt-6 space-y-3">
               <button className="w-full py-3 rounded-xl border-2 border-border-subtle text-text-primary font-bold flex items-center justify-center gap-2 btn-pressed">
                 <Shuffle className="w-4 h-4" />
-                Randomize 🎲
+                Randomize
               </button>
               <button className="w-full text-accent-green font-bold text-sm">
                 Create Your Own +

@@ -74,7 +74,7 @@ export function SignUpScreen() {
     return (
       <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
         <div className="flex-1 flex flex-col justify-center items-center text-center">
-          <div className="text-6xl mb-6">📧</div>
+          <div className="text-6xl mb-6"></div>
           <h1 className="text-2xl font-black text-text-primary mb-3">
             Check your email
           </h1>

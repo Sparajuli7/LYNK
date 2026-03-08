@@ -81,7 +81,7 @@ export function GroupJoinByCodeScreen() {
           <ChevronLeft className="w-6 h-6" />
         </button>
         <div className="flex-1 flex flex-col items-center justify-center">
-          <div className="text-5xl mb-4">🔍</div>
+          <div className="text-5xl mb-4"></div>
           <h2 className="text-xl font-black text-text-primary mb-2">Group not found</h2>
           <p className="text-text-muted text-sm mb-6 text-center">
             No group exists with that invite code. Check the link and try again.

@@ -138,7 +138,7 @@ export function ChatConversationScreen() {
     setIsUploading(true)
     try {
       const mediaUrl = await uploadChatImage(conversationId, file)
-      sendMessage(caption || '📷 Photo', 'image', mediaUrl)
+      sendMessage(caption || 'Photo', 'image', mediaUrl)
       scrollToBottom()
     } catch (e) {
       console.error('Failed to upload image:', e)
@@ -152,7 +152,7 @@ export function ChatConversationScreen() {
     setIsUploading(true)
     try {
       const mediaUrl = await uploadChatVideo(conversationId, file)
-      sendMessage('🎬 Video', 'video', mediaUrl)
+      sendMessage('Video', 'video', mediaUrl)
       scrollToBottom()
     } catch (e) {
       console.error('Failed to upload video:', e)
@@ -234,7 +234,7 @@ export function ChatConversationScreen() {
 
         {!isLoading && messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-center">
-            <div className="text-4xl mb-3">💬</div>
+            <div className="text-4xl mb-3"></div>
             <p className="text-text-primary font-bold mb-1">No messages yet</p>
             <p className="text-text-muted text-sm">Be the first to say something!</p>
           </div>

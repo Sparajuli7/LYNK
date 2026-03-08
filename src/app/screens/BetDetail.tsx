@@ -368,7 +368,7 @@ export function BetDetail({ onBack }: BetDetailProps) {
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-bg-card rounded-2xl border border-border-subtle p-4">
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-lg">🟢</span>
+              <span className="text-lg"></span>
               <span className="text-sm font-bold text-white uppercase tracking-wider">Riders</span>
             </div>
             <div className="space-y-2">
@@ -387,7 +387,7 @@ export function BetDetail({ onBack }: BetDetailProps) {
           </div>
           <div className="bg-bg-card rounded-2xl border border-border-subtle p-4">
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-lg">🔴</span>
+              <span className="text-lg"></span>
               <span className="text-sm font-bold text-white uppercase tracking-wider">Doubters</span>
             </div>
             <div className="space-y-2">
@@ -415,14 +415,14 @@ export function BetDetail({ onBack }: BetDetailProps) {
               onClick={() => joinBet(id, 'rider')}
               className="bg-accent-green rounded-2xl p-4 flex flex-col items-center gap-2 btn-pressed"
             >
-              <span className="text-2xl">🤝</span>
+              <span className="text-2xl"></span>
               <span className="text-bg-primary font-bold">Ride</span>
             </button>
             <button
               onClick={() => joinBet(id, 'doubter')}
               className="bg-accent-coral rounded-2xl p-4 flex flex-col items-center gap-2 btn-pressed"
             >
-              <span className="text-2xl">💀</span>
+              <span className="text-2xl"></span>
               <span className="text-white font-bold">Doubt</span>
             </button>
           </div>
@@ -495,7 +495,7 @@ export function BetDetail({ onBack }: BetDetailProps) {
                   : 'bg-accent-coral/10 border-accent-coral/40'
               }`}>
                 <span className="text-2xl shrink-0">
-                  {rulingProof.ruling === 'riders_win' ? '✅' : '❌'}
+                  {rulingProof.ruling === 'riders_win' ? '' : ''}
                 </span>
                 <div className="flex-1 min-w-0">
                   <p className={`text-xs font-extrabold uppercase tracking-wide ${
@@ -663,7 +663,7 @@ export function BetDetail({ onBack }: BetDetailProps) {
                       {votingProofId === currentProof.id ? (
                         <div className="w-4 h-4 border-2 border-bg-primary border-t-transparent rounded-full animate-spin" />
                       ) : (
-                        <>✅ Validate</>
+                        <>Validate</>
                       )}
                     </button>
                     <button
@@ -679,7 +679,7 @@ export function BetDetail({ onBack }: BetDetailProps) {
                       {votingProofId === currentProof.id ? (
                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                       ) : (
-                        <>💀 Dispute</>
+                        <>Dispute</>
                       )}
                     </button>
                   </div>
@@ -689,7 +689,7 @@ export function BetDetail({ onBack }: BetDetailProps) {
               {/* Already voted indicator */}
               {currentMyVote && currentIsRulingProof && (
                 <div className="mt-3 flex items-center justify-center gap-2 py-2 rounded-xl bg-bg-elevated">
-                  <span className="text-sm">{currentMyVote.vote === 'confirm' ? '✅' : '💀'}</span>
+                  <span className="text-sm">{currentMyVote.vote === 'confirm' ? '' : ''}</span>
                   <span className="text-xs font-bold text-text-muted">
                     You voted {currentMyVote.vote === 'confirm' ? 'Validate' : 'Dispute'}
                   </span>
@@ -778,7 +778,7 @@ export function BetDetail({ onBack }: BetDetailProps) {
                 <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-text-muted">Stake</p>
                 {hasShameMedia && (
                   <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-accent-coral/20 text-accent-coral border border-accent-coral/30">
-                    🔥 Paid up
+                    Paid up
                   </span>
                 )}
               </div>
@@ -789,7 +789,7 @@ export function BetDetail({ onBack }: BetDetailProps) {
               {(activeBet.stake_custom_punishment || activeBet.stake_punishment_id) && (
                 <div className="mt-2 px-3 py-2 rounded-lg bg-orange-500/10 border border-orange-500/20">
                   <p className="text-sm font-bold text-orange-400">
-                    🔥 Punishment: {punishmentCardText ?? activeBet.stake_custom_punishment ?? 'Forfeit'}
+                    Punishment: {punishmentCardText ?? activeBet.stake_custom_punishment ?? 'Forfeit'}
                   </p>
                 </div>
               )}
@@ -804,16 +804,16 @@ export function BetDetail({ onBack }: BetDetailProps) {
                 >
                   {isWinner && userWinPayout && userWinPayout.amount > 0 ? (
                     <p className="text-sm font-bold text-accent-green">
-                      You won {formatMoney(userWinPayout.amount)} 🏆
+                      You won {formatMoney(userWinPayout.amount)}
                     </p>
                   ) : isLoser && userLossPayout && userLossPayout.amount > 0 ? (
                     <p className="text-sm font-bold text-accent-coral">
                       You owe {formatMoney(userLossPayout.amount)}
                     </p>
                   ) : isWinner ? (
-                    <p className="text-sm font-bold text-accent-green">You're in the clear ✅</p>
+                    <p className="text-sm font-bold text-accent-green">You're in the clear</p>
                   ) : isLoser ? (
-                    <p className="text-sm font-bold text-accent-coral">You owe the punishment 💀</p>
+                    <p className="text-sm font-bold text-accent-coral">You owe the punishment</p>
                   ) : null}
                 </div>
               )}

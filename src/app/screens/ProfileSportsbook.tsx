@@ -71,7 +71,7 @@ export function ProfileSportsbook({ onNavigate }: ProfileSportsbookProps) {
         <div className="grid grid-cols-2 gap-3">
           {[
             { label: 'Total Bets', value: '24', trend: '+3', up: true },
-            { label: 'Active Streak', value: '3', trend: '🔥', up: true },
+            { label: 'Active Streak', value: '3', trend: '+3', up: true },
             { label: 'Punishments Taken', value: '7', trend: '-2', up: false },
             { label: 'Completion Rate', value: '71%', trend: '+5%', up: true },
             { label: 'Biggest Win', value: '$100', trend: null, up: null },

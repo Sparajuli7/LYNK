@@ -23,9 +23,9 @@ import { ShareSheet } from '@/app/components/ShareSheet'
 import { getCompetitionShareUrl, getCompetitionShareText, shareWithNative } from '@/lib/share'
 
 const RANK_STYLES: Record<number, { bg: string; border: string; crown?: string }> = {
-  1: { bg: 'bg-gold/10', border: 'border-gold/50', crown: '👑' },
-  2: { bg: 'bg-gray-400/10', border: 'border-gray-400/50', crown: '🥈' },
-  3: { bg: 'bg-amber-700/10', border: 'border-amber-700/50', crown: '🥉' },
+  1: { bg: 'bg-gold/10', border: 'border-gold/50', crown: '' },
+  2: { bg: 'bg-gray-400/10', border: 'border-gray-400/50', crown: '' },
+  3: { bg: 'bg-amber-700/10', border: 'border-amber-700/50', crown: '' },
 }
 
 export function CompetitionDetailScreen() {
@@ -359,7 +359,7 @@ export function CompetitionDetailScreen() {
         open={scoreShareOpen}
         onOpenChange={setScoreShareOpen}
         title="Share your score"
-        text={`I just scored ${lastScore} in "${competition?.title ?? 'a competition'}" on LYNK! 🏆🎲`}
+        text={`I just scored ${lastScore} in "${competition?.title ?? 'a competition'}" on LYNK!`}
         url={id ? getCompetitionShareUrl(id) : ''}
         imageUrl={lastProofUrl}
         caption={`Score: ${lastScore} — ${competition?.title ?? 'Competition'}`}

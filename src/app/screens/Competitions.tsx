@@ -65,7 +65,7 @@ function sortCompetitions(comps: Bet[]): Bet[] {
 function formatStake(competition: Bet) {
   if (competition.stake_money) return formatMoney(competition.stake_money)
   if (competition.stake_custom_punishment) return competition.stake_custom_punishment
-  if (competition.stake_punishment_id) return '🔥 Punishment'
+  if (competition.stake_punishment_id) return 'Punishment'
   return '—'
 }
 
@@ -76,9 +76,9 @@ function formatTimeframe(competition: Bet) {
 }
 
 const RANK_EMOJI: Record<number, string> = {
-  1: '🥇',
-  2: '🥈',
-  3: '🥉',
+  1: '',
+  2: '',
+  3: '',
 }
 
 export function Competitions() {
@@ -138,7 +138,7 @@ export function Competitions() {
   return (
     <div className="h-full bg-bg-primary overflow-y-auto pb-6">
       <div className="px-6 pt-12 pb-4">
-        <h1 className="text-3xl font-black text-text-primary mb-2">⚔️ COMPETE</h1>
+        <h1 className="text-3xl font-black text-text-primary mb-2">COMPETE</h1>
         <p className="text-sm text-text-muted">Challenges, competitions, rematches.</p>
       </div>
 
@@ -236,12 +236,12 @@ export function Competitions() {
 
                   <div className="flex items-center gap-3">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-sm">🤝</span>
+                      <span className="text-sm"></span>
                       <span className="text-xs font-bold text-accent-green">{riders.length} Rider{riders.length !== 1 ? 's' : ''}</span>
                     </div>
                     <span className="text-text-muted text-xs">vs</span>
                     <div className="flex items-center gap-1.5">
-                      <span className="text-sm">💀</span>
+                      <span className="text-sm"></span>
                       <span className="text-xs font-bold text-accent-coral">{doubters.length} Doubter{doubters.length !== 1 ? 's' : ''}</span>
                     </div>
                   </div>

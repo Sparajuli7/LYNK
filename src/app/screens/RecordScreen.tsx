@@ -166,7 +166,7 @@ export function RecordScreen() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.18em] text-amber-400 mb-1">
-                ⚡ My Player Card
+                My Player Card
               </p>
               <p className="text-sm font-bold text-white">View &amp; share your trading card</p>
               <p className="text-[11px] text-white/40 mt-0.5">Stats, records &amp; tier badge</p>
@@ -176,7 +176,7 @@ export function RecordScreen() {
                 className="w-14 h-20 rounded-lg border-2 border-amber-400/60 flex flex-col items-center justify-center gap-1"
                 style={{ background: 'linear-gradient(145deg, #1a1200, #0d0d0d)' }}
               >
-                <span className="text-xl">{user?.user_metadata?.avatar_url ? '🃏' : '🃏'}</span>
+                <span className="text-xl"></span>
                 <div className="text-[8px] font-black text-amber-400 uppercase tracking-widest">LYNK</div>
               </div>
             </div>

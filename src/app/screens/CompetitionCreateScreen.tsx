@@ -386,7 +386,7 @@ export function CompetitionCreateScreen() {
                     onClick={() => setTemplatesOpen(true)}
                     className="text-xs font-bold text-accent-green flex items-center gap-1"
                   >
-                    ✨ Browse structures
+                    Browse structures
                   </button>
                 </div>
                 <textarea
@@ -413,7 +413,7 @@ export function CompetitionCreateScreen() {
                         : 'border-border-subtle bg-bg-elevated'
                     }`}
                   >
-                    <span className="text-3xl">🤝</span>
+                    <span className="text-3xl"></span>
                     <span className={`font-extrabold text-sm ${creatorSide === 'rider' ? 'text-accent-green' : 'text-text-primary'}`}>
                       Rider
                     </span>
@@ -429,7 +429,7 @@ export function CompetitionCreateScreen() {
                         : 'border-border-subtle bg-bg-elevated'
                     }`}
                   >
-                    <span className="text-3xl">💀</span>
+                    <span className="text-3xl"></span>
                     <span className={`font-extrabold text-sm ${creatorSide === 'doubter' ? 'text-accent-coral' : 'text-text-primary'}`}>
                       Doubter
                     </span>
@@ -774,7 +774,7 @@ export function CompetitionCreateScreen() {
                       stakeType === t ? 'bg-accent-green text-white' : 'bg-bg-elevated text-text-muted'
                     }`}
                   >
-                    {t === 'money' ? '💵 Money' : t === 'punishment' ? '🔥 Punishment' : '💵🔥 Both'}
+                    {t === 'money' ? 'Money' : t === 'punishment' ? 'Punishment' : 'Both'}
                   </button>
                 ))}
               </div>
@@ -835,7 +835,7 @@ export function CompetitionCreateScreen() {
               {(stakeType === 'punishment' || stakeType === 'both') && (
                 <div className="space-y-4">
                   <div className="bg-bg-elevated dark:bg-bg-card rounded-2xl border-2 border-border-subtle p-6 min-h-[200px] flex flex-col relative overflow-hidden">
-                    <div className="text-center text-4xl mb-4">🔥</div>
+                    <div className="text-center text-4xl mb-4"></div>
                     <textarea
                       value={punishmentText}
                       onChange={(e) => {
@@ -866,7 +866,7 @@ export function CompetitionCreateScreen() {
                       className="flex-1 py-3 rounded-xl border-2 border-border-subtle text-text-primary font-bold flex items-center justify-center gap-2"
                     >
                       <Shuffle className="w-4 h-4" />
-                      Randomize 🎲
+                      Randomize
                     </button>
                     <button
                       onClick={savePunishmentToLibrary}
@@ -933,7 +933,7 @@ export function CompetitionCreateScreen() {
               {error && <p className="text-destructive text-sm">{error}</p>}
 
               <PrimaryButton onClick={handleSubmit} disabled={isSubmitting}>
-                {isSubmitting ? 'Creating...' : 'Create Competition 🏆'}
+                {isSubmitting ? 'Creating...' : 'Create Competition'}
               </PrimaryButton>
             </motion.div>
           )}
@@ -945,7 +945,7 @@ export function CompetitionCreateScreen() {
       <Dialog open={templatesOpen} onOpenChange={setTemplatesOpen}>
         <DialogContent className="max-w-md max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>✨ Challenge structures</DialogTitle>
+            <DialogTitle>Challenge structures</DialogTitle>
           </DialogHeader>
           <p className="text-xs text-text-muted -mt-2 mb-3">
             Pick a starting format — then edit it to fit your competition.
@@ -977,7 +977,7 @@ export function CompetitionCreateScreen() {
       <Dialog open={libraryOpen} onOpenChange={setLibraryOpen}>
         <DialogContent className="max-w-md max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>🔥 Punishment Library</DialogTitle>
+            <DialogTitle>Punishment Library</DialogTitle>
           </DialogHeader>
           <div className="space-y-2 pt-2">
             {punishments.length === 0 ? (

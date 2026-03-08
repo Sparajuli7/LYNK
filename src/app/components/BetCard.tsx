@@ -87,7 +87,7 @@ export function BetCard({
         {status === 'proof' ? (
           <div className="flex items-center gap-1.5 px-2.5 py-1 bg-bg-elevated border border-border-subtle rounded-full">
             <span className="text-[10px] font-bold text-text-muted uppercase tracking-wide">
-              👀 PROOF DROPPED
+              PROOF DROPPED
             </span>
           </div>
         ) : (

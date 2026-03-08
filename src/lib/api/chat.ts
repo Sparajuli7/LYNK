@@ -167,7 +167,7 @@ export async function getUserConversations(): Promise<ConversationWithMeta[]> {
       displayEmoji = group?.emoji ?? null
     } else if (conv.type === 'competition' && conv.bet_id) {
       displayName = betMap.get(conv.bet_id) ?? 'Competition Chat'
-      displayEmoji = '🏆'
+      displayEmoji = null
     } else if (conv.type === 'dm') {
       const dmProfile = dmProfileMap.get(conv.id)
       displayName = dmProfile?.name ?? 'Direct Message'

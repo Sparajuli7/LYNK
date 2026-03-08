@@ -22,7 +22,7 @@ export function Onboarding({ onNext, onSkip }: OnboardingProps) {
               {/* Left side - green */}
               <div className="flex flex-col items-center gap-3">
                 <div className="w-24 h-24 rounded-2xl bg-accent-green/20 border-2 border-accent-green flex items-center justify-center">
-                  <span className="text-5xl">🤝</span>
+                  <span className="text-5xl"></span>
                 </div>
                 <div className="text-xs font-bold text-accent-green uppercase tracking-wide">
                   RIDERS
@@ -35,7 +35,7 @@ export function Onboarding({ onNext, onSkip }: OnboardingProps) {
               {/* Right side - coral */}
               <div className="flex flex-col items-center gap-3">
                 <div className="w-24 h-24 rounded-2xl bg-accent-coral/20 border-2 border-accent-coral flex items-center justify-center">
-                  <span className="text-5xl">💀</span>
+                  <span className="text-5xl"></span>
                 </div>
                 <div className="text-xs font-bold text-accent-coral uppercase tracking-wide">
                   DOUBTERS
