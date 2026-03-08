@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { useAuthStore } from '@/stores'
 import { validateEmail } from '@/lib/utils/validators'
 import { Input } from '@/app/components/ui/input'
@@ -87,10 +88,13 @@ export function LoginScreen() {
   const canSubmitOtp = emailValid && !isLoading
 
   return (
-    <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
+    <div
+      className="h-full bg-bg-primary grain-texture flex flex-col px-6 overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       <button
         onClick={() => navigate(-1)}
-        className="mt-4 p-2 -ml-2 self-start text-text-muted hover:text-text-primary transition-colors"
+        className="mt-4 p-2 -ml-2 self-start text-text-muted hover:text-text-primary transition-colors z-10"
         aria-label="Go back"
       >
         <ChevronLeft className="w-6 h-6" />

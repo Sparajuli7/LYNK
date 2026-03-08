@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { ChevronLeft, Users } from 'lucide-react'
+import { GroupIcon } from '@/app/components/GroupIcon'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { useGroupStore } from '@/stores'
 import { getGroupBets } from '@/lib/api/bets'
 import { BET_CATEGORIES } from '@/lib/utils/constants'
@@ -50,7 +52,10 @@ export function GroupJournalScreen() {
   return (
     <div className="h-full bg-bg-primary flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="px-6 pt-6 pb-4 border-b border-border-subtle shrink-0">
+      <div
+        className="px-6 pb-4 border-b border-border-subtle shrink-0"
+        style={{ paddingTop: iosSpacing.topPadding }}
+      >
         <div className="flex items-center gap-3 mb-1">
           <button
             onClick={() => navigate('/journal')}
@@ -58,7 +63,7 @@ export function GroupJournalScreen() {
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
-          <span className="text-2xl">{group?.avatar_emoji ?? ''}</span>
+          {group?.avatar_emoji ? <GroupIcon id={group.avatar_emoji} size={28} className="text-text-primary" /> : null}
           <div className="flex-1 min-w-0">
             <h1 className="text-xl font-black text-text-primary truncate leading-tight">
               {group?.name ?? 'Group Journal'}
@@ -80,7 +85,10 @@ export function GroupJournalScreen() {
       </div>
 
       {/* Bet list */}
-      <div className="flex-1 overflow-y-auto px-6 py-4">
+      <div
+        className="flex-1 overflow-y-auto px-6 py-4"
+        style={{ paddingBottom: iosSpacing.bottomPadding }}
+      >
         {loading ? (
           <div className="space-y-2">
             {[...Array(5)].map((_, i) => (

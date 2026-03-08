@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { useAuthStore } from '@/stores'
 import { checkUsernameAvailable, uploadAvatarFile } from '@/lib/api/profiles'
 import { validateUsername } from '@/lib/utils/validators'
@@ -97,8 +98,11 @@ export function ProfileSetupScreen() {
     !isLoading
 
   return (
-    <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
-      <div className="flex-1 flex flex-col justify-center pt-12">
+    <div
+      className="h-full bg-bg-primary grain-texture flex flex-col px-6 overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
+      <div className="flex-1 flex flex-col justify-center">
         <h1 className="text-2xl font-black text-text-primary mb-2">
           Set up your profile
         </h1>

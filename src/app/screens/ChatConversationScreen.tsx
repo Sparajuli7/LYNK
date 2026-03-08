@@ -1,6 +1,7 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
 import { useParams, useNavigate } from 'react-router'
 import { ChevronLeft, Users } from 'lucide-react'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { useChatStore, useAuthStore } from '@/stores'
 import { MessageBubble, formatDateSeparator } from '@/app/components/MessageBubble'
 import { ChatInput } from '@/app/components/ChatInput'
@@ -187,7 +188,10 @@ export function ChatConversationScreen() {
   const participantCount = activeConversation?._participantCount ?? 0
 
   return (
-    <div className="h-full bg-bg-primary flex flex-col">
+    <div
+      className="h-full bg-bg-primary flex flex-col"
+      style={{ paddingTop: iosSpacing.topPadding }}
+    >
       {/* Header */}
       <div className="shrink-0 border-b border-border-subtle bg-bg-primary px-4 py-3 flex items-center gap-3">
         <button
@@ -225,6 +229,7 @@ export function ChatConversationScreen() {
         ref={scrollRef}
         onScroll={handleScroll}
         className="flex-1 overflow-y-auto px-4 py-3 space-y-1"
+        style={{ paddingBottom: iosSpacing.bottomPadding }}
       >
         {isLoading && messages.length === 0 && (
           <div className="flex items-center justify-center h-full">

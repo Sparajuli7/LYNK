@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router'
 import { ArrowLeft, Share2, Download } from 'lucide-react'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { captureElementAsImage, shareImage } from '@/lib/utils/imageExport'
 import { useAuthStore } from '@/stores'
 import { getBetStatsForUser } from '@/lib/api/stats'
@@ -437,9 +438,12 @@ export function PlayerCardScreen() {
   }
 
   return (
-    <div className="h-full overflow-y-auto pb-8 flex flex-col bg-black">
+    <div
+      className="h-full overflow-y-auto flex flex-col bg-black"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       {/* Header */}
-      <div className="flex items-center justify-between px-4 pt-10 pb-4">
+      <div className="flex items-center justify-between px-4 pb-4">
         <button
           onClick={() => navigate(-1)}
           className="w-9 h-9 flex items-center justify-center rounded-sm border border-white/10 hover:border-white/20 transition-colors"

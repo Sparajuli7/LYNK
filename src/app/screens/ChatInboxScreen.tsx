@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { ChevronLeft } from 'lucide-react'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { useChatStore } from '@/stores'
 import { ConversationRow } from '@/app/components/ConversationRow'
 
@@ -15,9 +16,12 @@ export function ChatInboxScreen() {
   }, [fetchConversations])
 
   return (
-    <div className="h-full bg-bg-primary grain-texture flex flex-col">
+    <div
+      className="h-full bg-bg-primary grain-texture flex flex-col"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       {/* Header */}
-      <div className="shrink-0 px-6 pt-6 pb-4">
+      <div className="shrink-0 px-6 pb-4">
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate(-1)}

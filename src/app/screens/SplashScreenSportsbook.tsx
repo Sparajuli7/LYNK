@@ -1,3 +1,4 @@
+import { iosSpacing } from '@/lib/utils/iosSpacing';
 import { SportsbookButton } from "../components/SportsbookButton";
 
 interface SplashScreenSportsbookProps {
@@ -7,7 +8,10 @@ interface SplashScreenSportsbookProps {
 
 export function SplashScreenSportsbook({ onEnter, onLogin }: SplashScreenSportsbookProps) {
   return (
-    <div className="h-full bg-bg-primary diagonal-grid grain-texture flex flex-col items-center justify-between px-6 py-12">
+    <div
+      className="h-full bg-bg-primary diagonal-grid grain-texture flex flex-col items-center justify-between px-6"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       <div className="flex-1 flex flex-col items-center justify-center">
         {/* Wordmark */}
         <h1 className="lynk-wordmark text-[64px] font-black text-text-primary mb-4">

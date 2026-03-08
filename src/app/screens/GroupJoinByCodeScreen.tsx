@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { ChevronLeft } from 'lucide-react'
+import { GroupIcon } from '@/app/components/GroupIcon'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { useGroupStore } from '@/stores'
 import { getGroupByInviteCode } from '@/lib/api/groups'
 import { supabase } from '@/lib/supabase'
@@ -72,10 +74,13 @@ export function GroupJoinByCodeScreen() {
 
   if (!group) {
     return (
-      <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
+      <div
+        className="h-full bg-bg-primary grain-texture flex flex-col px-6 overflow-y-auto"
+        style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+      >
         <button
           onClick={() => navigate('/group/join')}
-          className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors"
+          className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors z-10"
           aria-label="Go back"
         >
           <ChevronLeft className="w-6 h-6" />
@@ -98,17 +103,22 @@ export function GroupJoinByCodeScreen() {
   }
 
   return (
-    <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
+    <div
+      className="h-full bg-bg-primary grain-texture flex flex-col px-6 overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       <button
         onClick={() => navigate(-1)}
-        className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors"
+        className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors z-10"
         aria-label="Go back"
       >
         <ChevronLeft className="w-6 h-6" />
       </button>
 
-      <div className="flex-1 flex flex-col justify-center pt-12">
-        <div className="text-6xl mb-4 text-center">{group.avatar_emoji}</div>
+      <div className="flex-1 flex flex-col justify-center">
+        <div className="mb-4 flex justify-center">
+        <GroupIcon id={group.avatar_emoji} size={64} className="text-text-primary" />
+      </div>
         <h1 className="text-2xl font-black text-text-primary mb-2 text-center">
           {group.name}
         </h1>

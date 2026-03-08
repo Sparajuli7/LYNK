@@ -1,3 +1,5 @@
+import { iosSpacing } from '@/lib/utils/iosSpacing'
+
 interface OnboardingProps {
   onNext: () => void;
   onSkip: () => void;
@@ -5,7 +7,10 @@ interface OnboardingProps {
 
 export function Onboarding({ onNext, onSkip }: OnboardingProps) {
   return (
-    <div className="h-full bg-bg-primary grain-texture flex flex-col px-6 py-12">
+    <div
+      className="h-full bg-bg-primary grain-texture flex flex-col px-6 overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       {/* Progress dots */}
       <div className="flex items-center justify-center gap-2.5 mb-12">
         <div className="w-2 h-2 rounded-full bg-text-muted"></div>

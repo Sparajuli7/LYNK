@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
+import { Capacitor } from '@capacitor/core'
 import { useUiStore } from '@/stores'
 import { WALKTHROUGH_STEPS } from '@/lib/utils/walkthroughSteps'
+import { GroupIcon } from '@/app/components/GroupIcon'
 
 export function WalkthroughOverlay() {
   const active = useUiStore((s) => s.walkthroughActive)
@@ -74,9 +76,13 @@ export function WalkthroughOverlay() {
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             className="flex flex-col items-center text-center"
           >
-            {/* Emoji illustration */}
+            {/* Emoji / icon illustration — use Lucide on iOS (emoji shows as "?" in WKWebView) */}
             <div className="w-40 h-40 rounded-3xl bg-bg-card border border-border-subtle flex items-center justify-center mb-10">
-              <span className="text-6xl">{current.emoji}</span>
+              {Capacitor.getPlatform() === 'ios' ? (
+                <GroupIcon id={current.iconId} size={80} className="text-text-primary" />
+              ) : (
+                <span className="text-6xl">{current.emoji}</span>
+              )}
             </div>
 
             {/* Title */}

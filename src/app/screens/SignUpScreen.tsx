@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { useAuthStore } from '@/stores'
 import { validateEmail, validatePassword, validatePasswordMatch } from '@/lib/utils/validators'
 import { Input } from '@/app/components/ui/input'
@@ -72,7 +73,10 @@ export function SignUpScreen() {
   // before creating a session. The user must click the link in their inbox.
   if (pendingEmailConfirmation) {
     return (
-      <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
+      <div
+        className="h-full bg-bg-primary grain-texture flex flex-col px-6 overflow-y-auto"
+        style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+      >
         <div className="flex-1 flex flex-col justify-center items-center text-center">
           <div className="text-6xl mb-6"></div>
           <h1 className="text-2xl font-black text-text-primary mb-3">
@@ -108,16 +112,19 @@ export function SignUpScreen() {
   }
 
   return (
-    <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
+    <div
+      className="h-full bg-bg-primary grain-texture flex flex-col px-6 overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       <button
         onClick={() => navigate(-1)}
-        className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors"
+        className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors z-10"
         aria-label="Go back"
       >
         <ChevronLeft className="w-6 h-6" />
       </button>
 
-      <div className="flex-1 flex flex-col justify-center pt-12">
+      <div className="flex-1 flex flex-col justify-center">
         <h1 className="text-2xl font-black text-text-primary mb-2">
           Create your account
         </h1>

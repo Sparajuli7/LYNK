@@ -1,5 +1,6 @@
 import { BetCard } from "../components/BetCard";
 import { Plus } from "lucide-react";
+import { iosSpacing } from "@/lib/utils/iosSpacing";
 
 interface HomeFeedProps {
   activeScreen: string;
@@ -8,9 +9,12 @@ interface HomeFeedProps {
 
 export function HomeFeed({ activeScreen, onNavigate }: HomeFeedProps) {
   return (
-    <div className="h-full bg-bg-primary overflow-y-auto pb-6">
+    <div
+      className="h-full bg-bg-primary overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       {/* Header */}
-      <div className="px-6 pt-12 pb-6">
+      <div className="px-6 pb-6">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-[32px] font-extrabold text-white" style={{ letterSpacing: '-0.02em' }}>
             What's the play?

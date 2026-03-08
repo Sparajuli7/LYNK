@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { ChevronLeft, Check } from 'lucide-react'
 
 const LOVE_OPTIONS = [
@@ -114,9 +115,12 @@ export function FeedbackScreen() {
   }
 
   return (
-    <div className="h-full bg-black flex flex-col overflow-hidden">
+    <div
+      className="h-full bg-black flex flex-col overflow-hidden"
+      style={{ paddingTop: iosSpacing.topPadding }}
+    >
       {/* Header */}
-      <div className="px-6 pt-6 pb-5 shrink-0">
+      <div className="px-6 pb-5 shrink-0">
         <div className="flex items-center gap-3 mb-6">
           <button
             onClick={() => navigate(-1)}
@@ -138,7 +142,10 @@ export function FeedbackScreen() {
       </div>
 
       {/* Form */}
-      <div className="flex-1 overflow-y-auto px-6 pb-8 space-y-10">
+      <div
+        className="flex-1 overflow-y-auto px-6 space-y-10"
+        style={{ paddingBottom: iosSpacing.bottomPadding }}
+      >
 
         {/* 01 — Overall rating */}
         <section>

@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { ChevronLeft } from 'lucide-react'
 import { useAuthStore } from '@/stores'
 import { uploadAvatar, checkUsernameAvailable } from '@/lib/api/profiles'
@@ -96,16 +97,19 @@ export function ProfileEditScreen() {
   }
 
   return (
-    <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
+    <div
+      className="h-full bg-bg-primary grain-texture flex flex-col px-6 overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       <button
         onClick={() => navigate(-1)}
-        className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors"
+        className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors z-10"
         aria-label="Go back"
       >
         <ChevronLeft className="w-6 h-6" />
       </button>
 
-      <div className="flex-1 pt-12">
+      <div className="flex-1">
         <h1 className="text-2xl font-black text-text-primary mb-8">Edit Profile</h1>
 
         <form onSubmit={handleSave} className="space-y-6">

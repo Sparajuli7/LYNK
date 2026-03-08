@@ -1,3 +1,5 @@
+import { iosSpacing } from '@/lib/utils/iosSpacing'
+
 interface SplashProps {
   onEnter: () => void;
   onLogin: () => void;
@@ -5,7 +7,10 @@ interface SplashProps {
 
 export function Splash({ onEnter, onLogin }: SplashProps) {
   return (
-    <div className="h-full bg-bg-primary diagonal-grid grain-texture flex flex-col items-center justify-between px-6 py-12 relative">
+    <div
+      className="h-full bg-bg-primary diagonal-grid grain-texture flex flex-col items-center justify-between px-6 relative"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       {/* Main content */}
       <div className="flex-1 flex flex-col items-center justify-center">
         {/* LYNK wordmark with glitch */}

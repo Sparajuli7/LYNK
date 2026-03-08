@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router'
 import { ChevronLeft } from 'lucide-react'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { getPunishmentStats } from '@/lib/api/punishments'
 import { supabase } from '@/lib/supabase'
 import type { PunishmentStats } from '@/lib/api/punishments'
@@ -46,7 +47,10 @@ export function PunishmentStatsScreen() {
       : 0
 
   return (
-    <div className="h-full bg-bg-primary grain-texture overflow-y-auto pb-6">
+    <div
+      className="h-full bg-bg-primary grain-texture overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       <button
         onClick={handleBack}
         className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors z-10"
@@ -55,7 +59,7 @@ export function PunishmentStatsScreen() {
         <ChevronLeft className="w-6 h-6" />
       </button>
 
-      <div className="px-6 pt-12 pb-6">
+      <div className="px-6 pb-6">
         <p className="text-xs font-bold uppercase tracking-wider text-text-muted mb-2">
           Punishment
         </p>

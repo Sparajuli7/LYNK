@@ -12,6 +12,8 @@ import {
   type JournalCollection,
 } from '@/lib/utils/journalStorage'
 import { loadPinned, togglePin, PIN_BETS_KEY } from '@/lib/utils/pinStorage'
+import { Capacitor } from '@capacitor/core'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { BET_CATEGORIES } from '@/lib/utils/constants'
 import { formatMoney } from '@/lib/utils/formatters'
 import type { BetWithSides } from '@/stores/betStore'
@@ -119,11 +121,13 @@ function BetPickerSheet({
     })
   }, [])
 
+  const isIOS = Capacitor.getPlatform() === 'ios'
+
   // Tabs: All, Personal, one per group
   const tabs: { key: string; label: string }[] = [
     { key: 'all', label: 'All' },
     { key: 'personal', label: 'Personal' },
-    ...groups.map((g) => ({ key: g.id, label: `${g.avatar_emoji} ${g.name}` })),
+    ...groups.map((g) => ({ key: g.id, label: isIOS ? g.name : `${g.avatar_emoji} ${g.name}` })),
   ]
 
   // Filter bets by active tab + search query
@@ -208,7 +212,7 @@ function BetPickerSheet({
               const sourceLabel =
                 source === 'personal'
                   ? 'Personal'
-                  : `${(source as Group).avatar_emoji} ${(source as Group).name}`
+                  : isIOS ? (source as Group).name : `${(source as Group).avatar_emoji} ${(source as Group).name}`
 
               return (
                 <button
@@ -452,7 +456,10 @@ export function JournalDetailScreen() {
   return (
     <div className="relative h-full bg-bg-primary flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="px-6 pt-6 pb-4 border-b border-border-subtle shrink-0">
+      <div
+        className="px-6 pb-4 border-b border-border-subtle shrink-0"
+        style={{ paddingTop: iosSpacing.topPadding }}
+      >
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/journal')}
@@ -486,7 +493,10 @@ export function JournalDetailScreen() {
       </div>
 
       {/* Bet list */}
-      <div className="flex-1 overflow-y-auto px-6 py-4">
+      <div
+        className="flex-1 overflow-y-auto px-6 py-4"
+        style={{ paddingBottom: iosSpacing.bottomPadding }}
+      >
         {betsLoading ? (
           <div className="space-y-2">
             {[...Array(4)].map((_, i) => (

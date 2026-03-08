@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { useAuthStore } from '@/stores'
 
 export function AuthCallbackScreen() {
@@ -27,7 +28,10 @@ export function AuthCallbackScreen() {
   }, [isLoading, isAuthenticated, profile, isNewUser, navigate])
 
   return (
-    <div className="h-full bg-bg-primary grain-texture flex items-center justify-center">
+    <div
+      className="h-full bg-bg-primary grain-texture flex items-center justify-center"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       <div className="flex flex-col items-center gap-3">
         <span className="w-8 h-8 border-3 border-accent-green border-t-transparent rounded-full animate-spin" />
         <p className="text-text-muted text-sm">Signing you in...</p>

@@ -14,6 +14,8 @@ import type { StakeType, PunishmentCard, Bet } from '@/lib/database.types'
 import type { GroupMemberWithProfile } from '@/lib/api/groups'
 import { useGroupStore, useAuthStore } from '@/stores'
 import { PrimaryButton } from '../components/PrimaryButton'
+import { GroupIcon } from '@/app/components/GroupIcon'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { Input } from '../components/ui/input'
 import { Calendar } from '../components/ui/calendar'
 import {
@@ -329,7 +331,10 @@ export function CompetitionCreateScreen() {
   return (
     <div className="h-full bg-bg-primary grain-texture flex flex-col">
       {/* Header */}
-      <div className="px-6 pt-8 pb-4 shrink-0">
+      <div
+        className="px-6 pb-4 shrink-0"
+        style={{ paddingTop: iosSpacing.topPadding }}
+      >
         <div className="flex items-center justify-between mb-2">
           <button onClick={handleBack} className="text-text-primary p-1 -m-1">
             <ChevronLeft className="w-5 h-5" />
@@ -345,7 +350,10 @@ export function CompetitionCreateScreen() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-6 pb-8">
+      <div
+        className="flex-1 overflow-y-auto px-6"
+        style={{ paddingBottom: iosSpacing.bottomPadding }}
+      >
         <AnimatePresence mode="wait">
 
           {/* ─── Step 1 — What's the challenge? ─── */}
@@ -521,7 +529,10 @@ export function CompetitionCreateScreen() {
                       <SelectContent>
                         {groups.map((g) => (
                           <SelectItem key={g.id} value={g.id}>
-                            {g.avatar_emoji} {g.name}
+                            <span className="flex items-center gap-2">
+                              <GroupIcon id={g.avatar_emoji} size={16} className="shrink-0 text-text-primary" />
+                              {g.name}
+                            </span>
                           </SelectItem>
                         ))}
                       </SelectContent>

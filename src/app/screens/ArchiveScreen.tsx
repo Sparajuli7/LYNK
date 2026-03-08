@@ -7,6 +7,8 @@ import { supabase } from '@/lib/supabase'
 import { BET_CATEGORIES } from '@/lib/utils/constants'
 import { formatMoney } from '@/lib/utils/formatters'
 import { loadPinned, savePinned, PIN_BETS_KEY, PIN_GROUPS_KEY } from '@/lib/utils/pinStorage'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
+import { GroupIcon } from '@/app/components/GroupIcon'
 import type { BetWithSides } from '@/stores/betStore'
 import type { Group } from '@/lib/database.types'
 
@@ -130,7 +132,10 @@ export function ArchiveScreen() {
   return (
     <div className="h-full bg-bg-primary flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="px-6 pt-6 pb-4 border-b border-border-subtle shrink-0">
+      <div
+        className="px-6 pb-4 border-b border-border-subtle shrink-0"
+        style={{ paddingTop: iosSpacing.topPadding }}
+      >
         <div className="flex items-center gap-3 mb-4">
           <button
             onClick={() => navigate(-1)}
@@ -168,7 +173,10 @@ export function ArchiveScreen() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto px-6 py-4">
+      <div
+        className="flex-1 overflow-y-auto px-6 py-4"
+        style={{ paddingBottom: iosSpacing.bottomPadding }}
+      >
         {tab === 'bets' ? (
           betsLoading ? (
             <div className="space-y-2">
@@ -207,7 +215,7 @@ export function ArchiveScreen() {
                           onClick={() => navigate(`/bet/${bet.id}`)}
                           className="flex-1 px-3 py-3 flex items-center gap-3 text-left hover:bg-bg-elevated transition-colors"
                         >
-                          <span className="text-xl shrink-0">{category?.emoji}</span>
+                          <GroupIcon id={category?.emoji ?? 'star'} size={20} className="shrink-0 text-text-primary" />
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-semibold text-text-primary truncate">{bet.title}</p>
                             <p className="text-[11px] text-text-muted mt-0.5">
@@ -289,7 +297,7 @@ export function ArchiveScreen() {
                           onClick={() => navigate(`/group/${group.id}`)}
                           className="flex-1 px-3 py-3 flex items-center gap-3 text-left hover:bg-bg-elevated transition-colors"
                         >
-                          <span className="text-2xl">{group.avatar_emoji}</span>
+                          <GroupIcon id={group.avatar_emoji} size={24} className="shrink-0 text-text-primary" />
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-semibold text-text-primary">{group.name}</p>
                             <p className="text-[11px] text-text-muted">

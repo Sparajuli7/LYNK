@@ -1,3 +1,5 @@
+import { iosSpacing } from '@/lib/utils/iosSpacing'
+
 interface ProfileSportsbookProps {
   onNavigate?: (screen: string) => void;
 }
@@ -23,9 +25,12 @@ export function ProfileSportsbook({ onNavigate }: ProfileSportsbookProps) {
   ];
 
   return (
-    <div className="h-full bg-bg-primary overflow-y-auto pb-6">
+    <div
+      className="h-full bg-bg-primary overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       {/* Header Card - Fighter Style */}
-      <div className="px-6 pt-12 pb-6">
+      <div className="px-6 pb-6">
         <div className="bg-bg-card border border-border-subtle rounded-xl p-6">
           {/* Avatar */}
           <div className="flex flex-col items-center mb-4">

@@ -1,4 +1,5 @@
 import { Shuffle } from "lucide-react";
+import { iosSpacing } from '@/lib/utils/iosSpacing';
 import { PrimaryButton } from "../components/PrimaryButton";
 
 interface BetCreationProps {
@@ -7,7 +8,10 @@ interface BetCreationProps {
 
 export function BetCreation({ onNext }: BetCreationProps) {
   return (
-    <div className="h-full bg-bg-primary flex flex-col px-6 py-8">
+    <div
+      className="h-full bg-bg-primary flex flex-col px-6 overflow-y-auto"
+      style={{ paddingTop: iosSpacing.modalTopPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       {/* Progress Bar */}
       <div className="mb-8">
         <div className="h-1 bg-border-subtle rounded-full overflow-hidden">

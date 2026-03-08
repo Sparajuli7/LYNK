@@ -4,6 +4,7 @@ import { Camera, Image, Video, FileText, X, CheckCircle, Share2 } from 'lucide-r
 import { getOutcome } from '@/lib/api/outcomes'
 import { submitShameProof } from '@/lib/api/shame'
 import { supabase } from '@/lib/supabase'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { PrimaryButton } from '../components/PrimaryButton'
 import { ShareSheet } from '../components/ShareSheet'
 import { getShameShareText, getBetShareUrl, shareWithNative } from '@/lib/share'
@@ -302,8 +303,11 @@ export function ShameProofSubmission() {
   }
 
   return (
-    <div className="h-full bg-bg-primary overflow-y-auto pb-8">
-      <div className="px-6 pt-12 pb-6 border-b border-border-subtle">
+    <div
+      className="h-full bg-bg-primary overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
+      <div className="px-6 pb-6 border-b border-border-subtle">
         <button onClick={handleBack} className="text-text-primary font-bold mb-4">
           &larr; Back
         </button>

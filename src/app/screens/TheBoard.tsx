@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router'
 import { Bell, MessageCircle, Plus, LogIn, UserPlus, Star, Megaphone, Settings } from 'lucide-react'
+import { Capacitor } from '@capacitor/core'
 import { NotificationPanel } from '../components/NotificationPanel'
 import { PushPermissionBanner } from '../components/PushPermissionBanner'
 import { useGroupStore, useBetStore, useAuthStore, useNotificationStore, useChatStore } from '@/stores'
@@ -11,6 +12,8 @@ import { formatMoney } from '@/lib/utils/formatters'
 import { formatOdds } from '@/lib/utils/formatters'
 import { loadPinned, togglePin, PIN_BETS_KEY } from '@/lib/utils/pinStorage'
 import { CircleGrid } from '../components/CircleGrid'
+import { GroupIcon } from '../components/GroupIcon'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import type { BetWithSides } from '@/stores/betStore'
 
 const DEFAULT_AVATAR = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop'
@@ -223,6 +226,7 @@ function BoardBetCard({
 export function TheBoard() {
   const navigate = useNavigate()
   const profile = useAuthStore((s) => s.profile)
+  const isIOS = Capacitor.getPlatform() === 'ios'
 
   const groups = useGroupStore((s) => s.groups)
   const fetchGroups = useGroupStore((s) => s.fetchGroups)
@@ -319,7 +323,10 @@ export function TheBoard() {
   return (
     <div className="relative h-full bg-bg-primary grain-texture flex flex-col overflow-hidden">
       {/* Scrollable content */}
-      <div className="flex-1 overflow-y-auto pb-24">
+      <div
+        className="flex-1 overflow-y-auto"
+        style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+      >
       {/* Top utility bar */}
       <div className="flex items-center justify-end gap-2 px-4 py-3 border-b border-border-subtle">
         <button
@@ -401,7 +408,7 @@ export function TheBoard() {
             stripBets.map((bet) => {
               const claimant = claimantMap.get(bet.claimant_id)
               const group = groups.find((g) => g.id === bet.group_id)
-              const groupName = group ? `${group.name} ${group.avatar_emoji}` : 'Group'
+              const groupName = group ? (isIOS ? group.name : `${group.name} ${group.avatar_emoji}`) : 'Group'
               return (
                 <BoardBetCard
                   key={bet.id}
@@ -449,7 +456,7 @@ export function TheBoard() {
         <CircleGrid
           items={groups.map((g) => ({
             id: g.id,
-            icon: g.avatar_emoji,
+            icon: <GroupIcon id={g.avatar_emoji} size={28} />,
             label: g.name,
           }))}
           onItemClick={(id) => navigate(`/group/${id}`)}

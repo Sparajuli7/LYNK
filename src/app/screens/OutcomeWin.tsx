@@ -1,3 +1,5 @@
+import { iosSpacing } from '@/lib/utils/iosSpacing'
+
 interface OutcomeWinProps {
   onShare: () => void;
   onBack: () => void;
@@ -5,10 +7,12 @@ interface OutcomeWinProps {
 
 export function OutcomeWin({ onShare, onBack }: OutcomeWinProps) {
   return (
-    <div 
-      className="h-full flex flex-col items-center justify-between px-6 py-12 relative overflow-hidden"
+    <div
+      className="h-full flex flex-col items-center justify-between px-6 relative overflow-hidden"
       style={{
-        background: 'linear-gradient(to bottom, #1A1400 0%, #0A0A0F 100%)'
+        background: 'linear-gradient(to bottom, #1A1400 0%, #0A0A0F 100%)',
+        paddingTop: iosSpacing.topPadding,
+        paddingBottom: iosSpacing.bottomPadding,
       }}
     >
       {/* Confetti dots - static decorative */}

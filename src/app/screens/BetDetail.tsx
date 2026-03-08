@@ -22,6 +22,7 @@ import { getBetShareUrl, getBetShareText, shareWithNative, getProofShareText } f
 import { AddToCalendar } from '../components/AddToCalendar'
 import type { CalendarEvent } from '@/lib/utils/calendar'
 import { formatDeadline } from '@/lib/utils/calendar'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { ProofCard } from '../components/ProofCard'
 import {
   Dialog,
@@ -202,9 +203,12 @@ export function BetDetail({ onBack }: BetDetailProps) {
   const statusColor = activeBet.status === 'proof_submitted' ? 'amber-400' : activeBet.status === 'completed' ? 'accent-green' : activeBet.status === 'voided' || activeBet.status === 'disputed' ? 'accent-coral' : 'accent-green'
 
   return (
-    <div className="h-full bg-bg-primary overflow-y-auto pb-8">
+    <div
+      className="h-full bg-bg-primary overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       {/* Header */}
-      <div className="px-6 pt-12 pb-6 flex items-center justify-between">
+      <div className="px-6 pb-6 flex items-center justify-between">
         <button onClick={handleBack} className="w-10 h-10 flex items-center justify-center btn-pressed rounded-lg hover:bg-bg-elevated transition-colors">
           <ArrowLeft className="w-6 h-6 text-white" />
         </button>

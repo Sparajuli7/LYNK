@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { useAuthStore } from '@/stores'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/app/components/ui/input-otp'
 
@@ -60,8 +61,11 @@ export function OTPScreen() {
   }
 
   return (
-    <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
-      <div className="flex-1 flex flex-col justify-center pt-12">
+    <div
+      className="h-full bg-bg-primary grain-texture flex flex-col px-6 overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
+      <div className="flex-1 flex flex-col justify-center">
         <h1 className="text-2xl font-black text-text-primary mb-2">
           Enter the code
         </h1>

@@ -18,6 +18,7 @@ import { getPunishmentShareText } from '@/lib/share'
 import { computeBetPayouts } from '@/lib/api/betPayouts'
 import { getShamePostByBetId, recordPunishmentTaken } from '@/lib/api/shame'
 import type { HallOfShameEntry } from '@/lib/database.types'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 
 interface OutcomeRevealProps {
   onShare?: () => void
@@ -390,7 +391,11 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
         {shareSheet}
         <div
           className="h-full flex flex-col overflow-hidden relative"
-          style={{ background: 'linear-gradient(to bottom, #0D1A00 0%, #050A00 60%, #0A0A0F 100%)' }}
+          style={{
+            background: 'linear-gradient(to bottom, #0D1A00 0%, #050A00 60%, #0A0A0F 100%)',
+            paddingTop: iosSpacing.topPadding,
+            paddingBottom: iosSpacing.bottomPadding,
+          }}
         >
           {/* Confetti particles */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">

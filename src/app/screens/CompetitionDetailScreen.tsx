@@ -16,6 +16,7 @@ import {
 import { Input } from '@/app/components/ui/input'
 import type { Bet } from '@/lib/database.types'
 import { format } from 'date-fns'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { useAuthStore } from '@/stores'
 import { AddToCalendar } from '@/app/components/AddToCalendar'
 import { formatDeadline } from '@/lib/utils/calendar'
@@ -146,7 +147,10 @@ export function CompetitionDetailScreen() {
 
   return (
     <div className="h-full bg-bg-primary grain-texture flex flex-col">
-      <div className="flex-1 overflow-y-auto pb-6">
+      <div
+        className="flex-1 overflow-y-auto"
+        style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+      >
         <div className="absolute top-6 left-6 right-6 flex items-center justify-between z-10">
           <button
             onClick={handleBack}
@@ -164,7 +168,7 @@ export function CompetitionDetailScreen() {
           </button>
         </div>
 
-        <div className="px-6 pt-12 pb-6">
+        <div className="px-6 pb-6">
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-2xl font-black text-text-primary">
               {competition?.title ?? 'Competition'}

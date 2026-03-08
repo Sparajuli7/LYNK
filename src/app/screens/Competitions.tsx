@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { Trophy, Lock, Users, User } from 'lucide-react'
+import { GroupIcon } from '@/app/components/GroupIcon'
 import { getCompetitionsForUser, getLeaderboard } from '@/lib/api/competitions'
 import { getMyBets } from '@/lib/api/bets'
 import { formatMoney } from '@/lib/utils/formatters'
@@ -10,6 +11,7 @@ import type { BetWithSides } from '@/lib/api/bets'
 import { useAuthStore, useGroupStore } from '@/stores'
 import { SportsbookButton } from '../components/SportsbookButton'
 import { format } from 'date-fns'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 
 function getStatus(competition: Bet): 'OPEN' | 'LIVE' | 'ENDED' {
   const now = new Date()
@@ -136,8 +138,11 @@ export function Competitions() {
   const totalItems = sortedCompetitions.length + sortedChallenges.length
 
   return (
-    <div className="h-full bg-bg-primary overflow-y-auto pb-6">
-      <div className="px-6 pt-12 pb-4">
+    <div
+      className="h-full bg-bg-primary overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
+      <div className="px-6 pb-4">
         <h1 className="text-3xl font-black text-text-primary mb-2">COMPETE</h1>
         <p className="text-sm text-text-muted">Challenges, competitions, rematches.</p>
       </div>
@@ -227,7 +232,7 @@ export function Competitions() {
                     {isSoloBet ? (
                       <User className="w-4 h-4 text-text-muted shrink-0" />
                     ) : betGroup ? (
-                      <span className="text-sm shrink-0">{betGroup.avatar_emoji}</span>
+                      <GroupIcon id={betGroup.avatar_emoji} size={16} className="shrink-0 text-text-primary" />
                     ) : (
                       <Users className="w-4 h-4 text-text-muted shrink-0" />
                     )}

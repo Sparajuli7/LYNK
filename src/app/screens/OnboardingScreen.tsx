@@ -1,3 +1,4 @@
+import { iosSpacing } from '@/lib/utils/iosSpacing';
 import { PrimaryButton } from "../components/PrimaryButton";
 
 interface OnboardingScreenProps {
@@ -7,7 +8,10 @@ interface OnboardingScreenProps {
 
 export function OnboardingScreen({ onNext, onSkip }: OnboardingScreenProps) {
   return (
-    <div className="h-full bg-bg-primary flex flex-col px-6 py-8">
+    <div
+      className="h-full bg-bg-primary flex flex-col px-6 overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       {/* Progress Dots */}
       <div className="flex items-center justify-center gap-2 mb-12">
         <div className="w-2 h-2 rounded-full bg-text-muted"></div>

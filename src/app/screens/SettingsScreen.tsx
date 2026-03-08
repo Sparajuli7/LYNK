@@ -1,9 +1,11 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router'
 import { ChevronLeft, Sun, Moon, LogOut, Bell, BellOff, MessageSquarePlus, RotateCcw } from 'lucide-react'
+import { GroupIcon } from '@/app/components/GroupIcon'
 import { useAuthStore, useUiStore, usePushStore, useGroupStore, useCompetitionStore } from '@/stores'
 import { supabase } from '@/lib/supabase'
 import type { NotificationPreferenceRow } from '@/lib/database.types'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -113,16 +115,19 @@ export function SettingsScreen() {
   }
 
   return (
-    <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
+    <div
+      className="h-full bg-bg-primary grain-texture flex flex-col px-6 overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       <button
         onClick={() => navigate(-1)}
-        className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors"
+        className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors z-10"
         aria-label="Go back"
       >
         <ChevronLeft className="w-6 h-6" />
       </button>
 
-      <div className="pt-12">
+      <div>
         <h1 className="text-2xl font-black text-text-primary mb-8">Settings</h1>
 
         <div className="space-y-4">
@@ -216,7 +221,7 @@ export function SettingsScreen() {
                     return (
                       <div key={g.id} className="flex items-center justify-between py-1.5">
                         <div className="flex items-center gap-2 min-w-0">
-                          <span className="text-base">{g.avatar_emoji}</span>
+                          <GroupIcon id={g.avatar_emoji} size={20} className="shrink-0 text-text-primary" />
                           <span className="text-sm text-text-primary truncate">{g.name}</span>
                         </div>
                         <button

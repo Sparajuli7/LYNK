@@ -9,6 +9,7 @@ import { getPublicProofsForUser } from '@/lib/api/proofs'
 import type { PublicProof } from '@/lib/api/proofs'
 import { formatRecord } from '@/lib/utils/formatters'
 import { BET_CATEGORIES } from '@/lib/utils/constants'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { CircleGrid } from '@/app/components/CircleGrid'
 import type { BetWithSides } from '@/stores/betStore'
 import type { Profile } from '@/lib/database.types'
@@ -141,12 +142,15 @@ function ProfileContent({
   })
 
   return (
-    <div className="h-full bg-bg-primary overflow-y-auto pb-8">
+    <div
+      className="h-full bg-bg-primary overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
 
       {/* ══════════════════════════════════════
           COMPACT HEADER CARD
           ══════════════════════════════════════ */}
-      <div className="px-4 pt-8 pb-3">
+      <div className="px-4 pb-3">
         <div className="bg-bg-card border border-border-subtle rounded-2xl p-4">
 
           {/* Row 1: avatar + identity */}

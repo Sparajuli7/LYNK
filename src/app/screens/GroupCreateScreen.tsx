@@ -5,6 +5,8 @@ import { useGroupStore } from '@/stores'
 import { Input } from '@/app/components/ui/input'
 import { Button } from '@/app/components/ui/button'
 import { GROUP_EMOJIS } from '@/lib/utils/constants'
+import { GroupIcon } from '@/app/components/GroupIcon'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { ShareSheet } from '@/app/components/ShareSheet'
 import {
   getGroupInviteUrl,
@@ -25,7 +27,7 @@ export function GroupCreateScreen() {
   }, [clearError])
 
   const [name, setName] = useState('')
-  const [emoji, setEmoji] = useState('🔥')
+  const [emoji, setEmoji] = useState<string>(GROUP_EMOJIS[0])
   const [createdGroup, setCreatedGroup] = useState<{ id: string; name: string; invite_code: string } | null>(null)
   const [shareSheetOpen, setShareSheetOpen] = useState(false)
 
@@ -62,17 +64,22 @@ export function GroupCreateScreen() {
 
   if (createdGroup) {
     return (
-      <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
+      <div
+        className="h-full bg-bg-primary grain-texture flex flex-col px-6 overflow-y-auto"
+        style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+      >
         <button
           onClick={() => navigate('/home')}
-          className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors"
+          className="absolute left-6 top-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors z-10"
           aria-label="Go to home"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
 
-        <div className="flex-1 flex flex-col justify-center pt-12">
-          <div className="text-5xl mb-4 text-center">{emoji}</div>
+        <div className="flex-1 flex flex-col justify-center">
+          <div className="flex justify-center mb-4">
+            <GroupIcon id={emoji} size={48} />
+          </div>
           <h1 className="text-2xl font-black text-text-primary mb-2 text-center">
             Group created!
           </h1>
@@ -125,16 +132,19 @@ export function GroupCreateScreen() {
   }
 
   return (
-    <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
+    <div
+      className="h-full bg-bg-primary grain-texture flex flex-col px-6 overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       <button
         onClick={() => navigate(-1)}
-        className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors"
+        className="absolute left-6 top-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors z-10"
         aria-label="Go back"
       >
         <ChevronLeft className="w-6 h-6" />
       </button>
 
-      <div className="flex-1 flex flex-col pt-12">
+      <div className="flex-1 flex flex-col">
         <h1 className="text-2xl font-black text-text-primary mb-2">
           Create a group
         </h1>
@@ -167,13 +177,13 @@ export function GroupCreateScreen() {
                   key={e}
                   type="button"
                   onClick={() => setEmoji(e)}
-                  className={`w-12 h-12 rounded-xl text-2xl flex items-center justify-center transition-all ${
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
                     emoji === e
                       ? 'bg-accent-green/20 border-2 border-accent-green'
                       : 'bg-bg-elevated border-2 border-transparent hover:bg-bg-card'
                   }`}
                 >
-                  {e}
+                  <GroupIcon id={e} size={22} />
                 </button>
               ))}
             </div>

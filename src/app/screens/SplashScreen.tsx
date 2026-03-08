@@ -1,3 +1,4 @@
+import { iosSpacing } from '@/lib/utils/iosSpacing';
 import { PrimaryButton } from "../components/PrimaryButton";
 
 interface SplashScreenProps {
@@ -6,7 +7,10 @@ interface SplashScreenProps {
 
 export function SplashScreen({ onGetStarted }: SplashScreenProps) {
   return (
-    <div className="h-full bg-bg-primary noise-texture flex flex-col items-center justify-center px-6 relative">
+    <div
+      className="h-full bg-bg-primary noise-texture flex flex-col items-center justify-center px-6 relative"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       <div className="flex-1 flex flex-col items-center justify-center">
         <h1 
           className="glitch text-[72px] font-black text-white tracking-tight mb-4"

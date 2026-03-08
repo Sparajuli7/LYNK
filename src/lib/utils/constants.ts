@@ -1,10 +1,10 @@
 import type { BetCategory } from '@/lib/database.types'
 
 export const BET_CATEGORIES = {
-  fitness: { label: 'Fitness', emoji: '' },
-  money: { label: 'Money', emoji: '' },
-  social: { label: 'Social', emoji: '' },
-  wildcard: { label: 'Wildcard', emoji: '' },
+  fitness: { label: 'Fitness', emoji: 'dumbbell' },
+  money: { label: 'Money', emoji: 'gem' },
+  social: { label: 'Social', emoji: 'users' },
+  wildcard: { label: 'Wildcard', emoji: 'star' },
 } as const
 
 // ── Template System ─────────────────────────────────────────────────────────
@@ -535,8 +535,16 @@ export const STAKE_PRESETS = [500, 1000, 2000, 5000] as const
 
 export const REACTION_EMOJIS = ['😭', '💀', '🔥', '🤡', '🫡'] as const
 
-/** Common emojis for group avatars */
-export const GROUP_EMOJIS = ['🔥', '💪', '🏆', '⚔️', '🎯', '💎', '🚀', '👑', '🦁', '🐺', '🦅', '⚡'] as const
+/** Icon IDs for group avatars — rendered via GroupIcon component (iOS WKWebView-safe) */
+export const GROUP_EMOJIS = ['flame', 'dumbbell', 'trophy', 'sword', 'target', 'gem', 'rocket', 'crown', 'shield', 'globe', 'zap', 'star'] as const
+
+/** Icon IDs for journal icons — rendered via GroupIcon component (iOS WKWebView-safe) */
+export const JOURNAL_ICON_IDS = [
+  'bookOpen', 'fileText', 'star', 'trophy', 'target', 'flame',
+  'zap', 'crown', 'heart', 'music', 'dumbbell', 'award',
+  'coffee', 'leaf', 'moon', 'sun', 'globe', 'camera',
+  'bell', 'shield', 'users', 'map', 'sword', 'gem',
+] as const
 
 export const REP_THRESHOLDS = {
   gold: 90,

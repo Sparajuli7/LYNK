@@ -4,6 +4,7 @@ import { Camera, Image, Video, FileText, X, CheckCircle, ChevronRight } from 'lu
 import { useBetStore, useAuthStore } from '@/stores'
 import { useProofStore } from '@/stores'
 import type { ProofType, ProofRuling } from '@/lib/database.types'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { PrimaryButton } from '../components/PrimaryButton'
 
 interface UploadEntry {
@@ -302,8 +303,11 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
 
   // ── Step 1: Upload evidence ─────────────────────────────────────────────────
   return (
-    <div className="h-full bg-bg-primary overflow-y-auto pb-8">
-      <div className="px-6 pt-12 pb-6 border-b border-border-subtle">
+    <div
+      className="h-full bg-bg-primary overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
+      <div className="px-6 pb-6 border-b border-border-subtle">
         <button onClick={handleBack} className="text-text-primary font-bold mb-4">
           &larr; Back
         </button>

@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router'
 import { Plus, BookOpen, Users } from 'lucide-react'
 import { useAuthStore, useGroupStore } from '@/stores'
 import { getMyBets } from '@/lib/api/bets'
-import { BET_CATEGORIES } from '@/lib/utils/constants'
+import { BET_CATEGORIES, JOURNAL_ICON_IDS } from '@/lib/utils/constants'
+import { GroupIcon } from '@/app/components/GroupIcon'
 import {
   loadJournals,
   createJournal,
@@ -16,18 +17,11 @@ import {
   PIN_GROUPS_KEY,
   PIN_JOURNALS_KEY,
 } from '@/lib/utils/pinStorage'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { CircleGrid } from '../components/CircleGrid'
 import type { BetWithSides } from '@/stores/betStore'
 
-// ---------------------------------------------------------------------------
-// Emoji options for new journals
-// ---------------------------------------------------------------------------
-
-const JOURNAL_EMOJIS = [
-  '📓', '📔', '📒', '📝', '🏆', '🎯', '🎲', '🃏',
-  '🏀', '⚽', '🏈', '🎰', '💰', '🔥', '⚡', '💯',
-  '👑', '🌟', '🎖️', '🏅', '🤝', '💪', '🎪', '🦁',
-]
+// JOURNAL_EMOJIS replaced by JOURNAL_ICON_IDS from constants (iOS WKWebView-safe Lucide icons)
 
 /**
  * Maximum items shown per section before "See all" is offered.
@@ -113,7 +107,7 @@ function CreateModal({
   onCreate: (col: JournalCollection) => void
 }) {
   const [name, setName] = useState('')
-  const [emoji, setEmoji] = useState('📓')
+  const [emoji, setEmoji] = useState<string>(JOURNAL_ICON_IDS[0])
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -144,17 +138,17 @@ function CreateModal({
         />
         <p className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-2">Icon</p>
         <div className="flex flex-wrap gap-2 mb-5">
-          {JOURNAL_EMOJIS.map((e) => (
+          {JOURNAL_ICON_IDS.map((e) => (
             <button
               key={e}
               onClick={() => setEmoji(e)}
-              className={`w-10 h-10 rounded-xl text-xl flex items-center justify-center transition-all ${
+              className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
                 emoji === e
                   ? 'bg-accent-green/20 ring-2 ring-accent-green'
                   : 'bg-bg-elevated hover:bg-bg-card'
               }`}
             >
-              {e}
+              <GroupIcon id={e} size={20} />
             </button>
           ))}
         </div>
@@ -258,17 +252,17 @@ export function JournalScreen() {
   // IDs are prefixed with "j:" | "g:" | "b:" so the click handler can route correctly
   const pinnedJournalItems = sortedJournals
     .filter((j) => pinJournals.has(j.id))
-    .map((j) => ({ id: `j:${j.id}`, icon: j.emoji, label: j.name }))
+    .map((j) => ({ id: `j:${j.id}`, icon: <GroupIcon id={j.emoji} size={28} />, label: j.name }))
 
   const pinnedGroupItems = sortedGroups
     .filter((g) => pinGroups.has(g.id))
-    .map((g) => ({ id: `g:${g.id}`, icon: g.avatar_emoji, label: g.name }))
+    .map((g) => ({ id: `g:${g.id}`, icon: <GroupIcon id={g.avatar_emoji} size={28} />, label: g.name }))
 
   const pinnedBetItems = sortedBets
     .filter((b) => pinBets.has(b.id))
     .map((b) => {
       const category = BET_CATEGORIES[b.category]
-      return { id: `b:${b.id}`, icon: category?.emoji ?? '', label: b.title }
+      return { id: `b:${b.id}`, icon: <GroupIcon id={category?.emoji ?? 'star'} size={28} />, label: b.title }
     })
 
   const hasPinned =
@@ -277,9 +271,12 @@ export function JournalScreen() {
     pinnedBetItems.length > 0
 
   return (
-    <div className="relative h-full bg-bg-primary overflow-y-auto pb-8">
+    <div
+      className="relative h-full bg-bg-primary overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       {/* ── Header ── */}
-      <div className="px-6 pt-6 pb-5 border-b border-border-subtle">
+      <div className="px-6 pb-5 border-b border-border-subtle">
         <h1 className="text-2xl font-black text-text-primary">Journal</h1>
         <p className="text-text-muted text-sm mt-0.5">Your bets, groups &amp; collections</p>
       </div>
@@ -334,7 +331,7 @@ export function JournalScreen() {
             <CircleGrid
               items={visibleJournals.map((col) => ({
                 id: col.id,
-                icon: col.emoji,
+                icon: <GroupIcon id={col.emoji} size={28} />,
                 label: col.name,
                 sublabel: `${col.bet_ids.length} bet${col.bet_ids.length !== 1 ? 's' : ''}`,
               }))}
@@ -395,7 +392,7 @@ export function JournalScreen() {
             <CircleGrid
               items={visibleGroups.map((g) => ({
                 id: g.id,
-                icon: g.avatar_emoji,
+                icon: <GroupIcon id={g.avatar_emoji} size={28} />,
                 label: g.name,
               }))}
               onItemClick={(id) => navigate(`/journal/group/${id}`)}
@@ -442,7 +439,7 @@ export function JournalScreen() {
                 const category = BET_CATEGORIES[bet.category]
                 return {
                   id: bet.id,
-                  icon: category?.emoji ?? '',
+                  icon: <GroupIcon id={category?.emoji ?? 'star'} size={28} />,
                   label: bet.title,
                   sublabel:
                     bet.status === 'active'

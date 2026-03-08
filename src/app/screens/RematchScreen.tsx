@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router'
 import { RotateCcw } from 'lucide-react'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { getBetDetail, isParticipantInBet } from '@/lib/api/bets'
 import { getOutcome } from '@/lib/api/outcomes'
 import { useBetStore } from '@/stores'
@@ -92,8 +93,11 @@ export function RematchScreen() {
     : originalBet.stake_custom_punishment ?? 'Punishment'
 
   return (
-    <div className="h-full bg-bg-primary overflow-y-auto pb-8">
-      <div className="px-6 pt-12 pb-6 border-b border-border-subtle">
+    <div
+      className="h-full bg-bg-primary overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
+      <div className="px-6 pb-6 border-b border-border-subtle">
         <button
           onClick={() => navigate(-1)}
           className="text-text-primary font-bold mb-4 flex items-center gap-2"

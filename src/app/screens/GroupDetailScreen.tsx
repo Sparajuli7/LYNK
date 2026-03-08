@@ -9,6 +9,7 @@ import { getShamePostByBetId } from '@/lib/api/shame'
 import { computeBetPayouts } from '@/lib/api/betPayouts'
 import { AvatarWithRepBadge } from '@/app/components/RepBadge'
 import { BetCard } from '@/app/components/BetCard'
+import { GroupIcon } from '@/app/components/GroupIcon'
 import type { Outcome, Profile } from '@/lib/database.types'
 import {
   AlertDialog,
@@ -21,6 +22,8 @@ import {
   AlertDialogTitle,
 } from '@/app/components/ui/alert-dialog'
 import { useCountdown } from '@/lib/hooks/useCountdown'
+import { Capacitor } from '@capacitor/core'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { formatMoney, formatOdds } from '@/lib/utils/formatters'
 import { ShareSheet } from '@/app/components/ShareSheet'
 import {
@@ -88,11 +91,12 @@ function GroupBetCard({
     (uid) => profileMap.get(uid)?.display_name ?? 'Unknown'
   )
   const punishmentLabel = bet.stake_custom_punishment ?? (hasPunishment ? 'Punishment' : null)
+  const isIOS = Capacitor.getPlatform() === 'ios'
 
   return (
     <div>
       <BetCard
-        groupName={`${group.name} ${group.avatar_emoji}`}
+        groupName={isIOS ? group.name : `${group.name} ${group.avatar_emoji}`}
         countdown={showProofBadge ? '' : countdown.formatted}
         claimText={bet.title}
         claimantName={claimant?.display_name ?? 'Anonymous'}
@@ -276,7 +280,10 @@ export function GroupDetailScreen() {
   const inviteLink = getGroupInviteUrl(group.invite_code)
 
   return (
-    <div className="h-full bg-bg-primary grain-texture overflow-y-auto pb-6">
+    <div
+      className="h-full bg-bg-primary grain-texture overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       <button
         onClick={() => navigate(-1)}
         className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors z-10"
@@ -285,8 +292,10 @@ export function GroupDetailScreen() {
         <ChevronLeft className="w-6 h-6" />
       </button>
 
-      <div className="px-6 pt-12 pb-6">
-        <div className="text-5xl mb-2 text-center">{group.avatar_emoji}</div>
+      <div className="px-6 pb-6">
+        <div className="mb-2 text-center flex justify-center">
+        <GroupIcon id={group.avatar_emoji} size={48} className="text-text-primary" />
+      </div>
         <h1 className="text-2xl font-black text-text-primary text-center mb-1">
           {group.name}
         </h1>

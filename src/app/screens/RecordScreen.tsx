@@ -6,10 +6,12 @@ import { getBetStatsForUser } from '@/lib/api/stats'
 import { getReactionCounts, hasUserReacted } from '@/stores/shameStore'
 import { getProfilesWithRepByIds } from '@/lib/api/profiles'
 import { useRealtimeSubscription } from '@/lib/hooks/useRealtime'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { formatMoney } from '@/lib/utils/formatters'
 import { BET_CATEGORIES, REACTION_EMOJIS } from '@/lib/utils/constants'
 import { MediaGallery } from '@/app/components/MediaGallery'
 import { AvatarWithRepBadge } from '@/app/components/RepBadge'
+import { GroupIcon } from '@/app/components/GroupIcon'
 import type { MediaItem } from '@/app/components/MediaGallery'
 import type { BetStatsForUser as BetStatsType, UserBetResult } from '@/lib/api/stats'
 import type { ShamePostEnriched } from '@/stores/shameStore'
@@ -121,9 +123,12 @@ export function RecordScreen() {
   }
 
   return (
-    <div className="h-full bg-bg-primary overflow-y-auto pb-8">
+    <div
+      className="h-full bg-bg-primary overflow-y-auto"
+      style={{ paddingTop: iosSpacing.topPadding, paddingBottom: iosSpacing.bottomPadding }}
+    >
       {/* Header */}
-      <div className="px-6 pt-6 pb-4 border-b border-border-subtle flex items-start justify-between">
+      <div className="px-6 pb-4 border-b border-border-subtle flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-black text-text-primary">Record</h1>
           <p className="text-text-muted text-sm mt-0.5">Your stats and group punishments</p>
@@ -285,7 +290,10 @@ export function RecordScreen() {
                         : 'bg-bg-elevated text-text-muted'
                     }`}
                   >
-                    {g.avatar_emoji} {g.name}
+                    <span className="inline-flex items-center gap-1.5">
+                    <GroupIcon id={g.avatar_emoji} size={14} className="shrink-0 text-text-primary" />
+                    {g.name}
+                  </span>
                   </button>
                 ))}
               </div>
