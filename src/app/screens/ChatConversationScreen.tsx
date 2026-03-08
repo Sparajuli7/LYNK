@@ -1,6 +1,7 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
 import { useParams, useNavigate } from 'react-router'
 import { ChevronLeft, Users } from 'lucide-react'
+import { GroupIcon } from '@/app/components/GroupIcon'
 import { iosSpacing } from '@/lib/utils/iosSpacing'
 import { useChatStore, useAuthStore } from '@/stores'
 import { MessageBubble, formatDateSeparator } from '@/app/components/MessageBubble'
@@ -203,7 +204,7 @@ export function ChatConversationScreen() {
         </button>
 
         {emoji && (
-          <span className="text-xl">{emoji}</span>
+          <GroupIcon id={emoji} size={24} />
         )}
         {activeConversation?._displayAvatar && !emoji && (
           <img
