@@ -1,5 +1,9 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { Send, Camera, Video, X, Loader2, Reply, Pencil } from 'lucide-react'
+import { Capacitor } from '@capacitor/core'
+import { Camera as CapCamera, CameraResultType, CameraSource } from '@capacitor/camera'
+
+const isIOS = Capacitor.getPlatform() === 'ios'
 import { MentionSuggestions } from '@/app/components/MentionSuggestions'
 import type { ParticipantProfile } from '@/lib/api/chat'
 import type { MessageWithSender } from '@/lib/api/chat'
@@ -167,6 +171,30 @@ export function ChatInput({
     setImagePreview(null)
   }
 
+  const handleCameraPress = useCallback(async () => {
+    if (isIOS) {
+      try {
+        const photo = await CapCamera.getPhoto({
+          quality: 85,
+          allowEditing: false,
+          resultType: CameraResultType.Uri,
+          source: CameraSource.Camera,
+        })
+        if (!photo.webPath) return
+        const res = await fetch(photo.webPath)
+        const blob = await res.blob()
+        const ext = photo.format === 'png' ? 'png' : 'jpg'
+        const file = new File([blob], `photo_${Date.now()}.${ext}`, { type: `image/${ext}` })
+        if (imagePreview) URL.revokeObjectURL(imagePreview.url)
+        setImagePreview({ file, url: URL.createObjectURL(file) })
+      } catch {
+        // user cancelled
+      }
+    } else {
+      fileInputRef.current?.click()
+    }
+  }, [imagePreview])
+
   const canSend =
     (!disabled && !isUploading) &&
     (value.trim().length > 0 || imagePreview !== null)
@@ -256,7 +284,6 @@ export function ChatInput({
           ref={videoInputRef}
           type="file"
           accept="video/*"
-          capture="environment"
           className="hidden"
           onChange={handleVideoSelect}
         />
@@ -264,7 +291,7 @@ export function ChatInput({
         {!editingMessage && (
           <>
             <button
-              onClick={() => fileInputRef.current?.click()}
+              onClick={handleCameraPress}
               disabled={disabled || isUploading}
               className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-bg-elevated text-text-muted hover:text-accent-green transition-colors disabled:opacity-50"
               aria-label="Take photo or choose image"

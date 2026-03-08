@@ -9,6 +9,7 @@ import {
 import { ScrollArea } from '@/app/components/ui/scroll-area'
 import { useNotificationStore, useGroupStore } from '@/stores'
 import { relativeTime } from '@/lib/utils/formatters'
+import { iosSpacing } from '@/lib/utils/iosSpacing'
 import type { Notification, NotificationType } from '@/lib/database.types'
 
 const NOTIFICATION_ICONS: Record<NotificationType, string> = {
@@ -111,7 +112,7 @@ export function NotificationPanel({ open, onOpenChange }: NotificationPanelProps
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="w-full sm:max-w-sm bg-bg-primary border-border-subtle">
+      <SheetContent side="right" className="w-full sm:max-w-sm bg-bg-primary border-border-subtle" style={{ paddingTop: iosSpacing.stickyTopPadding }}>
         <SheetHeader>
           <SheetTitle className="text-text-primary">Notifications</SheetTitle>
         </SheetHeader>
