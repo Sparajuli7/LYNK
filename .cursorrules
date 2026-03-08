@@ -1,0 +1,39 @@
+## Platform-Specific Change Rules
+
+This app runs on three platforms: iOS, Android, and Web.
+
+RULE 1 — NEVER break other platforms
+When fixing a bug on one platform, you must not
+change anything that affects the other two platforms.
+If a fix requires a change that touches shared code,
+STOP and tell the user before doing anything.
+
+RULE 2 — How to make platform-specific fixes
+Use Capacitor.getPlatform() to detect the platform
+at runtime. Example:
+
+import { Capacitor } from '@capacitor/core'
+const isIOS = Capacitor.getPlatform() === 'ios'
+const isAndroid = Capacitor.getPlatform() === 'android'
+const isWeb = Capacitor.getPlatform() === 'web'
+
+Apply styles or logic conditionally using these flags.
+Never use CSS overrides that affect all platforms
+just to fix one.
+
+RULE 3 — Before touching shared files
+If a fix requires editing any of these files,
+STOP and ask the user for permission first:
+- index.html
+- App.tsx
+- AppLayout.tsx
+- theme.css
+- main.tsx
+
+These files affect ALL platforms simultaneously.
+Explain what you want to change and why before touching them.
+
+RULE 4 — Safe places to make platform fixes
+Platform-specific fixes should go in the individual
+screen file only, using the Capacitor.getPlatform()
+check, not in shared layout files.
