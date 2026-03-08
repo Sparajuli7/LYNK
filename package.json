@@ -11,11 +11,14 @@
     "cap:android": "vite build && npx cap sync android && npx cap open android"
   },
   "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "@capacitor/android": "^7.5.0",
     "@capacitor/app": "^7.1.2",
     "@capacitor/browser": "^7.0.4",
     "@capacitor/camera": "^7.0.4",
     "@capacitor/cli": "^7.5.0",
+    "@capacitor/clipboard": "^7.0.0",
     "@capacitor/core": "^7.5.0",
     "@capacitor/haptics": "^7.0.3",
     "@capacitor/ios": "^7.5.0",

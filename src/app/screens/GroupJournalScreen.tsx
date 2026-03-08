@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { ChevronLeft, Users } from 'lucide-react'
 import { useGroupStore } from '@/stores'
-import { Emoji } from '@/app/components/Emoji'
+import { GroupIcon } from '@/app/components/GroupIcon'
 import { getGroupBets } from '@/lib/api/bets'
 import { BET_CATEGORIES } from '@/lib/utils/constants'
 import { formatMoney } from '@/lib/utils/formatters'
@@ -59,7 +59,7 @@ export function GroupJournalScreen() {
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
-          <span className="text-2xl"><Emoji symbol={group?.avatar_emoji ?? ''} /></span>
+          <GroupIcon iconId={group?.avatar_emoji ?? 'zap'} size="md" />
           <div className="flex-1 min-w-0">
             <h1 className="text-xl font-black text-text-primary truncate leading-tight">
               {group?.name ?? 'Group Journal'}

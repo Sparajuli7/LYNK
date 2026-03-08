@@ -1,5 +1,6 @@
 import type { ConversationWithMeta } from '@/lib/api/chat'
 import { formatDistanceToNowStrict } from 'date-fns'
+import { GroupIcon } from './GroupIcon'
 
 interface ConversationRowProps {
   conversation: ConversationWithMeta
@@ -24,7 +25,7 @@ export function ConversationRow({ conversation, onClick }: ConversationRowProps)
         {_displayAvatar ? (
           <img src={_displayAvatar} alt="" className="w-full h-full object-cover" />
         ) : (
-          <span className="text-xl">{_displayEmoji ?? ''}</span>
+          <GroupIcon iconId={_displayEmoji ?? 'zap'} size="sm" />
         )}
       </div>
 

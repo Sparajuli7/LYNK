@@ -14,7 +14,7 @@ import type { MediaItem } from '@/app/components/MediaGallery'
 import type { BetStatsForUser as BetStatsType, UserBetResult } from '@/lib/api/stats'
 import type { ShamePostEnriched } from '@/stores/shameStore'
 import type { ProfileWithRep } from '@/lib/api/profiles'
-import { Emoji } from '@/app/components/Emoji'
+import { GroupIcon } from '@/app/components/GroupIcon'
 import { ShareSheet } from '@/app/components/ShareSheet'
 import { getRecordShareText, getBetShareUrl, shareWithNative, getProofShareText } from '@/lib/share'
 import { ProofCard } from '@/app/components/ProofCard'
@@ -286,7 +286,7 @@ export function RecordScreen() {
                         : 'bg-bg-elevated text-text-muted'
                     }`}
                   >
-                    <Emoji symbol={g.avatar_emoji} /> {g.name}
+                    <GroupIcon iconId={g.avatar_emoji} size="sm" /> {g.name}
                   </button>
                 ))}
               </div>

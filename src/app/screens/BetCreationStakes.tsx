@@ -10,7 +10,7 @@ export function BetCreationStakes({ onNext, onBack }: BetCreationStakesProps) {
   const [selectedType, setSelectedType] = React.useState<'money' | 'punishment' | 'both'>('punishment');
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-bg-primary">
+    <div className="flex flex-col bg-bg-primary" style={{ height: '100vh', overflow: 'hidden' }}>
       {/* Progress bar */}
       <div className="px-6 pt-8 pb-4 flex-none">
         <div className="flex items-center justify-between mb-2">
@@ -26,7 +26,7 @@ export function BetCreationStakes({ onNext, onBack }: BetCreationStakesProps) {
 
       <div
         className="flex-1 overflow-y-auto px-6 pb-8"
-        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll', height: '0', minHeight: '0' }}
       >
         {/* Header */}
         <h2 className="text-[11px] font-bold uppercase tracking-[0.1em] text-text-muted mb-2">

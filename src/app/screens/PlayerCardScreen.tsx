@@ -437,7 +437,7 @@ export function PlayerCardScreen() {
   }
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-black">
+    <div className="flex flex-col bg-black" style={{ height: '100vh', overflow: 'hidden' }}>
       {/* Header */}
       <div className="flex-none flex items-center justify-between px-4 pt-10 pb-4">
         <button
@@ -472,7 +472,7 @@ export function PlayerCardScreen() {
       {/* Card */}
       <div
         className="flex-1 overflow-y-auto flex flex-col items-center px-4 pb-6 gap-5"
-        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll', height: '0', minHeight: '0' }}
       >
         <div ref={cardRef}>
           <TradingCard profile={profile} stats={stats} />

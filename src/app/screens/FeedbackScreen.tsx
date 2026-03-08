@@ -114,7 +114,7 @@ export function FeedbackScreen() {
   }
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-black">
+    <div className="flex flex-col bg-black" style={{ height: '100vh', overflow: 'hidden' }}>
       {/* Header */}
       <div className="px-6 pt-6 pb-5 flex-none">
         <div className="flex items-center gap-3 mb-6">
@@ -140,7 +140,7 @@ export function FeedbackScreen() {
       {/* Form */}
       <div
         className="flex-1 overflow-y-auto px-6 pb-8 space-y-10"
-        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll', height: '0', minHeight: '0' }}
       >
 
         {/* 01 — Overall rating */}

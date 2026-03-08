@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { Trophy, Lock, Users, User } from 'lucide-react'
-import { Emoji } from '@/app/components/Emoji'
+import { GroupIcon } from '@/app/components/GroupIcon'
 import { getCompetitionsForUser, getLeaderboard } from '@/lib/api/competitions'
 import { getMyBets } from '@/lib/api/bets'
 import { formatMoney } from '@/lib/utils/formatters'
@@ -228,7 +228,7 @@ export function Competitions() {
                     {isSoloBet ? (
                       <User className="w-4 h-4 text-text-muted shrink-0" />
                     ) : betGroup ? (
-                      <span className="text-sm shrink-0"><Emoji symbol={betGroup.avatar_emoji} /></span>
+                      <GroupIcon iconId={betGroup.avatar_emoji} size="sm" className="shrink-0" />
                     ) : (
                       <Users className="w-4 h-4 text-text-muted shrink-0" />
                     )}

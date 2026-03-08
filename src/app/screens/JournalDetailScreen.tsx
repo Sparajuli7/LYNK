@@ -123,7 +123,7 @@ function BetPickerSheet({
   const tabs: { key: string; label: string }[] = [
     { key: 'all', label: 'All' },
     { key: 'personal', label: 'Personal' },
-    ...groups.map((g) => ({ key: g.id, label: `${g.avatar_emoji} ${g.name}` })),
+    ...groups.map((g) => ({ key: g.id, label: g.name })),
   ]
 
   // Filter bets by active tab + search query
@@ -188,7 +188,7 @@ function BetPickerSheet({
 
       {/* Bet list */}
       <div className="flex-1 min-h-0 overflow-y-auto px-6 py-3"
-        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}>
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll', height: '0', minHeight: '0' }}>
         {loading ? (
           <div className="space-y-2">
             {[...Array(6)].map((_, i) => (
@@ -209,7 +209,7 @@ function BetPickerSheet({
               const sourceLabel =
                 source === 'personal'
                   ? 'Personal'
-                  : `${(source as Group).avatar_emoji} ${(source as Group).name}`
+                  : (source as Group).name
 
               return (
                 <button
@@ -488,7 +488,7 @@ export function JournalDetailScreen() {
 
       {/* Bet list */}
       <div className="flex-1 min-h-0 overflow-y-auto px-6 py-4"
-        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}>
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll', height: '0', minHeight: '0' }}>
         {betsLoading ? (
           <div className="space-y-2">
             {[...Array(4)].map((_, i) => (

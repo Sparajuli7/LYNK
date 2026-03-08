@@ -14,7 +14,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/app/components/ui/alert-dialog'
-import { Emoji } from '@/app/components/Emoji'
+import { GroupIcon } from '@/app/components/GroupIcon'
 
 export function SettingsScreen() {
   const navigate = useNavigate()
@@ -114,19 +114,23 @@ export function SettingsScreen() {
   }
 
   return (
-    <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
-      <button
-        onClick={() => navigate(-1)}
-        className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors"
-        aria-label="Go back"
+    <div className="flex flex-col bg-bg-primary grain-texture" style={{ height: '100vh', overflow: 'hidden' }}>
+      <div className="shrink-0 px-4 pt-safe py-3 flex items-center gap-3">
+        <button
+          onClick={() => navigate(-1)}
+          className="p-1 -ml-1 text-text-muted hover:text-text-primary transition-colors"
+          aria-label="Go back"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <h1 className="text-2xl font-black text-text-primary">Settings</h1>
+      </div>
+
+      <div
+        className="flex-1 overflow-y-auto px-6 pb-6"
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll', height: '0', minHeight: '0' }}
       >
-        <ChevronLeft className="w-6 h-6" />
-      </button>
-
-      <div className="pt-12">
-        <h1 className="text-2xl font-black text-text-primary mb-8">Settings</h1>
-
-        <div className="space-y-4">
+        <div className="space-y-4 pt-4">
 
           {/* ── Theme toggle ─────────────────────────────────────────────── */}
           <div className="bg-bg-card border border-border-subtle rounded-xl px-4 py-3 flex items-center justify-between">
@@ -217,7 +221,7 @@ export function SettingsScreen() {
                     return (
                       <div key={g.id} className="flex items-center justify-between py-1.5">
                         <div className="flex items-center gap-2 min-w-0">
-                          <span className="text-base"><Emoji symbol={g.avatar_emoji} /></span>
+                          <GroupIcon iconId={g.avatar_emoji} size="sm" />
                           <span className="text-sm text-text-primary truncate">{g.name}</span>
                         </div>
                         <button

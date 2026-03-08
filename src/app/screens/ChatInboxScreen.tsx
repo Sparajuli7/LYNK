@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import { ChevronLeft } from 'lucide-react'
+import { ChevronLeft, MessageCircle } from 'lucide-react'
 import { useChatStore } from '@/stores'
 import { ConversationRow } from '@/app/components/ConversationRow'
 
@@ -15,7 +15,7 @@ export function ChatInboxScreen() {
   }, [fetchConversations])
 
   return (
-    <div className="h-full bg-bg-primary grain-texture flex flex-col">
+    <div className="flex flex-col bg-bg-primary grain-texture" style={{ height: '100vh', overflow: 'hidden' }}>
       {/* Header — safe area for iOS */}
       <div className="shrink-0 px-6 pt-safe-6 pb-4">
         <div className="flex items-center gap-3">
@@ -32,7 +32,7 @@ export function ChatInboxScreen() {
 
       {/* Conversation list */}
       <div className="flex-1 min-h-0 overflow-y-auto"
-        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}>
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll', height: '0', minHeight: '0' }}>
         {isLoading && conversations.length === 0 && (
           <div className="flex items-center justify-center py-12">
             <div className="w-8 h-8 border-2 border-accent-green border-t-transparent rounded-full animate-spin" />
@@ -41,7 +41,7 @@ export function ChatInboxScreen() {
 
         {!isLoading && conversations.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
-            <div className="text-4xl mb-3"></div>
+            <MessageCircle className="w-12 h-12 text-text-muted mb-3" />
             <p className="text-text-primary font-bold mb-1">No conversations yet</p>
             <p className="text-text-muted text-sm">
               Start chatting from a group, competition, or someone's profile.

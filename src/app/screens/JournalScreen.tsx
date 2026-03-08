@@ -277,12 +277,17 @@ export function JournalScreen() {
     pinnedBetItems.length > 0
 
   return (
-    <div className="relative h-full bg-bg-primary overflow-y-auto pb-8">
+    <div className="relative h-full bg-bg-primary flex flex-col overflow-hidden">
       {/* ── Header ── */}
-      <div className="px-6 pt-6 pb-5 border-b border-border-subtle">
+      <div className="shrink-0 px-6 pt-6 pb-5 border-b border-border-subtle">
         <h1 className="text-2xl font-black text-text-primary">Journal</h1>
         <p className="text-text-muted text-sm mt-0.5">Your bets, groups &amp; collections</p>
       </div>
+
+      <div
+        className="flex-1 overflow-y-auto pb-8"
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll', height: '0', minHeight: '0' }}
+      >
 
       {/* ══════════════════════════════════════
           SECTION 0 — Pinned quick-access
@@ -464,6 +469,8 @@ export function JournalScreen() {
             />
           </>
         )}
+      </div>
+
       </div>
 
       {/* Create modal */}

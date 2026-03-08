@@ -5,7 +5,7 @@ import { useGroupStore } from '@/stores'
 import { getGroupByInviteCode } from '@/lib/api/groups'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/app/components/ui/button'
-import { Emoji } from '@/app/components/Emoji'
+import { GroupIcon } from '@/app/components/GroupIcon'
 import type { Group } from '@/lib/database.types'
 
 export function GroupJoinByCodeScreen() {
@@ -109,7 +109,7 @@ export function GroupJoinByCodeScreen() {
       </button>
 
       <div className="flex-1 flex flex-col justify-center pt-12">
-        <div className="text-6xl mb-4 text-center"><Emoji symbol={group.avatar_emoji} /></div>
+        <div className="flex justify-center mb-4"><GroupIcon iconId={group.avatar_emoji} size="xl" /></div>
         <h1 className="text-2xl font-black text-text-primary mb-2 text-center">
           {group.name}
         </h1>

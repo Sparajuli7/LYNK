@@ -4,9 +4,8 @@ import { ChevronLeft, Share2 } from 'lucide-react'
 import { useGroupStore } from '@/stores'
 import { Input } from '@/app/components/ui/input'
 import { Button } from '@/app/components/ui/button'
-import { GROUP_EMOJIS } from '@/lib/utils/constants'
+import { GroupIcon, GROUP_ICON_OPTIONS } from '@/app/components/GroupIcon'
 import { ShareSheet } from '@/app/components/ShareSheet'
-import { Emoji } from '@/app/components/Emoji'
 import {
   getGroupInviteUrl,
   getGroupInviteShareText,
@@ -27,7 +26,7 @@ export function GroupCreateScreen() {
   }, [clearError])
 
   const [name, setName] = useState('')
-  const [emoji, setEmoji] = useState('🔥')
+  const [emoji, setEmoji] = useState('flame')
   const [createdGroup, setCreatedGroup] = useState<{ id: string; name: string; invite_code: string } | null>(null)
   const [shareSheetOpen, setShareSheetOpen] = useState(false)
 
@@ -64,17 +63,23 @@ export function GroupCreateScreen() {
 
   if (createdGroup) {
     return (
-      <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
-        <button
-          onClick={() => navigate('/home')}
-          className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors"
-          aria-label="Go to home"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
+      <div className="flex flex-col bg-bg-primary grain-texture" style={{ height: '100vh', overflow: 'hidden' }}>
+        <div className="shrink-0 px-4 pt-safe py-3 flex items-center">
+          <button
+            onClick={() => navigate('/home')}
+            className="p-1 -ml-1 text-text-muted hover:text-text-primary transition-colors"
+            aria-label="Go to home"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+        </div>
 
-        <div className="flex-1 flex flex-col justify-center pt-12">
-          <div className="text-5xl mb-4 text-center"><Emoji symbol={emoji} /></div>
+        <div
+          className="flex-1 overflow-y-auto px-6 pb-6"
+          style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll', height: '0', minHeight: '0' }}
+        >
+        <div className="flex flex-col justify-center py-4">
+          <div className="flex justify-center mb-4"><GroupIcon iconId={emoji} size="xl" /></div>
           <h1 className="text-2xl font-black text-text-primary mb-2 text-center">
             Group created!
           </h1>
@@ -122,26 +127,33 @@ export function GroupCreateScreen() {
             url={inviteLink}
           />
         </div>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
-      <button
-        onClick={() => navigate(-1)}
-        className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors"
-        aria-label="Go back"
-      >
-        <ChevronLeft className="w-6 h-6" />
-      </button>
+    <div className="flex flex-col bg-bg-primary grain-texture" style={{ height: '100vh', overflow: 'hidden' }}>
+      <div className="shrink-0 px-4 pt-safe py-3 flex items-center">
+        <button
+          onClick={() => navigate(-1)}
+          className="p-1 -ml-1 text-text-muted hover:text-text-primary transition-colors"
+          aria-label="Go back"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+      </div>
 
-      <div className="flex-1 flex flex-col pt-12">
+      <div
+        className="flex-1 overflow-y-auto px-6 pb-6"
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll', height: '0', minHeight: '0' }}
+      >
+      <div className="flex flex-col pt-4">
         <h1 className="text-2xl font-black text-text-primary mb-2">
           Create a group
         </h1>
         <p className="text-text-muted text-sm mb-8">
-          Name your group and pick an emoji
+          Name your group and pick an icon
         </p>
 
         <form onSubmit={handleCreate} className="space-y-6">
@@ -161,21 +173,21 @@ export function GroupCreateScreen() {
 
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">
-              Avatar emoji
+              Avatar icon
             </label>
             <div className="grid grid-cols-6 gap-2">
-              {GROUP_EMOJIS.map((e) => (
+              {GROUP_ICON_OPTIONS.map((e) => (
                 <button
                   key={e}
                   type="button"
                   onClick={() => setEmoji(e)}
-                  className={`w-12 h-12 rounded-xl text-2xl flex items-center justify-center transition-all ${
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
                     emoji === e
                       ? 'bg-accent-green/20 border-2 border-accent-green'
                       : 'bg-bg-elevated border-2 border-transparent hover:bg-bg-card'
                   }`}
                 >
-                  <Emoji symbol={e} />
+                  <GroupIcon iconId={e} size="md" />
                 </button>
               ))}
             </div>
@@ -191,6 +203,7 @@ export function GroupCreateScreen() {
             {isLoading ? 'Creating...' : 'Create'}
           </Button>
         </form>
+      </div>
       </div>
     </div>
   )

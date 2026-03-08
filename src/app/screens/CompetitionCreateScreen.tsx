@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router'
-import { ChevronLeft, Shuffle, BookOpen, UserPlus, Check } from 'lucide-react'
-import { Emoji } from '../components/Emoji'
+import { ChevronLeft, Shuffle, BookOpen, UserPlus, Check, TrendingUp, TrendingDown } from 'lucide-react'
+import { GroupIcon } from '../components/GroupIcon'
 import { format } from 'date-fns'
 import { motion, AnimatePresence } from 'motion/react'
 import type { DateRange } from 'react-day-picker'
@@ -328,7 +328,7 @@ export function CompetitionCreateScreen() {
   // ── Render ────────────────────────────────────────────────────────────────────
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-bg-primary">
+    <div className="flex flex-col bg-bg-primary" style={{ height: '100vh', overflow: 'hidden' }}>
       {/* Header — safe area for notch/Dynamic Island on iOS */}
       <div className="px-6 pt-safe-4 pb-4 flex-none">
         <div className="flex items-center justify-between mb-2">
@@ -348,7 +348,7 @@ export function CompetitionCreateScreen() {
 
       <div
         className="flex-1 overflow-y-auto px-6 pb-8"
-        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll', height: '0', minHeight: '0' }}
       >
         <AnimatePresence mode="wait">
 
@@ -417,7 +417,7 @@ export function CompetitionCreateScreen() {
                         : 'border-border-subtle bg-bg-elevated'
                     }`}
                   >
-                    <span className="text-3xl"><Emoji symbol="🏇" /></span>
+                    <TrendingUp className="w-8 h-8 text-accent-green" />
                     <span className={`font-extrabold text-sm ${creatorSide === 'rider' ? 'text-accent-green' : 'text-text-primary'}`}>
                       Rider
                     </span>
@@ -433,7 +433,7 @@ export function CompetitionCreateScreen() {
                         : 'border-border-subtle bg-bg-elevated'
                     }`}
                   >
-                    <span className="text-3xl"><Emoji symbol="🤔" /></span>
+                    <TrendingDown className="w-8 h-8 text-accent-coral" />
                     <span className={`font-extrabold text-sm ${creatorSide === 'doubter' ? 'text-accent-coral' : 'text-text-primary'}`}>
                       Doubter
                     </span>
@@ -525,7 +525,7 @@ export function CompetitionCreateScreen() {
                       <SelectContent>
                         {groups.map((g) => (
                           <SelectItem key={g.id} value={g.id}>
-                            <Emoji symbol={g.avatar_emoji} /> {g.name}
+                            <GroupIcon iconId={g.avatar_emoji} size="sm" /> {g.name}
                           </SelectItem>
                         ))}
                       </SelectContent>

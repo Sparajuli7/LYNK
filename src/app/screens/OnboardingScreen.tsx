@@ -1,4 +1,5 @@
 import { PrimaryButton } from "../components/PrimaryButton";
+import { TrendingUp, TrendingDown } from 'lucide-react';
 
 interface OnboardingScreenProps {
   onNext: () => void;
@@ -21,10 +22,10 @@ export function OnboardingScreen({ onNext, onSkip }: OnboardingScreenProps) {
           <div className="text-center">
             <div className="flex justify-center gap-4 mb-4">
               <div className="w-20 h-20 rounded-2xl bg-accent-green/20 border-2 border-accent-green flex items-center justify-center">
-                <span className="text-4xl"></span>
+                <TrendingUp className="w-16 h-16 text-accent-green" />
               </div>
               <div className="w-20 h-20 rounded-2xl bg-accent-coral/20 border-2 border-accent-coral flex items-center justify-center">
-                <span className="text-4xl"></span>
+                <TrendingDown className="w-16 h-16 text-accent-coral" />
               </div>
             </div>
           </div>

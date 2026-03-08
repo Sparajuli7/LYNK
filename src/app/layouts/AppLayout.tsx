@@ -63,7 +63,7 @@ export function AppLayout() {
     <div className="h-full bg-bg-primary grain-texture flex flex-col overflow-hidden">
       <div
         className="flex-1 min-h-0 overflow-y-auto"
-        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll', height: '0', minHeight: '0' }}
       >
         <Outlet />
       </div>

@@ -256,6 +256,16 @@
   background-position: 0 0;
 }
 
+/* iOS momentum scrolling for all elements */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-container {
+  overflow-y: scroll !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
 /* Hide scrollbar */
 .no-scrollbar::-webkit-scrollbar {
   display: none;

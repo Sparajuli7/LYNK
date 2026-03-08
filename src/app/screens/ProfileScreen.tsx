@@ -141,10 +141,10 @@ function ProfileContent({
   })
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-bg-primary">
+    <div className="flex flex-col bg-bg-primary" style={{ height: '100vh', overflow: 'hidden' }}>
       <div
         className="flex-1 overflow-y-auto pb-8"
-        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll' }}
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll', height: '0', minHeight: '0' }}
       >
 
       {/* ══════════════════════════════════════

@@ -303,9 +303,15 @@ export async function getProofShareFiles(proof: {
 /** Copy text to clipboard. Returns true on success. */
 export async function copyToClipboard(text: string): Promise<boolean> {
   try {
-    await navigator.clipboard.writeText(text)
+    const { Clipboard } = await import('@capacitor/clipboard')
+    await Clipboard.write({ string: text })
     return true
   } catch {
-    return false
+    try {
+      await navigator.clipboard.writeText(text)
+      return true
+    } catch {
+      return false
+    }
   }
 }

@@ -7,7 +7,7 @@ import { supabase } from '@/lib/supabase'
 import { BET_CATEGORIES } from '@/lib/utils/constants'
 import { formatMoney } from '@/lib/utils/formatters'
 import { loadPinned, savePinned, PIN_BETS_KEY, PIN_GROUPS_KEY } from '@/lib/utils/pinStorage'
-import { Emoji } from '@/app/components/Emoji'
+import { GroupIcon } from '@/app/components/GroupIcon'
 import type { BetWithSides } from '@/stores/betStore'
 import type { Group } from '@/lib/database.types'
 
@@ -291,7 +291,7 @@ export function ArchiveScreen() {
                           onClick={() => navigate(`/group/${group.id}`)}
                           className="flex-1 px-3 py-3 flex items-center gap-3 text-left hover:bg-bg-elevated transition-colors"
                         >
-                          <span className="text-2xl"><Emoji symbol={group.avatar_emoji} /></span>
+                          <GroupIcon iconId={group.avatar_emoji} size="md" />
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-semibold text-text-primary">{group.name}</p>
                             <p className="text-[11px] text-text-muted">

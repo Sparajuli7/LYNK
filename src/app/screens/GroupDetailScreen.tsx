@@ -8,7 +8,7 @@ import { getOutcome } from '@/lib/api/outcomes'
 import { getShamePostByBetId } from '@/lib/api/shame'
 import { computeBetPayouts } from '@/lib/api/betPayouts'
 import { AvatarWithRepBadge } from '@/app/components/RepBadge'
-import { Emoji } from '@/app/components/Emoji'
+import { GroupIcon } from '@/app/components/GroupIcon'
 import { BetCard } from '@/app/components/BetCard'
 import type { Outcome, Profile } from '@/lib/database.types'
 import {
@@ -28,6 +28,7 @@ import {
   getGroupInviteUrl,
   getGroupInviteShareText,
   shareWithNative,
+  copyToClipboard,
 } from '@/lib/share'
 import type { BetWithSides } from '@/stores/betStore'
 import type { ProfileWithRep } from '@/lib/api/profiles'
@@ -93,7 +94,7 @@ function GroupBetCard({
   return (
     <div>
       <BetCard
-        groupName={`${group.name} ${group.avatar_emoji}`}
+        groupName={group.name}
         countdown={showProofBadge ? '' : countdown.formatted}
         claimText={bet.title}
         claimantName={claimant?.display_name ?? 'Anonymous'}
@@ -242,7 +243,7 @@ export function GroupDetailScreen() {
 
   const handleCopyInvite = () => {
     if (group?.invite_code) {
-      navigator.clipboard.writeText(getGroupInviteUrl(group.invite_code))
+      copyToClipboard(getGroupInviteUrl(group.invite_code))
     }
   }
 
@@ -277,17 +278,23 @@ export function GroupDetailScreen() {
   const inviteLink = getGroupInviteUrl(group.invite_code)
 
   return (
-    <div className="h-full bg-bg-primary grain-texture overflow-y-auto pb-6">
-      <button
-        onClick={() => navigate(-1)}
-        className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors z-10"
-        aria-label="Go back"
-      >
-        <ChevronLeft className="w-6 h-6" />
-      </button>
+    <div className="flex flex-col bg-bg-primary grain-texture" style={{ height: '100vh', overflow: 'hidden' }}>
+      <div className="shrink-0 px-4 pt-safe py-3 flex items-center">
+        <button
+          onClick={() => navigate(-1)}
+          className="p-1 -ml-1 text-text-muted hover:text-text-primary transition-colors"
+          aria-label="Go back"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+      </div>
 
-      <div className="px-6 pt-12 pb-6">
-        <div className="text-5xl mb-2 text-center"><Emoji symbol={group.avatar_emoji} /></div>
+      <div
+        className="flex-1 overflow-y-auto px-6 pb-6"
+        style={{ WebkitOverflowScrolling: 'touch', overflowY: 'scroll', height: '0', minHeight: '0' }}
+      >
+      <div className="pt-4 pb-6">
+        <div className="flex justify-center mb-2"><GroupIcon iconId={group.avatar_emoji} size="xl" /></div>
         <h1 className="text-2xl font-black text-text-primary text-center mb-1">
           {group.name}
         </h1>
@@ -499,6 +506,7 @@ export function GroupDetailScreen() {
           <LogOut className="w-4 h-4" />
           Leave Group
         </button>
+      </div>
       </div>
 
       <AlertDialog open={showLeaveConfirm} onOpenChange={setShowLeaveConfirm}>
