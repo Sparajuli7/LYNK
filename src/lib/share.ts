@@ -21,6 +21,20 @@ export function getCompetitionShareUrl(compId: string): string {
   return `${APP_ORIGIN}/compete/${compId}`
 }
 
+/**
+ * Build full URL for a competition invite.
+ * Includes the group invite code so new users auto-join both.
+ */
+export function getCompetitionInviteUrl(compId: string, groupInviteCode?: string): string {
+  const base = `${APP_ORIGIN}/invite/compete/${compId}`
+  return groupInviteCode ? `${base}?group=${groupInviteCode}` : base
+}
+
+/** Build share text for a competition invite. */
+export function getCompetitionInviteShareText(title: string): string {
+  return `Join my competition "${title}" on LYNK!`
+}
+
 // ---------------------------------------------------------------------------
 // Group invite helpers
 // ---------------------------------------------------------------------------

@@ -39,6 +39,7 @@ import { JournalDetailScreen } from './screens/JournalDetailScreen'
 import { GroupJournalScreen } from './screens/GroupJournalScreen'
 import { ArchiveScreen } from './screens/ArchiveScreen'
 import { FeedbackScreen } from './screens/FeedbackScreen'
+import { CompetitionInviteScreen } from './screens/CompetitionInviteScreen'
 
 // ---------------------------------------------------------------------------
 // Placeholder for screens not yet built
@@ -187,6 +188,8 @@ export function AppRouter() {
           <Route path="auth/callback" element={<AuthCallbackScreen />} />
           <Route path="auth/otp" element={<OTPScreen />} />
           <Route path="auth/profile-setup" element={<ProfileSetupScreen />} />
+          {/* Competition invite — public so unauthenticated users can land here */}
+          <Route path="invite/compete/:compId" element={<CompetitionInviteScreen />} />
         </Route>
 
         {/* ---- PROTECTED (requires auth) ---- */}

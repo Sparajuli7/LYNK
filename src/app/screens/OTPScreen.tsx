@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router'
 import { useAuthStore } from '@/stores'
+import { loadPendingInvite } from './CompetitionInviteScreen'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/app/components/ui/input-otp'
 
 const RESEND_COOLDOWN_SEC = 60
@@ -8,10 +9,15 @@ const RESEND_COOLDOWN_SEC = 60
 export function OTPScreen() {
   const navigate = useNavigate()
   const location = useLocation()
-  const email = (location.state as { email?: string })?.email
+  const state = location.state as { email?: string; phone?: string } | null
+  const email = state?.email
+  const phone = state?.phone
+  const identifier = email ?? phone
 
   const verifyOtp = useAuthStore((s) => s.verifyOtp)
+  const verifyPhoneOtp = useAuthStore((s) => s.verifyPhoneOtp)
   const sendOtp = useAuthStore((s) => s.sendOtp)
+  const sendPhoneOtp = useAuthStore((s) => s.sendPhoneOtp)
   const isLoading = useAuthStore((s) => s.isLoading)
   const error = useAuthStore((s) => s.error)
   const profile = useAuthStore((s) => s.profile)
@@ -22,9 +28,13 @@ export function OTPScreen() {
   const [resendCooldown, setResendCooldown] = useState(0)
 
   const submitOtp = useCallback(async () => {
-    if (!email || otp.length !== 6) return
-    await verifyOtp(email, otp)
-  }, [email, otp, verifyOtp])
+    if (!identifier || otp.length !== 6) return
+    if (phone) {
+      await verifyPhoneOtp(phone, otp)
+    } else if (email) {
+      await verifyOtp(email, otp)
+    }
+  }, [identifier, otp, email, phone, verifyOtp, verifyPhoneOtp])
 
   useEffect(() => {
     if (otp.length === 6) {
@@ -35,7 +45,13 @@ export function OTPScreen() {
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
       if (profile) {
-        navigate('/home', { replace: true })
+        const pending = loadPendingInvite()
+        if (pending) {
+          const params = pending.groupInviteCode ? `?group=${pending.groupInviteCode}` : ''
+          navigate(`/invite/compete/${pending.compId}${params}`, { replace: true })
+        } else {
+          navigate('/home', { replace: true })
+        }
       } else if (isNewUser) {
         navigate('/auth/profile-setup', { replace: true })
       }
@@ -49,15 +65,21 @@ export function OTPScreen() {
   }, [resendCooldown])
 
   const handleResend = async () => {
-    if (!email || resendCooldown > 0) return
-    await sendOtp(email)
+    if (!identifier || resendCooldown > 0) return
+    if (phone) {
+      await sendPhoneOtp(phone)
+    } else if (email) {
+      await sendOtp(email)
+    }
     setResendCooldown(RESEND_COOLDOWN_SEC)
   }
 
-  if (!email) {
+  if (!identifier) {
     navigate('/auth/login', { replace: true })
     return null
   }
+
+  const sentTo = phone ?? email
 
   return (
     <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
@@ -66,7 +88,7 @@ export function OTPScreen() {
           Enter the code
         </h1>
         <p className="text-text-muted text-sm mb-8">
-          We sent a 6-digit code to {email}
+          We sent a 6-digit code to {sentTo}
         </p>
 
         <div className="flex justify-center mb-6">

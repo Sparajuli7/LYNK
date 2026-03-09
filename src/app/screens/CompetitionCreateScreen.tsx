@@ -1023,6 +1023,8 @@ export function CompetitionCreateScreen() {
           participants={modalParticipants}
           groupName={modalGroupName}
           detailPath={`/compete/${createdComp.id}`}
+          compId={createdComp.id}
+          groupInviteCode={selectedGroup?.invite_code}
         />
       )}
     </div>

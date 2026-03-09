@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { useAuthStore } from '@/stores'
-import { validateEmail } from '@/lib/utils/validators'
+import { validateEmail, validatePhone } from '@/lib/utils/validators'
+import { loadPendingInvite } from './CompetitionInviteScreen'
 import { Input } from '@/app/components/ui/input'
 import { Button } from '@/app/components/ui/button'
 import { ChevronLeft, Eye, EyeOff } from 'lucide-react'
 
-type LoginMode = 'password' | 'otp'
+type LoginMode = 'password' | 'otp' | 'phone'
 
 export function LoginScreen() {
   const navigate = useNavigate()
   const signIn = useAuthStore((s) => s.signIn)
   const sendOtp = useAuthStore((s) => s.sendOtp)
+  const sendPhoneOtp = useAuthStore((s) => s.sendPhoneOtp)
   const signInWithGoogle = useAuthStore((s) => s.signInWithGoogle)
   const isLoading = useAuthStore((s) => s.isLoading)
   const error = useAuthStore((s) => s.error)
@@ -22,6 +24,7 @@ export function LoginScreen() {
 
   const [mode, setMode] = useState<LoginMode>('password')
   const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [localError, setLocalError] = useState<string | null>(null)
@@ -29,7 +32,14 @@ export function LoginScreen() {
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
       if (profile) {
-        navigate('/home', { replace: true })
+        // Check for pending competition invite
+        const pending = loadPendingInvite()
+        if (pending) {
+          const params = pending.groupInviteCode ? `?group=${pending.groupInviteCode}` : ''
+          navigate(`/invite/compete/${pending.compId}${params}`, { replace: true })
+        } else {
+          navigate('/home', { replace: true })
+        }
       } else if (isNewUser) {
         navigate('/auth/profile-setup', { replace: true })
       }
@@ -67,10 +77,26 @@ export function LoginScreen() {
     }
 
     await sendOtp(trimmedEmail)
-    // If no error was set by the store, navigate to OTP screen
     const storeError = useAuthStore.getState().error
     if (!storeError) {
       navigate('/auth/otp', { state: { email: trimmedEmail } })
+    }
+  }
+
+  const handlePhoneSubmit = async () => {
+    clearError()
+    setLocalError(null)
+
+    const phoneCheck = validatePhone(phone)
+    if (!phoneCheck.valid) {
+      setLocalError(phoneCheck.error ?? 'Enter a valid phone number.')
+      return
+    }
+
+    await sendPhoneOtp(phoneCheck.formatted)
+    const storeError = useAuthStore.getState().error
+    if (!storeError) {
+      navigate('/auth/otp', { state: { phone: phoneCheck.formatted } })
     }
   }
 
@@ -83,8 +109,17 @@ export function LoginScreen() {
 
   const displayError = error ?? localError
   const emailValid = validateEmail(email.trim()).valid
+  const phoneValid = validatePhone(phone).valid
   const canSubmitPassword = emailValid && password.length > 0 && !isLoading
   const canSubmitOtp = emailValid && !isLoading
+  const canSubmitPhone = phoneValid && !isLoading
+
+  const subtitle =
+    mode === 'password'
+      ? 'Log in with your email and password'
+      : mode === 'otp'
+        ? 'We\'ll send a 6-digit code to your email'
+        : 'We\'ll text a 6-digit code to your phone'
 
   return (
     <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
@@ -100,45 +135,45 @@ export function LoginScreen() {
         <h1 className="text-2xl font-black text-text-primary mb-2">
           Welcome back
         </h1>
-        <p className="text-text-muted text-sm mb-6">
-          {mode === 'password'
-            ? 'Log in with your email and password'
-            : 'We\'ll send a 6-digit code to your email'}
-        </p>
+        <p className="text-text-muted text-sm mb-6">{subtitle}</p>
 
         {/* Mode toggle */}
         <div className="flex rounded-xl bg-bg-elevated p-1 mb-6">
-          <button
-            onClick={() => switchMode('password')}
-            className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-colors ${
-              mode === 'password'
-                ? 'bg-accent-green text-white'
-                : 'text-text-muted hover:text-text-primary'
-            }`}
-          >
-            Password
-          </button>
-          <button
-            onClick={() => switchMode('otp')}
-            className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-colors ${
-              mode === 'otp'
-                ? 'bg-accent-green text-white'
-                : 'text-text-muted hover:text-text-primary'
-            }`}
-          >
-            Email Code
-          </button>
+          {(['password', 'otp', 'phone'] as const).map((m) => (
+            <button
+              key={m}
+              onClick={() => switchMode(m)}
+              className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-colors ${
+                mode === m
+                  ? 'bg-accent-green text-white'
+                  : 'text-text-muted hover:text-text-primary'
+              }`}
+            >
+              {m === 'password' ? 'Password' : m === 'otp' ? 'Email Code' : 'Phone'}
+            </button>
+          ))}
         </div>
 
         <div className="space-y-4 mb-6">
-          <Input
-            type="email"
-            placeholder="you@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="h-12 rounded-xl bg-input-background border-input text-base w-full"
-            autoComplete="email"
-          />
+          {mode === 'phone' ? (
+            <Input
+              type="tel"
+              placeholder="+1 (555) 123-4567"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="h-12 rounded-xl bg-input-background border-input text-base w-full"
+              autoComplete="tel"
+            />
+          ) : (
+            <Input
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="h-12 rounded-xl bg-input-background border-input text-base w-full"
+              autoComplete="email"
+            />
+          )}
 
           {mode === 'password' && (
             <div className="relative">
@@ -181,10 +216,25 @@ export function LoginScreen() {
               'Log In'
             )}
           </Button>
-        ) : (
+        ) : mode === 'otp' ? (
           <Button
             onClick={handleOtpSubmit}
             disabled={!canSubmitOtp}
+            className="w-full h-14 rounded-2xl bg-accent-green text-white font-bold text-base hover:bg-accent-green/90"
+          >
+            {isLoading ? (
+              <span className="flex items-center gap-2">
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                Sending code...
+              </span>
+            ) : (
+              'Send Code'
+            )}
+          </Button>
+        ) : (
+          <Button
+            onClick={handlePhoneSubmit}
+            disabled={!canSubmitPhone}
             className="w-full h-14 rounded-2xl bg-accent-green text-white font-bold text-base hover:bg-accent-green/90"
           >
             {isLoading ? (

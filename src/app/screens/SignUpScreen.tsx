@@ -1,14 +1,18 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { useAuthStore } from '@/stores'
-import { validateEmail, validatePassword, validatePasswordMatch } from '@/lib/utils/validators'
+import { validateEmail, validatePassword, validatePasswordMatch, validatePhone } from '@/lib/utils/validators'
+import { loadPendingInvite } from './CompetitionInviteScreen'
 import { Input } from '@/app/components/ui/input'
 import { Button } from '@/app/components/ui/button'
 import { ChevronLeft, Eye, EyeOff } from 'lucide-react'
 
+type SignUpMode = 'email' | 'phone'
+
 export function SignUpScreen() {
   const navigate = useNavigate()
   const signUp = useAuthStore((s) => s.signUp)
+  const sendPhoneOtp = useAuthStore((s) => s.sendPhoneOtp)
   const signInWithGoogle = useAuthStore((s) => s.signInWithGoogle)
   const isLoading = useAuthStore((s) => s.isLoading)
   const error = useAuthStore((s) => s.error)
@@ -19,7 +23,9 @@ export function SignUpScreen() {
   const pendingEmailConfirmation = useAuthStore((s) => s.pendingEmailConfirmation)
   const clearPendingEmailConfirmation = useAuthStore((s) => s.clearPendingEmailConfirmation)
 
+  const [mode, setMode] = useState<SignUpMode>('email')
   const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -29,14 +35,20 @@ export function SignUpScreen() {
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
       if (profile) {
-        navigate('/home', { replace: true })
+        const pending = loadPendingInvite()
+        if (pending) {
+          const params = pending.groupInviteCode ? `?group=${pending.groupInviteCode}` : ''
+          navigate(`/invite/compete/${pending.compId}${params}`, { replace: true })
+        } else {
+          navigate('/home', { replace: true })
+        }
       } else if (isNewUser) {
         navigate('/auth/profile-setup', { replace: true })
       }
     }
   }, [isLoading, isAuthenticated, profile, isNewUser, navigate])
 
-  const handleSubmit = async () => {
+  const handleEmailSubmit = async () => {
     clearError()
     setLocalError(null)
 
@@ -62,14 +74,40 @@ export function SignUpScreen() {
     await signUp(trimmedEmail, password)
   }
 
+  const handlePhoneSubmit = async () => {
+    clearError()
+    setLocalError(null)
+
+    const phoneCheck = validatePhone(phone)
+    if (!phoneCheck.valid) {
+      setLocalError(phoneCheck.error ?? 'Enter a valid phone number.')
+      return
+    }
+
+    await sendPhoneOtp(phoneCheck.formatted)
+    const storeError = useAuthStore.getState().error
+    if (!storeError) {
+      navigate('/auth/otp', { state: { phone: phoneCheck.formatted } })
+    }
+  }
+
+  const switchMode = (newMode: SignUpMode) => {
+    clearError()
+    setLocalError(null)
+    setPassword('')
+    setConfirmPassword('')
+    setMode(newMode)
+  }
+
   const displayError = error ?? localError
   const emailValid = validateEmail(email.trim()).valid
   const passValid = validatePassword(password).valid
   const matchValid = confirmPassword.length > 0 && validatePasswordMatch(password, confirmPassword).valid
-  const canSubmit = emailValid && passValid && matchValid && !isLoading
+  const phoneValid = validatePhone(phone).valid
+  const canSubmitEmail = emailValid && passValid && matchValid && !isLoading
+  const canSubmitPhone = phoneValid && !isLoading
 
   // Show a confirmation-pending screen when Supabase requires email verification
-  // before creating a session. The user must click the link in their inbox.
   if (pendingEmailConfirmation) {
     return (
       <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
@@ -121,77 +159,139 @@ export function SignUpScreen() {
         <h1 className="text-2xl font-black text-text-primary mb-2">
           Create your account
         </h1>
-        <p className="text-text-muted text-sm mb-8">
-          Enter your email and create a password
+        <p className="text-text-muted text-sm mb-6">
+          {mode === 'email'
+            ? 'Enter your email and create a password'
+            : 'Sign up with your phone number'}
         </p>
 
-        <div className="space-y-4 mb-6">
-          <Input
-            type="email"
-            placeholder="you@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="h-12 rounded-xl bg-input-background border-input text-base w-full"
-            autoComplete="email"
-          />
-
-          <div className="relative">
-            <Input
-              type={showPassword ? 'text' : 'password'}
-              placeholder="Password (8+ characters)"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="h-12 rounded-xl bg-input-background border-input text-base w-full pr-12"
-              autoComplete="new-password"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors"
-              aria-label={showPassword ? 'Hide password' : 'Show password'}
-            >
-              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-            </button>
-          </div>
-
-          <div className="relative">
-            <Input
-              type={showConfirm ? 'text' : 'password'}
-              placeholder="Confirm password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="h-12 rounded-xl bg-input-background border-input text-base w-full pr-12"
-              autoComplete="new-password"
-            />
-            <button
-              type="button"
-              onClick={() => setShowConfirm(!showConfirm)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors"
-              aria-label={showConfirm ? 'Hide password' : 'Show password'}
-            >
-              {showConfirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-            </button>
-          </div>
+        {/* Mode toggle */}
+        <div className="flex rounded-xl bg-bg-elevated p-1 mb-6">
+          <button
+            onClick={() => switchMode('email')}
+            className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-colors ${
+              mode === 'email'
+                ? 'bg-accent-green text-white'
+                : 'text-text-muted hover:text-text-primary'
+            }`}
+          >
+            Email
+          </button>
+          <button
+            onClick={() => switchMode('phone')}
+            className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-colors ${
+              mode === 'phone'
+                ? 'bg-accent-green text-white'
+                : 'text-text-muted hover:text-text-primary'
+            }`}
+          >
+            Phone
+          </button>
         </div>
 
-        {displayError && (
-          <p className="text-destructive text-sm mb-4">{displayError}</p>
-        )}
+        {mode === 'email' ? (
+          <>
+            <div className="space-y-4 mb-6">
+              <Input
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="h-12 rounded-xl bg-input-background border-input text-base w-full"
+                autoComplete="email"
+              />
 
-        <Button
-          onClick={handleSubmit}
-          disabled={!canSubmit}
-          className="w-full h-14 rounded-2xl bg-accent-green text-white font-bold text-base hover:bg-accent-green/90"
-        >
-          {isLoading ? (
-            <span className="flex items-center gap-2">
-              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              Creating account...
-            </span>
-          ) : (
-            'Sign Up'
-          )}
-        </Button>
+              <div className="relative">
+                <Input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Password (8+ characters)"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="h-12 rounded-xl bg-input-background border-input text-base w-full pr-12"
+                  autoComplete="new-password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
+
+              <div className="relative">
+                <Input
+                  type={showConfirm ? 'text' : 'password'}
+                  placeholder="Confirm password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="h-12 rounded-xl bg-input-background border-input text-base w-full pr-12"
+                  autoComplete="new-password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirm(!showConfirm)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors"
+                  aria-label={showConfirm ? 'Hide password' : 'Show password'}
+                >
+                  {showConfirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
+            </div>
+
+            {displayError && (
+              <p className="text-destructive text-sm mb-4">{displayError}</p>
+            )}
+
+            <Button
+              onClick={handleEmailSubmit}
+              disabled={!canSubmitEmail}
+              className="w-full h-14 rounded-2xl bg-accent-green text-white font-bold text-base hover:bg-accent-green/90"
+            >
+              {isLoading ? (
+                <span className="flex items-center gap-2">
+                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  Creating account...
+                </span>
+              ) : (
+                'Sign Up'
+              )}
+            </Button>
+          </>
+        ) : (
+          <>
+            <div className="space-y-4 mb-6">
+              <Input
+                type="tel"
+                placeholder="+1 (555) 123-4567"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="h-12 rounded-xl bg-input-background border-input text-base w-full"
+                autoComplete="tel"
+              />
+            </div>
+
+            {displayError && (
+              <p className="text-destructive text-sm mb-4">{displayError}</p>
+            )}
+
+            <Button
+              onClick={handlePhoneSubmit}
+              disabled={!canSubmitPhone}
+              className="w-full h-14 rounded-2xl bg-accent-green text-white font-bold text-base hover:bg-accent-green/90"
+            >
+              {isLoading ? (
+                <span className="flex items-center gap-2">
+                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  Sending code...
+                </span>
+              ) : (
+                'Send Code'
+              )}
+            </Button>
+          </>
+        )}
 
         {/* Divider */}
         <div className="flex items-center gap-3 my-6">

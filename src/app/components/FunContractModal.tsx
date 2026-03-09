@@ -2,8 +2,16 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { format } from 'date-fns'
 import { motion } from 'motion/react'
+import { MessageSquare, Share2 } from 'lucide-react'
 import { formatMoney } from '@/lib/utils/formatters'
 import { Dialog, DialogContent } from './ui/dialog'
+import {
+  getCompetitionInviteUrl,
+  getCompetitionInviteShareText,
+  getSMSShareUrl,
+  shareWithNative,
+  canUseNativeShare,
+} from '@/lib/share'
 
 export interface FunContractParticipant {
   id: string
@@ -20,6 +28,10 @@ interface FunContractModalProps {
   participants: FunContractParticipant[]
   groupName?: string
   detailPath: string
+  /** Competition ID for generating invite links */
+  compId?: string
+  /** Group invite code for auto-joining group when accepting invite */
+  groupInviteCode?: string
 }
 
 export function FunContractModal({
@@ -31,6 +43,8 @@ export function FunContractModal({
   participants,
   groupName,
   detailPath,
+  compId,
+  groupInviteCode,
 }: FunContractModalProps) {
   const navigate = useNavigate()
   const [signed, setSigned] = useState<Set<string>>(new Set())
@@ -155,6 +169,38 @@ export function FunContractModal({
           >
             {sent ? '✓ Sent!' : groupName ? `Send to ${groupName}` : 'Send to Group'}
           </button>
+
+          {/* Invite buttons */}
+          {compId && (
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  const url = getCompetitionInviteUrl(compId, groupInviteCode)
+                  const text = getCompetitionInviteShareText(title)
+                  window.open(getSMSShareUrl(text, url), '_self')
+                }}
+                className="flex-1 py-3 rounded-xl border border-[#2a2a2a] text-white font-bold text-sm flex items-center justify-center gap-2 hover:border-accent-green/50 transition-colors"
+              >
+                <MessageSquare className="w-4 h-4" />
+                SMS Invite
+              </button>
+              <button
+                onClick={async () => {
+                  const url = getCompetitionInviteUrl(compId, groupInviteCode)
+                  const text = getCompetitionInviteShareText(title)
+                  if (canUseNativeShare()) {
+                    await shareWithNative({ text, url })
+                  } else {
+                    window.open(getSMSShareUrl(text, url), '_self')
+                  }
+                }}
+                className="flex-1 py-3 rounded-xl border border-[#2a2a2a] text-white font-bold text-sm flex items-center justify-center gap-2 hover:border-accent-green/50 transition-colors"
+              >
+                <Share2 className="w-4 h-4" />
+                Share
+              </button>
+            </div>
+          )}
 
           {/* Fine print */}
           <p className="text-center text-[10px] text-text-muted">

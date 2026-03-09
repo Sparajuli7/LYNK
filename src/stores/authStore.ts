@@ -38,6 +38,10 @@ interface AuthActions {
   sendOtp: (email: string) => Promise<void>
   /** Verify a 6-digit OTP code */
   verifyOtp: (email: string, token: string) => Promise<void>
+  /** Send OTP code to phone number (E.164 format, e.g. +1234567890) */
+  sendPhoneOtp: (phone: string) => Promise<void>
+  /** Verify a 6-digit phone OTP code */
+  verifyPhoneOtp: (phone: string, token: string) => Promise<void>
   /** Set or update the user's password (for existing OTP-only accounts) */
   setPassword: (password: string) => Promise<void>
   /** Sign in with Google OAuth */
@@ -217,6 +221,29 @@ const useAuthStore = create<AuthStore>()((set, get) => ({
     // On success, onAuthStateChange fires SIGNED_IN and updates the store
   },
 
+  sendPhoneOtp: async (phone) => {
+    set({ isLoading: true, error: null })
+    const { error } = await supabase.auth.signInWithOtp({ phone })
+    if (error) {
+      set({ error: error.message, isLoading: false })
+    } else {
+      set({ isLoading: false })
+    }
+  },
+
+  verifyPhoneOtp: async (phone, token) => {
+    set({ isLoading: true, error: null })
+    const { error } = await supabase.auth.verifyOtp({
+      phone,
+      token,
+      type: 'sms',
+    })
+    if (error) {
+      set({ error: error.message, isLoading: false })
+    }
+    // On success, onAuthStateChange fires SIGNED_IN and updates the store
+  },
+
   setPassword: async (password) => {
     set({ isLoading: true, error: null })
     const { error } = await supabase.auth.updateUser({ password })
@@ -247,6 +274,10 @@ const useAuthStore = create<AuthStore>()((set, get) => ({
         const { Browser } = await import('@capacitor/browser')
         await Browser.open({ url: data.url })
       }
+      // Browser is now open — reset loading so the UI isn't stuck while user
+      // completes OAuth in the external browser. onAuthStateChange will fire
+      // SIGNED_IN when the deep link callback returns with tokens.
+      set({ isLoading: false })
     } else {
       // On web, use standard redirect flow
       const redirectTo =

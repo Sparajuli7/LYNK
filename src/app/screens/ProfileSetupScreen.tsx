@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router'
 import { useAuthStore } from '@/stores'
 import { checkUsernameAvailable, uploadAvatarFile } from '@/lib/api/profiles'
 import { validateUsername } from '@/lib/utils/validators'
+import { loadPendingInvite } from './CompetitionInviteScreen'
 import { Input } from '@/app/components/ui/input'
 import { Button } from '@/app/components/ui/button'
 import { User } from 'lucide-react'
@@ -81,7 +82,14 @@ export function ProfileSetupScreen() {
     })
 
     if (success) {
-      navigate('/home', { replace: true })
+      // Check for pending competition invite from deep link
+      const pending = loadPendingInvite()
+      if (pending) {
+        const params = pending.groupInviteCode ? `?group=${pending.groupInviteCode}` : ''
+        navigate(`/invite/compete/${pending.compId}${params}`, { replace: true })
+      } else {
+        navigate('/home', { replace: true })
+      }
     }
   }
 
