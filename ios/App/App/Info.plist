@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-        <string>LYNK</string>
+	<string>LYNK</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -22,6 +22,14 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>LYNK needs camera access to take photos and videos in group chats.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>LYNK needs microphone access to record videos in group chats.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>LYNK needs permission to save photos and videos to your library.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>LYNK needs photo library access to share photos in group chats.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -45,13 +53,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-	<key>NSCameraUsageDescription</key>
-	<string>LYNK needs camera access to take photos and videos in group chats.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>LYNK needs microphone access to record videos in group chats.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>LYNK needs photo library access to share photos in group chats.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>LYNK needs permission to save photos and videos to your library.</string>
 </dict>
 </plist>
