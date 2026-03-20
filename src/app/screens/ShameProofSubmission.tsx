@@ -140,36 +140,37 @@ export function ShameProofSubmission() {
   }, [facingMode])
 
   const handlePhotosPick = useCallback(async () => {
-    if (Capacitor.isNativePlatform()) {
-      const permissions = await CapCamera.requestPermissions({ permissions: ['camera', 'photos'] })
-      if (permissions.camera === 'denied' && permissions.photos === 'denied') {
-        setError('Please allow camera or photo access in Settings to submit proof.')
-        return
-      }
-      setNativeCapturing(true)
-      try {
-        const photo = await CapCamera.getPhoto({
-          quality: 85,
-          allowEditing: false,
-          resultType: CameraResultType.Uri,
-          source: CameraSource.Prompt,
-        })
-        const response = await fetch(photo.webPath!)
-        const blob = await response.blob()
-        const file = new File([blob], `photo_${Date.now()}.${photo.format || 'jpg'}`, { type: blob.type })
-        const previewUrl = URL.createObjectURL(blob)
-        setUploadFiles((prev) => [...prev, { file, type: 'screenshot', previewUrl }])
-        setError(null)
-      } catch (err: any) {
-        if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
-          setError('Failed to pick photo. Please try again.')
-        }
-      } finally {
-        setNativeCapturing(false)
-      }
+    if (!Capacitor.isNativePlatform()) {
+      // Must click synchronously — no await before this on web (Safari requirement)
+      photoInputRef.current?.click()
       return
     }
-    photoInputRef.current?.click()
+    const permissions = await CapCamera.requestPermissions({ permissions: ['camera', 'photos'] })
+    if (permissions.camera === 'denied' && permissions.photos === 'denied') {
+      setError('Please allow camera or photo access in Settings to submit proof.')
+      return
+    }
+    setNativeCapturing(true)
+    try {
+      const photo = await CapCamera.getPhoto({
+        quality: 85,
+        allowEditing: false,
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Prompt,
+      })
+      const response = await fetch(photo.webPath!)
+      const blob = await response.blob()
+      const file = new File([blob], `photo_${Date.now()}.${photo.format || 'jpg'}`, { type: blob.type })
+      const previewUrl = URL.createObjectURL(blob)
+      setUploadFiles((prev) => [...prev, { file, type: 'screenshot', previewUrl }])
+      setError(null)
+    } catch (err: any) {
+      if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
+        setError('Failed to pick photo. Please try again.')
+      }
+    } finally {
+      setNativeCapturing(false)
+    }
   }, [])
 
   const closeCamera = useCallback(() => {

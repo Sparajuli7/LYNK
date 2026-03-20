@@ -177,71 +177,65 @@ export function ChatInput({
   }
 
   const handleCameraClick = useCallback(async () => {
-    if (Capacitor.isNativePlatform()) {
-      const permissions = await CapCamera.requestPermissions({ permissions: ['camera', 'photos'] })
-      if (permissions.camera === 'denied' && permissions.photos === 'denied') {
-        setCameraError('Please allow camera or photo access in Settings.')
-        return
-      }
-      try {
-        const photo = await CapCamera.getPhoto({
-          quality: 85,
-          allowEditing: false,
-          resultType: CameraResultType.Uri,
-          source: CameraSource.Photos,
-        })
-        const response = await fetch(photo.webPath!)
-        const blob = await response.blob()
-        const file = new File([blob], `photo_${Date.now()}.${photo.format || 'jpg'}`, { type: blob.type })
-        if (imagePreview) URL.revokeObjectURL(imagePreview.url)
-        setImagePreview({ file, url: photo.webPath! })
-        setCameraError(null)
-      } catch (err: any) {
-        if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
-          setCameraError('Failed to capture photo. Please try again.')
-        }
-      }
+    if (!Capacitor.isNativePlatform()) {
+      // Must click synchronously — no await before this on web (Safari requirement)
+      fileInputRef.current?.click()
       return
     }
-    if (!fileInputRef.current) {
-      console.warn('fileInputRef is null')
+    const permissions = await CapCamera.requestPermissions({ permissions: ['camera', 'photos'] })
+    if (permissions.camera === 'denied' && permissions.photos === 'denied') {
+      setCameraError('Please allow camera or photo access in Settings.')
       return
     }
-    fileInputRef.current.click()
+    try {
+      const photo = await CapCamera.getPhoto({
+        quality: 85,
+        allowEditing: false,
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Photos,
+      })
+      const response = await fetch(photo.webPath!)
+      const blob = await response.blob()
+      const file = new File([blob], `photo_${Date.now()}.${photo.format || 'jpg'}`, { type: blob.type })
+      if (imagePreview) URL.revokeObjectURL(imagePreview.url)
+      setImagePreview({ file, url: photo.webPath! })
+      setCameraError(null)
+    } catch (err: any) {
+      if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
+        setCameraError('Failed to capture photo. Please try again.')
+      }
+    }
   }, [imagePreview])
 
   const handleLiveCameraClick = useCallback(async () => {
-    if (Capacitor.isNativePlatform()) {
-      const permissions = await CapCamera.requestPermissions({ permissions: ['camera', 'photos'] })
-      if (permissions.camera === 'denied' && permissions.photos === 'denied') {
-        setCameraError('Please allow camera or photo access in Settings.')
-        return
-      }
-      try {
-        const photo = await CapCamera.getPhoto({
-          quality: 85,
-          allowEditing: false,
-          resultType: CameraResultType.Uri,
-          source: CameraSource.Camera,
-        })
-        const response = await fetch(photo.webPath!)
-        const blob = await response.blob()
-        const file = new File([blob], `photo_${Date.now()}.${photo.format || 'jpg'}`, { type: blob.type })
-        if (imagePreview) URL.revokeObjectURL(imagePreview.url)
-        setImagePreview({ file, url: photo.webPath! })
-        setCameraError(null)
-      } catch (err: any) {
-        if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
-          setCameraError('Failed to capture photo. Please try again.')
-        }
-      }
+    if (!Capacitor.isNativePlatform()) {
+      // Must click synchronously — no await before this on web (Safari requirement)
+      liveCameraInputRef.current?.click()
       return
     }
-    if (!liveCameraInputRef.current) {
-      console.warn('liveCameraInputRef is null')
+    const permissions = await CapCamera.requestPermissions({ permissions: ['camera', 'photos'] })
+    if (permissions.camera === 'denied' && permissions.photos === 'denied') {
+      setCameraError('Please allow camera or photo access in Settings.')
       return
     }
-    liveCameraInputRef.current.click()
+    try {
+      const photo = await CapCamera.getPhoto({
+        quality: 85,
+        allowEditing: false,
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Camera,
+      })
+      const response = await fetch(photo.webPath!)
+      const blob = await response.blob()
+      const file = new File([blob], `photo_${Date.now()}.${photo.format || 'jpg'}`, { type: blob.type })
+      if (imagePreview) URL.revokeObjectURL(imagePreview.url)
+      setImagePreview({ file, url: photo.webPath! })
+      setCameraError(null)
+    } catch (err: any) {
+      if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
+        setCameraError('Failed to capture photo. Please try again.')
+      }
+    }
   }, [imagePreview])
 
   const canSend =
