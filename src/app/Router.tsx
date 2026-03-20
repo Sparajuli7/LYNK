@@ -27,7 +27,6 @@ import { GroupJoinByCodeScreen } from './screens/GroupJoinByCodeScreen'
 import { GroupDetailScreen } from './screens/GroupDetailScreen'
 import { ProfileEditScreen } from './screens/ProfileEditScreen'
 import { SettingsScreen } from './screens/SettingsScreen'
-import { CompetitionDetailScreen } from './screens/CompetitionDetailScreen'
 import { CompetitionCreateScreen } from './screens/CompetitionCreateScreen'
 import { PunishmentStatsScreen } from './screens/PunishmentStatsScreen'
 import { PlayerCardScreen } from './screens/PlayerCardScreen'
@@ -204,6 +203,8 @@ export function AppRouter() {
             <Route path="bet/:id/proof" element={<ProofSubmissionRoute />} />
             <Route path="bet/:id/shame-proof" element={<ShameProofSubmission />} />
             <Route path="bet/:id/outcome" element={<OutcomeRevealRoute />} />
+            <Route path="bet/:id/win" element={<OutcomeWinRoute />} />
+            <Route path="bet/:id/forfeit" element={<OutcomeForfeitRoute />} />
             <Route path="bet/:id/rematch" element={<RematchScreen />} />
 
             {/* Competition (merged with former H2H) */}
@@ -213,6 +214,8 @@ export function AppRouter() {
             <Route path="compete/:id/proof" element={<CompeteProofSubmissionRoute />} />
             <Route path="compete/:id/shame-proof" element={<ShameProofSubmission />} />
             <Route path="compete/:id/outcome" element={<CompeteOutcomeRevealRoute />} />
+            <Route path="compete/:id/win" element={<OutcomeWinRoute />} />
+            <Route path="compete/:id/forfeit" element={<OutcomeForfeitRoute />} />
             <Route path="compete/:id/rematch" element={<RematchScreen />} />
 
             {/* Journal (replaces Record in nav) */}

@@ -5,6 +5,8 @@ import { useBetStore, useAuthStore } from '@/stores'
 import { useProofStore } from '@/stores'
 import type { ProofType, ProofRuling } from '@/lib/database.types'
 import { PrimaryButton } from '../components/PrimaryButton'
+import { Camera as CapCamera, CameraResultType, CameraSource } from '@capacitor/camera'
+import { Capacitor } from '@capacitor/core'
 
 interface UploadEntry {
   file: File
@@ -41,6 +43,7 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
   const [caption, setCaption] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [localError, setLocalError] = useState<string | null>(null)
+  const [nativeCapturing, setNativeCapturing] = useState(false)
 
   const photoInputRef = useRef<HTMLInputElement>(null)
   const videoInputRef = useRef<HTMLInputElement>(null)
@@ -90,6 +93,35 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
   }, [])
 
   const openCamera = useCallback(async () => {
+    if (Capacitor.isNativePlatform()) {
+      const permissions = await CapCamera.requestPermissions({ permissions: ['camera', 'photos'] })
+      if (permissions.camera === 'denied' && permissions.photos === 'denied') {
+        setLocalError('Please allow camera or photo access in Settings to submit proof.')
+        return
+      }
+      setNativeCapturing(true)
+      try {
+        const photo = await CapCamera.getPhoto({
+          quality: 85,
+          allowEditing: false,
+          resultType: CameraResultType.Uri,
+          source: CameraSource.Prompt,
+        })
+        const response = await fetch(photo.webPath!)
+        const blob = await response.blob()
+        const file = new File([blob], `photo_${Date.now()}.${photo.format || 'jpg'}`, { type: blob.type })
+        const previewUrl = URL.createObjectURL(blob)
+        setUploadFiles((prev) => [...prev, { file, type: 'screenshot', previewUrl }])
+        setLocalError(null)
+      } catch (err: any) {
+        if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
+          setLocalError('Failed to capture photo. Please try again.')
+        }
+      } finally {
+        setNativeCapturing(false)
+      }
+      return
+    }
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode } })
       streamRef.current = stream
@@ -104,6 +136,39 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
       cameraInputRef.current?.click()
     }
   }, [facingMode])
+
+  const handlePhotosPick = useCallback(async () => {
+    if (Capacitor.isNativePlatform()) {
+      const permissions = await CapCamera.requestPermissions({ permissions: ['camera', 'photos'] })
+      if (permissions.camera === 'denied' && permissions.photos === 'denied') {
+        setLocalError('Please allow camera or photo access in Settings to submit proof.')
+        return
+      }
+      setNativeCapturing(true)
+      try {
+        const photo = await CapCamera.getPhoto({
+          quality: 85,
+          allowEditing: false,
+          resultType: CameraResultType.Uri,
+          source: CameraSource.Prompt,
+        })
+        const response = await fetch(photo.webPath!)
+        const blob = await response.blob()
+        const file = new File([blob], `photo_${Date.now()}.${photo.format || 'jpg'}`, { type: blob.type })
+        const previewUrl = URL.createObjectURL(blob)
+        setUploadFiles((prev) => [...prev, { file, type: 'screenshot', previewUrl }])
+        setLocalError(null)
+      } catch (err: any) {
+        if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
+          setLocalError('Failed to pick photo. Please try again.')
+        }
+      } finally {
+        setNativeCapturing(false)
+      }
+      return
+    }
+    photoInputRef.current?.click()
+  }, [])
 
   const closeCamera = useCallback(() => {
     streamRef.current?.getTracks().forEach((t) => t.stop())
@@ -327,7 +392,7 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
               icon={<Image className="w-8 h-8 text-accent-green" />}
               label="Photos"
               count={photoCount}
-              onClick={() => photoInputRef.current?.click()}
+              onClick={handlePhotosPick}
             />
             <UploadCard
               icon={<Video className="w-8 h-8 text-accent-green" />}
@@ -425,10 +490,10 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
         ) : (
           <PrimaryButton
             onClick={handleSubmitEvidence}
-            disabled={!hasProof || isSubmitting}
+            disabled={!hasProof || isSubmitting || nativeCapturing}
             variant="danger"
           >
-            {isSubmitting ? 'Submitting…' : 'Submit Evidence'}
+            {nativeCapturing ? 'Uploading…' : isSubmitting ? 'Submitting…' : 'Submit Evidence'}
           </PrimaryButton>
         )}
       </div>

@@ -45,5 +45,13 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>LYNK uses your camera so you can take photos and videos as proof when completing or challenging bets with friends.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>LYNK accesses your photo library so you can choose existing photos or videos as proof submissions for your bets.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>LYNK saves bet proof photos to your photo library so you can keep a record of your completed challenges.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>LYNK uses your microphone when recording video proof for bet submissions.</string>
 </dict>
 </plist>

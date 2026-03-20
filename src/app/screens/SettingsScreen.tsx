@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router'
-import { ChevronLeft, Sun, Moon, LogOut, Bell, BellOff, MessageSquarePlus, RotateCcw } from 'lucide-react'
-import { useAuthStore, useUiStore, usePushStore, useGroupStore, useCompetitionStore } from '@/stores'
+import { ChevronLeft, Sun, Moon, LogOut, Bell, BellOff, MessageSquarePlus, RotateCcw, Trash2 } from 'lucide-react'
+import { useAuthStore, useUiStore, usePushStore, useGroupStore, useCompetitionStore, useBetStore, useChatStore, useNotificationStore, useShameStore, useProofStore } from '@/stores'
 import { supabase } from '@/lib/supabase'
 import type { NotificationPreferenceRow } from '@/lib/database.types'
 import {
@@ -103,6 +103,90 @@ export function SettingsScreen() {
 
   const [showSignOutConfirm, setShowSignOutConfirm] = useState(false)
   const [signingOut, setSigningOut] = useState(false)
+
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
+
+  const handleDeleteAccount = async () => {
+    if (!userId) return
+    setDeleting(true)
+    setDeleteError(null)
+    try {
+      // 1. proof_votes (user_id)
+      const { error: pvErr } = await supabase.from('proof_votes').delete().eq('user_id', userId)
+      if (pvErr) throw pvErr
+
+      // 2. proofs (submitted_by)
+      const { error: prErr } = await supabase.from('proofs').delete().eq('submitted_by', userId)
+      if (prErr) throw prErr
+
+      // 3. bet_sides (user_id)
+      const { error: bsErr } = await supabase.from('bet_sides').delete().eq('user_id', userId)
+      if (bsErr) throw bsErr
+
+      // 4. outcomes — no user_id column; delete by bet_id for bets owned by this user
+      const { data: userBets } = await supabase.from('bets').select('id').eq('claimant_id', userId)
+      const betIds = (userBets ?? []).map((b: { id: string }) => b.id)
+      if (betIds.length > 0) {
+        const { error: outErr } = await supabase.from('outcomes').delete().in('bet_id', betIds)
+        if (outErr) throw outErr
+      }
+
+      // 5. bets (claimant_id)
+      const { error: betErr } = await supabase.from('bets').delete().eq('claimant_id', userId)
+      if (betErr) throw betErr
+
+      // 6. conversation_participants (user_id)
+      const { error: cpErr } = await supabase.from('conversation_participants').delete().eq('user_id', userId)
+      if (cpErr) throw cpErr
+
+      // 7. messages (sender_id)
+      const { error: msgErr } = await supabase.from('messages').delete().eq('sender_id', userId)
+      if (msgErr) throw msgErr
+
+      // 8. group_members (user_id)
+      const { error: gmErr } = await supabase.from('group_members').delete().eq('user_id', userId)
+      if (gmErr) throw gmErr
+
+      // 9. push_subscriptions (user_id)
+      const { error: psErr } = await supabase.from('push_subscriptions').delete().eq('user_id', userId)
+      if (psErr) throw psErr
+
+      // 10. notification_preferences (user_id)
+      const { error: npErr } = await supabase.from('notification_preferences').delete().eq('user_id', userId)
+      if (npErr) throw npErr
+
+      // 11. notifications (user_id)
+      const { error: notifErr } = await supabase.from('notifications').delete().eq('user_id', userId)
+      if (notifErr) throw notifErr
+
+      // 12. profiles (id)
+      const { error: profErr } = await supabase.from('profiles').delete().eq('id', userId)
+      if (profErr) throw profErr
+
+      await supabase.auth.signOut()
+
+      // Clear all stores
+      useBetStore.getState().clearFilters()
+      useBetStore.getState().resetWizard()
+      useBetStore.getState().clearError()
+      useChatStore.getState().clearActiveConversation()
+      useChatStore.getState().clearError()
+      useGroupStore.getState().clearError()
+      useCompetitionStore.getState().clearError()
+      useNotificationStore.getState().clearError()
+      useShameStore.getState().clearError()
+      useProofStore.getState().clearError()
+      usePushStore.getState().clearError()
+      useAuthStore.getState().clearError()
+
+      navigate('/', { replace: true })
+    } catch {
+      setDeleteError('Could not delete account. Please try again or contact support.')
+      setDeleting(false)
+    }
+  }
 
   const handleSignOut = async () => {
     setSigningOut(true)
@@ -298,8 +382,44 @@ export function SettingsScreen() {
             <LogOut className="w-4 h-4" />
             Sign Out
           </button>
+
+          {/* ── Delete account ───────────────────────────────────────────── */}
+          <div className="border-t border-border-subtle pt-4">
+            {deleteError && (
+              <p className="text-destructive text-xs text-center mb-3">{deleteError}</p>
+            )}
+            <button
+              onClick={() => { setDeleteError(null); setShowDeleteConfirm(true) }}
+              disabled={deleting}
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-destructive font-bold text-sm hover:bg-destructive/10 transition-colors disabled:opacity-50"
+            >
+              <Trash2 className="w-4 h-4" />
+              {deleting ? 'Deleting...' : 'Delete Account'}
+            </button>
+          </div>
         </div>
       </div>
+
+      <AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete account?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This permanently deletes your account, all your bets, and your entire history. This cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteAccount}
+              disabled={deleting}
+              className="bg-destructive hover:bg-destructive/90"
+            >
+              {deleting ? 'Deleting...' : 'Delete Account'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <AlertDialog open={showSignOutConfirm} onOpenChange={setShowSignOutConfirm}>
         <AlertDialogContent>

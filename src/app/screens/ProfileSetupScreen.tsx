@@ -7,6 +7,8 @@ import { loadPendingInvite } from './CompetitionInviteScreen'
 import { Input } from '@/app/components/ui/input'
 import { Button } from '@/app/components/ui/button'
 import { User } from 'lucide-react'
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera'
+import { Capacitor } from '@capacitor/core'
 
 const USERNAME_DEBOUNCE_MS = 500
 
@@ -23,6 +25,8 @@ export function ProfileSetupScreen() {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
   const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null)
   const [usernameChecking, setUsernameChecking] = useState(false)
+  const [nativeCapturing, setNativeCapturing] = useState(false)
+  const [captureError, setCaptureError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -47,7 +51,36 @@ export function ProfileSetupScreen() {
     return () => clearTimeout(timer)
   }, [username])
 
-  const handleAvatarClick = () => {
+  const handleAvatarClick = async () => {
+    if (Capacitor.isNativePlatform()) {
+      const permissions = await Camera.requestPermissions({ permissions: ['camera', 'photos'] })
+      if (permissions.camera === 'denied' && permissions.photos === 'denied') {
+        setCaptureError('Please allow camera or photo access in Settings to add a photo.')
+        return
+      }
+      setNativeCapturing(true)
+      try {
+        const photo = await Camera.getPhoto({
+          quality: 85,
+          allowEditing: false,
+          resultType: CameraResultType.Uri,
+          source: CameraSource.Prompt,
+        })
+        const response = await fetch(photo.webPath!)
+        const blob = await response.blob()
+        const file = new File([blob], `${Date.now()}.${photo.format || 'jpg'}`, { type: blob.type })
+        setAvatarFile(file)
+        setAvatarPreview(photo.webPath!)
+        setCaptureError(null)
+      } catch (err: any) {
+        if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
+          setCaptureError('Failed to capture photo. Please try again.')
+        }
+      } finally {
+        setNativeCapturing(false)
+      }
+      return
+    }
     fileInputRef.current?.click()
   }
 
@@ -177,13 +210,17 @@ export function ProfileSetupScreen() {
           </div>
         </div>
 
+        {captureError && (
+          <p className="text-destructive text-sm mb-2">{captureError}</p>
+        )}
+
         {error && (
           <p className="text-destructive text-sm mb-4">{error}</p>
         )}
 
         <Button
           onClick={handleSubmit}
-          disabled={!canSubmit}
+          disabled={!canSubmit || nativeCapturing}
           className="w-full h-14 rounded-2xl bg-accent-green text-white font-bold text-base hover:bg-accent-green/90"
         >
           {isLoading ? (

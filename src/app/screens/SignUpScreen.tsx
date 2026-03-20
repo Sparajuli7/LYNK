@@ -9,6 +9,21 @@ import { ChevronLeft, Eye, EyeOff } from 'lucide-react'
 
 type SignUpMode = 'email' | 'phone'
 
+function mapAuthError(err: string | null): string | null {
+  if (!err) return null
+  const lower = err.toLowerCase()
+  if (lower.includes('invalid_credentials') || lower.includes('invalid login credentials')) {
+    return 'Incorrect email or password.'
+  }
+  if (lower.includes('email_not_confirmed') || lower.includes('email not confirmed')) {
+    return 'Please check your email to confirm your account.'
+  }
+  if (lower.includes('user_already_registered') || lower.includes('user already registered') || lower.includes('already been registered')) {
+    return 'An account with this email already exists.'
+  }
+  return err
+}
+
 export function SignUpScreen() {
   const navigate = useNavigate()
   const signUp = useAuthStore((s) => s.signUp)
@@ -99,7 +114,7 @@ export function SignUpScreen() {
     setMode(newMode)
   }
 
-  const displayError = error ?? localError
+  const displayError = mapAuthError(error) ?? localError
   const emailValid = validateEmail(email.trim()).valid
   const passValid = validatePassword(password).valid
   const matchValid = confirmPassword.length > 0 && validatePasswordMatch(password, confirmPassword).valid

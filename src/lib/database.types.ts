@@ -249,6 +249,8 @@ export interface PushSubscriptionRow {
   keys_p256dh: string
   keys_auth: string
   created_at: string
+  token?: string | null
+  platform?: string | null
 }
 
 export interface NotificationPreferenceRow {

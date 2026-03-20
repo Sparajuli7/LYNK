@@ -3,6 +3,8 @@ import { Send, Camera, Video, X, Loader2, Reply, Pencil } from 'lucide-react'
 import { MentionSuggestions } from '@/app/components/MentionSuggestions'
 import type { ParticipantProfile } from '@/lib/api/chat'
 import type { MessageWithSender } from '@/lib/api/chat'
+import { Camera as CapCamera, CameraResultType, CameraSource } from '@capacitor/camera'
+import { Capacitor } from '@capacitor/core'
 
 interface ChatInputProps {
   onSend: (content: string) => void
@@ -34,6 +36,7 @@ export function ChatInput({
   const [value, setValue] = useState('')
   const [imagePreview, setImagePreview] = useState<{ file: File; url: string } | null>(null)
   const [mentionQuery, setMentionQuery] = useState<string | null>(null)
+  const [cameraError, setCameraError] = useState<string | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const videoInputRef = useRef<HTMLInputElement>(null)
@@ -167,6 +170,36 @@ export function ChatInput({
     setImagePreview(null)
   }
 
+  const handleCameraClick = useCallback(async () => {
+    if (Capacitor.isNativePlatform()) {
+      const permissions = await CapCamera.requestPermissions({ permissions: ['camera', 'photos'] })
+      if (permissions.camera === 'denied' && permissions.photos === 'denied') {
+        setCameraError('Please allow camera or photo access in Settings.')
+        return
+      }
+      try {
+        const photo = await CapCamera.getPhoto({
+          quality: 85,
+          allowEditing: false,
+          resultType: CameraResultType.Uri,
+          source: CameraSource.Prompt,
+        })
+        const response = await fetch(photo.webPath!)
+        const blob = await response.blob()
+        const file = new File([blob], `photo_${Date.now()}.${photo.format || 'jpg'}`, { type: blob.type })
+        if (imagePreview) URL.revokeObjectURL(imagePreview.url)
+        setImagePreview({ file, url: photo.webPath! })
+        setCameraError(null)
+      } catch (err: any) {
+        if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
+          setCameraError('Failed to capture photo. Please try again.')
+        }
+      }
+      return
+    }
+    fileInputRef.current?.click()
+  }, [imagePreview])
+
   const canSend =
     (!disabled && !isUploading) &&
     (value.trim().length > 0 || imagePreview !== null)
@@ -180,6 +213,11 @@ export function ChatInput({
           participants={participants}
           onSelect={handleMentionSelect}
         />
+      )}
+
+      {/* Camera error */}
+      {cameraError && (
+        <p className="text-destructive text-xs mb-1 px-1">{cameraError}</p>
       )}
 
       {/* Reply preview bar */}
@@ -263,7 +301,7 @@ export function ChatInput({
         {!editingMessage && (
           <>
             <button
-              onClick={() => fileInputRef.current?.click()}
+              onClick={handleCameraClick}
               disabled={disabled || isUploading}
               className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-bg-elevated text-text-muted hover:text-accent-green transition-colors disabled:opacity-50"
               aria-label="Take photo or choose image"

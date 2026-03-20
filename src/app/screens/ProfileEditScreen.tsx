@@ -5,6 +5,8 @@ import { useAuthStore } from '@/stores'
 import { uploadAvatar, checkUsernameAvailable } from '@/lib/api/profiles'
 import { Input } from '@/app/components/ui/input'
 import { Button } from '@/app/components/ui/button'
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera'
+import { Capacitor } from '@capacitor/core'
 
 export function ProfileEditScreen() {
   const navigate = useNavigate()
@@ -19,20 +21,53 @@ export function ProfileEditScreen() {
   const [usernameChecking, setUsernameChecking] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [avatarUploading, setAvatarUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handleAvatarClick = () => {
+  const handleAvatarClick = async () => {
+    if (Capacitor.isNativePlatform()) {
+      const permissions = await Camera.requestPermissions({ permissions: ['camera', 'photos'] })
+      if (permissions.camera === 'denied' && permissions.photos === 'denied') {
+        setError('Please allow camera or photo access in Settings to change your photo.')
+        return
+      }
+      setAvatarUploading(true)
+      try {
+        const photo = await Camera.getPhoto({
+          quality: 85,
+          allowEditing: false,
+          resultType: CameraResultType.Uri,
+          source: CameraSource.Prompt,
+        })
+        const response = await fetch(photo.webPath!)
+        const blob = await response.blob()
+        const file = new File([blob], `${Date.now()}.${photo.format || 'jpg'}`, { type: blob.type })
+        if (!user) return
+        const url = await uploadAvatar(user.id, file)
+        setProfile({ ...profile!, avatar_url: url })
+      } catch (err: any) {
+        if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
+          setError(err instanceof Error ? err.message : 'Failed to upload photo')
+        }
+      } finally {
+        setAvatarUploading(false)
+      }
+      return
+    }
     fileInputRef.current?.click()
   }
 
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file || !user) return
+    setAvatarUploading(true)
     try {
       const url = await uploadAvatar(user.id, file)
       setProfile({ ...profile!, avatar_url: url })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to upload')
+    } finally {
+      setAvatarUploading(false)
     }
     e.target.value = ''
   }
@@ -178,10 +213,10 @@ export function ProfileEditScreen() {
 
           <Button
             type="submit"
-            disabled={saving}
+            disabled={saving || avatarUploading}
             className="w-full h-14 rounded-2xl bg-accent-green text-white font-bold"
           >
-            {saving ? 'Saving...' : 'Save'}
+            {avatarUploading ? 'Uploading...' : saving ? 'Saving...' : 'Save'}
           </Button>
         </form>
       </div>

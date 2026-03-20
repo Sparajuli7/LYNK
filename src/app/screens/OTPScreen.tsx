@@ -6,6 +6,21 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/app/components/ui/input
 
 const RESEND_COOLDOWN_SEC = 60
 
+function mapAuthError(err: string | null): string | null {
+  if (!err) return null
+  const lower = err.toLowerCase()
+  if (lower.includes('invalid_credentials') || lower.includes('invalid login credentials')) {
+    return 'Incorrect email or password.'
+  }
+  if (lower.includes('email_not_confirmed') || lower.includes('email not confirmed')) {
+    return 'Please check your email to confirm your account.'
+  }
+  if (lower.includes('user_already_registered') || lower.includes('user already registered') || lower.includes('already been registered')) {
+    return 'An account with this email already exists.'
+  }
+  return err
+}
+
 export function OTPScreen() {
   const navigate = useNavigate()
   const location = useLocation()
@@ -106,8 +121,8 @@ export function OTPScreen() {
           </InputOTP>
         </div>
 
-        {error && (
-          <p className="text-destructive text-sm text-center mb-4">{error}</p>
+        {mapAuthError(error) && (
+          <p className="text-destructive text-sm text-center mb-4">{mapAuthError(error)}</p>
         )}
 
         {isLoading && (

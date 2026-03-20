@@ -1,8 +1,10 @@
 import { useEffect } from 'react'
 import { Capacitor } from '@capacitor/core'
+import { PushNotifications } from '@capacitor/push-notifications'
 import { AppRouter } from './Router'
 import { Toaster } from './components/ui/sonner'
 import { useAuthStore, useUiStore } from '@/stores'
+import { supabase } from '@/lib/supabase'
 
 export default function App() {
   const initialize = useAuthStore((s) => s.initialize)
@@ -22,6 +24,37 @@ export default function App() {
       import('@capacitor/splash-screen').then(({ SplashScreen }) => {
         SplashScreen.hide()
       }).catch(() => {})
+
+      ;(async () => {
+        try {
+          const result = await PushNotifications.requestPermissions()
+          if (result.receive === 'granted') {
+            await PushNotifications.register()
+          }
+
+          PushNotifications.addListener('registration', async (token) => {
+            const { data: { user } } = await supabase.auth.getUser()
+            if (user) {
+              await supabase.from('push_subscriptions').upsert({
+                user_id: user.id,
+                token: token.value,
+                platform: 'ios',
+              }, { onConflict: 'user_id,platform' })
+            }
+          })
+
+          PushNotifications.addListener('registrationError', (err) => {
+            console.error('Push registration error:', err)
+          })
+
+          PushNotifications.addListener('pushNotificationActionPerformed', (action) => {
+            const betId = action.notification.data?.betId
+            if (betId) window.location.href = `/bet/${betId}`
+          })
+        } catch (err) {
+          console.error('Push setup failed:', err)
+        }
+      })()
 
       // Listen for deep link callbacks (OAuth, invite links, etc.)
       import('@capacitor/app').then(({ App: CapApp }) => {
