@@ -78,12 +78,15 @@ export async function submitProof(
     screenshotUrls = results
   }
 
+  const hasAnyMedia = !!(frontUrl || backUrl || videoUrl || documentUrl || screenshotUrls?.length)
+  const effectiveType: ProofType = hasAnyMedia ? type : 'text'
+
   const { data: proof, error } = await supabase
     .from('proofs')
     .insert({
       bet_id: betId,
       submitted_by: user.id,
-      proof_type: type,
+      proof_type: effectiveType,
       front_camera_url: frontUrl,
       back_camera_url: backUrl,
       video_url: videoUrl,

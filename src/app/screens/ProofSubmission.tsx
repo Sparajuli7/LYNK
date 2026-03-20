@@ -10,7 +10,7 @@ import { Capacitor } from '@capacitor/core'
 
 interface UploadEntry {
   file: File
-  type: 'screenshot' | 'video' | 'document'
+  type: 'camera' | 'screenshot' | 'video' | 'document'
   /** Object URL for image previews — revoked on removal */
   previewUrl?: string
 }
@@ -49,6 +49,8 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
   const videoInputRef = useRef<HTMLInputElement>(null)
   const docInputRef = useRef<HTMLInputElement>(null)
   const cameraInputRef = useRef<HTMLInputElement>(null)
+  const nativeVideoInputRef = useRef<HTMLInputElement>(null)
+  const nativeDocInputRef = useRef<HTMLInputElement>(null)
 
   const [cameraOpen, setCameraOpen] = useState(false)
   const [facingMode, setFacingMode] = useState<'environment' | 'user'>('environment')
@@ -105,13 +107,13 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
           quality: 85,
           allowEditing: false,
           resultType: CameraResultType.Uri,
-          source: CameraSource.Prompt,
+          source: CameraSource.Camera,
         })
         const response = await fetch(photo.webPath!)
         const blob = await response.blob()
         const file = new File([blob], `photo_${Date.now()}.${photo.format || 'jpg'}`, { type: blob.type })
         const previewUrl = URL.createObjectURL(blob)
-        setUploadFiles((prev) => [...prev, { file, type: 'screenshot', previewUrl }])
+        setUploadFiles((prev) => [...prev, { file, type: 'camera', previewUrl }])
         setLocalError(null)
       } catch (err: any) {
         if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
@@ -150,7 +152,7 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
           quality: 85,
           allowEditing: false,
           resultType: CameraResultType.Uri,
-          source: CameraSource.Prompt,
+          source: CameraSource.Photos,
         })
         const response = await fetch(photo.webPath!)
         const blob = await response.blob()
@@ -212,6 +214,7 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
 
   /** Build the file object and determine proof type from current uploads */
   function buildFilesAndType() {
+    const cameraFiles = uploadFiles.filter((u) => u.type === 'camera').map((u) => u.file)
     const screenshots = uploadFiles.filter((u) => u.type === 'screenshot').map((u) => u.file)
     const video = uploadFiles.find((u) => u.type === 'video')?.file
     const doc = uploadFiles.find((u) => u.type === 'document')?.file
@@ -223,6 +226,7 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
       videoFile?: File
       documentFile?: File
     } = {}
+    if (cameraFiles.length) files.frontCameraFile = cameraFiles[0]
     if (screenshots.length) files.screenshotFiles = screenshots
     if (video) files.videoFile = video
     if (doc) files.documentFile = doc
@@ -231,6 +235,7 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
     if (video) proofType = 'video'
     else if (doc) proofType = 'document'
     else if (screenshots.length) proofType = 'screenshot'
+    else if (cameraFiles.length) proofType = 'camera'
 
     return { files, proofType }
   }
@@ -398,13 +403,13 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
               icon={<Video className="w-8 h-8 text-accent-green" />}
               label="Video"
               count={videoCount}
-              onClick={() => videoInputRef.current?.click()}
+              onClick={() => Capacitor.isNativePlatform() ? nativeVideoInputRef.current?.click() : videoInputRef.current?.click()}
             />
             <UploadCard
               icon={<FileText className="w-8 h-8 text-accent-green" />}
               label="Document"
               count={docCount}
-              onClick={() => docInputRef.current?.click()}
+              onClick={() => Capacitor.isNativePlatform() ? nativeDocInputRef.current?.click() : docInputRef.current?.click()}
             />
             <UploadCard
               icon={<Camera className="w-8 h-8 text-accent-green" />}
@@ -418,6 +423,8 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
           <input ref={videoInputRef} type="file" accept="video/*" className="hidden" onChange={(e) => addFiles(e, 'video')} />
           <input ref={docInputRef} type="file" accept=".pdf,.doc,.docx,.txt,.csv,.xls,.xlsx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" className="hidden" onChange={(e) => addFiles(e, 'document')} />
           <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => addFiles(e, 'screenshot')} />
+          <input ref={nativeVideoInputRef} type="file" accept="video/*" capture="environment" className="hidden" onChange={(e) => addFiles(e, 'video')} />
+          <input ref={nativeDocInputRef} type="file" accept=".pdf,.doc,.docx,image/*" className="hidden" onChange={(e) => addFiles(e, 'document')} />
         </div>
 
         {/* File previews */}

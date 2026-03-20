@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { ChevronLeft, Check } from 'lucide-react'
+import { supabase } from '@/lib/supabase'
 
 const LOVE_OPTIONS = [
   'Betting with friends',
@@ -24,29 +25,10 @@ const IMPROVE_OPTIONS = [
   'Profile & card',
 ]
 
-type SubmittedFeedback = {
-  rating: number
-  loves: string[]
-  improve: string[]
-  thoughts: string
-  submittedAt: string
-}
-
-function saveFeedback(data: SubmittedFeedback) {
-  try {
-    // Migrate legacy 'forfeit-feedback' key to 'lynk-feedback' on first access
-    const legacyData = localStorage.getItem('forfeit-feedback')
-    if (legacyData && !localStorage.getItem('lynk-feedback')) {
-      localStorage.setItem('lynk-feedback', legacyData)
-      localStorage.removeItem('forfeit-feedback')
-    }
-    const existing = JSON.parse(localStorage.getItem('lynk-feedback') ?? '[]') as SubmittedFeedback[]
-    existing.push(data)
-    localStorage.setItem('lynk-feedback', JSON.stringify(existing))
-  } catch {
-    // ignore
-  }
-}
+// TODO: create 'feedback' table in Supabase with columns:
+//   id uuid primary key, user_id uuid nullable, rating int2 nullable,
+//   loves text[] nullable, improve text[] nullable,
+//   thoughts text nullable, submitted_at timestamptz
 
 export function FeedbackScreen() {
   const navigate = useNavigate()
@@ -77,16 +59,25 @@ export function FeedbackScreen() {
   const handleSubmit = async () => {
     if (!canSubmit || submitting) return
     setSubmitting(true)
-    await new Promise((r) => setTimeout(r, 600))
-    saveFeedback({
-      rating,
-      loves: [...loves],
-      improve: [...improve],
-      thoughts: thoughts.trim(),
-      submittedAt: new Date().toISOString(),
-    })
-    setSubmitting(false)
-    setSubmitted(true)
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (supabase.from as any)('feedback').insert({
+        user_id: user?.id ?? null,
+        rating: rating > 0 ? rating : null,
+        loves: loves.size > 0 ? [...loves] : null,
+        improve: improve.size > 0 ? [...improve] : null,
+        thoughts: thoughts.trim() || null,
+        submitted_at: new Date().toISOString(),
+      })
+      setSubmitted(true)
+    } catch (err) {
+      console.error('Feedback submit failed:', err)
+      // Still show success to user — don't block on analytics
+      setSubmitted(true)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   if (submitted) {

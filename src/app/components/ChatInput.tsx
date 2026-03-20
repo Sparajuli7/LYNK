@@ -161,7 +161,8 @@ export function ChatInput({
   const handleVideoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
-    onSendVideo(file, '')
+    if (imagePreview) URL.revokeObjectURL(imagePreview.url)
+    setImagePreview({ file, url: URL.createObjectURL(file) })
     e.target.value = ''
   }
 
@@ -182,7 +183,37 @@ export function ChatInput({
           quality: 85,
           allowEditing: false,
           resultType: CameraResultType.Uri,
-          source: CameraSource.Prompt,
+          source: CameraSource.Photos,
+        })
+        const response = await fetch(photo.webPath!)
+        const blob = await response.blob()
+        const file = new File([blob], `photo_${Date.now()}.${photo.format || 'jpg'}`, { type: blob.type })
+        if (imagePreview) URL.revokeObjectURL(imagePreview.url)
+        setImagePreview({ file, url: photo.webPath! })
+        setCameraError(null)
+      } catch (err: any) {
+        if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
+          setCameraError('Failed to capture photo. Please try again.')
+        }
+      }
+      return
+    }
+    fileInputRef.current?.click()
+  }, [imagePreview])
+
+  const handleLiveCameraClick = useCallback(async () => {
+    if (Capacitor.isNativePlatform()) {
+      const permissions = await CapCamera.requestPermissions({ permissions: ['camera', 'photos'] })
+      if (permissions.camera === 'denied' && permissions.photos === 'denied') {
+        setCameraError('Please allow camera or photo access in Settings.')
+        return
+      }
+      try {
+        const photo = await CapCamera.getPhoto({
+          quality: 85,
+          allowEditing: false,
+          resultType: CameraResultType.Uri,
+          source: CameraSource.Camera,
         })
         const response = await fetch(photo.webPath!)
         const blob = await response.blob()
@@ -294,7 +325,8 @@ export function ChatInput({
           ref={videoInputRef}
           type="file"
           accept="video/*"
-          className="hidden"
+          capture="environment"
+          style={{ display: 'none' }}
           onChange={handleVideoSelect}
         />
 
@@ -304,7 +336,16 @@ export function ChatInput({
               onClick={handleCameraClick}
               disabled={disabled || isUploading}
               className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-bg-elevated text-text-muted hover:text-accent-green transition-colors disabled:opacity-50"
-              aria-label="Take photo or choose image"
+              aria-label="Choose from gallery"
+            >
+              <Camera className="w-5 h-5" />
+            </button>
+
+            <button
+              onClick={handleLiveCameraClick}
+              disabled={disabled || isUploading}
+              className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-bg-elevated text-text-muted hover:text-accent-green transition-colors disabled:opacity-50"
+              aria-label="Take photo"
             >
               <Camera className="w-5 h-5" />
             </button>
@@ -313,7 +354,7 @@ export function ChatInput({
               onClick={() => videoInputRef.current?.click()}
               disabled={disabled || isUploading}
               className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-bg-elevated text-text-muted hover:text-accent-green transition-colors disabled:opacity-50"
-              aria-label="Upload video"
+              aria-label="Record or upload video"
             >
               <Video className="w-5 h-5" />
             </button>

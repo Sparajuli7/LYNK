@@ -1,6 +1,8 @@
 import { create } from 'zustand'
 import { supabase } from '@/lib/supabase'
 import type { PushSubscriptionInsert } from '@/lib/database.types'
+import { Capacitor } from '@capacitor/core'
+import { PushNotifications } from '@capacitor/push-notifications'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -20,6 +22,8 @@ interface PushActions {
   requestPermission: () => Promise<NotificationPermission>
   /** Subscribe to Web Push and save subscription to database */
   subscribe: () => Promise<boolean>
+  /** Register for native push notifications (iOS/Android via Capacitor) */
+  subscribeNative: () => Promise<boolean>
   /** Unsubscribe from Web Push and remove from database */
   unsubscribe: () => Promise<void>
   clearError: () => void
@@ -65,6 +69,19 @@ const usePushStore = create<PushStore>()((set, get) => ({
   error: null,
 
   initialize: async () => {
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const { receive } = await PushNotifications.checkPermissions()
+        set({
+          isSubscribed: receive === 'granted',
+          permission: receive === 'granted' ? 'granted' : receive === 'denied' ? 'denied' : 'default',
+        })
+      } catch {
+        // ignore — leave defaults
+      }
+      return
+    }
+
     if (typeof Notification === 'undefined') return
 
     set({ permission: Notification.permission })
@@ -143,6 +160,30 @@ const usePushStore = create<PushStore>()((set, get) => ({
     } catch (err) {
       set({
         error: err instanceof Error ? err.message : 'Failed to subscribe.',
+        isLoading: false,
+      })
+      return false
+    }
+  },
+
+  subscribeNative: async () => {
+    set({ isLoading: true, error: null })
+    try {
+      const { receive } = await PushNotifications.requestPermissions()
+      if (receive !== 'granted') {
+        set({
+          isLoading: false,
+          permission: receive === 'denied' ? 'denied' : 'default',
+          error: receive === 'denied' ? 'Please enable notifications in iOS Settings.' : null,
+        })
+        return false
+      }
+      await PushNotifications.register()
+      set({ isSubscribed: true, isLoading: false, permission: 'granted' })
+      return true
+    } catch (err) {
+      set({
+        error: err instanceof Error ? err.message : 'Failed to enable notifications.',
         isLoading: false,
       })
       return false

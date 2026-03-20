@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router'
 import { ChevronLeft, Sun, Moon, LogOut, Bell, BellOff, MessageSquarePlus, RotateCcw, Trash2 } from 'lucide-react'
 import { useAuthStore, useUiStore, usePushStore, useGroupStore, useCompetitionStore, useBetStore, useChatStore, useNotificationStore, useShameStore, useProofStore } from '@/stores'
 import { supabase } from '@/lib/supabase'
+import { Capacitor } from '@capacitor/core'
 import type { NotificationPreferenceRow } from '@/lib/database.types'
 import {
   AlertDialog,
@@ -29,6 +30,7 @@ export function SettingsScreen() {
   const pushPermission = usePushStore((s) => s.permission)
   const isSubscribed = usePushStore((s) => s.isSubscribed)
   const pushSubscribe = usePushStore((s) => s.subscribe)
+  const pushSubscribeNative = usePushStore((s) => s.subscribeNative)
   const pushUnsubscribe = usePushStore((s) => s.unsubscribe)
   const pushInitialize = usePushStore((s) => s.initialize)
   const pushLoading = usePushStore((s) => s.isLoading)
@@ -266,14 +268,22 @@ export function SettingsScreen() {
                 <p className="text-sm font-medium text-text-primary">Push notifications</p>
                 <p className="text-xs text-text-muted">
                   {pushPermission === 'denied'
-                    ? 'Blocked by browser — enable in site settings'
+                    ? 'Blocked — enable in Settings'
                     : isSubscribed
                       ? 'Receiving push notifications'
                       : 'Not enabled'}
                 </p>
               </div>
               <button
-                onClick={() => (isSubscribed ? pushUnsubscribe() : pushSubscribe())}
+                onClick={() => {
+                  if (isSubscribed) {
+                    pushUnsubscribe()
+                  } else if (Capacitor.isNativePlatform()) {
+                    pushSubscribeNative()
+                  } else {
+                    pushSubscribe()
+                  }
+                }}
                 disabled={pushLoading || pushPermission === 'denied'}
                 className={`w-12 h-7 rounded-full transition-colors relative ${
                   isSubscribed ? 'bg-accent-green' : 'bg-bg-elevated'

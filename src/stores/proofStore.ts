@@ -241,6 +241,9 @@ const useProofStore = create<ProofStore>()((set, get) => ({
       return null
     }
 
+    // When no media was uploaded, the proof is text-only regardless of what the caller passed
+    const effectiveProofType: ProofType = hasAnyMedia ? proofType : 'text'
+
     // Build proof insert — include ruling + ruling_deadline when provided
     const rulingDeadline = ruling
       ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
@@ -252,7 +255,7 @@ const useProofStore = create<ProofStore>()((set, get) => ({
       .insert({
         bet_id: betId,
         submitted_by: userId,
-        proof_type: proofType,
+        proof_type: effectiveProofType,
         front_camera_url: frontUrl,
         back_camera_url: backUrl,
         video_url: videoUrl,
