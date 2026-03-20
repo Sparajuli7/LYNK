@@ -203,7 +203,11 @@ export function ChatInput({
       }
       return
     }
-    fileInputRef.current?.click()
+    if (!fileInputRef.current) {
+      console.warn('fileInputRef is null')
+      return
+    }
+    fileInputRef.current.click()
   }, [imagePreview])
 
   const handleLiveCameraClick = useCallback(async () => {
@@ -233,7 +237,11 @@ export function ChatInput({
       }
       return
     }
-    liveCameraInputRef.current?.click()
+    if (!liveCameraInputRef.current) {
+      console.warn('liveCameraInputRef is null')
+      return
+    }
+    liveCameraInputRef.current.click()
   }, [imagePreview])
 
   const canSend =
@@ -347,7 +355,6 @@ export function ChatInput({
           ref={videoInputRef}
           type="file"
           accept="video/*"
-          capture="environment"
           style={{ display: 'none' }}
           onChange={handleVideoSelect}
         />
