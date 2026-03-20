@@ -35,6 +35,8 @@ export function ShameProofSubmission() {
   const videoInputRef = useRef<HTMLInputElement>(null)
   const docInputRef = useRef<HTMLInputElement>(null)
   const cameraInputRef = useRef<HTMLInputElement>(null)
+  const nativeVideoInputRef = useRef<HTMLInputElement>(null)
+  const nativeDocInputRef = useRef<HTMLInputElement>(null)
 
   const [cameraOpen, setCameraOpen] = useState(false)
   const [facingMode, setFacingMode] = useState<'environment' | 'user'>('environment')
@@ -392,13 +394,13 @@ export function ShameProofSubmission() {
               icon={<Video className="w-8 h-8 text-accent-green" />}
               label="Video"
               count={videoCount}
-              onClick={() => videoInputRef.current?.click()}
+              onClick={() => Capacitor.isNativePlatform() ? nativeVideoInputRef.current?.click() : videoInputRef.current?.click()}
             />
             <UploadCard
               icon={<FileText className="w-8 h-8 text-accent-green" />}
               label="Document"
               count={docCount}
-              onClick={() => docInputRef.current?.click()}
+              onClick={() => Capacitor.isNativePlatform() ? nativeDocInputRef.current?.click() : docInputRef.current?.click()}
             />
             <UploadCard
               icon={<Camera className="w-8 h-8 text-accent-green" />}
@@ -438,6 +440,21 @@ export function ShameProofSubmission() {
             capture="environment"
             className="hidden"
             onChange={(e) => addFiles(e, 'screenshot')}
+          />
+          <input
+            ref={nativeVideoInputRef}
+            type="file"
+            accept="video/*"
+            capture="environment"
+            className="hidden"
+            onChange={(e) => addFiles(e, 'video')}
+          />
+          <input
+            ref={nativeDocInputRef}
+            type="file"
+            accept=".pdf,.doc,.docx,image/*"
+            className="hidden"
+            onChange={(e) => addFiles(e, 'document')}
           />
         </div>
 

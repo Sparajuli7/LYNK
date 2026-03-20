@@ -39,6 +39,7 @@ export function ChatInput({
   const [cameraError, setCameraError] = useState<string | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const liveCameraInputRef = useRef<HTMLInputElement>(null)
   const videoInputRef = useRef<HTMLInputElement>(null)
 
   // When entering edit mode, populate with existing content
@@ -120,7 +121,11 @@ export function ChatInput({
     }
 
     if (imagePreview) {
-      onSendImage(imagePreview.file, value.trim())
+      if (imagePreview.file.type.startsWith('video/')) {
+        onSendVideo(imagePreview.file, value.trim())
+      } else {
+        onSendImage(imagePreview.file, value.trim())
+      }
       URL.revokeObjectURL(imagePreview.url)
       setImagePreview(null)
       setValue('')
@@ -228,7 +233,7 @@ export function ChatInput({
       }
       return
     }
-    fileInputRef.current?.click()
+    liveCameraInputRef.current?.click()
   }, [imagePreview])
 
   const canSend =
@@ -289,11 +294,20 @@ export function ChatInput({
       {/* Image preview */}
       {imagePreview && (
         <div className="relative mb-2 inline-block">
-          <img
-            src={imagePreview.url}
-            alt="Preview"
-            className="h-20 w-20 rounded-xl object-cover border border-border-subtle"
-          />
+          {imagePreview.file.type.startsWith('video/') ? (
+            <video
+              src={imagePreview.url}
+              className="h-20 w-20 rounded-xl object-cover border border-border-subtle"
+              controls
+              playsInline
+            />
+          ) : (
+            <img
+              src={imagePreview.url}
+              alt="Preview"
+              className="h-20 w-20 rounded-xl object-cover border border-border-subtle"
+            />
+          )}
           {!isUploading && (
             <button
               onClick={clearImage}
@@ -316,8 +330,16 @@ export function ChatInput({
           ref={fileInputRef}
           type="file"
           accept="image/*"
-          capture="environment"
           className="hidden"
+          onChange={handleFileSelect}
+        />
+        {/* Live camera input — capture forces camera on mobile web */}
+        <input
+          ref={liveCameraInputRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          style={{ display: 'none' }}
           onChange={handleFileSelect}
         />
         {/* Video picker button */}
