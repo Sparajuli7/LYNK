@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router'
-import { motion, AnimatePresence } from 'motion/react'
+import { motion } from 'motion/react'
 import { getBetOutcomeWithDetails } from '@/lib/api/outcomes'
 import { isParticipantInBet } from '@/lib/api/bets'
 import { getProfilesByIds } from '@/lib/api/profiles'
@@ -9,15 +9,37 @@ import { formatMoney } from '@/lib/utils/formatters'
 import type { BetOutcomeDetails } from '@/lib/api/outcomes'
 import type { OutcomeResult } from '@/lib/database.types'
 import { PrimaryButton } from '../components/PrimaryButton'
-import { PunishmentReceipt } from '../components/PunishmentReceipt'
 import { ShareSheet } from '../components/ShareSheet'
+import { OutcomeStamp, PunishmentCard } from '@/components/lynk'
 import { getBetShareUrl, getOutcomeShareText, shareWithNative, getProofShareFiles } from '@/lib/share'
-import { Download, Share2 } from 'lucide-react'
 import { captureElementAsImage, shareImage } from '@/lib/utils/imageExport'
-import { getPunishmentShareText } from '@/lib/share'
 import { computeBetPayouts } from '@/lib/api/betPayouts'
 import { getShamePostByBetId, recordPunishmentTaken } from '@/lib/api/shame'
 import type { HallOfShameEntry } from '@/lib/database.types'
+import { X } from 'lucide-react'
+
+/** Count-up hook: animates from 0 to `target` over `duration` ms with ease-out */
+function useCountUp(target: number, duration = 600): number {
+  const [value, setValue] = useState(0)
+  const rafRef = useRef<number>(0)
+
+  useEffect(() => {
+    if (target <= 0) { setValue(0); return }
+    const start = performance.now()
+    const step = (now: number) => {
+      const elapsed = now - start
+      const progress = Math.min(elapsed / duration, 1)
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setValue(Math.round(eased * target))
+      if (progress < 1) rafRef.current = requestAnimationFrame(step)
+    }
+    rafRef.current = requestAnimationFrame(step)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [target, duration])
+
+  return value
+}
 
 interface OutcomeRevealProps {
   onShare?: () => void
@@ -25,99 +47,6 @@ interface OutcomeRevealProps {
 }
 
 type ProfileMap = Map<string, { display_name: string; avatar_url: string | null }>
-
-// ---------------------------------------------------------------------------
-// Winner card — ref-captured for share/save
-// ---------------------------------------------------------------------------
-
-interface WinnerCardProps {
-  betTitle: string
-  winnerName: string
-  winnerNames: string[]
-  loserNames: string[]
-  stakeMoney?: number | null
-  punishmentText?: string | null
-  resolvedDate: string
-  betId?: string
-}
-
-const WinnerCard = ({ betTitle, winnerName, winnerNames, loserNames, stakeMoney, punishmentText, resolvedDate }: WinnerCardProps) => (
-  <div
-    className="mx-4 rounded-2xl overflow-hidden"
-    style={{
-      background: 'linear-gradient(135deg, #0F1A0F 0%, #1A2A0F 50%, #0A1F0A 100%)',
-      border: '1.5px solid rgba(0,230,118,0.4)',
-      boxShadow: '0 0 40px rgba(0,230,118,0.15)',
-    }}
-  >
-    {/* Top stripe */}
-    <div
-      className="h-1.5"
-      style={{ background: 'linear-gradient(90deg, #00E676, #FFB800, #00E676)' }}
-    />
-
-    <div className="p-5">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-4">
-        <p className="text-[10px] font-black uppercase tracking-[0.15em] text-accent-green opacity-80">
-          LYNK
-        </p>
-        <p className="text-[10px] text-text-muted tabular-nums">{resolvedDate}</p>
-      </div>
-
-      {/* Trophy + winner name */}
-      <div className="text-center mb-5">
-        <div className="text-5xl mb-2"></div>
-        <p className="text-[10px] font-bold uppercase tracking-widest text-accent-green mb-1">
-          WINNER
-        </p>
-        <p className="text-xl font-black text-white leading-tight">
-          {winnerNames.length > 1 ? winnerNames.join(' & ') : winnerName}
-        </p>
-      </div>
-
-      {/* Divider */}
-      <div className="border-t border-dashed border-accent-green/20 my-4" />
-
-      {/* Bet info */}
-      <div className="space-y-2.5">
-        <div className="flex justify-between items-start gap-3">
-          <span className="text-[10px] font-bold uppercase text-text-muted shrink-0">BET</span>
-          <span className="text-xs text-text-primary text-right">{betTitle}</span>
-        </div>
-
-        {(stakeMoney || punishmentText) && (
-          <div className="flex justify-between items-start gap-3">
-            <span className="text-[10px] font-bold uppercase text-text-muted shrink-0">COLLECTS</span>
-            <span className="text-xs font-bold text-accent-green text-right">
-              {stakeMoney ? formatMoney(stakeMoney) : punishmentText}
-            </span>
-          </div>
-        )}
-
-        {loserNames.length > 0 && (
-          <div className="flex justify-between items-start gap-3">
-            <span className="text-[10px] font-bold uppercase text-text-muted shrink-0">OWES</span>
-            <span className="text-xs text-accent-coral text-right">{loserNames.join(', ')}</span>
-          </div>
-        )}
-      </div>
-
-      {/* Bottom stripe */}
-      <div
-        className="h-px mt-5"
-        style={{ background: 'linear-gradient(90deg, transparent, rgba(0,230,118,0.3), transparent)' }}
-      />
-      <p className="text-center text-[9px] font-bold uppercase tracking-widest text-text-muted mt-3 opacity-60">
-        LYNK · Bet settled
-      </p>
-    </div>
-  </div>
-)
-
-// ---------------------------------------------------------------------------
-// Main screen
-// ---------------------------------------------------------------------------
 
 export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
   const { id } = useParams<{ id: string }>()
@@ -130,11 +59,10 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
   const [phase, setPhase] = useState<'revealing' | 'result'>('revealing')
   const [shareSheetOpen, setShareSheetOpen] = useState(false)
   const [savingImage, setSavingImage] = useState(false)
-  // undefined = not yet loaded; null = no proof submitted; HallOfShameEntry = proof exists
   const [shamePost, setShamePost] = useState<HallOfShameEntry | null | undefined>(undefined)
   const receiptRef = useRef<HTMLDivElement>(null)
-  const winnerCardRef = useRef<HTMLDivElement>(null)
 
+  // ── Data fetching ──────────────────────────────────────────────────────────
   useEffect(() => {
     if (!id) return
     let cancelled = false
@@ -160,7 +88,7 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
     return () => { cancelled = true }
   }, [id])
 
-  // Load shame proof for this bet (to show "officially complete" vs "awaiting proof")
+  // Load shame proof for this bet
   useEffect(() => {
     if (!id || !data) return
     getShamePostByBetId(id)
@@ -168,7 +96,7 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
       .catch(() => setShamePost(null))
   }, [id, data])
 
-  // Record punishment taken once for losers on punishment bets (idempotent via localStorage)
+  // Record punishment taken once for losers on punishment bets (idempotent)
   useEffect(() => {
     if (!data || !user || !id) return
     const { outcome, bet, betSides } = data
@@ -194,6 +122,7 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
     }
   }, [loading, error, data])
 
+  // ── Handlers ───────────────────────────────────────────────────────────────
   const handleShare = async () => {
     if (!data || !id) return
     const result = data.outcome.result as 'claimant_succeeded' | 'claimant_failed' | 'voided'
@@ -205,16 +134,15 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
     const proofFiles = data.proofs.length > 0 ? await getProofShareFiles(data.proofs[0]) : []
     const usedNative = await shareWithNative({ title: 'Share result', text, url, files: proofFiles })
     if (usedNative) {
-      onShare?.() ?? navigate('/home')
+      onShare?.() ?? navigate(`/bet/${id}`)
     } else {
       setShareSheetOpen(true)
     }
   }
 
-  const handleSharedDone = () => { onShare?.() ?? navigate('/home') }
-  const handleBack = () => (onBack ? onBack() : navigate(-1))
+  const handleSharedDone = () => { onShare?.() ?? navigate(`/bet/${id}`) }
+  const handleDismiss = () => (onBack ? onBack() : id ? navigate(`/bet/${id}`) : navigate(-1))
   const handleSubmitPunishmentProof = () => id && navigate(`/bet/${id}/shame-proof`)
-  const handleDispute = () => navigate('/home')
 
   const handleSaveReceipt = async () => {
     if (!receiptRef.current || savingImage) return
@@ -222,48 +150,36 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
     try {
       const blob = await captureElementAsImage(receiptRef.current, { scale: 2 })
       await shareImage(blob, 'lynk-receipt.png', 'LYNK Punishment Receipt')
-    } catch { /* ignore */ }
-    finally { setSavingImage(false) }
+    } finally {
+      setSavingImage(false)
+    }
   }
 
-  const handleSaveWinnerCard = async () => {
-    if (!winnerCardRef.current || savingImage) return
-    setSavingImage(true)
-    try {
-      const blob = await captureElementAsImage(winnerCardRef.current, { scale: 2 })
-      await shareImage(blob, 'lynk-winner.png', 'I won the bet!')
-    } catch { /* ignore */ }
-    finally { setSavingImage(false) }
-  }
-
-  // ── Loading ────────────────────────────────────────────────────────────────
+  // ── Loading / Error ────────────────────────────────────────────────────────
   if (loading) {
     return (
-      <div className="h-full bg-bg-primary flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-accent-green border-t-transparent rounded-full animate-spin" />
+      <div className="h-full bg-bg flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-rider border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
 
-  // ── Error ─────────────────────────────────────────────────────────────────
   if (error || !data) {
     return (
-      <div className="h-full bg-bg-primary flex flex-col items-center justify-center px-6">
+      <div className="h-full bg-bg flex flex-col items-center justify-center px-6">
         <p className="text-destructive mb-4">{error ?? 'Outcome not found'}</p>
         <PrimaryButton onClick={() => navigate(-1)}>Go Back</PrimaryButton>
       </div>
     )
   }
 
+  // ── Derived data ───────────────────────────────────────────────────────────
   const { outcome, bet, betSides, punishmentText } = data
   const result = outcome.result as OutcomeResult
-  const claimantProfile = profiles.get(bet.claimant_id)
-  const claimantName = claimantProfile?.display_name ?? 'Claimant'
-  const claimantAvatar = claimantProfile?.avatar_url
+  const claimantName = profiles.get(bet.claimant_id)?.display_name ?? 'Claimant'
   const riders = betSides.filter((s) => s.side === 'rider')
   const doubters = betSides.filter((s) => s.side === 'doubter')
 
-  // Compute payouts and punishment assignments
   const payouts = computeBetPayouts(
     result,
     bet.claimant_id,
@@ -277,19 +193,25 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
 
   const winnerNames = winnerIds.map((uid) => profiles.get(uid)?.display_name ?? 'Unknown')
   const loserNames = loserIds.map((uid) => profiles.get(uid)?.display_name ?? 'Unknown')
-  const punishmentOwerNames = punishmentOwers.map((uid) => profiles.get(uid)?.display_name ?? 'Unknown')
 
-  // Current user's perspective
   const isUserWinner = !!user && winnerIds.includes(user.id)
   const isUserLoser = !!user && loserIds.includes(user.id)
   const userWinPayout = winnerPayouts.find((p) => p.userId === user?.id)
   const userLossPayout = loserPayouts.find((p) => p.userId === user?.id)
-
   const isParticipant = isParticipantInBet(bet, betSides, user?.id)
+
   const resolvedDate = new Date(outcome.resolved_at).toLocaleDateString('en-US', {
     month: 'short', day: 'numeric', year: 'numeric',
   })
 
+  // betSerial: last 6 chars of bet ID (uppercase)
+  const betSerial = (id ?? bet.id).slice(-6).toUpperCase()
+
+  // Determine user state: did the current user WIN or LOSE?
+  const userWon = isUserWinner
+  const userLost = isUserLoser
+
+  // Build share sheet data
   const outcomeShareText = getOutcomeShareText({
     title: bet.title,
     claimantName,
@@ -298,7 +220,6 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
     doubterNames: doubters.map((d) => profiles.get(d.user_id)?.display_name ?? 'Unknown'),
   })
   const outcomeShareUrl = id ? getBetShareUrl(id) : ''
-
   const firstProof = data.proofs[0]
   const proofImageUrl =
     firstProof?.front_camera_url ??
@@ -320,9 +241,8 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
     />
   )
 
-  // ── Dramatic Reveal Phase ─────────────────────────────────────────────────
+  // ── Reveal phase ───────────────────────────────────────────────────────────
   if (phase === 'revealing') {
-    const revealEmoji = result === 'claimant_succeeded' ? '' : result === 'claimant_failed' ? '' : ''
     const revealColor = result === 'claimant_succeeded'
       ? 'from-yellow-900/60 via-black to-black'
       : result === 'claimant_failed'
@@ -334,16 +254,14 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
         className={`h-full bg-gradient-to-b ${revealColor} flex flex-col items-center justify-center px-6 cursor-pointer`}
         onClick={() => setPhase('result')}
       >
-        {/* Pulsing emoji */}
         <motion.div
           animate={{ scale: [1, 1.15, 1], opacity: [0.8, 1, 0.8] }}
           transition={{ repeat: Infinity, duration: 1.4, ease: 'easeInOut' }}
           className="text-8xl mb-8 select-none"
         >
-          {revealEmoji}
+          {result === 'claimant_succeeded' ? '\u{1F3C6}' : result === 'claimant_failed' ? '\u{1F480}' : '\u{1F6AB}'}
         </motion.div>
 
-        {/* "Verdict is in" */}
         <motion.h2
           className="text-3xl font-black text-white text-center mb-3 leading-tight"
           initial={{ opacity: 0, y: 24 }}
@@ -354,7 +272,7 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
         </motion.h2>
 
         <motion.p
-          className="text-text-muted text-center text-sm max-w-[260px]"
+          className="text-text-mute text-center text-sm max-w-[260px]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
@@ -362,516 +280,454 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
           {bet.title}
         </motion.p>
 
-        {/* Progress bar auto-advancing */}
         <motion.div
-          className="absolute bottom-0 left-0 h-0.5 bg-accent-green/60"
+          className="absolute bottom-0 left-0 h-0.5 bg-rider/60"
           initial={{ width: '0%' }}
           animate={{ width: '100%' }}
           transition={{ duration: 2.2, ease: 'linear' }}
         />
 
-        <p className="absolute bottom-8 text-text-muted text-xs font-medium opacity-60">
+        <p className="absolute bottom-8 text-text-mute text-xs font-medium opacity-60">
           Tap to reveal
         </p>
       </div>
     )
   }
 
-  // ── WIN ────────────────────────────────────────────────────────────────────
-  if (result === 'claimant_succeeded') {
-    const punishmentForShare = getPunishmentShareText({
-      loserName: loserNames[0] ?? 'Opponent',
-      punishment: punishmentText ?? 'their stakes',
-      betTitle: bet.title,
-    })
+  // ── Doubters who owe you (for WON) ─────────────────────────────────────────
+  const doubterOwers = loserPayouts.filter((p) =>
+    doubters.some((d) => d.user_id === p.userId),
+  )
 
+  // Total user payout or loss
+  const userPayoutAmount = userWinPayout?.amount ?? 0
+  const userLossAmount = userLossPayout?.amount ?? 0
+
+  // Animated count-up values (cents)
+  const animatedPayout = useCountUp(userPayoutAmount)
+  const animatedLoss = useCountUp(userLossAmount)
+
+  // Verdict text
+  const verdictText = userWon
+    ? `${claimantName} proved it. Cash it in.`
+    : userLost
+      ? `${claimantName} missed it. Pay up.`
+      : result === 'claimant_succeeded'
+        ? `${claimantName} proved it.`
+        : result === 'claimant_failed'
+          ? `${claimantName} didn't deliver.`
+          : 'This bet was voided.'
+
+  const voteForText = `Final vote: ${riders.length} rider${riders.length !== 1 ? 's' : ''} for, ${doubters.length} doubter${doubters.length !== 1 ? 's' : ''} against`
+
+  // ── VOIDED ─────────────────────────────────────────────────────────────────
+  if (result === 'voided') {
     return (
       <>
         {shareSheet}
-        <div
-          className="h-full flex flex-col overflow-hidden relative"
-          style={{ background: 'linear-gradient(to bottom, #0D1A00 0%, #050A00 60%, #0A0A0F 100%)' }}
-        >
-          {/* Confetti particles */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            {[...Array(40)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute rounded-full"
-                initial={{ opacity: 0, y: -20, scale: 0 }}
-                animate={{
-                  opacity: [0, 0.7, 0.3],
-                  y: ['0%', `${60 + (i % 4) * 10}%`],
-                  x: [`${-10 + (i % 5) * 5}px`, `${10 - (i % 5) * 5}px`],
-                  scale: [0, 1, 0.5],
-                  rotate: [0, 360 * (i % 2 === 0 ? 1 : -1)],
-                }}
-                transition={{ delay: i * 0.04, duration: 2 + (i % 3) * 0.5, ease: 'easeOut' }}
-                style={{
-                  left: `${(i * 2.5) % 100}%`,
-                  top: `${(i * 3) % 30}%`,
-                  width: i % 4 === 0 ? 8 : 5,
-                  height: i % 4 === 0 ? 8 : 5,
-                  backgroundColor: ['#FFB800', '#00E676', '#FFFFFF', '#FF6B35', '#7B61FF'][i % 5],
-                }}
-              />
-            ))}
+        <div className="h-full bg-bg diagonal-grid flex flex-col relative">
+          {/* Close */}
+          <button
+            onClick={handleDismiss}
+            className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-surface flex items-center justify-center border border-lnk-border"
+          >
+            <X className="w-5 h-5 text-text" />
+          </button>
+
+          <div className="flex-1 flex flex-col items-center justify-center px-6">
+            <motion.h1
+              className="text-[64px] font-black text-text-mute mb-8 text-center"
+              style={{ letterSpacing: '-0.02em' }}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              NO CONTEST
+            </motion.h1>
+            <motion.p
+              className="text-text-mute text-center max-w-xs"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              This bet was voided. No winners, no losers.
+            </motion.p>
           </div>
 
+          <div className="px-5 pb-8 pt-3 space-y-3 shrink-0">
+            {isParticipant && id && (
+              <button
+                onClick={() => navigate(`/bet/${id}/rematch`)}
+                className="w-full h-12 rounded-xl border border-rider/30 text-rider text-sm font-bold btn-pressed"
+              >
+                REMATCH
+              </button>
+            )}
+            <button
+              onClick={handleShare}
+              className="w-full h-12 rounded-xl border border-lnk-border text-text-dim text-sm font-bold btn-pressed"
+            >
+              Share Result
+            </button>
+          </div>
+        </div>
+      </>
+    )
+  }
+
+  // ── Determine won/lost from the user's perspective ─────────────────────────
+  // If user is a participant, use their actual result. Otherwise show the
+  // claimant-centric result (succeeded = WON screen, failed = LOST screen).
+  const showWon = isParticipant ? userWon : result === 'claimant_succeeded'
+  const showLost = isParticipant ? userLost : result === 'claimant_failed'
+  // For non-participants who are just viewing, default to the claimant perspective
+  const isWonScreen = showWon || (!isParticipant && result === 'claimant_succeeded')
+
+  // ── WON ────────────────────────────────────────────────────────────────────
+  if (isWonScreen) {
+    return (
+      <>
+        {shareSheet}
+        <div className="h-full flex flex-col relative bg-bg">
+          {/* Diagonal grid background in rider tint */}
+          <div
+            className="absolute inset-0 diagonal-grid"
+            style={{ backgroundColor: 'rgb(0 230 118 / 0.03)' }}
+          />
+
+          {/* Close button */}
+          <button
+            onClick={handleDismiss}
+            className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-surface flex items-center justify-center border border-lnk-border"
+          >
+            <X className="w-5 h-5 text-text" />
+          </button>
+
           {/* Scrollable content */}
-          <div className="flex-1 overflow-y-auto">
-            <div className="flex flex-col items-center px-6 pt-10 pb-4">
-              {/* WINNER headline */}
-              <AnimatePresence>
-                <motion.h1
-                  className="font-black text-center mb-6"
-                  style={{
-                    fontSize: 68,
-                    letterSpacing: '-0.03em',
-                    lineHeight: 1,
-                    background: 'linear-gradient(135deg, #FFB800 0%, #00E676 50%, #FFB800 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                  }}
-                  initial={{ opacity: 0, scale: 0.6, y: -30 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                >
-                  WINNER
-                </motion.h1>
-              </AnimatePresence>
+          <div className="flex-1 overflow-y-auto no-scrollbar relative z-10">
+            <div className="flex flex-col items-center px-5 pt-14 pb-4">
 
-              {/* Claimant avatar */}
-              <motion.div
-                className="relative mb-5"
-                initial={{ opacity: 0, scale: 0.7 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.15, type: 'spring', stiffness: 280 }}
-              >
-                {/* Glow ring */}
-                <div
-                  className="absolute inset-0 rounded-full"
-                  style={{ boxShadow: '0 0 0 6px rgba(0,230,118,0.25), 0 0 30px rgba(0,230,118,0.3)' }}
-                />
-                <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-accent-green relative">
-                  {claimantAvatar ? (
-                    <img src={claimantAvatar} alt={claimantName} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full bg-bg-elevated flex items-center justify-center text-3xl font-black text-accent-green">
-                      {claimantName[0]}
-                    </div>
-                  )}
-                </div>
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-4xl"></div>
-              </motion.div>
-
+              {/* Pre-header */}
               <motion.p
-                className="text-white font-black text-2xl mb-1"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.25 }}
-              >
-                {claimantName}
-              </motion.p>
-              <motion.p
-                className="text-accent-green text-xs font-bold uppercase tracking-widest mb-6"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.35 }}
-              >
-                Takes the W
-              </motion.p>
-
-              {/* Winner card — shareable */}
-              <motion.div
-                className="w-full mb-4"
-                initial={{ opacity: 0, y: 24 }}
+                className="text-rider text-[11px] font-black tracking-[0.25em] uppercase mb-6"
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.4 }}
-                ref={winnerCardRef}
+                transition={{ duration: 0.3 }}
               >
-                <WinnerCard
-                  betTitle={bet.title}
-                  winnerName={claimantName}
-                  winnerNames={winnerNames}
-                  loserNames={loserNames}
-                  stakeMoney={bet.stake_money}
-                  punishmentText={punishmentText}
-                  resolvedDate={resolvedDate}
-                  betId={id}
+                {'\u25CF'} OUTCOME REVEALED
+              </motion.p>
+
+              {/* OutcomeStamp — self-animating spring */}
+              <div className="mb-8">
+                <OutcomeStamp
+                  result="won"
+                  betSerial={betSerial}
+                  date={resolvedDate}
                 />
+              </div>
+
+              {/* Verdict */}
+              <motion.div
+                className="text-center mb-8 px-2"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25, duration: 0.35 }}
+              >
+                <p className="text-text font-black text-xl italic leading-snug mb-2">
+                  {verdictText}
+                </p>
+                <p className="text-text-mute text-[12px] font-mono">
+                  {voteForText}
+                </p>
               </motion.div>
 
-              {/* Your result */}
-              {isParticipant && (
+              {/* Payout counter — counts up from $0 */}
+              {userPayoutAmount > 0 && (
                 <motion.div
-                  className="w-full mb-3 mx-4"
+                  className="text-center mb-8"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.35, duration: 0.35 }}
+                >
+                  <p className="text-rider text-[11px] font-black tracking-[0.2em] uppercase mb-1">
+                    PAYOUT
+                  </p>
+                  <p className="font-mono font-black text-[56px] leading-none text-rider">
+                    +{formatMoney(animatedPayout)}
+                  </p>
+                  <p className="text-text-mute font-mono text-[11px] mt-2">
+                    Split from {loserIds.length} doubter{loserIds.length !== 1 ? 's' : ''} &middot; {formatMoney(bet.stake_money ?? 0)} total pot
+                  </p>
+                </motion.div>
+              )}
+
+              {/* "DOUBTERS WHO OWE YOU" card */}
+              {doubterOwers.length > 0 && (
+                <motion.div
+                  className="w-full mb-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.45, duration: 0.35 }}
+                >
+                  <div className="bg-surface rounded-xl border border-lnk-border overflow-hidden">
+                    <div className="px-4 pt-3 pb-2">
+                      <p className="text-doubter text-[11px] font-black tracking-[0.15em] uppercase">
+                        DOUBTERS WHO OWE YOU
+                      </p>
+                    </div>
+                    <div className="px-4 pb-3 space-y-2">
+                      {doubterOwers.slice(0, 3).map((ower) => {
+                        const profile = profiles.get(ower.userId)
+                        return (
+                          <div key={ower.userId} className="flex items-center justify-between">
+                            <div className="flex items-center gap-2.5">
+                              <div className="w-7 h-7 rounded-full bg-surface-2 border border-lnk-border flex items-center justify-center overflow-hidden shrink-0">
+                                {profile?.avatar_url ? (
+                                  <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
+                                ) : (
+                                  <span className="text-[11px] font-black text-text-dim">
+                                    {(profile?.display_name ?? '?')[0]}
+                                  </span>
+                                )}
+                              </div>
+                              <span className="text-text text-[13px] font-semibold">
+                                @{profile?.display_name ?? 'Unknown'}
+                              </span>
+                            </div>
+                            <span className="text-doubter font-mono font-bold text-[13px]">
+                              {formatMoney(ower.amount)}
+                            </span>
+                          </div>
+                        )
+                      })}
+                      {doubterOwers.length > 3 && (
+                        <p className="text-text-mute text-[11px] font-mono text-center pt-1">
+                          +{doubterOwers.length - 3} more
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Punishment due (visible to everyone) */}
+              {punishmentOwers.length > 0 && punishmentText && (
+                <motion.div
+                  className="w-full mb-4"
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.55, duration: 0.35 }}
                 >
-                  <div
-                    className="rounded-2xl border p-4 text-center"
-                    style={{
-                      background: isUserWinner ? 'rgba(0,230,118,0.1)' : 'rgba(255,107,53,0.1)',
-                      borderColor: isUserWinner ? 'rgba(0,230,118,0.4)' : 'rgba(255,107,53,0.4)',
-                    }}
-                  >
-                    <p className="text-[11px] font-bold uppercase tracking-widest mb-1"
-                      style={{ color: isUserWinner ? '#00E676' : '#FF6B35' }}>
-                      YOUR RESULT
-                    </p>
-                    {isUserWinner && userWinPayout && userWinPayout.amount > 0 ? (
-                      <p className="text-xl font-black text-white">
-                        You won <span style={{ color: '#00E676' }}>{formatMoney(userWinPayout.amount)}</span>
-                      </p>
-                    ) : isUserLoser && userLossPayout && userLossPayout.amount > 0 ? (
-                      <p className="text-xl font-black text-white">
-                        You owe <span style={{ color: '#FF6B35' }}>{formatMoney(userLossPayout.amount)}</span>
-                      </p>
-                    ) : isUserWinner ? (
-                      <p className="text-lg font-black" style={{ color: '#00E676' }}>You're in the clear</p>
-                    ) : (
-                      <p className="text-lg font-black" style={{ color: '#FF6B35' }}>You owe the punishment</p>
-                    )}
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Who owes the punishment */}
-              {punishmentOwers.length > 0 && punishmentText && (
-                <motion.div
-                  className="w-full mx-4 mb-3"
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.65, duration: 0.35 }}
-                >
-                  <div className="rounded-2xl border border-accent-coral/40 bg-accent-coral/10 p-4">
-                    <p className="text-[11px] font-bold uppercase tracking-widest text-accent-coral mb-1">
-                      PUNISHMENT DUE
-                    </p>
-                    <p className="text-sm font-bold text-white mb-1">{punishmentText}</p>
-                    <p className="text-xs text-text-muted">
-                      Owed by: {punishmentOwerNames.join(', ')}
-                    </p>
-                  </div>
+                  <PunishmentCard
+                    title={punishmentText}
+                    deadlineText="Now"
+                    assignedBy={winnerNames.join(' & ')}
+                  />
                 </motion.div>
               )}
             </div>
           </div>
 
-          {/* Action buttons */}
-          <div className="px-6 pb-8 pt-3 space-y-3 shrink-0 border-t border-white/5">
-            {/* Proof gate for losers viewing the WIN screen (doubters who lost) */}
-            {isUserLoser && punishmentOwers.includes(user?.id ?? '') && (
-              shamePost ? (
-                <div className="w-full py-3 px-4 rounded-xl border border-accent-green/40 bg-accent-green/10 text-center">
-                  <p className="text-sm font-black text-accent-green">✓ Officially Complete</p>
-                  <p className="text-xs text-text-muted mt-0.5">Punishment proof submitted — logged on your card</p>
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  <PrimaryButton onClick={handleSubmitPunishmentProof} variant="danger">
-                    SUBMIT PUNISHMENT PROOF
-                  </PrimaryButton>
-                  <p className="text-center text-[11px] text-amber-400 font-semibold">
-                    Required to officially close this bet on your card
-                  </p>
-                </div>
-              )
-            )}
-            <PrimaryButton onClick={handleShare} variant="primary">
-              Share Result
-            </PrimaryButton>
-            <button
-              onClick={handleSaveWinnerCard}
-              disabled={savingImage}
-              className="w-full h-12 rounded-xl border border-accent-green/30 text-accent-green text-sm font-bold flex items-center justify-center gap-2 hover:bg-accent-green/10 transition-colors disabled:opacity-50"
-            >
-              <Download className="w-4 h-4" />
-              {savingImage ? 'Saving…' : 'Save Winner Card'}
-            </button>
-            {isParticipant && id && (
-              <PrimaryButton
-                onClick={() => navigate(`/bet/${id}/rematch`)}
-                variant="ghost"
-                className="border border-accent-green/40 text-accent-green"
-              >
-                Rematch — same people, higher stakes
-              </PrimaryButton>
-            )}
-            <PrimaryButton onClick={handleBack} variant="ghost">
-              Back to Group
-            </PrimaryButton>
-          </div>
-        </div>
-
-        {/* Shame share sheet for loser names */}
-        <ShareSheet
-          open={false}
-          onOpenChange={() => {}}
-          title="Shame them"
-          text={punishmentForShare}
-          url={outcomeShareUrl}
-          onShared={() => {}}
-        />
-      </>
-    )
-  }
-
-  // ── LOSE ───────────────────────────────────────────────────────────────────
-  if (result === 'claimant_failed') {
-    return (
-      <>
-        {shareSheet}
-        <div
-          className="h-full flex flex-col overflow-hidden relative"
-          style={{ background: 'linear-gradient(to bottom, #1A0000 0%, #0D0000 60%, #0A0A0F 100%)' }}
-        >
-          {/* Red flash on mount */}
+          {/* Action bar — bottom-pinned */}
           <motion.div
-            className="absolute inset-0 bg-accent-coral pointer-events-none"
-            initial={{ opacity: 0.4 }}
-            animate={{ opacity: 0 }}
-            transition={{ duration: 0.6 }}
-          />
-
-          {/* Scrollable content */}
-          <div className="flex-1 overflow-y-auto">
-            <div className="flex flex-col items-center px-6 pt-10 pb-4">
-              {/* LYNK headline */}
-              <motion.h1
-                className="font-black text-accent-coral text-center mb-2 italic"
-                style={{ fontSize: 72, letterSpacing: '-0.03em', lineHeight: 1 }}
-                initial={{ opacity: 0, scale: 1.4, y: -20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ type: 'spring', stiffness: 250, damping: 18 }}
+            className="px-5 pb-8 pt-4 shrink-0 relative z-10 border-t border-lnk-border bg-bg/90 backdrop-blur-sm"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.3 }}
+          >
+            <div className="flex gap-3 mb-3">
+              <button
+                onClick={handleShare}
+                className="flex-1 h-11 rounded-xl border border-rider/30 text-rider text-[13px] font-bold btn-pressed flex items-center justify-center gap-1.5"
               >
-                LYNK
-              </motion.h1>
-
-              <motion.p
-                className="text-accent-coral/70 text-xs font-bold uppercase tracking-widest mb-6"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                You lost the bet
-              </motion.p>
-
-              {/* Losing figure */}
-              <motion.div
-                className="mb-6 opacity-30"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.3 }}
-                transition={{ delay: 0.25 }}
-              >
-                <svg width="120" height="84" viewBox="0 0 200 140" className="text-accent-coral">
-                  <path d="M 100 0 L 98 30 L 102 50 L 97 80 L 103 110 L 100 140"
-                    stroke="currentColor" strokeWidth="2.5" fill="none" strokeDasharray="4,3" />
-                  <path d="M 100 60 L 65 45 L 45 65 M 100 60 L 135 45 L 155 65"
-                    stroke="currentColor" strokeWidth="2" fill="none" strokeDasharray="4,3" />
-                  <path d="M 100 90 L 70 105 L 50 125 M 100 90 L 130 105 L 150 125"
-                    stroke="currentColor" strokeWidth="2" fill="none" strokeDasharray="4,3" />
-                </svg>
-              </motion.div>
-
-              {/* Punishment Receipt */}
-              <motion.div
-                className="w-full mb-4"
-                initial={{ opacity: 0, y: 30, rotate: -1 }}
-                animate={{ opacity: 1, y: 0, rotate: 0 }}
-                transition={{ delay: 0.3, duration: 0.45 }}
-              >
-                <PunishmentReceipt
-                  ref={receiptRef}
-                  betTitle={bet.title}
-                  loserName={loserNames.length === 1 ? loserNames[0] : loserNames.join(' & ')}
-                  punishment={punishmentText ?? 'Complete the stake'}
-                  winnerNames={winnerNames}
-                  issuedDate={resolvedDate}
-                  betId={id}
-                />
-              </motion.div>
-
-              {/* Your result */}
-              {isParticipant && (
-                <motion.div
-                  className="w-full mb-3"
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.45 }}
+                SHARE WIN
+              </button>
+              {isParticipant && id && (
+                <button
+                  onClick={() => navigate(`/bet/${id}/rematch`)}
+                  className="flex-1 h-11 rounded-xl border border-rider/30 text-rider text-[13px] font-bold btn-pressed flex items-center justify-center gap-1.5"
                 >
-                  <div
-                    className="rounded-2xl border p-4 text-center mx-0"
-                    style={{
-                      background: isUserWinner ? 'rgba(0,230,118,0.1)' : 'rgba(255,107,53,0.1)',
-                      borderColor: isUserWinner ? 'rgba(0,230,118,0.4)' : 'rgba(255,107,53,0.4)',
-                    }}
-                  >
-                    <p className="text-[11px] font-bold uppercase tracking-widest mb-1"
-                      style={{ color: isUserWinner ? '#00E676' : '#FF6B35' }}>
-                      YOUR RESULT
-                    </p>
-                    {isUserWinner && userWinPayout && userWinPayout.amount > 0 ? (
-                      <p className="text-xl font-black text-white">
-                        You won <span style={{ color: '#00E676' }}>{formatMoney(userWinPayout.amount)}</span>
-                      </p>
-                    ) : isUserLoser && userLossPayout && userLossPayout.amount > 0 ? (
-                      <p className="text-xl font-black text-white">
-                        You owe <span style={{ color: '#FF6B35' }}>{formatMoney(userLossPayout.amount)}</span>
-                      </p>
-                    ) : isUserWinner ? (
-                      <p className="text-lg font-black" style={{ color: '#00E676' }}>You're in the clear</p>
-                    ) : (
-                      <p className="text-lg font-black" style={{ color: '#FF6B35' }}>You owe the punishment</p>
-                    )}
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Who owes punishment (visible to everyone) */}
-              {punishmentOwers.length > 0 && punishmentText && (
-                <motion.div
-                  className="w-full mb-3"
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.55 }}
-                >
-                  <div className="rounded-2xl border border-accent-coral/40 bg-accent-coral/10 p-4">
-                    <p className="text-[11px] font-bold uppercase tracking-widest text-accent-coral mb-1">
-                      PUNISHMENT DUE
-                    </p>
-                    <p className="text-sm font-bold text-white mb-1">{punishmentText}</p>
-                    <p className="text-xs text-text-muted">
-                      Owed by: {punishmentOwerNames.join(', ')}
-                    </p>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Who won */}
-              {winnerNames.length > 0 && (
-                <motion.p
-                  className="text-center text-xs text-text-muted"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.65 }}
-                >
-                  {winnerNames.join(' & ')} {winnerNames.length === 1 ? 'wins' : 'win'} this one
-                </motion.p>
+                  REMATCH
+                </button>
               )}
             </div>
-          </div>
-
-          {/* Action buttons */}
-          <div className="px-6 pb-8 pt-3 space-y-3 shrink-0 border-t border-white/5">
-            {/* Proof gate status — only for losers on punishment bets */}
-            {isUserLoser && punishmentOwers.includes(user?.id ?? '') && (
-              shamePost ? (
-                <div className="w-full py-3 px-4 rounded-xl border border-accent-green/40 bg-accent-green/10 text-center">
-                  <p className="text-sm font-black text-accent-green">✓ Officially Complete</p>
-                  <p className="text-xs text-text-muted mt-0.5">Proof submitted — punishment logged on your card</p>
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  <PrimaryButton onClick={handleSubmitPunishmentProof} variant="danger">
-                    SUBMIT PUNISHMENT PROOF
-                  </PrimaryButton>
-                  <p className="text-center text-[11px] text-amber-400 font-semibold">
-                    Required to officially close this bet on your card
-                  </p>
-                </div>
-              )
-            )}
-            {isUserWinner && (
-              <div className="w-full py-3 rounded-xl border border-accent-green/40 bg-accent-green/10 text-accent-green text-sm font-bold text-center">
-                You won this one — no punishment for you!
-              </div>
-            )}
             <button
-              onClick={handleSaveReceipt}
-              disabled={savingImage}
-              className="w-full h-12 rounded-xl border border-border-subtle text-text-primary text-sm font-bold flex items-center justify-center gap-2 hover:bg-bg-elevated transition-colors disabled:opacity-50"
+              onClick={() => navigate('/bet/create')}
+              className="w-full h-14 rounded-2xl bg-rider text-bg font-black text-[15px] btn-pressed"
+              style={{ boxShadow: '0 0 24px rgb(0 230 118 / 0.35)' }}
             >
-              <Download className="w-4 h-4" />
-              {savingImage ? 'Saving…' : 'Save Receipt as Image'}
+              PLACE NEXT BET &rarr;
             </button>
-            <button
-              onClick={handleShare}
-              className="w-full h-12 rounded-xl border border-border-subtle text-text-muted text-sm font-bold flex items-center justify-center gap-2 hover:bg-bg-elevated transition-colors"
-            >
-              <Share2 className="w-4 h-4" />
-              Share Result
-            </button>
-            {isParticipant && id && (
-              <PrimaryButton
-                onClick={() => navigate(`/bet/${id}/rematch`)}
-                variant="ghost"
-                className="border border-accent-green/40 text-accent-green"
-              >
-                Rematch — same people, higher stakes
-              </PrimaryButton>
-            )}
-            {isUserLoser && (
-              <button
-                onClick={handleDispute}
-                className="w-full text-xs text-text-muted font-medium btn-pressed py-2"
-              >
-                Dispute Outcome
-              </button>
-            )}
-          </div>
+          </motion.div>
         </div>
       </>
     )
   }
 
-  // ── VOID ──────────────────────────────────────────────────────────────────
+  // ── LOST ───────────────────────────────────────────────────────────────────
   return (
     <>
       {shareSheet}
-      <div
-        className="h-full flex flex-col items-center justify-between px-6 py-12"
-        style={{ background: 'linear-gradient(to bottom, #1A1A1A 0%, #0D0D0D 100%)' }}
-      >
-        <div className="flex-1 flex flex-col items-center justify-center">
-          <motion.h1
-            className="text-[64px] font-black text-text-muted mb-8 text-center"
-            style={{ letterSpacing: '-0.02em' }}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            NO CONTEST
-          </motion.h1>
-          <motion.p
-            className="text-text-muted text-center max-w-xs"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            This bet was voided. No winners, no losers.
-          </motion.p>
+      <div className="h-full flex flex-col relative bg-bg">
+        {/* Diagonal grid background in doubter tint */}
+        <div
+          className="absolute inset-0 diagonal-grid"
+          style={{ backgroundColor: 'rgb(255 61 87 / 0.03)' }}
+        />
+
+        {/* Close button */}
+        <button
+          onClick={handleDismiss}
+          className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-surface flex items-center justify-center border border-lnk-border"
+        >
+          <X className="w-5 h-5 text-text" />
+        </button>
+
+        {/* Scrollable content */}
+        <div className="flex-1 overflow-y-auto no-scrollbar relative z-10">
+          <div className="flex flex-col items-center px-5 pt-14 pb-4">
+
+            {/* Pre-header */}
+            <motion.p
+              className="text-doubter text-[11px] font-black tracking-[0.25em] uppercase mb-6"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              {'\u25CF'} OUTCOME REVEALED
+            </motion.p>
+
+            {/* OutcomeStamp — self-animating spring */}
+            <div className="mb-8">
+              <OutcomeStamp
+                result="lost"
+                betSerial={betSerial}
+                date={resolvedDate}
+              />
+            </div>
+
+            {/* Verdict */}
+            <motion.div
+              className="text-center mb-8 px-2"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25, duration: 0.35 }}
+            >
+              <p className="text-text font-black text-xl italic leading-snug mb-2">
+                {verdictText}
+              </p>
+              <p className="text-text-mute text-[12px] font-mono">
+                {voteForText}
+              </p>
+            </motion.div>
+
+            {/* Stake surrendered — counts up from $0 */}
+            {userLossAmount > 0 && (
+              <motion.div
+                className="text-center mb-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35, duration: 0.35 }}
+              >
+                <p className="text-doubter text-[11px] font-black tracking-[0.2em] uppercase mb-1">
+                  STAKE SURRENDERED
+                </p>
+                <p className="font-mono font-black text-[48px] leading-none text-doubter">
+                  -{formatMoney(animatedLoss)}
+                </p>
+                <p className="text-text-mute font-mono text-[11px] mt-2">
+                  Split among {winnerIds.length} rider{winnerIds.length !== 1 ? 's' : ''}
+                </p>
+              </motion.div>
+            )}
+
+            {/* Non-money loss — show bet was lost when there's no money */}
+            {!userLossAmount && isUserLoser && (
+              <motion.div
+                className="text-center mb-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35, duration: 0.35 }}
+              >
+                <p className="text-doubter text-[11px] font-black tracking-[0.2em] uppercase mb-1">
+                  BET LOST
+                </p>
+                <p className="font-black text-[28px] leading-none text-doubter">
+                  You owe the punishment
+                </p>
+              </motion.div>
+            )}
+
+            {/* PunishmentCard (if there's a punishment) */}
+            {punishmentOwers.length > 0 && punishmentText && (
+              <motion.div
+                className="w-full mb-6"
+                ref={receiptRef}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45, duration: 0.35 }}
+              >
+                <PunishmentCard
+                  title={punishmentText}
+                  deadlineText="Now"
+                  assignedBy={winnerNames.join(' & ')}
+                />
+              </motion.div>
+            )}
+
+            {/* Shame proof status (for losers) */}
+            {isUserLoser && punishmentOwers.includes(user?.id ?? '') && shamePost && (
+              <motion.div
+                className="w-full mb-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.55 }}
+              >
+                <div className="w-full py-3 px-4 rounded-xl border border-rider/40 bg-rider-dim text-center">
+                  <p className="text-sm font-black text-rider">Officially Complete</p>
+                  <p className="text-xs text-text-mute mt-0.5">Proof submitted &mdash; punishment logged on your card</p>
+                </div>
+              </motion.div>
+            )}
+          </div>
         </div>
 
-        <div className="w-full space-y-3">
-          {isParticipant && id && (
-            <PrimaryButton
-              onClick={() => navigate(`/bet/${id}/rematch`)}
-              variant="ghost"
-              className="border border-accent-green text-accent-green w-full"
+        {/* Action bar — bottom-pinned */}
+        <motion.div
+          className="px-5 pb-8 pt-4 shrink-0 relative z-10 border-t border-lnk-border bg-bg/90 backdrop-blur-sm"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.3 }}
+        >
+          {/* Primary CTA: submit proof OR accept shame */}
+          {isUserLoser && punishmentOwers.includes(user?.id ?? '') && !shamePost && (
+            <button
+              onClick={handleSubmitPunishmentProof}
+              className="w-full h-14 rounded-2xl bg-doubter text-white font-black text-[15px] btn-pressed mb-3"
+              style={{ boxShadow: '0 0 24px rgb(255 61 87 / 0.30)' }}
             >
-              Rematch — same people, higher stakes
-            </PrimaryButton>
+              SUBMIT PROOF OF PUNISHMENT
+            </button>
           )}
-          <PrimaryButton onClick={handleShare} variant="ghost">
-            Share Result
-          </PrimaryButton>
-          <PrimaryButton onClick={handleBack} variant="ghost">
-            Back to Group
-          </PrimaryButton>
-        </div>
+
+          {/* If not a loser who owes punishment, or proof already submitted, show standard actions */}
+          <div className="flex gap-3">
+            {isParticipant && id && (
+              <button
+                onClick={() => navigate(`/bet/${id}/rematch`)}
+                className="flex-1 h-11 rounded-xl border border-doubter/30 text-doubter text-[13px] font-bold btn-pressed"
+              >
+                DEMAND REMATCH
+              </button>
+            )}
+            <button
+              onClick={handleDismiss}
+              className="flex-1 h-11 rounded-xl border border-lnk-border text-text-dim text-[13px] font-bold btn-pressed"
+            >
+              ACCEPT SHAME
+            </button>
+          </div>
+        </motion.div>
       </div>
     </>
   )

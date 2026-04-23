@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router'
-import { Plus, BookOpen, Users } from 'lucide-react'
+import { motion } from 'motion/react'
 import { useAuthStore, useGroupStore } from '@/stores'
 import { getMyBets } from '@/lib/api/bets'
-import { BET_CATEGORIES } from '@/lib/utils/constants'
 import {
   loadJournals,
   createJournal,
@@ -16,17 +15,15 @@ import {
   PIN_GROUPS_KEY,
   PIN_JOURNALS_KEY,
 } from '@/lib/utils/pinStorage'
-import { CircleGrid } from '../components/CircleGrid'
+import { formatMoney } from '@/lib/utils/formatters'
+import { SectionHeader, FolderTab, TicketStub } from '@/components/lynk'
+import { usePrefersReducedMotion } from '@/lib/hooks/usePrefersReducedMotion'
 import type { BetWithSides } from '@/stores/betStore'
 
-// ---------------------------------------------------------------------------
-// Emoji options for new journals
-// ---------------------------------------------------------------------------
-
 const JOURNAL_EMOJIS = [
-  '📓', '📔', '📒', '📝', '🏆', '🎯', '🎲', '🃏',
-  '🏀', '⚽', '🏈', '🎰', '💰', '🔥', '⚡', '💯',
-  '👑', '🌟', '🎖️', '🏅', '🤝', '💪', '🎪', '🦁',
+  '\u{1F4D3}', '\u{1F4D4}', '\u{1F4D2}', '\u{1F4DD}', '\u{1F3C6}', '\u{1F3AF}', '\u{1F3B2}', '\u{1F0CF}',
+  '\u{1F3C0}', '\u26BD', '\u{1F3C8}', '\u{1F3B0}', '\u{1F4B0}', '\u{1F525}', '\u26A1', '\u{1F4AF}',
+  '\u{1F451}', '\u{1F31F}', '\u{1F396}\uFE0F', '\u{1F3C5}', '\u{1F91D}', '\u{1F4AA}', '\u{1F3EA}', '\u{1F981}',
 ]
 
 /**
@@ -34,10 +31,6 @@ const JOURNAL_EMOJIS = [
  * Pinned items always make it into the preview regardless of this limit.
  */
 const PREVIEW_COUNT = 5
-
-// ---------------------------------------------------------------------------
-// Pure helpers (no side-effects — easy to unit-test)
-// ---------------------------------------------------------------------------
 
 /**
  * Stable sort that moves pinned items to the front, preserving relative order
@@ -76,35 +69,6 @@ export function getVisibleItems<T>(
   return [...pinned, ...nonPinned.slice(0, remaining)]
 }
 
-// ---------------------------------------------------------------------------
-// SeeAllToggle — subtle expandable affordance shown below each section
-// ---------------------------------------------------------------------------
-
-function SeeAllToggle({
-  total,
-  showAll,
-  onToggle,
-}: {
-  total: number
-  showAll: boolean
-  onToggle: () => void
-}) {
-  // Only render when there are more items than the preview limit
-  if (total <= PREVIEW_COUNT) return null
-  return (
-    <button
-      onClick={onToggle}
-      className="mt-3 w-full text-center text-[11px] font-bold text-accent-green tracking-wide py-1"
-    >
-      {showAll ? 'Show less ↑' : `See all ${total} →`}
-    </button>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Create journal bottom-sheet
-// ---------------------------------------------------------------------------
-
 function CreateModal({
   onClose,
   onCreate,
@@ -113,7 +77,7 @@ function CreateModal({
   onCreate: (col: JournalCollection) => void
 }) {
   const [name, setName] = useState('')
-  const [emoji, setEmoji] = useState('📓')
+  const [emoji, setEmoji] = useState('\u{1F4D3}')
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -130,19 +94,19 @@ function CreateModal({
       className="absolute inset-0 z-50 flex items-end bg-black/60"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="w-full bg-bg-primary rounded-t-3xl px-6 pt-5 pb-10 border-t border-border-subtle">
-        <div className="w-10 h-1 rounded-full bg-border-subtle mx-auto mb-5" />
-        <h2 className="text-lg font-black text-text-primary mb-4">New Journal</h2>
+      <div className="w-full bg-bg rounded-t-3xl px-6 pt-5 pb-10 border-t border-border">
+        <div className="w-10 h-1 rounded-full bg-border mx-auto mb-5" />
+        <h2 className="text-lg font-black text-text mb-4">New Journal</h2>
         <input
           ref={inputRef}
           value={name}
           onChange={(e) => setName(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && submit()}
-          placeholder="Journal name…"
+          placeholder="Journal name..."
           maxLength={40}
-          className="w-full h-11 rounded-xl bg-bg-elevated border border-border-subtle px-4 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent-green/60 mb-4"
+          className="w-full h-11 rounded-xl bg-surface border border-border px-4 text-sm text-text placeholder:text-text-mute focus:outline-none focus:border-rider/60 mb-4"
         />
-        <p className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-2">Icon</p>
+        <p className="text-[11px] font-bold uppercase tracking-wider text-text-mute mb-2">Icon</p>
         <div className="flex flex-wrap gap-2 mb-5">
           {JOURNAL_EMOJIS.map((e) => (
             <button
@@ -150,8 +114,8 @@ function CreateModal({
               onClick={() => setEmoji(e)}
               className={`w-10 h-10 rounded-xl text-xl flex items-center justify-center transition-all ${
                 emoji === e
-                  ? 'bg-accent-green/20 ring-2 ring-accent-green'
-                  : 'bg-bg-elevated hover:bg-bg-card'
+                  ? 'bg-rider/20 ring-2 ring-rider'
+                  : 'bg-surface hover:bg-surface/80'
               }`}
             >
               {e}
@@ -161,7 +125,7 @@ function CreateModal({
         <button
           onClick={submit}
           disabled={!name.trim()}
-          className="w-full h-12 rounded-xl bg-accent-green text-white font-bold text-sm disabled:opacity-40"
+          className="w-full h-12 rounded-xl bg-rider text-white font-bold text-sm disabled:opacity-40"
         >
           Create Journal
         </button>
@@ -170,12 +134,36 @@ function CreateModal({
   )
 }
 
-// ---------------------------------------------------------------------------
-// Main screen
-// ---------------------------------------------------------------------------
+/** Map bet status to TicketStub status */
+function betToTicketStatus(
+  bet: BetWithSides,
+  userId: string | undefined,
+): 'won' | 'lost' | 'disputed' | 'live' | 'pending' {
+  if (bet.status === 'active') return 'live'
+  if (bet.status === 'proof_submitted' || bet.status === 'disputed') return 'disputed'
+  if (bet.status === 'completed') {
+    // Try to infer win/loss from bet_sides
+    const userSide = bet.bet_sides.find((s) => s.user_id === userId)
+    if (!userSide) return 'pending'
+    // If user was a rider and bet completed, we treat as won; doubter as lost
+    // This is a heuristic -- real outcome data would be better
+    return userSide.side === 'rider' ? 'won' : 'lost'
+  }
+  return 'pending'
+}
+
+/** Format stake for ticket display */
+function formatTicketAmount(bet: BetWithSides, status: string): string {
+  if (!bet.stake_money) return '$0'
+  const dollars = formatMoney(bet.stake_money)
+  if (status === 'won') return `+${dollars}`
+  if (status === 'lost') return `-${dollars}`
+  return dollars
+}
 
 export function JournalScreen() {
   const navigate = useNavigate()
+  const prefersReduced = usePrefersReducedMotion()
   const user = useAuthStore((s) => s.user)
   const groups = useGroupStore((s) => s.groups)
   const fetchGroups = useGroupStore((s) => s.fetchGroups)
@@ -186,12 +174,11 @@ export function JournalScreen() {
   const [betsLoading, setBetsLoading] = useState(true)
   const [showCreate, setShowCreate] = useState(false)
 
-  // ── Pin state (localStorage-backed, shared with ArchiveScreen for bets/groups) ──
+  // Pin state is localStorage-backed and shared with ArchiveScreen for bets/groups
   const [pinBets, setPinBets]       = useState<Set<string>>(() => loadPinned(PIN_BETS_KEY))
   const [pinGroups, setPinGroups]   = useState<Set<string>>(() => loadPinned(PIN_GROUPS_KEY))
   const [pinJournals, setPinJournals] = useState<Set<string>>(() => loadPinned(PIN_JOURNALS_KEY))
 
-  // ── "See all" expansion per section (false = show top 5 only) ──
   const [showAllJournals, setShowAllJournals] = useState(false)
   const [showAllGroups, setShowAllGroups]     = useState(false)
   const [showAllBets, setShowAllBets]         = useState(false)
@@ -216,7 +203,6 @@ export function JournalScreen() {
     navigate(`/journal/${col.id}`)
   }
 
-  // ── Pin toggle handlers ───────────────────────────────────────────────────
   const handlePinBet = (id: string) => {
     const isPinned = togglePin(PIN_BETS_KEY, id)
     setPinBets((prev) => {
@@ -244,229 +230,205 @@ export function JournalScreen() {
     })
   }
 
-  // ── Sorted lists (pinned-first, stable) ───────────────────────────────────
   const sortedJournals = sortWithPinned(journals, (j) => j.id, pinJournals)
   const sortedGroups   = sortWithPinned(groups,   (g) => g.id, pinGroups)
   const sortedBets     = sortWithPinned(personalBets, (b) => b.id, pinBets)
 
-  // ── Visible slices (top-5 default; all pinned always shown) ──────────────
   const visibleJournals = getVisibleItems(sortedJournals, (j) => j.id, pinJournals, showAllJournals)
   const visibleGroups   = getVisibleItems(sortedGroups,   (g) => g.id, pinGroups,   showAllGroups)
   const visibleBets     = getVisibleItems(sortedBets,     (b) => b.id, pinBets,     showAllBets)
 
-  // ── Unified Pinned section items (journals + groups + bets) ──────────────
-  // IDs are prefixed with "j:" | "g:" | "b:" so the click handler can route correctly
-  const pinnedJournalItems = sortedJournals
-    .filter((j) => pinJournals.has(j.id))
-    .map((j) => ({ id: `j:${j.id}`, icon: j.emoji, label: j.name }))
-
-  const pinnedGroupItems = sortedGroups
-    .filter((g) => pinGroups.has(g.id))
-    .map((g) => ({ id: `g:${g.id}`, icon: g.avatar_emoji, label: g.name }))
-
-  const pinnedBetItems = sortedBets
-    .filter((b) => pinBets.has(b.id))
-    .map((b) => {
-      const category = BET_CATEGORIES[b.category]
-      return { id: `b:${b.id}`, icon: category?.emoji ?? '', label: b.title }
-    })
-
-  const hasPinned =
-    pinnedJournalItems.length > 0 ||
-    pinnedGroupItems.length > 0 ||
-    pinnedBetItems.length > 0
+  /** Check if a group has any active bets */
+  const groupHasLiveBets = (groupId: string) =>
+    personalBets.some((b) => b.group_id === groupId && b.status === 'active')
 
   return (
-    <div className="relative h-full bg-bg-primary overflow-y-auto pb-8">
-      {/* ── Header ── */}
-      <div className="px-6 pt-6 pb-5 border-b border-border-subtle">
-        <h1 className="text-2xl font-black text-text-primary">Journal</h1>
-        <p className="text-text-muted text-sm mt-0.5">Your bets, groups &amp; collections</p>
+    <div className="h-full bg-bg overflow-y-auto pb-8">
+      {/* ── Header ──────────────────────────────────────────── */}
+      <div className="px-5 pt-6 pb-4">
+        <h1 className="font-black italic text-[32px] tracking-[-0.04em] text-text leading-none">
+          JOURNAL
+        </h1>
+        <p className="text-[13px] text-text-dim mt-1">
+          Every bet you've ever ridden on.
+        </p>
       </div>
 
-      {/* ══════════════════════════════════════
-          SECTION 0 — Pinned quick-access
-          Shows all pinned journals, groups, and bets at a glance.
-          ══════════════════════════════════════ */}
-      {hasPinned && (
-        <div className="px-6 pt-5 pb-4 border-b border-border-subtle">
-          <p className="text-[11px] font-bold uppercase tracking-wider text-text-muted flex items-center gap-1.5 mb-3">
-            Pinned
-          </p>
-          <CircleGrid
-            items={[...pinnedJournalItems, ...pinnedGroupItems, ...pinnedBetItems]}
-            onItemClick={(id) => {
-              if (id.startsWith('j:'))      navigate(`/journal/${id.slice(2)}`)
-              else if (id.startsWith('g:')) navigate(`/journal/group/${id.slice(2)}`)
-              else                          navigate(`/bet/${id.slice(2)}`)
-            }}
-            labelLines={2}
-          />
-        </div>
-      )}
+      {/* ── MY JOURNALS ─────────────────────────────────────── */}
+      <div className="px-5 mt-2">
+        <SectionHeader
+          title={"📓 MY JOURNALS"}
+          action={
+            <button
+              onClick={() => setShowCreate(true)}
+              className="text-rider font-black text-[12px] tracking-[0.1em]"
+            >
+              + NEW
+            </button>
+          }
+        />
 
-      {/* ══════════════════════════════════════
-          SECTION 1 — My Journals
-          ══════════════════════════════════════ */}
-      <div className="px-6 pt-5 pb-4">
-        <div className="flex items-center justify-between mb-3">
-          <p className="text-[11px] font-bold uppercase tracking-wider text-text-muted flex items-center gap-1.5">
-            <BookOpen className="w-3.5 h-3.5" /> My Journals
-          </p>
-          <button
-            onClick={() => setShowCreate(true)}
-            className="flex items-center gap-1 text-[11px] font-bold text-accent-green"
-          >
-            <Plus className="w-3.5 h-3.5" /> New
-          </button>
-        </div>
-
-        {journals.length === 0 ? (
-          <button
-            onClick={() => setShowCreate(true)}
-            className="w-full py-6 rounded-2xl border-2 border-dashed border-border-subtle flex flex-col items-center justify-center gap-1.5 text-text-muted hover:bg-bg-elevated transition-colors"
-          >
-            <Plus className="w-5 h-5" />
-            <span className="text-xs font-bold">Create your first journal</span>
-          </button>
-        ) : (
-          <>
-            <CircleGrid
-              items={visibleJournals.map((col) => ({
-                id: col.id,
-                icon: col.emoji,
-                label: col.name,
-                sublabel: `${col.bet_ids.length} bet${col.bet_ids.length !== 1 ? 's' : ''}`,
-              }))}
-              onItemClick={(id) => navigate(`/journal/${id}`)}
-              pinnedIds={pinJournals}
-              onPinItem={handlePinJournal}
+        <div className="flex gap-2 overflow-x-auto no-scrollbar mt-3 pb-1">
+          {journals.length === 0 ? (
+            <FolderTab
+              emoji="+"
+              name="New folder"
+              betCount={0}
+              totalDisplay="Create"
+              variant="new"
+              onClick={() => setShowCreate(true)}
             />
-            <SeeAllToggle
-              total={journals.length}
-              showAll={showAllJournals}
-              onToggle={() => setShowAllJournals((v) => !v)}
-            />
-          </>
-        )}
-      </div>
-
-      {/* ══════════════════════════════════════
-          SECTION 2 — Groups (auto-journals)
-          ══════════════════════════════════════ */}
-      <div className="px-6 pt-1 pb-4 border-t border-border-subtle mt-1">
-        <div className="flex items-center justify-between mb-3 pt-4">
-          <p className="text-[11px] font-bold uppercase tracking-wider text-text-muted flex items-center gap-1.5">
-            <Users className="w-3.5 h-3.5" /> Groups
-          </p>
-          <button
-            onClick={() => navigate('/group/join')}
-            className="text-[11px] font-bold text-accent-green"
-          >
-            + Join
-          </button>
-        </div>
-
-        {groupsLoading && groups.length === 0 ? (
-          <div className="grid grid-cols-3 gap-y-5 gap-x-3">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="flex flex-col items-center gap-1.5">
-                <div className="w-[72px] h-[72px] rounded-full bg-bg-card border border-border-subtle animate-pulse" />
-                <div className="w-12 h-3 rounded bg-bg-card animate-pulse" />
+          ) : (
+            <>
+              {visibleJournals.map((col, idx) => (
+                <div key={col.id} className="min-w-[140px] max-w-[160px] flex-shrink-0">
+                  <FolderTab
+                    emoji={col.emoji}
+                    name={col.name}
+                    betCount={col.bet_ids.length}
+                    totalDisplay={`${col.bet_ids.length} bet${col.bet_ids.length !== 1 ? 's' : ''}`}
+                    variant={idx === 0 || pinJournals.has(col.id) ? 'active' : 'inactive'}
+                    onClick={() => navigate(`/journal/${col.id}`)}
+                  />
+                </div>
+              ))}
+              <div className="min-w-[140px] max-w-[160px] flex-shrink-0">
+                <FolderTab
+                  emoji="+"
+                  name="New folder"
+                  betCount={0}
+                  totalDisplay="Create"
+                  variant="new"
+                  onClick={() => setShowCreate(true)}
+                />
               </div>
-            ))}
-          </div>
-        ) : groups.length === 0 ? (
-          <div className="bg-bg-card rounded-2xl border border-border-subtle p-4 flex items-center gap-3">
-            <span className="text-2xl"></span>
-            <div className="flex-1">
-              <p className="text-sm font-bold text-text-primary">No groups yet</p>
-              <p className="text-[11px] text-text-muted">Create or join a group to track bets together.</p>
-            </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* ── GROUPS ───────────────────────────────────────────── */}
+      <div className="px-5 mt-6">
+        <SectionHeader
+          title={"👥 GROUPS"}
+          action={
+            <button
+              onClick={() => navigate('/group/join')}
+              className="text-rider font-black text-[12px] tracking-[0.1em]"
+            >
+              + JOIN
+            </button>
+          }
+        />
+
+        <div className="flex gap-2 overflow-x-auto no-scrollbar mt-3 pb-1">
+          {groupsLoading && groups.length === 0 ? (
+            [...Array(3)].map((_, i) => (
+              <div
+                key={i}
+                className="bg-surface rounded-[10px] p-2.5 flex items-center gap-2 border-l-2 border-l-transparent min-w-[140px] animate-pulse"
+              >
+                <div className="w-[34px] h-[34px] rounded-[8px] bg-border" />
+                <div className="flex-1 space-y-1">
+                  <div className="w-16 h-3 rounded bg-border" />
+                  <div className="w-10 h-2 rounded bg-border" />
+                </div>
+              </div>
+            ))
+          ) : groups.length === 0 ? (
             <button
               onClick={() => navigate('/group/create')}
-              className="px-3 py-1.5 rounded-lg bg-accent-green/20 text-accent-green text-xs font-bold border border-accent-green/40 shrink-0"
+              className="bg-surface rounded-[10px] p-2.5 flex items-center gap-2 border-l-2 border-l-transparent min-w-[160px]"
             >
-              Create
+              <div className="w-[34px] h-[34px] rounded-[8px] bg-rider/10 flex items-center justify-center text-rider text-lg font-black">
+                +
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-black text-[12px] text-text truncate">Create group</p>
+                <p className="text-[9px] tracking-[0.1em] text-text-mute font-bold">GET STARTED</p>
+              </div>
             </button>
-          </div>
-        ) : (
-          <>
-            <CircleGrid
-              items={visibleGroups.map((g) => ({
-                id: g.id,
-                icon: g.avatar_emoji,
-                label: g.name,
-              }))}
-              onItemClick={(id) => navigate(`/journal/group/${id}`)}
-              pinnedIds={pinGroups}
-              onPinItem={handlePinGroup}
-            />
-            <SeeAllToggle
-              total={groups.length}
-              showAll={showAllGroups}
-              onToggle={() => setShowAllGroups((v) => !v)}
-            />
-          </>
-        )}
+          ) : (
+            visibleGroups.map((g) => {
+              const isLive = groupHasLiveBets(g.id)
+              return (
+                <button
+                  key={g.id}
+                  onClick={() => navigate(`/journal/group/${g.id}`)}
+                  className={`bg-surface rounded-[10px] p-2.5 flex items-center gap-2 border-l-2 min-w-[140px] flex-shrink-0 ${
+                    isLive ? 'border-l-rider' : 'border-l-transparent'
+                  }`}
+                >
+                  <div className="w-[34px] h-[34px] rounded-[8px] bg-bg flex items-center justify-center text-lg">
+                    {g.avatar_emoji}
+                  </div>
+                  <div className="flex-1 min-w-0 text-left">
+                    <p className="font-black text-[12px] text-text truncate">{g.name}</p>
+                    <p className={`text-[9px] tracking-[0.1em] font-bold ${isLive ? 'text-rider' : 'text-text-mute'}`}>
+                      {isLive ? 'LIVE' : 'IDLE'}
+                    </p>
+                  </div>
+                </button>
+              )
+            })
+          )}
+        </div>
       </div>
 
-      {/* ══════════════════════════════════════
-          SECTION 3 — Personal History
-          ══════════════════════════════════════ */}
-      <div className="px-6 pt-1 border-t border-border-subtle mt-1">
-        <div className="pt-4 mb-3">
-          <p className="text-[11px] font-bold uppercase tracking-wider text-text-muted">
-            Personal History
-          </p>
-          <p className="text-[11px] text-text-muted mt-0.5">Every bet you've ever been in</p>
-        </div>
+      {/* ── PERSONAL HISTORY ─────────────────────────────────── */}
+      <div className="px-5 mt-6">
+        <SectionHeader
+          title={"🗂 PERSONAL HISTORY"}
+          meta={`${personalBets.length} TOTAL`}
+        />
+        <p className="text-[11px] text-text-mute mt-1 mb-3">
+          Every bet you've ever been in
+        </p>
 
         {betsLoading ? (
-          <div className="grid grid-cols-3 gap-y-5 gap-x-3">
+          <div className="grid grid-cols-3 gap-2">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="flex flex-col items-center gap-1.5">
-                <div className="w-[72px] h-[72px] rounded-full bg-bg-card border border-border-subtle animate-pulse" />
-                <div className="w-14 h-3 rounded bg-bg-card animate-pulse" />
-              </div>
+              <div key={i} className="bg-surface rounded-[10px] h-[100px] animate-pulse" />
             ))}
           </div>
         ) : personalBets.length === 0 ? (
           <div className="py-8 text-center">
-            <p className="text-text-muted text-sm">No bets yet — start one from Home.</p>
+            <p className="text-text-mute text-sm">No bets yet -- start one from Home.</p>
           </div>
         ) : (
-          <>
-            <CircleGrid
-              items={visibleBets.map((bet) => {
-                const category = BET_CATEGORIES[bet.category]
-                return {
-                  id: bet.id,
-                  icon: category?.emoji ?? '',
-                  label: bet.title,
-                  sublabel:
-                    bet.status === 'active'
-                      ? 'Live'
-                      : bet.status === 'completed'
-                        ? 'Done'
-                        : bet.status.replace(/_/g, ' '),
-                }
-              })}
-              onItemClick={(id) => navigate(`/bet/${id}`)}
-              labelLines={2}
-              pinnedIds={pinBets}
-              onPinItem={handlePinBet}
-            />
-            <SeeAllToggle
-              total={personalBets.length}
-              showAll={showAllBets}
-              onToggle={() => setShowAllBets((v) => !v)}
-            />
-          </>
+          <div className="grid grid-cols-3 gap-2">
+            {visibleBets.map((bet, i) => {
+              const status = betToTicketStatus(bet, user?.id)
+              return (
+                <motion.div
+                  key={bet.id}
+                  initial={prefersReduced ? false : { opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35, delay: prefersReduced ? 0 : Math.min(i * 0.06, 0.3) }}
+                >
+                  <TicketStub
+                    status={status}
+                    title={bet.title}
+                    amountDisplay={formatTicketAmount(bet, status)}
+                    onClick={() => navigate(`/bet/${bet.id}`)}
+                  />
+                </motion.div>
+              )
+            })}
+          </div>
+        )}
+
+        {!betsLoading && personalBets.length > PREVIEW_COUNT && (
+          <button
+            onClick={() => setShowAllBets((v) => !v)}
+            className="mt-3 w-full text-center text-[11px] font-bold text-rider tracking-wide py-1"
+          >
+            {showAllBets ? 'Show less' : `See all ${personalBets.length}`}
+          </button>
         )}
       </div>
 
-      {/* Create modal */}
+      {/* ── Create modal ─────────────────────────────────────── */}
       {showCreate && (
         <CreateModal onClose={() => setShowCreate(false)} onCreate={handleCreated} />
       )}
