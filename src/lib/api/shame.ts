@@ -30,10 +30,14 @@ export interface WeeklyShameStats {
 }
 
 function parseReactions(raw: Json): Reactions {
-  if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
-    return raw as unknown as Reactions
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return {}
+  const out: Reactions = {}
+  for (const [emoji, users] of Object.entries(raw)) {
+    if (Array.isArray(users)) {
+      out[emoji] = users.filter((u): u is string => typeof u === 'string')
+    }
   }
-  return {}
+  return out
 }
 
 /** Get the punishment proof (hall_of_shame entry) for a specific bet */
@@ -241,9 +245,11 @@ export async function addReaction(
     reactions[emoji] = [...users, userId]
   }
 
+  // Reactions (Record<string, string[]>) is structurally a subtype of Json. Cast
+  // directly to Json (rather than through `unknown`) to preserve the relationship.
   const { error: updateError } = await supabase
     .from('hall_of_shame')
-    .update({ reactions: reactions as unknown as Json })
+    .update({ reactions: reactions as Json })
     .eq('id', shameId)
 
   if (updateError) throw updateError

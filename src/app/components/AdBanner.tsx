@@ -12,6 +12,15 @@ import { useEffect, useRef, useState } from 'react'
 const AD_CLIENT = import.meta.env.VITE_ADSENSE_CLIENT_ID || ''
 const AD_SLOT = import.meta.env.VITE_ADSENSE_SLOT_ID || ''
 
+/** Google AdSense injects `window.adsbygoogle` as an array of push-able config objects. */
+type AdsByGoogleQueue = Array<Record<string, unknown>>
+
+declare global {
+  interface Window {
+    adsbygoogle?: AdsByGoogleQueue
+  }
+}
+
 export function AdBanner() {
   const adRef = useRef<HTMLModElement>(null)
   const [adFailed, setAdFailed] = useState(false)
@@ -20,7 +29,7 @@ export function AdBanner() {
     if (!AD_CLIENT || !AD_SLOT) return
 
     try {
-      const adsbygoogle = (window as any).adsbygoogle || []
+      const adsbygoogle: AdsByGoogleQueue = window.adsbygoogle ?? []
       adsbygoogle.push({})
     } catch {
       setAdFailed(true)

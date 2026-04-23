@@ -408,7 +408,13 @@ const useBetStore = create<BetStore>()(
     updateActiveBetField: (field, value) =>
       set((draft) => {
         if (draft.activeBet) {
-          ;(draft.activeBet as Record<string, unknown>)[field] = value
+          // The outer signature `<K extends keyof Bet>(field: K, value: Bet[K])`
+          // enforces key/value correspondence at the call site. The immer draft's
+          // WritableDraft<BetWithSides> has a distinct indexed type that conflicts
+          // with BetRow[K] under strict variance — assign through a writable-record
+          // view of the same object to satisfy the inner assignment.
+          const writable: Record<string, Bet[keyof Bet]> = draft.activeBet as unknown as Record<string, Bet[keyof Bet]>
+          writable[field] = value
         }
       }),
   })),

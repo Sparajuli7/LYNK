@@ -9,7 +9,29 @@ import {
 import { ScrollArea } from '@/app/components/ui/scroll-area'
 import { useNotificationStore, useGroupStore } from '@/stores'
 import { relativeTime } from '@/lib/utils/formatters'
-import type { Notification, NotificationType } from '@/lib/database.types'
+import type { Notification, NotificationType, Json } from '@/lib/database.types'
+
+/**
+ * Known keys the server may attach to `notification.data`. The column is
+ * typed as `Json` (arbitrary payload), so we narrow by key at the use-site.
+ */
+interface NotificationData {
+  bet_id?: string
+  group_id?: string
+  invite_code?: string
+  group_emoji?: string
+}
+
+/** Narrow a Json notification payload to the known-shape NotificationData. */
+function asNotificationData(raw: Json | null): NotificationData | null {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null
+  const out: NotificationData = {}
+  if (typeof raw.bet_id === 'string') out.bet_id = raw.bet_id
+  if (typeof raw.group_id === 'string') out.group_id = raw.group_id
+  if (typeof raw.invite_code === 'string') out.invite_code = raw.invite_code
+  if (typeof raw.group_emoji === 'string') out.group_emoji = raw.group_emoji
+  return out
+}
 
 const NOTIFICATION_ICONS: Record<NotificationType, string> = {
   bet_created: '',
@@ -26,7 +48,7 @@ const NOTIFICATION_ICONS: Record<NotificationType, string> = {
 }
 
 function getNavFromNotification(n: Notification): string | null {
-  const data = n.data as Record<string, unknown> | null
+  const data = asNotificationData(n.data)
   if (!data) return null
   if (n.type === 'group_invite') return null // handled by Accept/Decline buttons
   if (data.bet_id) return `/bet/${data.bet_id}`
@@ -40,8 +62,8 @@ function GroupInviteActions({ notification }: { notification: Notification }) {
   const joinGroupByCode = useGroupStore((s) => s.joinGroupByCode)
   const markAsRead = useNotificationStore((s) => s.markAsRead)
 
-  const data = notification.data as Record<string, unknown> | null
-  const inviteCode = data?.invite_code as string | undefined
+  const data = asNotificationData(notification.data)
+  const inviteCode = data?.invite_code
 
   if (notification.read || result) {
     return result === 'accepted' ? (
@@ -133,8 +155,8 @@ export function NotificationPanel({ open, onOpenChange }: NotificationPanelProps
               <div className="space-y-1">
                 {notifications.map((n) => {
                   const isGroupInvite = n.type === 'group_invite'
-                  const data = n.data as Record<string, unknown> | null
-                  const groupEmoji = isGroupInvite ? (data?.group_emoji as string) : undefined
+                  const data = asNotificationData(n.data)
+                  const groupEmoji = isGroupInvite ? data?.group_emoji : undefined
 
                   return (
                     <button
