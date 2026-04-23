@@ -37,10 +37,7 @@ import { ArchiveScreen } from './screens/ArchiveScreen'
 import { FeedbackScreen } from './screens/FeedbackScreen'
 import { CompetitionInviteScreen } from './screens/CompetitionInviteScreen'
 
-// ---------------------------------------------------------------------------
-// Route wrappers — adapt callback-prop screens for router navigation
-// ---------------------------------------------------------------------------
-
+// Wrappers adapt callback-prop screens for router navigation
 function SplashRoute() {
   const navigate = useNavigate()
   return (
@@ -121,10 +118,6 @@ function OutcomeWinRoute() {
   )
 }
 
-// ---------------------------------------------------------------------------
-// Router
-// ---------------------------------------------------------------------------
-
 export function AppRouter() {
   return (
     <BrowserRouter>
@@ -156,7 +149,7 @@ export function AppRouter() {
             <Route path="bet/:id/shame-proof" element={<ShameProofSubmission />} />
             <Route path="bet/:id/outcome" element={<OutcomeRevealRoute />} />
             <Route path="bet/:id/win" element={<OutcomeWinRoute />} />
-            <Route path="bet/:id/forfeit" element={<OutcomeForfeitRoute />} />
+            <Route path="bet/:id/forfeit" element={<OutcomeRevealRoute />} />
             <Route path="bet/:id/rematch" element={<RematchScreen />} />
 
             {/* Competition (merged with former H2H) */}
@@ -167,7 +160,7 @@ export function AppRouter() {
             <Route path="compete/:id/shame-proof" element={<ShameProofSubmission />} />
             <Route path="compete/:id/outcome" element={<CompeteOutcomeRevealRoute />} />
             <Route path="compete/:id/win" element={<OutcomeWinRoute />} />
-            <Route path="compete/:id/forfeit" element={<OutcomeForfeitRoute />} />
+            <Route path="compete/:id/forfeit" element={<CompeteOutcomeRevealRoute />} />
             <Route path="compete/:id/rematch" element={<RematchScreen />} />
 
             {/* Journal (replaces Record in nav) */}
