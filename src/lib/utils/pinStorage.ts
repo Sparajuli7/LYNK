@@ -1,8 +1,4 @@
-// ---------------------------------------------------------------------------
-// Unified pin / favourite storage
 // Keys are shared with ArchiveScreen so pins and archive stars are the same.
-// ---------------------------------------------------------------------------
-
 export const PIN_BETS_KEY      = 'lynk-fav-bets'
 export const PIN_GROUPS_KEY    = 'lynk-fav-groups'
 export const PIN_JOURNALS_KEY  = 'lynk-fav-journals'

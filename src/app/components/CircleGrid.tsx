@@ -1,10 +1,5 @@
 import type { ReactNode } from 'react'
 
-// ---------------------------------------------------------------------------
-// CircleGrid — reusable 3-column grid of circular items with labels
-// Inspired by the "Follow Teams" pattern: circle icon + label underneath.
-// ---------------------------------------------------------------------------
-
 export interface CircleGridItem {
   id: string
   /** Large emoji, icon, or image shown inside the circle */

@@ -1,4 +1,4 @@
-package com.lynk.app;
+package com.lynkedin.app;
 
 import android.os.Bundle;
 import androidx.core.view.WindowCompat;

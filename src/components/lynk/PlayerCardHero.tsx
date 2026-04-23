@@ -47,7 +47,7 @@ export function PlayerCardHero({
 
         {/* Name + handle + streak */}
         <div className="min-w-0 flex-1">
-          <div className="font-black italic text-[32px] tracking-[-0.04em] text-text leading-none truncate">
+          <div className="font-black italic text-[32px] tracking-[-0.04em] text-text leading-none truncate pr-2">
             {displayName}
           </div>
           <div className="text-[13px] text-text-dim mt-0.5">@{username}</div>

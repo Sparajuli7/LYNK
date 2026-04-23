@@ -222,8 +222,6 @@ export function CompetitionDetailScreen() {
               try {
                 const convId = await useChatStore.getState().getOrCreateCompetitionChat(id)
                 navigate(`/chat/${convId}`)
-              } catch (e) {
-                console.error('Failed to open competition chat:', e)
               } finally {
                 setOpeningChat(false)
               }

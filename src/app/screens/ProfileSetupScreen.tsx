@@ -41,8 +41,6 @@ export function ProfileSetupScreen() {
       try {
         const available = await checkUsernameAvailable(username.toLowerCase())
         setUsernameAvailable(available)
-      } catch {
-        setUsernameAvailable(null)
       } finally {
         setUsernameChecking(false)
       }
@@ -101,11 +99,7 @@ export function ProfileSetupScreen() {
 
     let avatarUrl: string | undefined
     if (avatarFile && user) {
-      try {
-        avatarUrl = await uploadAvatarFile(user.id, avatarFile)
-      } catch {
-        // Continue without avatar
-      }
+      avatarUrl = await uploadAvatarFile(user.id, avatarFile)
     }
 
     const success = await createProfile({

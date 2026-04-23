@@ -142,7 +142,7 @@ This opens the `ios/App/App.xcworkspace` in Xcode.
 3. Go to the **Signing & Capabilities** tab
 4. Check **Automatically manage signing**
 5. Select your **Team** from the dropdown (your Apple Developer account)
-6. The **Bundle Identifier** should already be set to `com.lynk.app`
+6. The **Bundle Identifier** should already be set to `com.lynkedin.app`
 
 ### 5b. Verify Info.plist settings
 
@@ -156,7 +156,7 @@ No changes needed here unless you want to lock to portrait only.
 
 ## Step 6: Add Deep Link Support (for OAuth)
 
-The app uses `com.lynk.app://auth/callback` as a deep link for Google OAuth. You need to register this URL scheme in Xcode:
+The app uses `com.lynkedin.app://auth/callback` as a deep link for Google OAuth. You need to register this URL scheme in Xcode:
 
 ### 6a. Add URL Scheme in Xcode
 
@@ -164,15 +164,15 @@ The app uses `com.lynk.app://auth/callback` as a deep link for Google OAuth. You
 2. Scroll to **URL Types**
 3. Click the **+** button to add a new URL type
 4. Set:
-   - **Identifier:** `com.lynk.app`
-   - **URL Schemes:** `com.lynk.app`
+   - **Identifier:** `com.lynkedin.app`
+   - **URL Schemes:** `com.lynkedin.app`
    - **Role:** Editor
 
 ### 6b. Verify in Supabase
 
 Make sure the following redirect URL is added in Supabase Dashboard:
 1. Go to **Authentication** > **URL Configuration**
-2. Under **Redirect URLs**, add: `com.lynk.app://auth/callback`
+2. Under **Redirect URLs**, add: `com.lynkedin.app://auth/callback`
 
 This should already be done, but verify it's there.
 
@@ -248,8 +248,8 @@ Before submitting, you need a 1024x1024px app icon. Place it in Xcode:
    - **Platform:** iOS
    - **Name:** LYNK
    - **Primary Language:** English (U.S.)
-   - **Bundle ID:** Select `com.lynk.app` from the dropdown (you may need to register it first at https://developer.apple.com/account/resources/identifiers/list)
-   - **SKU:** `com.lynk.app` (or any unique string)
+   - **Bundle ID:** Select `com.lynkedin.app` from the dropdown (you may need to register it first at https://developer.apple.com/account/resources/identifiers/list)
+   - **SKU:** `com.lynkedin.app` (or any unique string)
 4. Fill out the app listing:
    - **Subtitle:** Bet on your friends
    - **Description:** Social betting app where friend groups make bets on personal challenges. Ride with someone or doubt them — losers face the consequences.
@@ -266,7 +266,7 @@ If you haven't already:
 3. Select **App IDs** > **App**
 4. Set:
    - **Description:** LYNK
-   - **Bundle ID:** Explicit — `com.lynk.app`
+   - **Bundle ID:** Explicit — `com.lynkedin.app`
 5. Enable capabilities as needed:
    - **Push Notifications** (for future push support)
    - **Associated Domains** (if using Universal Links later)
@@ -345,7 +345,7 @@ The app's native configuration lives in `capacitor.config.ts` at the project roo
 
 ```typescript
 {
-  appId: 'com.lynk.app',
+  appId: 'com.lynkedin.app',
   appName: 'LYNK',
   webDir: 'dist',
   ios: {
@@ -393,8 +393,8 @@ sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 The web build might be missing. Run `npm run build` then `npx cap sync ios`.
 
 ### OAuth login doesn't redirect back to app
-1. Verify the URL scheme `com.lynk.app` is registered in Xcode (Step 6a)
-2. Verify `com.lynk.app://auth/callback` is in Supabase redirect URLs (Step 6b)
+1. Verify the URL scheme `com.lynkedin.app` is registered in Xcode (Step 6a)
+2. Verify `com.lynkedin.app://auth/callback` is in Supabase redirect URLs (Step 6b)
 
 ### "Untrusted Developer" on iPhone
 Settings > General > VPN & Device Management > find your dev certificate > Trust.

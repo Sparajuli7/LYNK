@@ -26,7 +26,7 @@ export function SectionHeader({
               aria-hidden="true"
             />
           )}
-          <h2 className="font-black italic tracking-tighter text-text truncate">
+          <h2 className="font-black italic tracking-tighter text-text whitespace-nowrap pr-2">
             {title}
           </h2>
         </div>

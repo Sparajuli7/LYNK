@@ -7,10 +7,6 @@
 const APP_ORIGIN =
   typeof window !== 'undefined' ? window.location.origin : ''
 
-// ---------------------------------------------------------------------------
-// URL builders
-// ---------------------------------------------------------------------------
-
 /** Build full URL for a bet (for sharing). */
 export function getBetShareUrl(betId: string): string {
   return `${APP_ORIGIN}/bet/${betId}`
@@ -35,10 +31,6 @@ export function getCompetitionInviteShareText(title: string): string {
   return `Join my competition "${title}" on LYNK!`
 }
 
-// ---------------------------------------------------------------------------
-// Group invite helpers
-// ---------------------------------------------------------------------------
-
 /** Build full URL for a group invite link. */
 export function getGroupInviteUrl(inviteCode: string): string {
   return `${APP_ORIGIN}/group/join/${inviteCode}`
@@ -48,10 +40,6 @@ export function getGroupInviteUrl(inviteCode: string): string {
 export function getGroupInviteShareText(groupName: string): string {
   return `Join my group "${groupName}" on LYNK!`
 }
-
-// ---------------------------------------------------------------------------
-// Share text builders
-// ---------------------------------------------------------------------------
 
 /** Build share text for a bet or challenge. */
 export function getBetShareText(title: string, claimantName?: string): string {
@@ -125,10 +113,6 @@ export function getShameShareText(params: {
   return `${params.loserName} just completed their punishment for losing "${params.betTitle}" on LYNK!`
 }
 
-// ---------------------------------------------------------------------------
-// Platform intent URLs
-// ---------------------------------------------------------------------------
-
 /** X (Twitter) intent URL. */
 export function getTwitterShareUrl(text: string, url: string): string {
   const encoded = encodeURIComponent(`${text} ${url}`.trim())
@@ -162,16 +146,13 @@ export async function shareToInstagramStories(
   imageBlob: Blob,
   caption: string,
 ): Promise<boolean> {
-  // Copy caption so user can paste it
   await copyToClipboard(caption).catch(() => {})
 
-  // Try the Facebook/Instagram Stories deep link (works on iOS & Android)
-  // This requires passing data through the pasteboard on native apps,
-  // which web can't do directly. Instead, we use the Web Share API targeting IG,
-  // or fall back to download + open IG.
+  // Stories deep link needs pasteboard access only native apps have, so on
+  // mobile try the native share sheet (which surfaces IG Stories as an option)
+  // and fall back to downloading the image.
   const file = new File([imageBlob], 'lynk-story.png', { type: 'image/png' })
 
-  // On mobile, try native share which shows IG Stories as an option
   if (
     typeof navigator !== 'undefined' &&
     navigator.share &&
@@ -185,7 +166,6 @@ export async function shareToInstagramStories(
     }
   }
 
-  // Fallback: download image so user can pick it in IG
   downloadBlobAsFile(imageBlob, 'lynk-story.png')
   return false
 }
@@ -204,7 +184,6 @@ export async function shareToTikTok(
   await copyToClipboard(caption).catch(() => {})
   downloadBlobAsFile(imageBlob, 'lynk-tiktok.png')
 
-  // Try TikTok deep link on mobile, fall back to web
   const opened = tryOpenDeepLink('tiktok://') || tryOpenDeepLink('snssdk1233://')
   if (!opened) {
     window.open('https://www.tiktok.com/upload', '_blank', 'noopener,noreferrer')
@@ -233,10 +212,6 @@ function tryOpenDeepLink(url: string): boolean {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Native share + clipboard
-// ---------------------------------------------------------------------------
-
 export interface SharePayload {
   title?: string
   text: string
@@ -263,7 +238,6 @@ export async function shareWithNative(payload: SharePayload): Promise<boolean> {
       text: payload.text,
       url: payload.url,
     }
-    // Attach files (proof images) if the browser supports it
     if (payload.files?.length && navigator.canShare?.({ files: payload.files })) {
       shareData.files = payload.files
     }

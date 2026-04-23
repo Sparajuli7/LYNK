@@ -17,10 +17,6 @@ import { formatMoney } from '@/lib/utils/formatters'
 import type { BetWithSides } from '@/stores/betStore'
 import type { Group } from '@/lib/database.types'
 
-// ---------------------------------------------------------------------------
-// Shared status pill
-// ---------------------------------------------------------------------------
-
 function StatusPill({ status }: { status: string }) {
   if (status === 'completed')
     return <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-accent-green/20 text-accent-green">Done</span>
@@ -32,10 +28,6 @@ function StatusPill({ status }: { status: string }) {
     return <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-yellow-500/20 text-yellow-400">Proof</span>
   return <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-bg-elevated text-text-muted capitalize">{status.replace(/_/g, ' ')}</span>
 }
-
-// ---------------------------------------------------------------------------
-// Bet picker sheet — full overlay that slides up
-// ---------------------------------------------------------------------------
 
 type BetSource = 'personal' | Group
 
@@ -62,49 +54,37 @@ function BetPickerSheet({
   const [activeTab, setActiveTab] = useState<'all' | 'personal' | string>('all')
   const [query, setQuery] = useState('')
 
-  // Fetch all bets on mount
   useEffect(() => {
     if (!user?.id) { setLoading(false); return }
 
     const load = async () => {
       setLoading(true)
-      try {
-        // Personal bets (bets where user is a participant)
-        const myBets = await getMyBets(user.id)
 
-        // Group bets (all bets in every group the user belongs to)
-        const groupBetArrays = await Promise.all(groups.map((g) => getGroupBets(g.id)))
+      const myBets = await getMyBets(user.id)
+      const groupBetArrays = await Promise.all(groups.map((g) => getGroupBets(g.id)))
 
-        // Merge + deduplicate — build a map keyed by bet id
-        const betMap = new Map<string, AnnotatedBet>()
+      const betMap = new Map<string, AnnotatedBet>()
 
-        // Seed with personal bets; mark ungrouped ones as 'personal' source
-        for (const bet of myBets) {
-          const grp = groups.find((g) => g.id === bet.group_id)
-          betMap.set(bet.id, { bet, source: grp ?? 'personal' })
-        }
-
-        // Add group bets not already present
-        groups.forEach((grp, idx) => {
-          for (const bet of groupBetArrays[idx]) {
-            if (!betMap.has(bet.id)) {
-              betMap.set(bet.id, { bet, source: grp })
-            }
-          }
-        })
-
-        // Sort by newest first
-        const sorted = [...betMap.values()].sort(
-          (a, b) =>
-            new Date(b.bet.created_at).getTime() -
-            new Date(a.bet.created_at).getTime(),
-        )
-        setAllBets(sorted)
-      } catch {
-        setAllBets([])
-      } finally {
-        setLoading(false)
+      for (const bet of myBets) {
+        const grp = groups.find((g) => g.id === bet.group_id)
+        betMap.set(bet.id, { bet, source: grp ?? 'personal' })
       }
+
+      groups.forEach((grp, idx) => {
+        for (const bet of groupBetArrays[idx]) {
+          if (!betMap.has(bet.id)) {
+            betMap.set(bet.id, { bet, source: grp })
+          }
+        }
+      })
+
+      const sorted = [...betMap.values()].sort(
+        (a, b) =>
+          new Date(b.bet.created_at).getTime() -
+          new Date(a.bet.created_at).getTime(),
+      )
+      setAllBets(sorted)
+      setLoading(false)
     }
 
     load()
@@ -119,14 +99,12 @@ function BetPickerSheet({
     })
   }, [])
 
-  // Tabs: All, Personal, one per group
   const tabs: { key: string; label: string }[] = [
     { key: 'all', label: 'All' },
     { key: 'personal', label: 'Personal' },
     ...groups.map((g) => ({ key: g.id, label: `${g.avatar_emoji} ${g.name}` })),
   ]
 
-  // Filter bets by active tab + search query
   const visible = allBets.filter(({ bet, source }) => {
     if (activeTab === 'personal' && source !== 'personal') return false
     if (activeTab !== 'all' && activeTab !== 'personal') {
@@ -254,10 +232,6 @@ function BetPickerSheet({
   )
 }
 
-// ---------------------------------------------------------------------------
-// Rename modal
-// ---------------------------------------------------------------------------
-
 const JOURNAL_EMOJIS = [
   '📓', '📔', '📒', '📝', '🏆', '🎯', '🎲', '🃏',
   '🏀', '⚽', '🏈', '🎰', '💰', '🔥', '⚡', '💯',
@@ -323,10 +297,6 @@ function RenameModal({
   )
 }
 
-// ---------------------------------------------------------------------------
-// Main detail screen
-// ---------------------------------------------------------------------------
-
 export function JournalDetailScreen() {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
@@ -354,7 +324,6 @@ export function JournalDetailScreen() {
     })
   }, [])
 
-  // Load collection from localStorage
   useEffect(() => {
     if (!id) return
     const all = loadJournals()
@@ -362,12 +331,10 @@ export function JournalDetailScreen() {
     setCollection(found)
   }, [id])
 
-  // Ensure groups are loaded
   useEffect(() => {
     fetchGroups()
   }, [fetchGroups])
 
-  // Fetch bet details for bets in this collection
   useEffect(() => {
     if (!collection || collection.bet_ids.length === 0 || !user?.id) {
       setBets([])
@@ -377,29 +344,23 @@ export function JournalDetailScreen() {
     setBetsLoading(true)
 
     const load = async () => {
-      try {
-        // Fetch all bets the user can see, then filter to collection
-        const myBets = await getMyBets(user.id)
-        const groupBetArrays = await Promise.all(groups.map((g) => getGroupBets(g.id)))
+      const myBets = await getMyBets(user.id)
+      const groupBetArrays = await Promise.all(groups.map((g) => getGroupBets(g.id)))
 
-        const betMap = new Map<string, BetWithSides>()
-        for (const bet of myBets) betMap.set(bet.id, bet)
-        for (const arr of groupBetArrays) {
-          for (const bet of arr) {
-            if (!betMap.has(bet.id)) betMap.set(bet.id, bet)
-          }
+      const betMap = new Map<string, BetWithSides>()
+      for (const bet of myBets) betMap.set(bet.id, bet)
+      for (const arr of groupBetArrays) {
+        for (const bet of arr) {
+          if (!betMap.has(bet.id)) betMap.set(bet.id, bet)
         }
-
-        const ordered = collection.bet_ids
-          .map((bid) => betMap.get(bid))
-          .filter((b): b is BetWithSides => b !== undefined)
-
-        setBets(ordered)
-      } catch {
-        setBets([])
-      } finally {
-        setBetsLoading(false)
       }
+
+      const ordered = collection.bet_ids
+        .map((bid) => betMap.get(bid))
+        .filter((b): b is BetWithSides => b !== undefined)
+
+      setBets(ordered)
+      setBetsLoading(false)
     }
 
     load()

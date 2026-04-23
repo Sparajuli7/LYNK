@@ -18,7 +18,6 @@ function shouldShowSender(messages: MessageWithSender[], index: number): boolean
   const prev = messages[index - 1]
   if (prev.sender_id !== msg.sender_id) return true
   if (prev.type === 'system') return true
-  // Show sender if more than 5 minutes since previous message
   const diff = new Date(msg.created_at).getTime() - new Date(prev.created_at).getTime()
   return diff > 5 * 60 * 1000
 }
@@ -53,7 +52,6 @@ export function ChatConversationScreen() {
   const isInitialLoad = useRef(true)
   const messageRefs = useRef<Map<string, HTMLDivElement>>(new Map())
 
-  // Open conversation and subscribe to realtime
   useEffect(() => {
     if (!conversationId) return
 
@@ -66,14 +64,12 @@ export function ChatConversationScreen() {
     }
   }, [conversationId, openConversation, subscribeToConversation, unsubscribeFromConversation, clearActiveConversation])
 
-  // Fetch participants for @mentions after conversation loads
   useEffect(() => {
     if (activeConversation) {
       fetchParticipants()
     }
   }, [activeConversation?.id, fetchParticipants])
 
-  // Auto-scroll to bottom on new messages
   useEffect(() => {
     if (messages.length === 0) return
     const el = scrollRef.current
@@ -85,14 +81,12 @@ export function ChatConversationScreen() {
       return
     }
 
-    // Auto-scroll if user is near the bottom
     const isNearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 150
     if (isNearBottom) {
       el.scrollTop = el.scrollHeight
     }
   }, [messages.length])
 
-  // Load more on scroll to top
   const handleScroll = useCallback(() => {
     const el = scrollRef.current
     if (!el || !hasMoreMessages || isLoading) return
@@ -100,7 +94,6 @@ export function ChatConversationScreen() {
     if (el.scrollTop < 50) {
       const prevHeight = el.scrollHeight
       loadMoreMessages().then(() => {
-        // Maintain scroll position after prepending older messages
         requestAnimationFrame(() => {
           if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight - prevHeight
@@ -122,7 +115,6 @@ export function ChatConversationScreen() {
     const el = messageRefs.current.get(messageId)
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      // Brief highlight
       el.classList.add('bg-accent-green/10')
       setTimeout(() => el.classList.remove('bg-accent-green/10'), 1500)
     }
@@ -140,8 +132,6 @@ export function ChatConversationScreen() {
       const mediaUrl = await uploadChatImage(conversationId, file)
       sendMessage(caption || 'Photo', 'image', mediaUrl)
       scrollToBottom()
-    } catch (e) {
-      console.error('Failed to upload image:', e)
     } finally {
       setIsUploading(false)
     }
@@ -154,8 +144,6 @@ export function ChatConversationScreen() {
       const mediaUrl = await uploadChatVideo(conversationId, file)
       sendMessage('Video', 'video', mediaUrl)
       scrollToBottom()
-    } catch (e) {
-      console.error('Failed to upload video:', e)
     } finally {
       setIsUploading(false)
     }
@@ -181,7 +169,6 @@ export function ChatConversationScreen() {
     saveEdit(messageId, newContent)
   }
 
-  // Display name for the conversation
   const title = activeConversation?._displayName ?? 'Chat'
   const emoji = activeConversation?._displayEmoji
   const participantCount = activeConversation?._participantCount ?? 0

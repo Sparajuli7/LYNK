@@ -59,9 +59,7 @@ export default function App() {
       // Listen for deep link callbacks (OAuth, invite links, etc.)
       import('@capacitor/app').then(({ App: CapApp }) => {
         CapApp.addListener('appUrlOpen', ({ url }) => {
-          // Handle OAuth callback deep links
           if (url.includes('auth/callback')) {
-            // Extract hash/query params and let Supabase process the session
             const hashParams = url.split('#')[1]
             if (hashParams) {
               const params = new URLSearchParams(hashParams)
@@ -80,7 +78,6 @@ export default function App() {
             }
           }
 
-          // Close the in-app browser after callback
           import('@capacitor/browser').then(({ Browser }) => {
             Browser.close()
           }).catch(() => {})
@@ -92,7 +89,6 @@ export default function App() {
   const isDark = theme === 'dark'
   const isNative = Capacitor.isNativePlatform()
 
-  // On native: full-screen rendering. On web: keep the dev preview frame.
   if (isNative) {
     return (
       <div className="size-full bg-bg-primary overflow-hidden pt-safe">
@@ -102,7 +98,6 @@ export default function App() {
     )
   }
 
-  // Web dev preview with iPhone frame
   return (
     <div className={`size-full flex items-center justify-center ${isDark ? 'bg-gray-950' : 'bg-gray-100'} p-4 transition-colors`}>
       <div className="relative">

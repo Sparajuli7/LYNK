@@ -144,10 +144,6 @@ export async function getVotes(proofId: string): Promise<ProofVote[]> {
   return data ?? []
 }
 
-// ---------------------------------------------------------------------------
-// Public proof feed — for Profile screens
-// ---------------------------------------------------------------------------
-
 /**
  * A proof eligible to appear on a user's public profile grid.
  * Only included when the parent bet has `is_public = true`.

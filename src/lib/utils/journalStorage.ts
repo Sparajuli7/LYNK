@@ -1,7 +1,3 @@
-// ---------------------------------------------------------------------------
-// Journal collections — stored in localStorage
-// ---------------------------------------------------------------------------
-
 export interface JournalCollection {
   id: string
   name: string

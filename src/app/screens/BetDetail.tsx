@@ -109,14 +109,13 @@ export function BetDetail({ onBack }: BetDetailProps) {
   const [visibilityConfirmOpen, setVisibilityConfirmOpen] = useState(false)
   const prevStatusRef = useRef(activeBet?.status)
 
-  // Auto-navigate to outcome when bet resolves (e.g. after a majority vote)
   useEffect(() => {
     if (
       prevStatusRef.current === 'proof_submitted' &&
       (activeBet?.status === 'completed' || activeBet?.status === 'voided') &&
       id
     ) {
-      // Small delay so user sees the resolution before navigating
+      // Delay so user sees the resolution before navigating
       const timer = setTimeout(() => navigate(`${basePath}/${id}/outcome`), 1500)
       return () => clearTimeout(timer)
     }
@@ -234,8 +233,6 @@ export function BetDetail({ onBack }: BetDetailProps) {
                 try {
                   const convId = await useChatStore.getState().getOrCreateCompetitionChat(id)
                   navigate(`/chat/${convId}`)
-                } catch (e) {
-                  console.error('Failed to open bet chat:', e)
                 } finally {
                   setOpeningChat(false)
                 }
@@ -440,7 +437,6 @@ export function BetDetail({ onBack }: BetDetailProps) {
 
       {/* Proof with voting */}
       {(activeBet.status === 'proof_submitted' || activeBet.status === 'completed' || activeBet.status === 'voided') && proofs.length > 0 && (() => {
-        // Flatten all proof media into one slideable array
         const allSlides: { item: MediaItem; proofId: string; caption?: string | null; proofOwnerId: string }[] = []
         proofs.forEach((proof) => {
           const items: MediaItem[] = []
@@ -452,7 +448,6 @@ export function BetDetail({ onBack }: BetDetailProps) {
           if (proof.video_url) items.push({ url: proof.video_url, type: 'video', label: 'Video' })
           if (proof.document_url) items.push({ url: proof.document_url, type: 'document', label: 'Document' })
           items.forEach((item) => allSlides.push({ item, proofId: proof.id, caption: proof.caption, proofOwnerId: proof.submitted_by }))
-          // Text-only proof (no media) — add a placeholder slide
           if (items.length === 0 && proof.caption) {
             allSlides.push({ item: { url: '', type: 'document', label: 'Text' }, proofId: proof.id, caption: proof.caption, proofOwnerId: proof.submitted_by })
           }
@@ -734,7 +729,6 @@ export function BetDetail({ onBack }: BetDetailProps) {
       {(() => {
         const isCompleted = activeBet.status === 'completed' || activeBet.status === 'voided'
 
-        // Compute payouts and punishment assignments for resolved bets
         const payouts = isCompleted && outcome
           ? computeBetPayouts(
               outcome.result as 'claimant_succeeded' | 'claimant_failed' | 'voided',
@@ -758,7 +752,6 @@ export function BetDetail({ onBack }: BetDetailProps) {
         )
         const hasPunishment = (payouts?.punishmentOwers.length ?? 0) > 0
 
-        // Build shame proof media
         const shameMedia: MediaItem[] = []
         if (shamePost) {
           if (shamePost.front_url) shameMedia.push({ url: shamePost.front_url, type: 'image', label: 'Front' })
@@ -918,12 +911,8 @@ export function BetDetail({ onBack }: BetDetailProps) {
               onClick={async () => {
                 if (!id) return
                 const newValue = !activeBet.is_public
-                try {
-                  await toggleBetVisibility(id, newValue)
-                  updateActiveBetField('is_public', newValue)
-                } catch (e) {
-                  console.error('Failed to toggle visibility:', e)
-                }
+                await toggleBetVisibility(id, newValue)
+                updateActiveBetField('is_public', newValue)
               }}
             >
               {activeBet.is_public ? 'Make Private' : 'Make Public'}

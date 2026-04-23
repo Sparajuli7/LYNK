@@ -55,14 +55,14 @@ export function CompetitionCreateScreen() {
 
   const [step, setStep] = useState(1)
 
-  // ── Step 1 ──────────────────────────────────────────────────────────────────
+  // Step 1
   const [title, setTitle] = useState('')
   const [metric, setMetric] = useState('')
   const [creatorSide, setCreatorSide] = useState<'rider' | 'doubter' | null>(null)
   const [templatesOpen, setTemplatesOpen] = useState(false)
   const [step1Error, setStep1Error] = useState<string | null>(null)
 
-  // ── Step 2 ──────────────────────────────────────────────────────────────────
+  // Step 2
   const [selectedGroup, setSelectedGroup] = useState<{ id: string; name: string; invite_code: string } | null>(null)
   const [groupMembers, setGroupMembers] = useState<GroupMemberWithProfile[]>([])
   const [friendsList, setFriendsList] = useState<GroupMemberWithProfile[]>([])
@@ -78,7 +78,7 @@ export function CompetitionCreateScreen() {
     return d
   })
 
-  // ── Step 3 ──────────────────────────────────────────────────────────────────
+  // Step 3
   const [scoringMethod, setScoringMethod] = useState<'self_reported' | 'group_verified'>('self_reported')
   const [stakeType, setStakeType] = useState<StakeType>('punishment')
   const [stakeMoney, setStakeMoney] = useState(2000)
@@ -92,7 +92,6 @@ export function CompetitionCreateScreen() {
   const [libraryOpen, setLibraryOpen] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
 
-  // ── Template / Remix ─────────────────────────────────────────────────────────
   const templateBetId = (location.state as { templateBetId?: string } | null)?.templateBetId
   const [templateBet, setTemplateBet] = useState<Bet | null>(null)
   const templateAppliedRef = useRef(false)
@@ -102,14 +101,11 @@ export function CompetitionCreateScreen() {
   const [createdComp, setCreatedComp] = useState<Bet | null>(null)
   const [contractOpen, setContractOpen] = useState(false)
 
-  // The group ID used when creating the competition
   const resolvedGroupId: string | null = selectedGroup?.id ?? null
 
   const activeDays = Math.round(
     (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
   )
-
-  // ── Effects ──────────────────────────────────────────────────────────────────
 
   useEffect(() => { fetchGroups() }, [fetchGroups])
 
@@ -121,7 +117,6 @@ export function CompetitionCreateScreen() {
     }
   }, [selectedGroup?.id])
 
-  // Load friends list once on mount
   useEffect(() => {
     getAllGroupMembersForUser().then(setFriendsList)
   }, [])
@@ -138,13 +133,11 @@ export function CompetitionCreateScreen() {
     })
   }, [])
 
-  // Fetch template bet for remix
   useEffect(() => {
     if (!templateBetId) return
     getBetDetail(templateBetId).then(setTemplateBet).catch(() => {})
   }, [templateBetId])
 
-  // Apply template once loaded
   useEffect(() => {
     if (!templateBet || templateAppliedRef.current) return
     templateAppliedRef.current = true
@@ -161,22 +154,19 @@ export function CompetitionCreateScreen() {
       setStakePunishmentId(null)
       setSelectedPunishmentCard(null)
     }
-    // Compute new date range: same duration as original, starting from now
+    // Same duration as original, starting from now
     const created = new Date(templateBet.created_at).getTime()
     const deadlineMs = new Date(templateBet.deadline).getTime()
     const durationMs = Math.max(deadlineMs - created, 24 * 60 * 60 * 1000)
     const newEnd = new Date(Date.now() + durationMs)
     setStartDate(new Date())
     setEndDate(newEnd)
-    // Pre-fill creator's side if bet_sides are present on the fetched bet
     const betWithSides = templateBet as Bet & {
       bet_sides?: Array<{ user_id: string; side: 'rider' | 'doubter' }>
     }
     const prevSide = betWithSides.bet_sides?.find((s) => s.user_id === currentProfile?.id)?.side ?? null
     if (prevSide) setCreatorSide(prevSide)
   }, [templateBet, currentProfile?.id])
-
-  // ── Participant helpers ───────────────────────────────────────────────────────
 
   const toggleParticipant = (m: GroupMemberWithProfile) => {
     setParticipants((prev) =>
@@ -226,8 +216,6 @@ export function CompetitionCreateScreen() {
       setIsSaving(false)
     }
   }
-
-  // ── Navigation ────────────────────────────────────────────────────────────────
 
   const handleBack = () => {
     if (step === 1) navigate(-1)
@@ -298,8 +286,6 @@ export function CompetitionCreateScreen() {
     }
   }
 
-  // ── Derived values ────────────────────────────────────────────────────────────
-
   const progressPct = (step / 3) * 100
 
   const modalParticipants = participants.map((m) => ({
@@ -323,8 +309,6 @@ export function CompetitionCreateScreen() {
       setTimeout(() => setInviteCopied(false), 2000)
     }
   }
-
-  // ── Render ────────────────────────────────────────────────────────────────────
 
   return (
     <div className="h-full bg-bg-primary grain-texture flex flex-col">

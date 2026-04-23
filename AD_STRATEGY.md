@@ -21,7 +21,7 @@ Your app is currently web-only. To publish on the App Store and Play Store, you 
 
 ```
 npm install @capacitor/core @capacitor/cli
-npx cap init "LYNK" "com.lynk.app"
+npx cap init "LYNK" "com.lynkedin.app"
 npm run build
 npx cap add ios
 npx cap add android

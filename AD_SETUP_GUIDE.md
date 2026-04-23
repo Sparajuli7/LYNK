@@ -67,7 +67,7 @@ When you're ready to publish to the App Store and Play Store, you'll wrap the we
 
 ```bash
 npm install @capacitor/core @capacitor/cli
-npx cap init "LYNK" "com.lynk.app" --web-dir dist
+npx cap init "LYNK" "com.lynkedin.app" --web-dir dist
 npm run build
 npx cap add ios
 npx cap add android

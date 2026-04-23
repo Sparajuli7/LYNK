@@ -110,8 +110,6 @@ export const ProofCard = forwardRef<HTMLDivElement, ProofCardProps>(
           const shared = await shareImage(blob, 'lynk-proof.png', shareText)
           if (!shared) downloadImage(blob, 'lynk-proof.png')
         }
-      } catch {
-        /* ignore capture errors */
       } finally {
         setSaving(false)
       }
@@ -127,8 +125,6 @@ export const ProofCard = forwardRef<HTMLDivElement, ProofCardProps>(
           const blob = await captureElementAsImage(cardRef.current, { scale: 2 })
           await shareToInstagramStories(blob, shareText)
         }
-      } catch {
-        /* ignore */
       } finally {
         setIgLoading(false)
       }
@@ -144,8 +140,6 @@ export const ProofCard = forwardRef<HTMLDivElement, ProofCardProps>(
           const blob = await captureElementAsImage(cardRef.current, { scale: 2 })
           await shareToTikTok(blob, shareText)
         }
-      } catch {
-        /* ignore */
       } finally {
         setTiktokLoading(false)
       }

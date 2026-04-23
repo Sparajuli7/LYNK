@@ -21,7 +21,7 @@ android/                # Capacitor-generated Android project
     res/values/styles.xml                  # Theme with transparent system bars
     res/values/strings.xml                 # App name, package
     AndroidManifest.xml                    # Deep link intent filter
-  app/build.gradle      # Package ID: com.lynk.app
+  app/build.gradle      # Package ID: com.lynkedin.app
 
 capacitor.config.ts     # Capacitor config — appId, plugins, androidScheme: 'https'
 ```
@@ -68,11 +68,11 @@ If the bottom nav floats in the middle of the screen or you have to scroll to se
 
 - `detectSessionInUrl` is set to `false` on native (`!Capacitor.isNativePlatform()`) in `src/lib/supabase.ts`. Without this, Supabase tries to parse the WebView URL (`https://localhost`) for auth tokens and hangs.
 - `getSession()` in `authStore.ts` has an 8-second timeout to prevent infinite loading if the session check hangs.
-- Google OAuth uses `@capacitor/browser` to open the auth URL with `com.lynk.app://auth/callback` as redirect, then `App.tsx` listens for `appUrlOpen` deep links to extract tokens.
+- Google OAuth uses `@capacitor/browser` to open the auth URL with `com.lynkedin.app://auth/callback` as redirect, then `App.tsx` listens for `appUrlOpen` deep links to extract tokens.
 
 ### Deep Links
 
-`AndroidManifest.xml` has an intent filter for `com.lynk.app://` scheme. The `App.tsx` `appUrlOpen` listener handles OAuth callbacks. If adding new deep link paths, only the JS listener needs updating — the manifest catches all paths under the scheme.
+`AndroidManifest.xml` has an intent filter for `com.lynkedin.app://` scheme. The `App.tsx` `appUrlOpen` listener handles OAuth callbacks. If adding new deep link paths, only the JS listener needs updating — the manifest catches all paths under the scheme.
 
 ### Safe Area CSS Classes
 
@@ -165,5 +165,5 @@ The iOS build uses the same Capacitor project and web codebase. Key differences:
 - `pt-safe` / `pb-safe` work on both platforms via `env(safe-area-inset-*)`
 - `Capacitor.isNativePlatform()` returns `true` on both iOS and Android
 - The `--app-height` fix in `main.tsx` helps iOS too (Safari viewport quirks)
-- Deep link scheme is the same: `com.lynk.app://`
+- Deep link scheme is the same: `com.lynkedin.app://`
 - See `IOS_SETUP_GUIDE.md` for iOS-specific setup instructions

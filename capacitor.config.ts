@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
-  appId: 'com.lynk.app',
+  appId: 'com.lynkedin.app',
   appName: 'LYNK',
   webDir: 'dist',
   server: {

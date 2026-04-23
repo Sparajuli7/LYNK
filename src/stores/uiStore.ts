@@ -2,10 +2,6 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { WALKTHROUGH_STEPS } from '@/lib/utils/walkthroughSteps'
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
 export type Theme = 'dark' | 'light'
 
 interface UiState {
@@ -39,11 +35,7 @@ interface UiActions {
 
 export type UiStore = UiState & UiActions
 
-// ---------------------------------------------------------------------------
-// DOM helper — applies the theme class to the document root
-// Runs outside React so it works on initial hydration too.
-// ---------------------------------------------------------------------------
-
+// Runs outside React so it applies on initial hydration too.
 function applyTheme(theme: Theme): void {
   if (typeof document === 'undefined') return
   if (theme === 'dark') {
@@ -53,22 +45,15 @@ function applyTheme(theme: Theme): void {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Store
-// ---------------------------------------------------------------------------
-
 const useUiStore = create<UiStore>()(
   persist(
     (set, get) => ({
-      // ---- state ----
-      theme: 'dark',           // LYNK defaults to dark
+      theme: 'dark',
       activeModal: null,
       activeBottomSheet: null,
       walkthroughActive: false,
       walkthroughStep: 0,
       walkthroughCompleted: false,
-
-      // ---- actions ----
 
       toggleTheme: () => {
         const next: Theme = get().theme === 'dark' ? 'light' : 'dark'
@@ -113,12 +98,10 @@ const useUiStore = create<UiStore>()(
     }),
     {
       name: 'forfeit-ui',
-      // Persist theme + walkthrough completion state
       partialize: (state) => ({
         theme: state.theme,
         walkthroughCompleted: state.walkthroughCompleted,
       }),
-      // Re-apply the theme class after localStorage is read on startup
       onRehydrateStorage: () => (state) => {
         if (state) applyTheme(state.theme)
       },
@@ -127,10 +110,6 @@ const useUiStore = create<UiStore>()(
 )
 
 export default useUiStore
-
-// ---------------------------------------------------------------------------
-// Modal / sheet ID constants — import these instead of using magic strings
-// ---------------------------------------------------------------------------
 
 export const MODALS = {
   BET_DETAIL: 'bet-detail',
