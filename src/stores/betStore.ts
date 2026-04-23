@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 import { supabase } from '@/lib/supabase'
-import { createRematchBet as createRematchBetApi, type RematchStakeOption } from '@/lib/api/bets'
+import { createRematchBet as createRematchBetApi, type RematchStakeOption, type BetWithSides } from '@/lib/api/bets'
 import type {
   Bet,
   BetSideEntry,
@@ -15,16 +15,8 @@ import type {
   Group,
 } from '@/lib/database.types'
 
-// ---------------------------------------------------------------------------
-// Extended types
-// ---------------------------------------------------------------------------
-
-/** Bet row enriched with its sides — returned from joined fetches */
-export type BetWithSides = Bet & { bet_sides: BetSideEntry[] }
-
-// ---------------------------------------------------------------------------
-// Wizard state
-// ---------------------------------------------------------------------------
+/** Re-export so existing import paths (`@/stores/betStore`, `@/stores`) keep working. */
+export type { BetWithSides }
 
 export interface WizardFields {
   claim: string

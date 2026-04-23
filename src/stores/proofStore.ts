@@ -1,19 +1,14 @@
 import { create } from 'zustand'
 import { supabase } from '@/lib/supabase'
+import type { ProofFiles } from '@/lib/api/proofs'
 import type { Proof, ProofVote, ProofType, VoteChoice, ProofRuling } from '@/lib/database.types'
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
-/** File bundle passed to submitProof — mirrors ProofSubmission.tsx upload modes */
-export interface ProofFiles {
-  frontCameraFile?: File
-  backCameraFile?: File
-  screenshotFiles?: File[]
-  videoFile?: File
-  documentFile?: File
-}
+/** Re-export so existing import paths (`@/stores/proofStore`, `@/stores`) keep working. */
+export type { ProofFiles }
 
 /** Vote tallies for a proof — UI uses this to render validate/dispute counts */
 export interface VoteCounts {

@@ -1,12 +1,10 @@
 import { create } from 'zustand'
 import { supabase } from '@/lib/supabase'
-import { getLeaderboard } from '@/lib/api/competitions'
+import { getLeaderboard, type LeaderboardEntry } from '@/lib/api/competitions'
 import { createCompetitionConversation, getCompetitionConversation, addConversationParticipant } from '@/lib/api/chat'
 import type {
   Bet,
   BetInsert,
-  CompetitionScore,
-  Profile,
   BetSide,
   StakeType,
 } from '@/lib/database.types'
@@ -18,12 +16,8 @@ import type {
 /** A competition is a bet with bet_type = 'competition' */
 export type Competition = Bet
 
-/** Leaderboard row — score enriched with the competitor's profile */
-export interface LeaderboardEntry {
-  score: CompetitionScore
-  profile: Pick<Profile, 'id' | 'username' | 'display_name' | 'avatar_url' | 'rep_score'>
-  rank: number
-}
+/** Re-export so existing import paths (`@/stores/competitionStore`, `@/stores`) keep working. */
+export type { LeaderboardEntry }
 
 /** Data required to create a new competition bet */
 export interface CompetitionData {
