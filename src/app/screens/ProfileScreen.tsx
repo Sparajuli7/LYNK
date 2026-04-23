@@ -13,10 +13,6 @@ import { CircleGrid } from '@/app/components/CircleGrid'
 import type { BetWithSides } from '@/stores/betStore'
 import type { Profile } from '@/lib/database.types'
 
-// ---------------------------------------------------------------------------
-// Circular proof-rate ring frame around the avatar
-// ---------------------------------------------------------------------------
-
 function ProofRingAvatar({
   src,
   alt,
@@ -94,10 +90,6 @@ function formatCompletionRate(completed: number, taken: number): string {
   return `${Math.round((completed / taken) * 100)}%`
 }
 
-// ---------------------------------------------------------------------------
-// Main profile content
-// ---------------------------------------------------------------------------
-
 function ProfileContent({
   profile,
   recentBets,
@@ -124,7 +116,6 @@ function ProfileContent({
       ? Math.round((profile.punishments_completed / profile.punishments_taken) * 100)
       : 100
 
-  // Recent bets as CircleGrid items (limited to 3)
   const recentBetItems = recentBets.slice(0, 3).map((bet) => {
     const category = BET_CATEGORIES[bet.category]
     return {
@@ -306,8 +297,6 @@ function ProfileContent({
               try {
                 const convId = await useChatStore.getState().getOrCreateDM(profile.id)
                 navigate(`/chat/${convId}`)
-              } catch (e) {
-                console.error('Failed to open DM:', e)
               } finally {
                 setOpeningDM(false)
               }
@@ -387,10 +376,6 @@ function ProfileContent({
     </div>
   )
 }
-
-// ---------------------------------------------------------------------------
-// Screen wrapper — handles data loading
-// ---------------------------------------------------------------------------
 
 interface ProfileScreenProps {
   userId?: string

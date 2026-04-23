@@ -36,7 +36,6 @@ export function AdBanner() {
     }
   }, [])
 
-  // Don't render anything if not configured or ad failed
   if (!AD_CLIENT || !AD_SLOT || adFailed) {
     return null
   }

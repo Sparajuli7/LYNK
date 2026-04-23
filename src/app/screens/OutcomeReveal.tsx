@@ -62,7 +62,6 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
   const [shamePost, setShamePost] = useState<HallOfShameEntry | null | undefined>(undefined)
   const receiptRef = useRef<HTMLDivElement>(null)
 
-  // ── Data fetching ──────────────────────────────────────────────────────────
   useEffect(() => {
     if (!id) return
     let cancelled = false
@@ -122,7 +121,6 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
     }
   }, [loading, error, data])
 
-  // ── Handlers ───────────────────────────────────────────────────────────────
   const handleShare = async () => {
     if (!data || !id) return
     const result = data.outcome.result as 'claimant_succeeded' | 'claimant_failed' | 'voided'
@@ -155,7 +153,6 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
     }
   }
 
-  // ── Loading / Error ────────────────────────────────────────────────────────
   if (loading) {
     return (
       <div className="h-full bg-bg flex items-center justify-center">
@@ -173,7 +170,6 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
     )
   }
 
-  // ── Derived data ───────────────────────────────────────────────────────────
   const { outcome, bet, betSides, punishmentText } = data
   const result = outcome.result as OutcomeResult
   const claimantName = profiles.get(bet.claimant_id)?.display_name ?? 'Claimant'
@@ -204,14 +200,11 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
     month: 'short', day: 'numeric', year: 'numeric',
   })
 
-  // betSerial: last 6 chars of bet ID (uppercase)
   const betSerial = (id ?? bet.id).slice(-6).toUpperCase()
 
-  // Determine user state: did the current user WIN or LOSE?
   const userWon = isUserWinner
   const userLost = isUserLoser
 
-  // Build share sheet data
   const outcomeShareText = getOutcomeShareText({
     title: bet.title,
     claimantName,
@@ -241,7 +234,6 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
     />
   )
 
-  // ── Reveal phase ───────────────────────────────────────────────────────────
   if (phase === 'revealing') {
     const revealColor = result === 'claimant_succeeded'
       ? 'from-yellow-900/60 via-black to-black'
@@ -294,20 +286,16 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
     )
   }
 
-  // ── Doubters who owe you (for WON) ─────────────────────────────────────────
   const doubterOwers = loserPayouts.filter((p) =>
     doubters.some((d) => d.user_id === p.userId),
   )
 
-  // Total user payout or loss
   const userPayoutAmount = userWinPayout?.amount ?? 0
   const userLossAmount = userLossPayout?.amount ?? 0
 
-  // Animated count-up values (cents)
   const animatedPayout = useCountUp(userPayoutAmount)
   const animatedLoss = useCountUp(userLossAmount)
 
-  // Verdict text
   const verdictText = userWon
     ? `${claimantName} proved it. Cash it in.`
     : userLost
@@ -320,7 +308,6 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
 
   const voteForText = `Final vote: ${riders.length} rider${riders.length !== 1 ? 's' : ''} for, ${doubters.length} doubter${doubters.length !== 1 ? 's' : ''} against`
 
-  // ── VOIDED ─────────────────────────────────────────────────────────────────
   if (result === 'voided') {
     return (
       <>
@@ -375,15 +362,12 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
     )
   }
 
-  // ── Determine won/lost from the user's perspective ─────────────────────────
   // If user is a participant, use their actual result. Otherwise show the
   // claimant-centric result (succeeded = WON screen, failed = LOST screen).
   const showWon = isParticipant ? userWon : result === 'claimant_succeeded'
   const showLost = isParticipant ? userLost : result === 'claimant_failed'
-  // For non-participants who are just viewing, default to the claimant perspective
   const isWonScreen = showWon || (!isParticipant && result === 'claimant_succeeded')
 
-  // ── WON ────────────────────────────────────────────────────────────────────
   if (isWonScreen) {
     return (
       <>
@@ -564,7 +548,6 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
     )
   }
 
-  // ── LOST ───────────────────────────────────────────────────────────────────
   return (
     <>
       {shareSheet}

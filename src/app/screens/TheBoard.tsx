@@ -106,7 +106,6 @@ function StripReceiptCard({
   const doubterCount = sides.filter((s) => s.side === 'doubter').length
   const { riderPct } = formatOdds(riderCount, doubterCount)
 
-  // Map bet status to ReceiptCard status
   const status: 'live' | 'voting' | 'settled' | 'expired' =
     bet.status === 'active' ? 'live'
     : bet.status === 'proof_submitted' ? 'voting'
@@ -228,13 +227,12 @@ export function TheBoard() {
     return [...filtered].sort((a, b) => lastActivity(b) - lastActivity(a))
   }, [bets])
 
-  // Compute live bet count for the MY BETS section header
   const liveBetCount = useMemo(
     () => stripBets.filter((b) => b.status === 'active').length,
     [stripBets]
   )
 
-  // Compute total unique friends across all groups (approximation from bet_sides user IDs)
+  // Approximation from bet_sides user IDs across all groups
   const totalFriends = useMemo(() => {
     const uniqueUsers = new Set<string>()
     bets.forEach((b) => {
@@ -245,7 +243,6 @@ export function TheBoard() {
     return uniqueUsers.size
   }, [bets, userId])
 
-  // Compute per-group stats for GroupRow
   const groupStats = useMemo(() => {
     const map = new Map<string, { liveBetCount: number; atStakeCents: number }>()
     groups.forEach((g) => map.set(g.id, { liveBetCount: 0, atStakeCents: 0 }))
@@ -261,7 +258,6 @@ export function TheBoard() {
     return map
   }, [groups, bets])
 
-  // ── Empty state ──
   if (groups.length === 0 && !isLoading) {
     return (
       <div className="h-full bg-bg flex flex-col items-center justify-center px-6 pb-6">

@@ -3,7 +3,6 @@ import { AuthLayout } from './layouts/AuthLayout'
 import { AppLayout } from './layouts/AppLayout'
 import { AuthGuard } from './guards/AuthGuard'
 
-// --- Existing screens ---
 import { Splash } from './screens/Splash'
 import { TheBoard } from './screens/TheBoard'
 import { BetDetail } from './screens/BetDetail'

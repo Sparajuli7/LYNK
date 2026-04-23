@@ -154,7 +154,6 @@ export function Competitions() {
   const sortedChallenges = sortChallengeBets(challengeBets)
   const sortedCompetitions = sortCompetitions(competitions)
 
-  // Group items by section
   const liveChallenges = sortedChallenges.filter((b) => challengeSection(b) === 'live')
   const votingChallenges = sortedChallenges.filter((b) => challengeSection(b) === 'voting')
   const settledChallenges = sortedChallenges.filter((b) => challengeSection(b) === 'settled')
@@ -167,12 +166,10 @@ export function Competitions() {
   const settledCount = settledChallenges.length + settledComps.length
   const totalCount = liveCount + votingCount + settledCount
 
-  // Determine which sections to show based on filter
   const showLive = filter === 'all' || filter === 'live'
   const showVoting = filter === 'all' || filter === 'voting'
   const showSettled = filter === 'all' || filter === 'settled'
 
-  // Filter tabs config
   const tabs: { key: FilterTab; label: string; count?: number }[] = [
     { key: 'all', label: 'ALL', count: totalCount },
     { key: 'live', label: 'LIVE', count: liveCount },

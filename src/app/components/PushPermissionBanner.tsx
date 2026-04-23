@@ -32,9 +32,7 @@ export function PushPermissionBanner() {
     setDismissed(false)
   }, [])
 
-  // Don't show if already subscribed, denied, or dismissed
   if (isSubscribed || permission === 'denied' || dismissed) return null
-  // Don't show if Notification API not available
   if (typeof Notification === 'undefined') return null
 
   const handleEnable = async () => {

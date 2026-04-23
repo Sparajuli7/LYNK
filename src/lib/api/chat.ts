@@ -43,14 +43,9 @@ export interface MessageWithSender extends Message {
   _replyPreview: ReplyPreview | null
 }
 
-// ---------------------------------------------------------------------------
-// Conversation CRUD
-// ---------------------------------------------------------------------------
-
 export async function getUserConversations(): Promise<ConversationWithMeta[]> {
   const userId = await requireUserId()
 
-  // Get all conversations user participates in
   const { data: participantRows, error: pErr } = await supabase
     .from('conversation_participants')
     .select('conversation_id, last_read_at')
@@ -62,7 +57,6 @@ export async function getUserConversations(): Promise<ConversationWithMeta[]> {
   const convIds = participantRows.map((p) => p.conversation_id)
   const readMap = new Map(participantRows.map((p) => [p.conversation_id, p.last_read_at]))
 
-  // Fetch the conversations
   const { data: conversations, error: cErr } = await supabase
     .from('conversations')
     .select('*')
@@ -72,7 +66,6 @@ export async function getUserConversations(): Promise<ConversationWithMeta[]> {
   if (cErr) throw cErr
   if (!conversations) return []
 
-  // Get participant counts per conversation
   const { data: countRows } = await supabase
     .from('conversation_participants')
     .select('conversation_id')
@@ -83,7 +76,6 @@ export async function getUserConversations(): Promise<ConversationWithMeta[]> {
     countMap.set(row.conversation_id, (countMap.get(row.conversation_id) ?? 0) + 1)
   }
 
-  // For group conversations, get group names
   const groupIds = conversations.filter((c) => c.group_id).map((c) => c.group_id!)
   let groupMap = new Map<string, { name: string; emoji: string }>()
   if (groupIds.length > 0) {
@@ -96,7 +88,6 @@ export async function getUserConversations(): Promise<ConversationWithMeta[]> {
     }
   }
 
-  // For competition conversations, get bet titles
   const betIds = conversations.filter((c) => c.bet_id).map((c) => c.bet_id!)
   let betMap = new Map<string, string>()
   if (betIds.length > 0) {
@@ -109,7 +100,6 @@ export async function getUserConversations(): Promise<ConversationWithMeta[]> {
     }
   }
 
-  // For DM conversations, get the other user's profile
   const dmConvs = conversations.filter((c) => c.type === 'dm')
   let dmProfileMap = new Map<string, { name: string; avatar: string | null }>()
   if (dmConvs.length > 0) {
@@ -224,7 +214,6 @@ export async function getOrCreateDMConversation(otherUserId: string): Promise<Co
     }
   }
 
-  // Create new DM conversation
   const convId = crypto.randomUUID()
 
   const { error: convErr } = await supabase
@@ -337,10 +326,6 @@ export async function removeConversationParticipant(
 
   if (error) throw error
 }
-
-// ---------------------------------------------------------------------------
-// Messages
-// ---------------------------------------------------------------------------
 
 export async function getMessages(
   conversationId: string,
@@ -521,10 +506,6 @@ export async function getUnreadCount(): Promise<number> {
   return count
 }
 
-// ---------------------------------------------------------------------------
-// Reactions
-// ---------------------------------------------------------------------------
-
 export async function addReaction(
   messageId: string,
   reaction: ReactionType,
@@ -555,10 +536,6 @@ export async function removeReaction(
   if (error) throw error
 }
 
-// ---------------------------------------------------------------------------
-// Edit / Delete messages
-// ---------------------------------------------------------------------------
-
 export async function editMessage(
   messageId: string,
   newContent: string,
@@ -580,10 +557,6 @@ export async function deleteMessage(messageId: string): Promise<void> {
   if (error) throw error
 }
 
-// ---------------------------------------------------------------------------
-// Video upload
-// ---------------------------------------------------------------------------
-
 export async function uploadChatVideo(
   conversationId: string,
   file: File,
@@ -600,10 +573,6 @@ export async function uploadChatVideo(
   const { data } = supabase.storage.from('proofs').getPublicUrl(path)
   return data.publicUrl
 }
-
-// ---------------------------------------------------------------------------
-// Participant search (for @mentions)
-// ---------------------------------------------------------------------------
 
 export async function getConversationParticipants(
   conversationId: string,

@@ -322,7 +322,6 @@ export interface UserBetStats {
  * Voided outcomes count as voids.
  */
 export async function getUserBetStats(userId: string): Promise<UserBetStats> {
-  // Get all bet IDs this user participated in
   const { data: sideEntries, error: sidesErr } = await supabase
     .from('bet_sides')
     .select('*')
@@ -340,7 +339,6 @@ export async function getUserBetStats(userId: string): Promise<UserBetStats> {
 
   const betIds = [...sideByBet.keys()]
 
-  // Get outcomes for these bets (only completed bets have outcomes)
   const { data: outcomes, error: outErr } = await supabase
     .from('outcomes')
     .select('*')

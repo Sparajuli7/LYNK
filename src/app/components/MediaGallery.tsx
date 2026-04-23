@@ -79,7 +79,6 @@ function MediaThumb({ item, onClick }: { item: MediaItem; onClick: () => void })
     )
   }
 
-  // Document
   return (
     <a
       href={item.url}

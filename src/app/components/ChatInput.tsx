@@ -42,7 +42,6 @@ export function ChatInput({
   const liveCameraInputRef = useRef<HTMLInputElement>(null)
   const videoInputRef = useRef<HTMLInputElement>(null)
 
-  // When entering edit mode, populate with existing content
   useEffect(() => {
     if (editingMessage) {
       setValue(editingMessage.content)
@@ -61,12 +60,10 @@ export function ChatInput({
     adjustHeight()
   }, [value, adjustHeight])
 
-  // Detect @mention trigger
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value
     setValue(newValue)
 
-    // Check for @mention trigger
     const cursorPos = e.target.selectionStart
     const textBeforeCursor = newValue.slice(0, cursorPos)
     const atMatch = textBeforeCursor.match(/@(\w*)$/)
@@ -86,7 +83,6 @@ export function ChatInput({
     const textBeforeCursor = value.slice(0, cursorPos)
     const textAfterCursor = value.slice(cursorPos)
 
-    // Find the @ position
     const atIndex = textBeforeCursor.lastIndexOf('@')
     if (atIndex === -1) return
 
@@ -96,7 +92,6 @@ export function ChatInput({
     setValue(newValue)
     setMentionQuery(null)
 
-    // Move cursor after mention
     requestAnimationFrame(() => {
       const newPos = atIndex + mention.length
       textarea.setSelectionRange(newPos, newPos)
@@ -107,7 +102,6 @@ export function ChatInput({
   const handleSend = () => {
     if (isUploading || disabled) return
 
-    // Edit mode
     if (editingMessage) {
       const trimmed = value.trim()
       if (trimmed && trimmed !== editingMessage.content) {
@@ -156,7 +150,6 @@ export function ChatInput({
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
-    // Clean up previous preview
     if (imagePreview) URL.revokeObjectURL(imagePreview.url)
     setImagePreview({ file, url: URL.createObjectURL(file) })
     // Reset input so same file can be re-selected

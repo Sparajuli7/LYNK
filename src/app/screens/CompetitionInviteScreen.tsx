@@ -57,7 +57,6 @@ export function CompetitionInviteScreen() {
   const [joining, setJoining] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  // Load competition details
   useEffect(() => {
     if (!compId) return
     setLoadingComp(true)
@@ -100,12 +99,10 @@ export function CompetitionInviteScreen() {
     setError(null)
 
     try {
-      // 1. Join group if invite code provided
       if (groupCode) {
         await joinGroupByCode(groupCode)
       }
 
-      // 2. Join the competition as a rider
       const { data: existing } = await supabase
         .from('bet_sides')
         .select('id')
@@ -123,7 +120,6 @@ export function CompetitionInviteScreen() {
           throw new Error(sideErr.message)
         }
 
-        // Add competition score entry
         if (comp?.bet_type === 'competition') {
           await supabase.from('competition_scores').insert({
             bet_id: compId,

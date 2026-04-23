@@ -281,7 +281,6 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
   const videoCount = uploadFiles.filter((u) => u.type === 'video').length
   const docCount = uploadFiles.filter((u) => u.type === 'document').length
 
-  // ── Submitted confirmation ──────────────────────────────────────────────────
   if (submitted) {
     return (
       <div className="h-full bg-bg-primary flex flex-col items-center justify-center">
@@ -293,7 +292,6 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
     )
   }
 
-  // ── Step 2 (claimant only): Declare YES or NO ─────────────────────────────
   if (step === 'ruling') {
     return (
       <div className="h-full bg-bg-primary flex flex-col overflow-hidden">
@@ -371,7 +369,6 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
     )
   }
 
-  // ── Step 1: Upload evidence ─────────────────────────────────────────────────
   return (
     <div className="h-full bg-bg-primary overflow-y-auto pb-8">
       <div className="px-6 pt-12 pb-6 border-b border-border-subtle">

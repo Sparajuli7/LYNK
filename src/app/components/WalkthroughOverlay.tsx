@@ -10,7 +10,6 @@ export function WalkthroughOverlay() {
   const prev = useUiStore((s) => s.prevWalkthroughStep)
   const skip = useUiStore((s) => s.skipWalkthrough)
 
-  // Track swipe direction for animation
   const [direction, setDirection] = useState(1)
 
   if (!active) return null

@@ -3,8 +3,6 @@ import { motion, AnimatePresence } from 'motion/react'
 import { X } from 'lucide-react'
 import { formatMoney } from '@/lib/utils/formatters'
 
-// ── Types ──
-
 interface GroupOption {
   id: string
   name: string
@@ -27,8 +25,6 @@ interface QuickBetSheetProps {
   onSubmit: (data: QuickBetData) => void
 }
 
-// ── Helpers ──
-
 const STAKE_CHIPS = [500, 1000, 2000, 5000] as const
 
 function deadlineToDate(preset: DeadlinePreset): Date {
@@ -50,10 +46,7 @@ function deadlineToDate(preset: DeadlinePreset): Date {
   }
 }
 
-// ── Component ──
-
 export function QuickBetSheet({ open, onClose, groups, onSubmit }: QuickBetSheetProps) {
-  // State
   const [claim, setClaim] = useState('')
   const [stakeCents, setStakeCents] = useState(2000)
   const [customAmount, setCustomAmount] = useState(false)
@@ -62,14 +55,12 @@ export function QuickBetSheet({ open, onClose, groups, onSubmit }: QuickBetSheet
   const [deadline, setDeadline] = useState<DeadlinePreset | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // Pre-select if only one group
   useEffect(() => {
     if (groups.length === 1) {
       setSelectedGroupId(groups[0].id)
     }
   }, [groups])
 
-  // Reset state on close
   useEffect(() => {
     if (!open) {
       // Small delay so animation finishes before reset

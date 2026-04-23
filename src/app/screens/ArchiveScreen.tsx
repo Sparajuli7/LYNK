@@ -10,10 +10,6 @@ import { loadPinned, savePinned, PIN_BETS_KEY, PIN_GROUPS_KEY } from '@/lib/util
 import type { BetWithSides } from '@/stores/betStore'
 import type { Group } from '@/lib/database.types'
 
-// ---------------------------------------------------------------------------
-// Sub-components
-// ---------------------------------------------------------------------------
-
 function BetStatusBadge({ status }: { status: string }) {
   if (status === 'completed')
     return (
@@ -39,10 +35,6 @@ function BetStatusBadge({ status }: { status: string }) {
     </span>
   )
 }
-
-// ---------------------------------------------------------------------------
-// Main screen
-// ---------------------------------------------------------------------------
 
 type Tab = 'bets' | 'groups'
 
@@ -114,7 +106,6 @@ export function ArchiveScreen() {
     })
   }, [])
 
-  // Sort: favourites first
   const sortedBets = [...bets].sort((a, b) => {
     const aF = favBets.has(a.id) ? 0 : 1
     const bF = favBets.has(b.id) ? 0 : 1

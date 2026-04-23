@@ -31,7 +31,6 @@ export function formatDateSeparator(dateStr: string): string {
 
 /** Render message content with @mentions highlighted */
 function RichContent({ content }: { content: string }) {
-  // Split on @username patterns
   const parts = content.split(/(@\w+)/g)
 
   return (
@@ -63,7 +62,6 @@ export function MessageBubble({
 }: MessageBubbleProps) {
   const [showActions, setShowActions] = useState(false)
 
-  // Deleted message
   if (message.deleted_at) {
     return (
       <div className={`flex gap-2 ${isOwn ? 'flex-row-reverse' : 'flex-row'}`}>
@@ -93,7 +91,6 @@ export function MessageBubble({
     )
   }
 
-  // System messages (join/leave events)
   if (message.type === 'system') {
     return (
       <div className="flex justify-center py-1">
