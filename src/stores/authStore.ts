@@ -7,10 +7,6 @@ import type { Profile, ProfileUpdate } from '@/lib/database.types'
 // Track the auth listener so we can unsubscribe before re-subscribing
 let _authSubscription: { unsubscribe: () => void } | null = null
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
 interface AuthState {
   user: User | null
   profile: Profile | null
@@ -59,10 +55,6 @@ interface AuthActions {
 
 export type AuthStore = AuthState & AuthActions
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
 async function loadProfile(userId: string): Promise<Profile | null> {
   const { data } = await supabase
     .from('profiles')
@@ -72,12 +64,7 @@ async function loadProfile(userId: string): Promise<Profile | null> {
   return data ?? null
 }
 
-// ---------------------------------------------------------------------------
-// Store
-// ---------------------------------------------------------------------------
-
 const useAuthStore = create<AuthStore>()((set, get) => ({
-  // ---- state ----
   user: null,
   profile: null,
   isLoading: true,
@@ -85,8 +72,6 @@ const useAuthStore = create<AuthStore>()((set, get) => ({
   isNewUser: false,
   error: null,
   pendingEmailConfirmation: null,
-
-  // ---- actions ----
 
   initialize: async () => {
     set({ isLoading: true, error: null })
@@ -262,7 +247,7 @@ const useAuthStore = create<AuthStore>()((set, get) => ({
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: 'com.lynk.app://auth/callback',
+          redirectTo: 'com.lynkedin.app://auth/callback',
           skipBrowserRedirect: true,
         },
       })

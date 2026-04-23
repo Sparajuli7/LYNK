@@ -1,11 +1,17 @@
 import { create } from 'zustand'
-import { supabase } from '@/lib/supabase'
+import { supabase, getCurrentUserId } from '@/lib/supabase'
 import type { ProofFiles } from '@/lib/api/proofs'
-import type { Proof, ProofVote, ProofType, VoteChoice, ProofRuling } from '@/lib/database.types'
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
+import type {
+  Proof,
+  ProofVote,
+  ProofType,
+  VoteChoice,
+  ProofRuling,
+  ProofInsert,
+  ProofVoteInsert,
+  OutcomeInsert,
+  BetUpdate,
+} from '@/lib/database.types'
 
 /** Re-export so existing import paths (`@/stores/proofStore`, `@/stores`) keep working. */
 export type { ProofFiles }
@@ -59,17 +65,6 @@ interface ProofActions {
 
 export type ProofStore = ProofState & ProofActions
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-async function getCurrentUserId(): Promise<string | null> {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  return user?.id ?? null
-}
-
 /** Get file extension from a File object (so storage URLs work) */
 function getExt(file: File): string {
   const fromName = file.name.split('.').pop()?.toLowerCase()
@@ -114,10 +109,10 @@ async function resolveOutcome(
   betId: string,
   result: 'claimant_succeeded' | 'claimant_failed',
 ): Promise<void> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  await supabase.from('outcomes').insert({ bet_id: betId, result } as any)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  await supabase.from('bets').update({ status: 'completed' } as any).eq('id', betId)
+  const outcomeInsert: OutcomeInsert = { bet_id: betId, result }
+  await supabase.from('outcomes').insert(outcomeInsert as never)
+  const betUpdate: BetUpdate = { status: 'completed' }
+  await supabase.from('bets').update(betUpdate as never).eq('id', betId)
   console.info(`[proofStore] Resolved bet ${betId} → ${result}`)
 }
 
@@ -176,19 +171,12 @@ async function autoResolveIfMajority(proofId: string): Promise<void> {
   // else: not enough votes yet — wait
 }
 
-// ---------------------------------------------------------------------------
-// Store
-// ---------------------------------------------------------------------------
-
 const useProofStore = create<ProofStore>()((set, get) => ({
-  // ---- state ----
   proofs: [],
   votes: [],
   isSubmitting: false,
   isLoading: false,
   error: null,
-
-  // ---- actions ----
 
   submitProof: async (betId, files, proofType, caption, ruling) => {
     const userId = await getCurrentUserId()
@@ -236,30 +224,27 @@ const useProofStore = create<ProofStore>()((set, get) => ({
       return null
     }
 
-    // When no media was uploaded, the proof is text-only regardless of what the caller passed
     const effectiveProofType: ProofType = hasAnyMedia ? proofType : 'text'
-
-    // Build proof insert — include ruling + ruling_deadline when provided
     const rulingDeadline = ruling
       ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
       : null
 
+    const proofInsert: ProofInsert = {
+      bet_id: betId,
+      submitted_by: userId,
+      proof_type: proofType,
+      front_camera_url: frontUrl,
+      back_camera_url: backUrl,
+      video_url: videoUrl,
+      document_url: documentUrl,
+      screenshot_urls: screenshotUrls,
+      caption: caption ?? null,
+      ruling: ruling ?? null,
+      ruling_deadline: rulingDeadline,
+    }
     const { data: proof, error } = await supabase
       .from('proofs')
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .insert({
-        bet_id: betId,
-        submitted_by: userId,
-        proof_type: effectiveProofType,
-        front_camera_url: frontUrl,
-        back_camera_url: backUrl,
-        video_url: videoUrl,
-        document_url: documentUrl,
-        screenshot_urls: screenshotUrls,
-        caption: caption ?? null,
-        ruling: ruling ?? null,
-        ruling_deadline: rulingDeadline,
-      } as any)
+      .insert(proofInsert as never)
       .select()
       .single()
 
@@ -274,10 +259,10 @@ const useProofStore = create<ProofStore>()((set, get) => ({
 
     // When a ruling is submitted, advance the bet to proof_submitted
     if (ruling) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const betUpdate: BetUpdate = { status: 'proof_submitted' }
       const { error: statusError } = await supabase
         .from('bets')
-        .update({ status: 'proof_submitted' } as any)
+        .update(betUpdate as never)
         .eq('id', betId)
 
       if (statusError) {
@@ -325,13 +310,10 @@ const useProofStore = create<ProofStore>()((set, get) => ({
 
     set({ error: null })
 
+    const voteInsert: ProofVoteInsert = { proof_id: proofId, user_id: userId, vote }
     const { data: newVote, error } = await supabase
       .from('proof_votes')
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .upsert(
-        { proof_id: proofId, user_id: userId, vote } as any,
-        { onConflict: 'proof_id,user_id' },
-      )
+      .upsert(voteInsert as never, { onConflict: 'proof_id,user_id' })
       .select()
       .single()
 

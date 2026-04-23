@@ -1,11 +1,8 @@
 import { create } from 'zustand'
-import { supabase } from '@/lib/supabase'
+import { supabase, getCurrentUserId } from '@/lib/supabase'
 import type { Group, GroupMember, GroupInsert, NotificationInsert } from '@/lib/database.types'
 import { createGroupConversation, addConversationParticipant, getGroupConversation, removeConversationParticipant } from '@/lib/api/chat'
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
+import { generateInviteCode } from '@/lib/api/groups'
 
 interface GroupState {
   groups: Group[]
@@ -30,37 +27,12 @@ interface GroupActions {
 
 export type GroupStore = GroupState & GroupActions
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-/** Generate a cryptographically random 8-char alphanumeric invite code */
-function generateInviteCode(): string {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789' // no 0/O/1/I to avoid confusion
-  const bytes = crypto.getRandomValues(new Uint8Array(8))
-  return Array.from(bytes, (b) => chars[b % chars.length]).join('')
-}
-
-async function getCurrentUserId(): Promise<string | null> {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  return user?.id ?? null
-}
-
-// ---------------------------------------------------------------------------
-// Store
-// ---------------------------------------------------------------------------
-
 const useGroupStore = create<GroupStore>()((set, get) => ({
-  // ---- state ----
   groups: [],
   activeGroup: null,
   members: [],
   isLoading: false,
   error: null,
-
-  // ---- actions ----
 
   fetchGroups: async () => {
     const userId = await getCurrentUserId()
@@ -79,7 +51,6 @@ const useGroupStore = create<GroupStore>()((set, get) => ({
       return
     }
 
-    // Unwrap the nested join result
     const groups = (data ?? [])
       .map((row) => row.groups)
       .filter((g): g is Group => g !== null)
@@ -111,7 +82,6 @@ const useGroupStore = create<GroupStore>()((set, get) => ({
       return null
     }
 
-    // Add creator as admin member
     const { error: memberError } = await supabase.from('group_members').insert({
       group_id: group.id,
       user_id: userId,
@@ -123,12 +93,7 @@ const useGroupStore = create<GroupStore>()((set, get) => ({
       return null
     }
 
-    // Auto-create group chat conversation
-    try {
-      await createGroupConversation(group.id, [userId])
-    } catch {
-      // Non-fatal: group still created successfully
-    }
+    await createGroupConversation(group.id, [userId])
 
     set((state) => ({
       groups: [group, ...state.groups],
@@ -163,7 +128,6 @@ const useGroupStore = create<GroupStore>()((set, get) => ({
       return null
     }
 
-    // Check not already a member
     const { data: existing } = await supabase
       .from('group_members')
       .select('group_id')
@@ -187,14 +151,9 @@ const useGroupStore = create<GroupStore>()((set, get) => ({
       return null
     }
 
-    // Add user to group chat conversation
-    try {
-      const conv = await getGroupConversation(group.id)
-      if (conv) {
-        await addConversationParticipant(conv.id, userId)
-      }
-    } catch {
-      // Non-fatal
+    const conv = await getGroupConversation(group.id)
+    if (conv) {
+      await addConversationParticipant(conv.id, userId)
     }
 
     set((state) => ({
@@ -242,14 +201,9 @@ const useGroupStore = create<GroupStore>()((set, get) => ({
       return
     }
 
-    // Remove user from group chat conversation
-    try {
-      const conv = await getGroupConversation(groupId)
-      if (conv && userId) {
-        await removeConversationParticipant(conv.id, userId)
-      }
-    } catch {
-      // Non-fatal
+    const conv = await getGroupConversation(groupId)
+    if (conv && userId) {
+      await removeConversationParticipant(conv.id, userId)
     }
 
     set((state) => ({
@@ -264,14 +218,12 @@ const useGroupStore = create<GroupStore>()((set, get) => ({
     const userId = await getCurrentUserId()
     if (!userId) return false
 
-    // Find the group to get name and invite code
     const group = get().groups.find((g) => g.id === groupId)
     if (!group) {
       set({ error: 'Group not found.' })
       return false
     }
 
-    // Check target isn't already a member
     const { data: existing } = await supabase
       .from('group_members')
       .select('group_id')
@@ -284,7 +236,6 @@ const useGroupStore = create<GroupStore>()((set, get) => ({
       return false
     }
 
-    // Insert notification for the target user
     const notification: NotificationInsert = {
       user_id: targetUserId,
       type: 'group_invite',

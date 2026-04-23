@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
-import { supabase } from '@/lib/supabase'
+import { supabase, getCurrentUserId } from '@/lib/supabase'
 import type { Message } from '@/lib/database.types'
 import type { RealtimeChannel } from '@supabase/supabase-js'
 import {
@@ -24,17 +24,10 @@ import {
 import type { ConversationWithMeta, MessageWithSender, ParticipantProfile, ReplyPreview, ReactionSummary } from '@/lib/api/chat'
 import type { ReactionType } from '@/lib/database.types'
 
-// ---------------------------------------------------------------------------
 // Module-level refs — keep channels outside React render cycles
-// ---------------------------------------------------------------------------
-
 let _globalChannel: RealtimeChannel | null = null
 let _conversationChannel: RealtimeChannel | null = null
 let _onNewMessage: ((m: Message) => void) | null = null
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
 
 interface ChatState {
   conversations: ConversationWithMeta[]
@@ -44,11 +37,9 @@ interface ChatState {
   hasMoreMessages: boolean
   isLoading: boolean
   error: string | null
-  // Reply state
   replyingTo: MessageWithSender | null
-  // Edit state
   editingMessage: MessageWithSender | null
-  // Participants cache for @mentions
+  /** Participants cache for @mentions */
   participants: ParticipantProfile[]
 }
 
@@ -68,40 +59,20 @@ interface ChatActions {
   setOnNewMessage: (cb: ((m: Message) => void) | null) => void
   clearActiveConversation: () => void
   clearError: () => void
-  // Reply
   setReplyingTo: (message: MessageWithSender | null) => void
-  // Reactions
   toggleReaction: (messageId: string, reaction: ReactionType) => Promise<void>
-  // Edit / Delete
   setEditingMessage: (message: MessageWithSender | null) => void
   saveEdit: (messageId: string, newContent: string) => Promise<void>
   unsendMessage: (messageId: string) => Promise<void>
-  // Participants
   fetchParticipants: () => Promise<void>
 }
 
 export type ChatStore = ChatState & ChatActions
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-async function getCurrentUserId(): Promise<string | null> {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  return user?.id ?? null
-}
-
 const MESSAGE_PAGE_SIZE = 50
-
-// ---------------------------------------------------------------------------
-// Store
-// ---------------------------------------------------------------------------
 
 const useChatStore = create<ChatStore>()(
   immer((set, get) => ({
-    // ---- state ----
     conversations: [],
     activeConversation: null,
     messages: [],
@@ -112,8 +83,6 @@ const useChatStore = create<ChatStore>()(
     replyingTo: null,
     editingMessage: null,
     participants: [],
-
-    // ---- actions ----
 
     fetchConversations: async () => {
       set((draft) => {
@@ -140,7 +109,6 @@ const useChatStore = create<ChatStore>()(
     openConversation: async (id: string) => {
       let conv = get().conversations.find((c) => c.id === id)
 
-      // If conversation isn't in local list, fetch all conversations first
       if (!conv) {
         try {
           const conversations = await getUserConversations()
@@ -164,13 +132,12 @@ const useChatStore = create<ChatStore>()(
       try {
         const messages = await getMessages(id, MESSAGE_PAGE_SIZE)
         set((draft) => {
-          // Messages come newest-first from API; reverse for display (oldest first)
+          // API returns newest-first; reverse so display is oldest-first
           draft.messages = messages.reverse()
           draft.hasMoreMessages = messages.length === MESSAGE_PAGE_SIZE
           draft.isLoading = false
         })
 
-        // Mark as read
         await apiMarkRead(id)
         set((draft) => {
           const c = draft.conversations.find((c) => c.id === id)
@@ -196,7 +163,6 @@ const useChatStore = create<ChatStore>()(
         ? { id: replyingTo.id, senderName: replyingTo._senderName, content: replyingTo.content, type: replyingTo.type }
         : null
 
-      // Optimistic: append message immediately
       const optimisticId = `optimistic-${Date.now()}`
       const optimisticMsg: MessageWithSender = {
         id: optimisticId,
@@ -224,7 +190,6 @@ const useChatStore = create<ChatStore>()(
         const sent = await apiSendMessage(activeConv.id, content, type, mediaUrl, replyToId)
 
         set((draft) => {
-          // Replace optimistic message with real one
           const idx = draft.messages.findIndex((m) => m.id === optimisticId)
           if (idx !== -1) {
             draft.messages[idx] = {
@@ -235,7 +200,6 @@ const useChatStore = create<ChatStore>()(
               _replyPreview: replyPreview,
             }
           }
-          // Update conversation preview
           const conv = draft.conversations.find((c) => c.id === activeConv.id)
           if (conv) {
             conv.last_message_at = sent.created_at
@@ -272,7 +236,6 @@ const useChatStore = create<ChatStore>()(
     },
 
     markRead: async (conversationId) => {
-      // Optimistic
       set((draft) => {
         const conv = draft.conversations.find((c) => c.id === conversationId)
         if (conv) conv._unread = false
@@ -282,7 +245,6 @@ const useChatStore = create<ChatStore>()(
       try {
         await apiMarkRead(conversationId)
       } catch {
-        // Rollback
         set((draft) => {
           const conv = draft.conversations.find((c) => c.id === conversationId)
           if (conv) conv._unread = true
@@ -292,7 +254,6 @@ const useChatStore = create<ChatStore>()(
     },
 
     getOrCreateGroupChat: async (groupId) => {
-      // Try to find existing conversation
       const conv = await getGroupConversation(groupId)
       if (conv) return conv.id
 
@@ -311,7 +272,6 @@ const useChatStore = create<ChatStore>()(
     },
 
     getOrCreateCompetitionChat: async (betId) => {
-      // Try to find existing conversation
       const conv = await getCompetitionConversation(betId)
       if (conv) return conv.id
 
@@ -338,15 +298,12 @@ const useChatStore = create<ChatStore>()(
       const userId = await getCurrentUserId()
       if (!userId) return
 
-      // Avoid duplicate channels
       if (_globalChannel) await get().unsubscribeFromRealtime()
 
-      // Get user's conversation IDs for filtering
       const conversations = get().conversations
       if (conversations.length === 0) return
 
-      // Subscribe to messages in all user's conversations
-      // Use a broad channel and filter client-side for efficiency
+      // Broad channel filtered client-side — cheaper than one per conversation
       _globalChannel = supabase
         .channel(`chat:global:${userId}`)
         .on(
@@ -360,18 +317,16 @@ const useChatStore = create<ChatStore>()(
             const newMessage = payload.new as Message
             const convIds = new Set(get().conversations.map((c) => c.id))
 
-            // Only process messages for conversations user is part of
             if (!convIds.has(newMessage.conversation_id)) return
 
-            // Skip own messages (already handled optimistically)
+            // Own messages are handled optimistically
             if (newMessage.sender_id === userId) return
 
             const activeConv = get().activeConversation
 
-            // If this is the active conversation, it will be handled by the conversation channel
+            // Active conversation is handled by the conversation-scoped channel
             if (activeConv && activeConv.id === newMessage.conversation_id) return
 
-            // Update conversation in list
             set((draft) => {
               const conv = draft.conversations.find((c) => c.id === newMessage.conversation_id)
               if (conv) {
@@ -400,7 +355,6 @@ const useChatStore = create<ChatStore>()(
       const userId = await getCurrentUserId()
       if (!userId) return
 
-      // Clean up existing conversation channel
       if (_conversationChannel) {
         await supabase.removeChannel(_conversationChannel)
         _conversationChannel = null
@@ -419,17 +373,15 @@ const useChatStore = create<ChatStore>()(
           async (payload) => {
             const newMessage = payload.new as Message
 
-            // Skip own messages (already handled optimistically)
+            // Own messages are handled optimistically
             if (newMessage.sender_id === userId) return
 
-            // Enrich with sender profile
             const { data: profile } = await supabase
               .from('profiles')
               .select('display_name, username, avatar_url')
               .eq('id', newMessage.sender_id)
               .single()
 
-            // Build reply preview if this is a reply
             let replyPreview: ReplyPreview | null = null
             if (newMessage.reply_to_id) {
               const existing = get().messages.find((m) => m.id === newMessage.reply_to_id)
@@ -448,13 +400,12 @@ const useChatStore = create<ChatStore>()(
             }
 
             set((draft) => {
-              // Avoid duplicates
               if (!draft.messages.some((m) => m.id === newMessage.id)) {
                 draft.messages.push(enriched)
               }
             })
 
-            // Auto-mark as read since user is viewing this conversation
+            // User is viewing this conversation, so mark as read immediately
             await apiMarkRead(conversationId).catch(() => {})
           },
         )
@@ -488,16 +439,12 @@ const useChatStore = create<ChatStore>()(
         draft.error = null
       }),
 
-    // ---- Reply ----
-
     setReplyingTo: (message) => {
       set((draft) => {
         draft.replyingTo = message
-        draft.editingMessage = null // cancel editing if replying
+        draft.editingMessage = null
       })
     },
-
-    // ---- Reactions ----
 
     toggleReaction: async (messageId, reaction) => {
       const userId = await getCurrentUserId()
@@ -509,7 +456,6 @@ const useChatStore = create<ChatStore>()(
       const reactionList = msg._reactions[reaction]
       const alreadyReacted = reactionList.includes(userId)
 
-      // Optimistic update
       set((draft) => {
         const m = draft.messages.find((m) => m.id === messageId)
         if (!m) return
@@ -527,7 +473,6 @@ const useChatStore = create<ChatStore>()(
           await apiAddReaction(messageId, reaction)
         }
       } catch {
-        // Rollback
         set((draft) => {
           const m = draft.messages.find((m) => m.id === messageId)
           if (!m) return
@@ -540,17 +485,14 @@ const useChatStore = create<ChatStore>()(
       }
     },
 
-    // ---- Edit / Delete ----
-
     setEditingMessage: (message) => {
       set((draft) => {
         draft.editingMessage = message
-        draft.replyingTo = null // cancel reply if editing
+        draft.replyingTo = null
       })
     },
 
     saveEdit: async (messageId, newContent) => {
-      // Optimistic
       const originalContent = get().messages.find((m) => m.id === messageId)?.content
       set((draft) => {
         const m = draft.messages.find((m) => m.id === messageId)
@@ -564,7 +506,6 @@ const useChatStore = create<ChatStore>()(
       try {
         await apiEditMessage(messageId, newContent)
       } catch {
-        // Rollback
         set((draft) => {
           const m = draft.messages.find((m) => m.id === messageId)
           if (m && originalContent !== undefined) {
@@ -579,7 +520,6 @@ const useChatStore = create<ChatStore>()(
       const original = get().messages.find((m) => m.id === messageId)
       if (!original) return
 
-      // Optimistic
       set((draft) => {
         const m = draft.messages.find((m) => m.id === messageId)
         if (m) {
@@ -591,7 +531,6 @@ const useChatStore = create<ChatStore>()(
       try {
         await apiDeleteMessage(messageId)
       } catch {
-        // Rollback
         set((draft) => {
           const m = draft.messages.find((m) => m.id === messageId)
           if (m) {
@@ -601,8 +540,6 @@ const useChatStore = create<ChatStore>()(
         })
       }
     },
-
-    // ---- Participants (for @mentions) ----
 
     fetchParticipants: async () => {
       const activeConv = get().activeConversation

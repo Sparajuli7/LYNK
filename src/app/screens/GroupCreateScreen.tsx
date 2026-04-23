@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import { ChevronLeft, Share2 } from 'lucide-react'
+import { Share2 } from 'lucide-react'
 import { useGroupStore } from '@/stores'
 import { Input } from '@/app/components/ui/input'
 import { Button } from '@/app/components/ui/button'
 import { GROUP_EMOJIS } from '@/lib/utils/constants'
 import { ShareSheet } from '@/app/components/ShareSheet'
+import { BackButton } from '@/app/components/BackButton'
 import {
   getGroupInviteUrl,
   getGroupInviteShareText,
@@ -63,13 +64,7 @@ export function GroupCreateScreen() {
   if (createdGroup) {
     return (
       <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
-        <button
-          onClick={() => navigate('/home')}
-          className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors"
-          aria-label="Go to home"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
+        <BackButton onClick={() => navigate('/home')} ariaLabel="Go to home" />
 
         <div className="flex-1 flex flex-col justify-center pt-12">
           <div className="text-5xl mb-4 text-center">{emoji}</div>
@@ -126,13 +121,7 @@ export function GroupCreateScreen() {
 
   return (
     <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
-      <button
-        onClick={() => navigate(-1)}
-        className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors"
-        aria-label="Go back"
-      >
-        <ChevronLeft className="w-6 h-6" />
-      </button>
+      <BackButton />
 
       <div className="flex-1 flex flex-col pt-12">
         <h1 className="text-2xl font-black text-text-primary mb-2">

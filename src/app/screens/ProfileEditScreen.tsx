@@ -1,12 +1,12 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router'
-import { ChevronLeft } from 'lucide-react'
 import { useAuthStore } from '@/stores'
 import { uploadAvatar, checkUsernameAvailable } from '@/lib/api/profiles'
 import { Input } from '@/app/components/ui/input'
 import { Button } from '@/app/components/ui/button'
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera'
 import { Capacitor } from '@capacitor/core'
+import { BackButton } from '@/app/components/BackButton'
 
 export function ProfileEditScreen() {
   const navigate = useNavigate()
@@ -132,13 +132,7 @@ export function ProfileEditScreen() {
 
   return (
     <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
-      <button
-        onClick={() => navigate(-1)}
-        className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors"
-        aria-label="Go back"
-      >
-        <ChevronLeft className="w-6 h-6" />
-      </button>
+      <BackButton />
 
       <div className="flex-1 pt-12">
         <h1 className="text-2xl font-black text-text-primary mb-8">Edit Profile</h1>

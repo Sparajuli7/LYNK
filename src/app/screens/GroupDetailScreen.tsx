@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router'
-import { ChevronLeft, Copy, LogOut, MessageCircle, Share2, Search, UserPlus } from 'lucide-react'
+import { Copy, LogOut, MessageCircle, Share2, Search, UserPlus } from 'lucide-react'
+import { BackButton } from '@/app/components/BackButton'
 import { useGroupStore, useAuthStore, useChatStore } from '@/stores'
 import { getGroupBets } from '@/lib/api/bets'
 import { searchProfiles, getProfilesWithRepByIds } from '@/lib/api/profiles'
@@ -277,13 +278,7 @@ export function GroupDetailScreen() {
 
   return (
     <div className="h-full bg-bg-primary grain-texture overflow-y-auto pb-6">
-      <button
-        onClick={() => navigate(-1)}
-        className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors z-10"
-        aria-label="Go back"
-      >
-        <ChevronLeft className="w-6 h-6" />
-      </button>
+      <BackButton className="z-10" />
 
       <div className="px-6 pt-12 pb-6">
         <div className="text-5xl mb-2 text-center">{group.avatar_emoji}</div>
@@ -337,8 +332,6 @@ export function GroupDetailScreen() {
             try {
               const convId = await useChatStore.getState().getOrCreateGroupChat(id)
               navigate(`/chat/${convId}`)
-            } catch (e) {
-              console.error('Failed to open group chat:', e)
             } finally {
               setOpeningChat(false)
             }

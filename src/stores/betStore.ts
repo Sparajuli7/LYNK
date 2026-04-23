@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
-import { supabase } from '@/lib/supabase'
+import { supabase, getCurrentUserId } from '@/lib/supabase'
 import { createRematchBet as createRematchBetApi, type RematchStakeOption, type BetWithSides } from '@/lib/api/bets'
 import type {
   Bet,
@@ -44,19 +44,11 @@ const WIZARD_DEFAULTS: WizardFields = {
   selectedGroup: null,
 }
 
-// ---------------------------------------------------------------------------
-// Filters
-// ---------------------------------------------------------------------------
-
 export interface BetFilters {
   category: BetCategory | null
   type: BetType | null
   status: BetStatus | null
 }
-
-// ---------------------------------------------------------------------------
-// Store types
-// ---------------------------------------------------------------------------
 
 interface BetState {
   bets: BetWithSides[]
@@ -65,7 +57,6 @@ interface BetState {
   isLoading: boolean
   error: string | null
   filters: BetFilters
-  // Wizard
   currentStep: number
   wizard: WizardFields
 }
@@ -83,7 +74,6 @@ interface BetActions {
   joinBet: (betId: string, side: BetSide) => Promise<void>
   setFilters: (filters: Partial<BetFilters>) => void
   clearFilters: () => void
-  // Wizard
   resetWizard: () => void
   /** Prefill wizard from an existing bet (for Remix / use as template). Step set to 1. */
   loadWizardFromTemplate: (bet: Pick<Bet, 'title' | 'category' | 'bet_type' | 'deadline' | 'stake_type' | 'stake_money' | 'stake_punishment_id' | 'stake_custom_punishment' | 'group_id'>, group: Group | null) => void
@@ -96,10 +86,6 @@ interface BetActions {
 }
 
 export type BetStore = BetState & BetActions
-
-// ---------------------------------------------------------------------------
-// Computed selectors (use with useBetStore(selector))
-// ---------------------------------------------------------------------------
 
 /** Returns rider/doubter counts and percentage split for the active bet */
 export function selectOdds(state: BetState) {
@@ -125,26 +111,10 @@ export function selectMySide(
   return entry?.side ?? null
 }
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-async function getCurrentUserId(): Promise<string | null> {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  return user?.id ?? null
-}
-
 const BET_SELECT = '*, bet_sides(*)' as const
-
-// ---------------------------------------------------------------------------
-// Store
-// ---------------------------------------------------------------------------
 
 const useBetStore = create<BetStore>()(
   immer((set, get) => ({
-    // ---- state ----
     bets: [],
     activeBet: null,
     activeBetSides: [],
@@ -153,8 +123,6 @@ const useBetStore = create<BetStore>()(
     filters: { category: null, type: null, status: null },
     currentStep: 1,
     wizard: { ...WIZARD_DEFAULTS },
-
-    // ---- actions ----
 
     fetchBets: async (groupId) => {
       set((draft) => {
@@ -254,7 +222,6 @@ const useBetStore = create<BetStore>()(
 
       const { wizard } = get()
 
-      // Validate required wizard fields
       if (
         !wizard.claim ||
         !wizard.deadline ||
@@ -372,11 +339,9 @@ const useBetStore = create<BetStore>()(
         if (error) {
           draft.error = error.message
         } else if (newSide) {
-          // Update activeBetSides if this is the detail view
           if (draft.activeBet?.id === betId) {
             draft.activeBetSides.push(newSide)
           }
-          // Update the bet in the list
           const betInList = draft.bets.find((b) => b.id === betId)
           if (betInList) {
             betInList.bet_sides.push(newSide)

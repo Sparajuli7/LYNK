@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router'
-import { ChevronLeft } from 'lucide-react'
+import { useParams } from 'react-router'
 import { getPunishmentStats } from '@/lib/api/punishments'
 import { supabase } from '@/lib/supabase'
+import { BackButton } from '@/app/components/BackButton'
 import type { PunishmentStats } from '@/lib/api/punishments'
 
 export function PunishmentStatsScreen() {
   const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
   const [stats, setStats] = useState<PunishmentStats | null>(null)
   const [cardText, setCardText] = useState('')
   const [loading, setLoading] = useState(true)
@@ -25,8 +24,6 @@ export function PunishmentStatsScreen() {
       .single()
       .then(({ data }) => setCardText(data?.text ?? ''))
   }, [id])
-
-  const handleBack = () => navigate(-1)
 
   if (!id) return null
 
@@ -47,13 +44,7 @@ export function PunishmentStatsScreen() {
 
   return (
     <div className="h-full bg-bg-primary grain-texture overflow-y-auto pb-6">
-      <button
-        onClick={handleBack}
-        className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors z-10"
-        aria-label="Go back"
-      >
-        <ChevronLeft className="w-6 h-6" />
-      </button>
+      <BackButton className="z-10" />
 
       <div className="px-6 pt-12 pb-6">
         <p className="text-xs font-bold uppercase tracking-wider text-text-muted mb-2">

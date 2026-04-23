@@ -1,16 +1,10 @@
-import { supabase } from '@/lib/supabase'
+import { supabase, requireUserId } from '@/lib/supabase'
 import { getProfilesWithRepByIds } from '@/lib/api/profiles'
 import type { Bet, BetInsert, BetCategory, CompetitionScore, Profile, StakeType } from '@/lib/database.types'
 
-async function getCurrentUserId(): Promise<string> {
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Not authenticated')
-  return user.id
-}
-
 /** Fetch all competitions for the current user's groups */
 export async function getCompetitionsForUser(): Promise<Bet[]> {
-  const userId = await getCurrentUserId()
+  const userId = await requireUserId()
 
   const { data: memberships, error: memError } = await supabase
     .from('group_members')
@@ -59,7 +53,7 @@ export interface LeaderboardEntry {
 }
 
 export async function createCompetition(data: CompetitionData): Promise<Bet> {
-  const userId = await getCurrentUserId()
+  const userId = await requireUserId()
 
   const insert: BetInsert = {
     group_id: data.groupId,
@@ -125,7 +119,7 @@ export async function uploadCompetitionProof(
   betId: string,
   file: File,
 ): Promise<string> {
-  const userId = await getCurrentUserId()
+  const userId = await requireUserId()
   const ext = file.name.split('.').pop() ?? 'jpg'
   const path = `competition-proofs/${betId}/${userId}/${Date.now()}.${ext}`
 
@@ -143,7 +137,7 @@ export async function submitScore(
   score: number,
   proofUrl?: string,
 ): Promise<void> {
-  const userId = await getCurrentUserId()
+  const userId = await requireUserId()
 
   // Check if competition deadline has passed before allowing score submission
   const { data: bet, error: betError } = await supabase

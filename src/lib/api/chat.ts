@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase'
+import { supabase, requireUserId } from '@/lib/supabase'
 import type {
   Conversation,
   ConversationParticipant,
@@ -7,22 +7,6 @@ import type {
   ConversationType,
   ReactionType,
 } from '@/lib/database.types'
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-async function getCurrentUserId(): Promise<string> {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) throw new Error('Not authenticated')
-  return user.id
-}
-
-// ---------------------------------------------------------------------------
-// Enriched types used by the store / screens
-// ---------------------------------------------------------------------------
 
 export interface ConversationWithMeta extends Conversation {
   _unread: boolean
@@ -64,7 +48,7 @@ export interface MessageWithSender extends Message {
 // ---------------------------------------------------------------------------
 
 export async function getUserConversations(): Promise<ConversationWithMeta[]> {
-  const userId = await getCurrentUserId()
+  const userId = await requireUserId()
 
   // Get all conversations user participates in
   const { data: participantRows, error: pErr } = await supabase
@@ -208,7 +192,7 @@ export async function getCompetitionConversation(betId: string): Promise<Convers
 }
 
 export async function getOrCreateDMConversation(otherUserId: string): Promise<Conversation> {
-  const userId = await getCurrentUserId()
+  const userId = await requireUserId()
 
   // Find existing DM between these two users
   const { data: myParticipations } = await supabase
@@ -455,7 +439,7 @@ export async function uploadChatImage(
   conversationId: string,
   file: File,
 ): Promise<string> {
-  const userId = await getCurrentUserId()
+  const userId = await requireUserId()
   const ext = file.name.split('.').pop()?.toLowerCase() ?? 'jpg'
   const path = `chat/${conversationId}/${userId}/${Date.now()}.${ext}`
 
@@ -475,7 +459,7 @@ export async function sendMessage(
   mediaUrl?: string,
   replyToId?: string,
 ): Promise<Message> {
-  const userId = await getCurrentUserId()
+  const userId = await requireUserId()
 
   const { data, error } = await supabase
     .from('messages')
@@ -495,7 +479,7 @@ export async function sendMessage(
 }
 
 export async function markConversationRead(conversationId: string): Promise<void> {
-  const userId = await getCurrentUserId()
+  const userId = await requireUserId()
 
   const { error } = await supabase
     .from('conversation_participants')
@@ -507,7 +491,7 @@ export async function markConversationRead(conversationId: string): Promise<void
 }
 
 export async function getUnreadCount(): Promise<number> {
-  const userId = await getCurrentUserId()
+  const userId = await requireUserId()
 
   const { data: participantRows, error } = await supabase
     .from('conversation_participants')
@@ -545,7 +529,7 @@ export async function addReaction(
   messageId: string,
   reaction: ReactionType,
 ): Promise<void> {
-  const userId = await getCurrentUserId()
+  const userId = await requireUserId()
 
   const { error } = await supabase
     .from('message_reactions')
@@ -559,7 +543,7 @@ export async function removeReaction(
   messageId: string,
   reaction: ReactionType,
 ): Promise<void> {
-  const userId = await getCurrentUserId()
+  const userId = await requireUserId()
 
   const { error } = await supabase
     .from('message_reactions')
@@ -604,7 +588,7 @@ export async function uploadChatVideo(
   conversationId: string,
   file: File,
 ): Promise<string> {
-  const userId = await getCurrentUserId()
+  const userId = await requireUserId()
   const ext = file.name.split('.').pop()?.toLowerCase() ?? 'mp4'
   const path = `chat/${conversationId}/${userId}/${Date.now()}.${ext}`
 

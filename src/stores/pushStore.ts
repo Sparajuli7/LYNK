@@ -1,12 +1,8 @@
 import { create } from 'zustand'
-import { supabase } from '@/lib/supabase'
+import { supabase, getCurrentUserId } from '@/lib/supabase'
 import type { PushSubscriptionInsert } from '@/lib/database.types'
 import { Capacitor } from '@capacitor/core'
 import { PushNotifications } from '@capacitor/push-notifications'
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
 
 interface PushState {
   permission: NotificationPermission
@@ -31,10 +27,6 @@ interface PushActions {
 
 export type PushStore = PushState & PushActions
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
 const VAPID_PUBLIC_KEY = import.meta.env.VITE_VAPID_PUBLIC_KEY as string
 
 function urlBase64ToUint8Array(base64String: string): Uint8Array {
@@ -48,19 +40,10 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
   return outputArray
 }
 
-async function getCurrentUserId(): Promise<string | null> {
-  const { data: { user } } = await supabase.auth.getUser()
-  return user?.id ?? null
-}
-
 async function getRegistration(): Promise<ServiceWorkerRegistration | null> {
   if (!('serviceWorker' in navigator)) return null
   return navigator.serviceWorker.ready
 }
-
-// ---------------------------------------------------------------------------
-// Store
-// ---------------------------------------------------------------------------
 
 const usePushStore = create<PushStore>()((set, get) => ({
   permission: typeof Notification !== 'undefined' ? Notification.permission : 'default',
@@ -116,7 +99,6 @@ const usePushStore = create<PushStore>()((set, get) => ({
     set({ isLoading: true, error: null })
 
     try {
-      // Request permission if not yet granted
       let perm = get().permission
       if (perm === 'default') {
         perm = await get().requestPermission()
@@ -132,7 +114,6 @@ const usePushStore = create<PushStore>()((set, get) => ({
         return false
       }
 
-      // Subscribe to push
       const subscription = await reg.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
@@ -199,7 +180,6 @@ const usePushStore = create<PushStore>()((set, get) => ({
       if (reg) {
         const sub = await reg.pushManager.getSubscription()
         if (sub) {
-          // Delete from database first
           if (userId) {
             await supabase
               .from('push_subscriptions')

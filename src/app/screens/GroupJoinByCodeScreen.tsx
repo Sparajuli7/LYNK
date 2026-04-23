@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
-import { ChevronLeft } from 'lucide-react'
 import { useGroupStore } from '@/stores'
 import { getGroupByInviteCode } from '@/lib/api/groups'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/app/components/ui/button'
+import { BackButton } from '@/app/components/BackButton'
 import type { Group } from '@/lib/database.types'
 
 export function GroupJoinByCodeScreen() {
@@ -73,13 +73,7 @@ export function GroupJoinByCodeScreen() {
   if (!group) {
     return (
       <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
-        <button
-          onClick={() => navigate('/group/join')}
-          className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors"
-          aria-label="Go back"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
+        <BackButton onClick={() => navigate('/group/join')} />
         <div className="flex-1 flex flex-col items-center justify-center">
           <div className="text-5xl mb-4"></div>
           <h2 className="text-xl font-black text-text-primary mb-2">Group not found</h2>
@@ -99,13 +93,7 @@ export function GroupJoinByCodeScreen() {
 
   return (
     <div className="h-full bg-bg-primary grain-texture flex flex-col px-6">
-      <button
-        onClick={() => navigate(-1)}
-        className="absolute top-6 left-6 p-2 -m-2 text-text-muted hover:text-text-primary transition-colors"
-        aria-label="Go back"
-      >
-        <ChevronLeft className="w-6 h-6" />
-      </button>
+      <BackButton />
 
       <div className="flex-1 flex flex-col justify-center pt-12">
         <div className="text-6xl mb-4 text-center">{group.avatar_emoji}</div>

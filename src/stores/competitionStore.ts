@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { supabase } from '@/lib/supabase'
+import { supabase, getCurrentUserId } from '@/lib/supabase'
 import { getLeaderboard, type LeaderboardEntry } from '@/lib/api/competitions'
 import { createCompetitionConversation, getCompetitionConversation, addConversationParticipant } from '@/lib/api/chat'
 import type {
@@ -8,10 +8,6 @@ import type {
   BetSide,
   StakeType,
 } from '@/lib/database.types'
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
 
 /** A competition is a bet with bet_type = 'competition' */
 export type Competition = Bet
@@ -52,30 +48,12 @@ interface CompetitionActions {
 
 export type CompetitionStore = CompetitionState & CompetitionActions
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-async function getCurrentUserId(): Promise<string | null> {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  return user?.id ?? null
-}
-
-// ---------------------------------------------------------------------------
-// Store
-// ---------------------------------------------------------------------------
-
 const useCompetitionStore = create<CompetitionStore>()((set, get) => ({
-  // ---- state ----
   competitions: [],
   activeCompetition: null,
   leaderboard: [],
   isLoading: false,
   error: null,
-
-  // ---- actions ----
 
   fetchCompetitions: async (groupId) => {
     set({ isLoading: true, error: null })
@@ -128,26 +106,19 @@ const useCompetitionStore = create<CompetitionStore>()((set, get) => ({
       return null
     }
 
-    // Creator joins as a rider (participant)
     await supabase.from('bet_sides').insert({
       bet_id: competition.id,
       user_id: userId,
       side: 'rider',
     })
 
-    // Seed a zero-score entry for the creator
     await supabase.from('competition_scores').insert({
       bet_id: competition.id,
       user_id: userId,
       score: 0,
     })
 
-    // Auto-create competition chat conversation
-    try {
-      await createCompetitionConversation(competition.id, [userId])
-    } catch {
-      // Non-fatal: competition still created successfully
-    }
+    await createCompetitionConversation(competition.id, [userId])
 
     set((state) => ({
       competitions: [competition, ...state.competitions],
@@ -164,7 +135,6 @@ const useCompetitionStore = create<CompetitionStore>()((set, get) => ({
 
     set({ isLoading: true, error: null })
 
-    // Upsert so re-submissions update the existing row
     const { error } = await supabase
       .from('competition_scores')
       .upsert(
@@ -184,7 +154,6 @@ const useCompetitionStore = create<CompetitionStore>()((set, get) => ({
 
     set({ isLoading: false })
 
-    // Refresh leaderboard after score update
     await get().fetchLeaderboard(betId)
   },
 
@@ -210,7 +179,6 @@ const useCompetitionStore = create<CompetitionStore>()((set, get) => ({
 
     set({ isLoading: true, error: null })
 
-    // Check for existing membership
     const { data: existing } = await supabase
       .from('bet_sides')
       .select('id')
@@ -232,7 +200,6 @@ const useCompetitionStore = create<CompetitionStore>()((set, get) => ({
       return
     }
 
-    // Seed a zero-score entry for new participants
     if (side === 'rider') {
       await supabase.from('competition_scores').insert({
         bet_id: betId,
@@ -241,14 +208,9 @@ const useCompetitionStore = create<CompetitionStore>()((set, get) => ({
       })
     }
 
-    // Add user to competition chat conversation
-    try {
-      const conv = await getCompetitionConversation(betId)
-      if (conv && userId) {
-        await addConversationParticipant(conv.id, userId)
-      }
-    } catch {
-      // Non-fatal
+    const conv = await getCompetitionConversation(betId)
+    if (conv && userId) {
+      await addConversationParticipant(conv.id, userId)
     }
 
     set({ isLoading: false })

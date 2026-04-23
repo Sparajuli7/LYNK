@@ -1,19 +1,12 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
-import { supabase } from '@/lib/supabase'
+import { supabase, getCurrentUserId } from '@/lib/supabase'
 import type { Notification } from '@/lib/database.types'
 import type { RealtimeChannel } from '@supabase/supabase-js'
 
-// ---------------------------------------------------------------------------
 // Module-level ref — keeps the channel outside React render cycles
-// ---------------------------------------------------------------------------
-
 let _channel: RealtimeChannel | null = null
 let _onNewNotification: ((n: Notification) => void) | null = null
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
 
 interface NotificationState {
   notifications: Notification[]
@@ -37,30 +30,12 @@ interface NotificationActions {
 
 export type NotificationStore = NotificationState & NotificationActions
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-async function getCurrentUserId(): Promise<string | null> {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  return user?.id ?? null
-}
-
-// ---------------------------------------------------------------------------
-// Store
-// ---------------------------------------------------------------------------
-
 const useNotificationStore = create<NotificationStore>()(
   immer((set, get) => ({
-    // ---- state ----
     notifications: [],
     unreadCount: 0,
     isLoading: false,
     error: null,
-
-    // ---- actions ----
 
     fetchNotifications: async () => {
       const userId = await getCurrentUserId()
@@ -164,7 +139,6 @@ const useNotificationStore = create<NotificationStore>()(
           (payload) => {
             const newNotification = payload.new as Notification
             set((draft) => {
-              // Prepend and increment unread count
               draft.notifications.unshift(newNotification)
               if (!newNotification.read) {
                 draft.unreadCount += 1
@@ -188,7 +162,6 @@ const useNotificationStore = create<NotificationStore>()(
               if (idx !== -1) {
                 draft.notifications[idx] = updated
               }
-              // Recompute unread count from source of truth
               draft.unreadCount = draft.notifications.filter((n) => !n.read).length
             })
           },

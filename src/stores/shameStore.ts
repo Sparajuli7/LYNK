@@ -1,17 +1,13 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
-import { supabase } from '@/lib/supabase'
+import { supabase, getCurrentUserId } from '@/lib/supabase'
 import {
   addReaction,
   getPunishmentLeaderboard,
   getWeeklyShameStats,
 } from '@/lib/api/shame'
 import type { PunishmentLeaderboardEntry, WeeklyShameStats } from '@/lib/api/shame'
-import type { HallOfShameEntry, HallOfShameInsert } from '@/lib/database.types'
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
+import type { HallOfShameEntry, HallOfShameInsert, Json } from '@/lib/database.types'
 
 /** Reactions: { "😭": ["userId1", "userId2"], ... } */
 export type ReactionsWithUsers = Record<string, string[]>
@@ -65,32 +61,18 @@ interface ShameActions {
 
 export type ShameStore = ShameState & ShameActions
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-async function getCurrentUserId(): Promise<string | null> {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  return user?.id ?? null
-}
-
-function parseReactions(raw: unknown): ReactionsWithUsers {
-  if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
-    const obj = raw as Record<string, unknown>
-    const result: ReactionsWithUsers = {}
-    for (const [k, v] of Object.entries(obj)) {
-      if (Array.isArray(v)) result[k] = v.filter((x): x is string => typeof x === 'string')
-      else result[k] = []
-    }
-    return result
+function parseReactions(raw: Json): ReactionsWithUsers {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return {}
+  const result: ReactionsWithUsers = {}
+  for (const [k, v] of Object.entries(raw)) {
+    if (Array.isArray(v)) result[k] = v.filter((x): x is string => typeof x === 'string')
+    else result[k] = []
   }
-  return {}
+  return result
 }
 
 /** Get count for display: reactions are { emoji: [userIds] } */
-export function getReactionCounts(reactions: unknown): Record<string, number> {
+export function getReactionCounts(reactions: Json): Record<string, number> {
   const parsed = parseReactions(reactions)
   const counts: Record<string, number> = {}
   for (const [emoji, users] of Object.entries(parsed)) {
@@ -101,7 +83,7 @@ export function getReactionCounts(reactions: unknown): Record<string, number> {
 
 /** Check if current user has reacted with this emoji */
 export function hasUserReacted(
-  reactions: unknown,
+  reactions: Json,
   emoji: string,
   userId: string,
 ): boolean {
@@ -109,13 +91,8 @@ export function hasUserReacted(
   return (parsed[emoji] ?? []).includes(userId)
 }
 
-// ---------------------------------------------------------------------------
-// Store
-// ---------------------------------------------------------------------------
-
 const useShameStore = create<ShameStore>()(
   immer((set, get) => ({
-    // ---- state ----
     shamePosts: [],
     groupStats: null,
     punishmentLeaderboard: [],
@@ -123,15 +100,12 @@ const useShameStore = create<ShameStore>()(
     isLoading: false,
     error: null,
 
-    // ---- actions ----
-
     fetchShameFeed: async (groupId) => {
       set((draft) => {
         draft.isLoading = true
         draft.error = null
       })
 
-      // Join through outcomes → bets to filter by group
       const { data, error } = await supabase
         .from('hall_of_shame')
         .select(
@@ -227,7 +201,8 @@ const useShameStore = create<ShameStore>()(
         const updated = await addReaction(postId, emoji, userId)
         set((draft) => {
           const post = draft.shamePosts.find((p) => p.id === postId)
-          if (post) post.reactions = updated as unknown as HallOfShameEntry['reactions']
+          // ReactionsWithUsers (Record<string, string[]>) is assignable to Json.
+          if (post) post.reactions = updated as Json
         })
       } catch (err) {
         set((draft) => {
@@ -237,7 +212,6 @@ const useShameStore = create<ShameStore>()(
     },
 
     fetchGroupStats: async (groupId) => {
-      // Pull all outcomes for bets in this group
       const { data, error } = await supabase
         .from('outcomes')
         .select(`

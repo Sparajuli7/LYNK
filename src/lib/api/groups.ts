@@ -1,23 +1,16 @@
-import { supabase } from '@/lib/supabase'
+import { supabase, requireUserId } from '@/lib/supabase'
 import { getProfilesByIds } from '@/lib/api/profiles'
 import type { Group, GroupMember } from '@/lib/database.types'
 
-async function getCurrentUserId(): Promise<string> {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) throw new Error('Not authenticated')
-  return user.id
-}
-
-function generateInviteCode(): string {
+/** Generate a cryptographically random 8-char alphanumeric invite code */
+export function generateInviteCode(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789' // no 0/O/1/I to avoid confusion
   const bytes = crypto.getRandomValues(new Uint8Array(8))
   return Array.from(bytes, (b) => chars[b % chars.length]).join('')
 }
 
 export async function getUserGroups(): Promise<Group[]> {
-  const userId = await getCurrentUserId()
+  const userId = await requireUserId()
 
   const { data, error } = await supabase
     .from('group_members')
@@ -32,7 +25,7 @@ export async function getUserGroups(): Promise<Group[]> {
 }
 
 export async function createGroup(name: string, emoji: string): Promise<Group> {
-  const userId = await getCurrentUserId()
+  const userId = await requireUserId()
 
   const { data: group, error: groupError } = await supabase
     .from('groups')
@@ -68,7 +61,7 @@ export async function getGroupByInviteCode(code: string): Promise<Group | null> 
 }
 
 export async function joinGroup(groupId: string): Promise<void> {
-  const userId = await getCurrentUserId()
+  const userId = await requireUserId()
 
   const { data: existing } = await supabase
     .from('group_members')
@@ -124,7 +117,7 @@ export async function getGroupMembersWithProfiles(
 
 /** Get members from all user's groups (for recent friends in H2H), excluding self */
 export async function getAllGroupMembersForUser(): Promise<GroupMemberWithProfile[]> {
-  const userId = await getCurrentUserId()
+  const userId = await requireUserId()
 
   const { data: memberships, error: memError } = await supabase
     .from('group_members')
@@ -166,7 +159,7 @@ export async function getAllGroupMembersForUser(): Promise<GroupMemberWithProfil
 }
 
 export async function leaveGroup(groupId: string): Promise<void> {
-  const userId = await getCurrentUserId()
+  const userId = await requireUserId()
 
   const { error } = await supabase
     .from('group_members')
