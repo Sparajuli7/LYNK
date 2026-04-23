@@ -15,6 +15,8 @@ interface ReceiptCardProps {
   riderCount: number;
   doubterCount: number;
   stakeCents?: number;
+  /** Pre-formatted stake label (e.g. punishment text). Takes priority over stakeCents. */
+  stakeLabel?: string;
   onView?: () => void;
 }
 
@@ -31,11 +33,12 @@ export function ReceiptCard({
   riderCount,
   doubterCount,
   stakeCents,
+  stakeLabel,
   onView,
 }: ReceiptCardProps) {
   const shortId = betId.slice(0, 4).toUpperCase();
   const stakeDisplay =
-    stakeCents != null ? `$${(stakeCents / 100).toFixed(2)}` : "—";
+    stakeLabel ?? (stakeCents != null ? `$${(stakeCents / 100).toFixed(2)}` : "—");
 
   return (
     <div

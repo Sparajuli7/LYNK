@@ -126,6 +126,7 @@ function StripReceiptCard({
       riderCount={riderCount}
       doubterCount={doubterCount}
       stakeCents={bet.stake_money ?? undefined}
+      stakeLabel={!bet.stake_money ? formatStake(bet) : undefined}
       onView={onView}
     />
   )

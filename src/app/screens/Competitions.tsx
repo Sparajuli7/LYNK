@@ -412,11 +412,9 @@ function LiveChallengeCard({ bet, groups, onView }: ChallengeCardProps) {
           <span className="font-mono text-[10px] font-bold text-text-mute tracking-[0.15em] truncate">
             #{shortId} {betGroup ? `\u00B7 ${betGroup.avatar_emoji} ${betGroup.name}` : ''}
           </span>
-          {bet.stake_money ? (
-            <span className="font-mono font-black text-[14px] text-rider tracking-tight">
-              {formatMoney(bet.stake_money)}
-            </span>
-          ) : null}
+          <span className="font-mono font-black text-[14px] text-rider tracking-tight">
+            {formatStake(bet)}
+          </span>
         </div>
 
         {/* Title */}
@@ -455,11 +453,9 @@ function LiveCompetitionCard({ competition, leaderboard, userId, onView }: Compe
           <span className="font-mono text-[10px] font-bold text-text-mute tracking-[0.15em] truncate">
             #{shortId} <Trophy className="inline w-3 h-3 -mt-0.5 text-warning" /> COMPETITION
           </span>
-          {competition.stake_money ? (
-            <span className="font-mono font-black text-[14px] text-rider tracking-tight">
-              {formatMoney(competition.stake_money)}
-            </span>
-          ) : null}
+          <span className="font-mono font-black text-[14px] text-rider tracking-tight">
+            {formatStake(competition)}
+          </span>
         </div>
 
         {/* Title */}
@@ -590,11 +586,9 @@ function SettledCard({ bet, groups, onView }: ChallengeCardProps) {
           {bet.title}
         </h3>
 
-        {bet.stake_money ? (
-          <span className="font-mono text-[12px] text-text-mute mt-1 block">
-            {formatMoney(bet.stake_money)}
-          </span>
-        ) : null}
+        <span className="font-mono text-[12px] text-text-mute mt-1 block">
+          {formatStake(bet)}
+        </span>
       </div>
     </div>
   )
@@ -635,9 +629,7 @@ function SettledCompetitionCard({ competition, leaderboard, userId, onView }: Co
           ) : (
             <span className="text-[12px] text-text-mute">{leaderboard.length} participants</span>
           )}
-          {competition.stake_money ? (
-            <span className="font-mono text-[12px] text-text-mute">{formatMoney(competition.stake_money)}</span>
-          ) : null}
+          <span className="font-mono text-[12px] text-text-mute">{formatStake(competition)}</span>
         </div>
       </div>
     </div>
