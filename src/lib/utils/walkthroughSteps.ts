@@ -15,7 +15,7 @@ export const WALKTHROUGH_STEPS: WalkthroughStep[] = [
   {
     id: 'welcome',
     emoji: '🔥',
-    title: 'Welcome to FORFEIT',
+    title: 'Welcome to LYNK',
     description:
       'The social betting app where friend groups make claims, pick sides, and face the consequences.',
   },

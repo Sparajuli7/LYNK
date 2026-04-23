@@ -11,16 +11,6 @@ export interface JournalCollection {
 }
 
 const KEY = 'lynk-journals'
-const LEGACY_KEY = 'forfeit-journals'
-
-// One-time migration: move data from the old key to the new key
-if (typeof localStorage !== 'undefined') {
-  const legacy = localStorage.getItem(LEGACY_KEY)
-  if (legacy && !localStorage.getItem(KEY)) {
-    localStorage.setItem(KEY, legacy)
-    localStorage.removeItem(LEGACY_KEY)
-  }
-}
 
 export function loadJournals(): JournalCollection[] {
   try {

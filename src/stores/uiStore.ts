@@ -61,7 +61,7 @@ const useUiStore = create<UiStore>()(
   persist(
     (set, get) => ({
       // ---- state ----
-      theme: 'dark',           // FORFEIT defaults to dark
+      theme: 'dark',           // LYNK defaults to dark
       activeModal: null,
       activeBottomSheet: null,
       walkthroughActive: false,

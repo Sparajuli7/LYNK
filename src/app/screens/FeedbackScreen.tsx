@@ -25,10 +25,23 @@ const IMPROVE_OPTIONS = [
   'Profile & card',
 ]
 
-// TODO: create 'feedback' table in Supabase with columns:
-//   id uuid primary key, user_id uuid nullable, rating int2 nullable,
-//   loves text[] nullable, improve text[] nullable,
-//   thoughts text nullable, submitted_at timestamptz
+type SubmittedFeedback = {
+  rating: number
+  loves: string[]
+  improve: string[]
+  thoughts: string
+  submittedAt: string
+}
+
+function saveFeedback(data: SubmittedFeedback) {
+  try {
+    const existing = JSON.parse(localStorage.getItem('lynk-feedback') ?? '[]') as SubmittedFeedback[]
+    existing.push(data)
+    localStorage.setItem('lynk-feedback', JSON.stringify(existing))
+  } catch {
+    // ignore
+  }
+}
 
 export function FeedbackScreen() {
   const navigate = useNavigate()

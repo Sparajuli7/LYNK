@@ -524,11 +524,6 @@ export function getTemplateCategory(id: TemplateCategoryId): TemplateCategory | 
   return TEMPLATE_CATEGORIES.find((c) => c.id === id)
 }
 
-/** @deprecated Use TEMPLATE_CATEGORIES instead */
-export const QUICK_TEMPLATES = TEMPLATE_CATEGORIES
-  .find((c) => c.id === 'fitness')!
-  .templates.map((t) => t.claim)
-
 // ── Other constants ─────────────────────────────────────────────────────────
 
 export const STAKE_PRESETS = [500, 1000, 2000, 5000] as const

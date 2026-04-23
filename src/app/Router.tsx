@@ -5,15 +5,12 @@ import { AuthGuard } from './guards/AuthGuard'
 
 // --- Existing screens ---
 import { Splash } from './screens/Splash'
-import { Onboarding } from './screens/Onboarding'
 import { TheBoard } from './screens/TheBoard'
-// BetCreationWizard merged into CompetitionCreateScreen
 import { BetDetail } from './screens/BetDetail'
 import { ProofSubmission } from './screens/ProofSubmission'
 import { ShameProofSubmission } from './screens/ShameProofSubmission'
 import { OutcomeReveal } from './screens/OutcomeReveal'
 import { OutcomeWin } from './screens/OutcomeWin'
-import { OutcomeForfeit } from './screens/OutcomeForfeit'
 import { Competitions } from './screens/Competitions'
 import { ProfileScreen } from './screens/ProfileScreen'
 import { SignUpScreen } from './screens/SignUpScreen'
@@ -41,29 +38,6 @@ import { FeedbackScreen } from './screens/FeedbackScreen'
 import { CompetitionInviteScreen } from './screens/CompetitionInviteScreen'
 
 // ---------------------------------------------------------------------------
-// Placeholder for screens not yet built
-// ---------------------------------------------------------------------------
-
-function Placeholder({ name }: { name: string }) {
-  const navigate = useNavigate()
-  return (
-    <div className="h-full bg-bg-primary grain-texture flex items-center justify-center">
-      <div className="text-center px-6">
-        <div className="text-5xl mb-4"></div>
-        <p className="text-xl font-black text-text-primary mb-2">Coming Soon</p>
-        <p className="text-text-muted mb-6">{name}</p>
-        <button
-          onClick={() => navigate(-1)}
-          className="px-4 py-2 rounded-xl bg-accent-green/20 text-accent-green text-sm font-bold"
-        >
-          Go Back
-        </button>
-      </div>
-    </div>
-  )
-}
-
-// ---------------------------------------------------------------------------
 // Route wrappers — adapt callback-prop screens for router navigation
 // ---------------------------------------------------------------------------
 
@@ -73,16 +47,6 @@ function SplashRoute() {
     <Splash
       onEnter={() => navigate('/auth/signup')}
       onLogin={() => navigate('/auth/login')}
-    />
-  )
-}
-
-function OnboardingRoute() {
-  const navigate = useNavigate()
-  return (
-    <Onboarding
-      onNext={() => navigate('/home')}
-      onSkip={() => navigate('/home')}
     />
   )
 }
@@ -156,18 +120,6 @@ function OutcomeWinRoute() {
     />
   )
 }
-
-function OutcomeForfeitRoute() {
-  const navigate = useNavigate()
-  const { id } = useParams<{ id: string }>()
-  return (
-    <OutcomeForfeit
-      onSubmitProof={() => navigate(`/bet/${id}/proof`)}
-      onDispute={() => navigate('/home')}
-    />
-  )
-}
-
 
 // ---------------------------------------------------------------------------
 // Router
