@@ -485,3 +485,56 @@ export type Message = Database['public']['Tables']['messages']['Row']
 export type MessageReaction = Database['public']['Tables']['message_reactions']['Row']
 export type PushSubscription = Database['public']['Tables']['push_subscriptions']['Row']
 export type NotificationPreference = Database['public']['Tables']['notification_preferences']['Row']
+
+// ---------------------------------------------------------------------------
+// Friends System
+// ---------------------------------------------------------------------------
+
+export type FriendshipStatus = 'pending' | 'accepted' | 'blocked'
+export type FriendshipSource = 'link' | 'search' | 'contacts' | 'group_suggest'
+
+export interface FriendshipRow {
+  id: string
+  user_a_id: string
+  user_b_id: string
+  status: FriendshipStatus
+  initiated_by: string
+  source: FriendshipSource
+  created_at: string
+  accepted_at: string | null
+  deleted_at: string | null
+}
+
+export interface InviteLinkRow {
+  code: string
+  user_id: string
+  expires_at: string
+  uses_remaining: number
+  created_at: string
+  revoked_at: string | null
+}
+
+// Computed type (not a DB table — assembled in API layer)
+export interface HeadToHead {
+  viewerId: string
+  otherId: string
+  viewerWins: number
+  otherWins: number
+  totalBets: number
+  lastBetAt: string | null
+  outstandingBalanceCents: number
+  isRival: boolean
+}
+
+// Profile with friendship context for roster/public card
+export interface FriendProfile extends ProfileRow {
+  relationship: 'stranger' | 'pending' | 'friend' | 'rival'
+  friendshipId?: string
+  mutualFriendCount: number
+  h2h?: HeadToHead
+}
+
+export type FriendshipInsert = Omit<FriendshipRow, 'id' | 'created_at' | 'accepted_at' | 'deleted_at'>
+export type FriendshipUpdate = Partial<Pick<FriendshipRow, 'status' | 'accepted_at' | 'deleted_at'>>
+export type InviteLinkInsert = Omit<InviteLinkRow, 'created_at' | 'revoked_at'> & Partial<Pick<InviteLinkRow, 'expires_at' | 'uses_remaining'>>
+export type InviteLinkUpdate = Partial<Pick<InviteLinkRow, 'expires_at' | 'uses_remaining' | 'revoked_at'>>

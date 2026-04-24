@@ -8,6 +8,14 @@ interface PlayerCardHeroProps {
   winPct: number;
   punishments: number;
   earned: number;
+  /** Override the card border color (CSS value). Defaults to rider/30. */
+  borderColor?: string;
+  /** Override the serial chip background class. Defaults to "bg-rider". */
+  chipBg?: string;
+  /** Override the serial chip text class. Defaults to "text-bg". */
+  chipText?: string;
+  /** Optional node rendered after the username (e.g. RelationshipStatusChips). */
+  afterName?: React.ReactNode;
 }
 
 export function PlayerCardHero({
@@ -20,11 +28,21 @@ export function PlayerCardHero({
   winPct,
   punishments,
   earned,
+  borderColor,
+  chipBg,
+  chipText,
+  afterName,
 }: PlayerCardHeroProps) {
+  const chipBgClass = chipBg ?? "bg-rider";
+  const chipTextClass = chipText ?? "text-bg";
+
   return (
-    <div className="bg-surface-2 border-[1.5px] border-rider/30 rounded-[18px] p-[18px] relative">
+    <div
+      className="bg-surface-2 rounded-[18px] p-[18px] relative"
+      style={{ border: `1.5px solid ${borderColor ?? "rgba(0,230,118,0.3)"}` }}
+    >
       {/* Serial number chip — top right */}
-      <div className="absolute top-[18px] right-[18px] bg-rider text-bg font-mono text-[10px] font-bold px-2 py-0.5 rounded-sm">
+      <div className={`absolute top-[18px] right-[18px] ${chipBgClass} ${chipTextClass} font-mono text-[10px] font-bold px-2 py-0.5 rounded-sm`}>
         #{serialNumber}
       </div>
 
@@ -51,6 +69,7 @@ export function PlayerCardHero({
             {displayName}
           </div>
           <div className="text-[13px] text-text-dim mt-0.5">@{username}</div>
+          {afterName}
           {streak != null && streak > 0 && (
             <div className="inline-flex items-center gap-1 mt-1.5 bg-rider-dim text-rider text-[10px] font-bold px-2 py-0.5 rounded-full">
               <span>🔥</span>

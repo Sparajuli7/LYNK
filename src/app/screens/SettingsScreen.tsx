@@ -5,7 +5,8 @@ import { BackButton } from '@/app/components/BackButton'
 import { useAuthStore, useUiStore, usePushStore, useGroupStore, useCompetitionStore, useBetStore, useChatStore, useNotificationStore, useShameStore, useProofStore } from '@/stores'
 import { supabase } from '@/lib/supabase'
 import { Capacitor } from '@capacitor/core'
-import type { NotificationPreferenceRow } from '@/lib/database.types'
+import type { NotificationPreferenceRow, InviteLinkRow } from '@/lib/database.types'
+import { getOrCreateInviteLink, regenerateInviteLink, revokeInviteLink } from '@/lib/api/inviteLinks'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -102,6 +103,45 @@ export function SettingsScreen() {
       if (data) setPreferences((prev) => [...prev, data as NotificationPreferenceRow])
     }
     setPrefLoading(null)
+  }
+
+  // Invite link state
+  const [inviteLink, setInviteLink] = useState<InviteLinkRow | null>(null)
+  const [inviteLinkLoading, setInviteLinkLoading] = useState(false)
+  const profile = useAuthStore((s) => s.profile)
+
+  useEffect(() => {
+    if (!userId || !profile?.username) return
+    setInviteLinkLoading(true)
+    getOrCreateInviteLink(userId, profile.username)
+      .then((link) => setInviteLink(link))
+      .catch(() => {})
+      .finally(() => setInviteLinkLoading(false))
+  }, [userId, profile?.username])
+
+  const handleRegenerateLink = async () => {
+    if (!userId) return
+    setInviteLinkLoading(true)
+    try {
+      const link = await regenerateInviteLink(userId)
+      setInviteLink(link)
+    } catch { /* silently fail */ }
+    setInviteLinkLoading(false)
+  }
+
+  const handleRevokeLink = async () => {
+    if (!inviteLink) return
+    setInviteLinkLoading(true)
+    try {
+      await revokeInviteLink(inviteLink.code)
+      setInviteLink(null)
+    } catch { /* silently fail */ }
+    setInviteLinkLoading(false)
+  }
+
+  const handleCopyLink = () => {
+    if (!inviteLink) return
+    navigator.clipboard.writeText(`lynk.app/add/${inviteLink.code}`)
   }
 
   const [showSignOutConfirm, setShowSignOutConfirm] = useState(false)
@@ -357,6 +397,53 @@ export function SettingsScreen() {
                   })}
                 </div>
               </div>
+            )}
+          </div>
+
+          {/* ── Invite Link Management ─────────────────────────────────── */}
+          <div className="border-t border-border-subtle pt-4">
+            <p className="text-[11px] font-black tracking-[0.12em] text-text-muted mb-3">
+              INVITE LINK
+            </p>
+
+            {inviteLink ? (
+              <>
+                <div className="bg-bg-card border border-border-subtle rounded-xl p-3.5 flex items-center justify-between">
+                  <span className="font-mono text-[13px] text-text-muted">
+                    lynk.app/add/<span className="text-accent-green font-bold">{inviteLink.code}</span>
+                  </span>
+                  <button
+                    onClick={handleCopyLink}
+                    className="bg-accent-green/15 border border-accent-green text-accent-green font-black text-[10px] px-2.5 py-1 rounded-lg tracking-[0.08em]"
+                  >
+                    COPY
+                  </button>
+                </div>
+                <p className="text-[11px] text-text-muted mt-1.5 ml-1">
+                  Used {10 - inviteLink.uses_remaining} times
+                </p>
+
+                <div className="flex gap-2 mt-3">
+                  <button
+                    onClick={handleRegenerateLink}
+                    disabled={inviteLinkLoading}
+                    className="flex-1 border border-border-subtle text-text-muted font-black text-[10px] py-2.5 rounded-xl tracking-[0.1em] disabled:opacity-50"
+                  >
+                    REGENERATE
+                  </button>
+                  <button
+                    onClick={handleRevokeLink}
+                    disabled={inviteLinkLoading}
+                    className="flex-1 border border-accent-coral/50 text-accent-coral font-black text-[10px] py-2.5 rounded-xl tracking-[0.1em] disabled:opacity-50"
+                  >
+                    REVOKE LINK
+                  </button>
+                </div>
+              </>
+            ) : (
+              <p className="text-[12px] text-text-muted">
+                {inviteLinkLoading ? 'Loading...' : 'No active invite link.'}
+              </p>
             )}
           </div>
 

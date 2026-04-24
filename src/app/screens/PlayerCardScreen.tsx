@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router'
 import { motion } from 'motion/react'
-import { BookOpen, Archive, Share2 } from 'lucide-react'
+import { BookOpen, Archive, Share2, Users } from 'lucide-react'
 import { captureElementAsImage, shareImage } from '@/lib/utils/imageExport'
 import { useAuthStore } from '@/stores'
 import { getBetStatsForUser } from '@/lib/api/stats'
@@ -129,6 +129,12 @@ export function PlayerCardScreen() {
           className="w-11 h-11 bg-surface rounded-[10px] flex items-center justify-center text-text-mute active:scale-95 transition-transform"
         >
           <Archive className="w-[18px] h-[18px]" />
+        </button>
+        <button
+          onClick={() => navigate('/roster')}
+          className="w-11 h-11 bg-surface rounded-[10px] flex items-center justify-center text-text-mute active:scale-95 transition-transform"
+        >
+          <Users className="w-[18px] h-[18px]" />
         </button>
       </div>
 

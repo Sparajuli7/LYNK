@@ -59,6 +59,28 @@ export default function App() {
       // Listen for deep link callbacks (OAuth, invite links, etc.)
       import('@capacitor/app').then(({ App: CapApp }) => {
         CapApp.addListener('appUrlOpen', ({ url }) => {
+          // Parse the URL path for deep-link routing
+          try {
+            const parsed = new URL(url)
+            const path = parsed.pathname
+
+            // Friend invite links: /add/:code
+            const addMatch = path.match(/^\/add\/(.+)$/)
+            if (addMatch) {
+              window.location.href = `/add/${addMatch[1]}`
+              return
+            }
+
+            // Public player cards: /u/:username
+            const profileMatch = path.match(/^\/u\/(.+)$/)
+            if (profileMatch) {
+              window.location.href = `/u/${profileMatch[1]}`
+              return
+            }
+          } catch {
+            // URL parsing failed — fall through to other handlers
+          }
+
           if (url.includes('auth/callback')) {
             const hashParams = url.split('#')[1]
             if (hashParams) {

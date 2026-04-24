@@ -13,6 +13,7 @@ export { default as useUiStore } from './uiStore'
 export { default as useCompetitionStore } from './competitionStore'
 export { default as useChatStore } from './chatStore'
 export { default as usePushStore } from './pushStore'
+export { default as useFriendStore } from './friendStore'
 
 // Re-export computed selectors so consumers can import everything from one place
 export { selectOdds, selectMySide } from './betStore'
@@ -36,3 +37,4 @@ export type {
 } from './competitionStore'
 export type { ChatStore } from './chatStore'
 export type { PushStore } from './pushStore'
+export type { FriendStore } from './friendStore'

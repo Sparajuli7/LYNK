@@ -35,6 +35,10 @@ import { GroupJournalScreen } from './screens/GroupJournalScreen'
 import { ArchiveScreen } from './screens/ArchiveScreen'
 import { FeedbackScreen } from './screens/FeedbackScreen'
 import { CompetitionInviteScreen } from './screens/CompetitionInviteScreen'
+import { RosterScreen } from './screens/RosterScreen'
+import { PublicProfileScreen } from './screens/PublicProfileScreen'
+import { InviteAcceptScreen } from './screens/InviteAcceptScreen'
+import { GroupCreateMembersScreen } from './screens/GroupCreateMembersScreen'
 
 // Wrappers adapt callback-prop screens for router navigation
 function SplashRoute() {
@@ -117,6 +121,16 @@ function OutcomeWinRoute() {
   )
 }
 
+function PublicProfileRoute() {
+  const { username } = useParams<{ username: string }>()
+  return <PublicProfileScreen username={username!} />
+}
+
+function InviteAcceptRoute() {
+  const { code } = useParams<{ code: string }>()
+  return <InviteAcceptScreen code={code!} />
+}
+
 export function AppRouter() {
   return (
     <BrowserRouter>
@@ -133,6 +147,10 @@ export function AppRouter() {
           <Route path="auth/profile-setup" element={<ProfileSetupScreen />} />
           {/* Competition invite — public so unauthenticated users can land here */}
           <Route path="invite/compete/:compId" element={<CompetitionInviteScreen />} />
+          {/* Friend invite — public so unauthenticated users can land here */}
+          <Route path="add/:code" element={<InviteAcceptRoute />} />
+          {/* Public player card — viewable without auth (stranger state) */}
+          <Route path="u/:username" element={<PublicProfileRoute />} />
         </Route>
 
         {/* ---- PROTECTED (requires auth) ---- */}
@@ -183,9 +201,13 @@ export function AppRouter() {
             <Route path="profile/:id" element={<ProfileScreenWithId />} />
             <Route path="profile/edit" element={<ProfileEditScreen />} />
 
+            {/* Friend invite (authenticated — full accept flow) */}
+            <Route path="add/:code" element={<InviteAcceptRoute />} />
+
             {/* Groups */}
             <Route path="group/:id" element={<GroupDetailScreen />} />
             <Route path="group/create" element={<GroupCreateScreen />} />
+            <Route path="group/create/members" element={<GroupCreateMembersScreen />} />
             <Route path="group/join" element={<GroupJoinScreen />} />
             <Route path="group/join/:code" element={<GroupJoinByCodeScreen />} />
 
@@ -200,6 +222,12 @@ export function AppRouter() {
 
             {/* Player Card */}
             <Route path="profile/card" element={<PlayerCardScreen />} />
+
+            {/* Roster (friends list) */}
+            <Route path="roster" element={<RosterScreen />} />
+
+            {/* Public Player Card (authenticated — full access) */}
+            <Route path="u/:username" element={<PublicProfileRoute />} />
           </Route>
         </Route>
 

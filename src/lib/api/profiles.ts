@@ -114,6 +114,16 @@ export async function searchProfiles(query: string): Promise<Profile[]> {
   return data ?? []
 }
 
+export async function getProfileByUsername(username: string): Promise<Profile | null> {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('username', username.toLowerCase())
+    .single()
+  if (error && error.code !== 'PGRST116') throw error
+  return data
+}
+
 export async function checkUsernameAvailable(username: string): Promise<boolean> {
   const { data } = await supabase
     .from('profiles')
