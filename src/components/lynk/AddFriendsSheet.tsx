@@ -82,10 +82,10 @@ export function AddFriendsSheet({
             {/* Header */}
             <div className="flex items-start justify-between mt-1 mb-5">
               <div>
-                <h2 className="font-black italic text-2xl tracking-[-0.04em] text-text">
+                <h2 className="font-black italic text-[26px] tracking-[-0.04em] text-text">
                   ADD FRIENDS
                 </h2>
-                <p className="text-[11px] text-text-mute mt-0.5">
+                <p className="text-[12px] text-text-mute mt-0.5">
                   Build your roster. Bet on each other.
                 </p>
               </div>
@@ -103,20 +103,24 @@ export function AddFriendsSheet({
               <label className="text-[10px] font-black tracking-[0.15em] text-text-mute uppercase block mb-2">
                 YOUR INVITE LINK
               </label>
-              <div className="bg-surface-2 rounded-xl p-3">
-                <div className="font-mono text-[13px] text-text-dim">
-                  {linkBase}
-                  <span className="text-rider">{username}</span>
+              <div className="bg-surface-2 rounded-xl p-[12px_14px] border-[1.5px] border-rider/30">
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 min-w-0">
+                    <div className="font-mono text-[13px] text-text-dim">
+                      {linkBase}
+                      <span className="text-rider">{username}</span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={onCopyLink}
+                    className="flex-shrink-0 bg-rider-dim border-[1.5px] border-rider text-rider font-black text-[10px] px-3 py-1.5 rounded-lg tracking-[0.1em]"
+                  >
+                    COPY
+                  </button>
                 </div>
-                <div className="text-[10px] text-text-mute mt-1.5">
+                <div className="text-[10px] text-text-mute mt-[2px]">
                   Expires in 7 days · Regenerates on use
                 </div>
-                <button
-                  onClick={onCopyLink}
-                  className="mt-2 bg-rider-dim border-[1.5px] border-rider text-rider font-black text-[10px] px-3 py-1.5 rounded-lg tracking-[0.1em]"
-                >
-                  COPY
-                </button>
               </div>
             </div>
 
@@ -124,19 +128,19 @@ export function AddFriendsSheet({
             <div className="flex gap-2 mb-5">
               <button
                 onClick={onShareMessages}
-                className="bg-transparent border-[1.5px] border-[#333] text-[#ccc] font-black text-[10px] px-3 py-2 rounded-full tracking-[0.05em]"
+                className="flex-1 bg-surface rounded-[10px] py-2 font-bold text-[11px] text-white tracking-[0.05em]"
               >
                 💬 MESSAGES
               </button>
               <button
                 onClick={onCopyLink}
-                className="bg-transparent border-[1.5px] border-[#333] text-[#ccc] font-black text-[10px] px-3 py-2 rounded-full tracking-[0.05em]"
+                className="flex-1 bg-surface rounded-[10px] py-2 font-bold text-[11px] text-white tracking-[0.05em]"
               >
                 📋 COPY QR
               </button>
               <button
                 onClick={onShareGeneral}
-                className="bg-transparent border-[1.5px] border-[#333] text-[#ccc] font-black text-[10px] px-3 py-2 rounded-full tracking-[0.05em]"
+                className="flex-1 bg-surface rounded-[10px] py-2 font-bold text-[11px] text-white tracking-[0.05em]"
               >
                 &#x2197; SHARE
               </button>
@@ -145,7 +149,7 @@ export function AddFriendsSheet({
             {/* OR divider */}
             <div className="flex items-center gap-3 mb-5">
               <div className="flex-1 border-t border-border-hi" />
-              <span className="text-[10px] font-black text-text-mute tracking-[0.1em]">OR</span>
+              <span className="text-[10px] font-black text-text-mute tracking-[0.2em]">OR</span>
               <div className="flex-1 border-t border-border-hi" />
             </div>
 
@@ -186,7 +190,7 @@ export function AddFriendsSheet({
                     key={user.id}
                     className="bg-surface rounded-[10px] p-[10px_12px] flex items-center gap-2.5"
                   >
-                    <div className="w-10 h-10 rounded-full ring-2 ring-[#333] flex-shrink-0 overflow-hidden bg-surface-3">
+                    <div className="w-9 h-9 rounded-full ring-2 ring-[#333] flex-shrink-0 overflow-hidden bg-surface-3">
                       {user.avatarUrl ? (
                         <img
                           src={user.avatarUrl}
@@ -210,7 +214,7 @@ export function AddFriendsSheet({
                     </div>
                     <button
                       onClick={() => onAddUser(user.id)}
-                      className="flex-shrink-0 bg-rider-dim border-[1.5px] border-rider text-rider font-black text-[10px] px-[10px] py-[6px] rounded-lg tracking-[0.1em]"
+                      className="flex-shrink-0 bg-rider text-bg border-none font-black text-[10px] px-[10px] py-[6px] rounded-lg tracking-[0.1em]"
                     >
                       + ADD
                     </button>
@@ -222,19 +226,19 @@ export function AddFriendsSheet({
             {/* OR divider */}
             <div className="flex items-center gap-3 mb-5">
               <div className="flex-1 border-t border-border-hi" />
-              <span className="text-[10px] font-black text-text-mute tracking-[0.1em]">OR</span>
+              <span className="text-[10px] font-black text-text-mute tracking-[0.2em]">OR</span>
               <div className="flex-1 border-t border-border-hi" />
             </div>
 
             {/* Sync from contacts */}
             <button
               onClick={onSyncContacts}
-              className="w-full border-[1.5px] border-dashed border-[#333] rounded-xl p-4 flex flex-col items-center gap-1"
+              className="w-full border-[1.5px] border-dashed border-[#444] rounded-xl p-4 flex flex-col items-center gap-1"
             >
               <span className="text-text font-black text-[13px] tracking-[0.05em]">
                 📱 SYNC FROM CONTACTS
               </span>
-              <span className="text-text-mute text-[11px]">
+              <span className="text-text-mute text-[10px]">
                 We&apos;ll find friends already on Lynk. Numbers never stored.
               </span>
             </button>

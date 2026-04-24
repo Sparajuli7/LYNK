@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
-import { MessageCircle, Loader2, Archive, IdCard, BookOpen, Pencil, Settings } from 'lucide-react'
-import { useAuthStore, useChatStore } from '@/stores'
+import { MessageCircle, Loader2, Archive, IdCard, BookOpen, Pencil, Settings, UserPlus, Users } from 'lucide-react'
+import { useAuthStore, useChatStore, useFriendStore } from '@/stores'
+import { AddFriendsSheet } from '@/components/lynk'
+import { searchUsers } from '@/lib/api/friends'
 import { supabase } from '@/lib/supabase'
 import { getMyBets, getUserBetStats, getUserCurrentStreak } from '@/lib/api/bets'
 import type { UserBetStats } from '@/lib/api/bets'
@@ -108,6 +110,27 @@ function ProfileContent({
 }) {
   const navigate = useNavigate()
   const [openingDM, setOpeningDM] = useState(false)
+  const [addFriendsOpen, setAddFriendsOpen] = useState(false)
+  const [addSearchResults, setAddSearchResults] = useState<{ id: string; displayName: string; username: string; avatarUrl?: string; mutualCount: number }[]>([])
+  const [isSearching, setIsSearching] = useState(false)
+  const sendRequest = useFriendStore((s) => s.sendRequest)
+
+  const handleAddSearch = async (query: string) => {
+    if (!profile?.id || query.trim().length < 2) { setAddSearchResults([]); return }
+    setIsSearching(true)
+    try {
+      const results = await searchUsers(query, profile.id)
+      setAddSearchResults(results.map((r) => ({ id: r.id, displayName: r.display_name, username: r.username, avatarUrl: r.avatar_url ?? undefined, mutualCount: 0 })))
+    } catch { setAddSearchResults([]) }
+    finally { setIsSearching(false) }
+  }
+
+  const handleAddUser = async (userId: string) => {
+    await sendRequest(userId, 'search')
+    setAddSearchResults((prev) => prev.filter((r) => r.id !== userId))
+  }
+
+  const inviteLink = profile?.username ? `${window.location.origin}/add/${profile.username}` : ''
 
   const pendingPunishments = Math.max(0, profile.punishments_taken - profile.punishments_completed)
   const completionRate = formatCompletionRate(profile.punishments_completed, profile.punishments_taken)
@@ -292,6 +315,38 @@ function ProfileContent({
               </button>
             ))}
           </div>
+
+          {/* ADD FRIENDS section */}
+          <div className="mt-4 bg-surface rounded-xl p-3.5">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <UserPlus className="w-4 h-4 text-rider" />
+                <span className="font-black italic text-[14px] text-text tracking-[-0.02em]">ADD FRIENDS</span>
+              </div>
+              <button
+                onClick={() => navigate('/roster')}
+                className="flex items-center gap-1 text-[10px] font-bold text-text-dim tracking-[0.1em]"
+              >
+                <Users className="w-3 h-3" /> ROSTER
+              </button>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setAddFriendsOpen(true)}
+                className="flex-1 bg-rider-dim border-[1.5px] border-rider text-rider font-black text-[11px] py-2.5 rounded-xl tracking-[0.08em]"
+              >
+                FIND BY USERNAME
+              </button>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(inviteLink)
+                }}
+                className="flex-1 bg-transparent border-[1.5px] border-[#333] text-[#ccc] font-bold text-[11px] py-2.5 rounded-xl tracking-[0.08em]"
+              >
+                COPY INVITE LINK
+              </button>
+            </div>
+          </div>
         </div>
       ) : (
         <div className="px-4 pb-4 flex gap-2.5">
@@ -385,6 +440,23 @@ function ProfileContent({
           />
         )}
       </div>
+
+      {/* AddFriendsSheet */}
+      {isOwnProfile && (
+        <AddFriendsSheet
+          open={addFriendsOpen}
+          onClose={() => setAddFriendsOpen(false)}
+          inviteLink={inviteLink}
+          username={profile?.username ?? ''}
+          onCopyLink={() => navigator.clipboard.writeText(inviteLink)}
+          onShareMessages={() => { if (navigator.share) navigator.share({ title: 'Add me on LYNK', url: inviteLink }) }}
+          onShareGeneral={() => { if (navigator.share) navigator.share({ title: 'Add me on LYNK', url: inviteLink }) }}
+          searchResults={addSearchResults}
+          onSearch={handleAddSearch}
+          onAddUser={handleAddUser}
+          isSearching={isSearching}
+        />
+      )}
     </div>
   )
 }

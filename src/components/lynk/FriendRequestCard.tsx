@@ -25,13 +25,15 @@ export function FriendRequestCard({
 
   return (
     <div className="bg-surface border-l-[3px] border-l-warning rounded-[10px] p-[10px_12px] flex items-center gap-2.5">
-      {/* Avatar with amber ring */}
-      <div className="w-10 h-10 rounded-full ring-2 ring-warning flex-shrink-0 p-[2px]">
-        <div className="w-full h-full rounded-full overflow-hidden bg-surface-3">
+      {/* Avatar with warm amber ring */}
+      <div className="w-10 h-10 rounded-full bg-[#3d2f1a] p-[2px] flex-shrink-0">
+        <div className="w-full h-full rounded-full bg-[#2a2a35] overflow-hidden flex items-center justify-center">
           {avatarUrl ? (
             <img src={avatarUrl} alt="" className="w-full h-full object-cover" />
           ) : (
-            <div className="w-full h-full bg-surface-3" />
+            <span className="text-white font-black text-[14px]">
+              {displayName.charAt(0).toUpperCase()}
+            </span>
           )}
         </div>
       </div>

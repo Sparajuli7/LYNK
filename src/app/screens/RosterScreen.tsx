@@ -164,7 +164,7 @@ export function RosterScreen() {
         <div className="bg-surface-2 rounded-xl p-3 border-t-[1.5px] border-b-[1.5px] border-dashed border-border-hi">
           <div className="flex justify-around">
             <div className="text-center">
-              <div className="text-[20px] font-black font-mono text-text">{friendsCount}</div>
+              <div className="text-[20px] font-black font-mono text-text tracking-[-0.02em]">{friendsCount}</div>
               <div className="text-[9px] text-text-mute font-bold tracking-[0.12em]">FRIENDS</div>
             </div>
             <div className="text-center">
@@ -174,11 +174,11 @@ export function RosterScreen() {
               <div className="text-[9px] text-text-mute font-bold tracking-[0.12em]">REQUESTS</div>
             </div>
             <div className="text-center">
-              <div className="text-[20px] font-black font-mono text-text">{h2hWins}</div>
+              <div className="text-[20px] font-black font-mono text-text tracking-[-0.02em]">{h2hWins}</div>
               <div className="text-[9px] text-text-mute font-bold tracking-[0.12em]">H2H WINS</div>
             </div>
             <div className="text-center">
-              <div className="text-[20px] font-black font-mono text-doubter">{rivalsCount}</div>
+              <div className="text-[20px] font-black font-mono text-doubter tracking-[-0.02em]">{rivalsCount}</div>
               <div className="text-[9px] text-text-mute font-bold tracking-[0.12em]">RIVALS</div>
             </div>
           </div>
@@ -191,7 +191,7 @@ export function RosterScreen() {
           <SectionHeader
             dotColor="bg-warning"
             title={`PENDING \u00B7 ${pendingRequests.length}`}
-            metaColor="text-warning"
+            titleColor="text-warning"
           />
           <div className="flex flex-col gap-1.5 mt-3">
             <AnimatePresence mode="popLayout">
@@ -226,7 +226,7 @@ export function RosterScreen() {
         <SectionHeader
           dotColor="bg-rider"
           title={`FRIENDS \u00B7 ${friendsCount}`}
-          metaColor="text-rider"
+          titleColor="text-rider"
           action={
             <span className="text-[10px] text-text-mute font-bold tracking-[0.1em]">
               SORT: RECENT &#x2193;

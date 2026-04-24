@@ -60,7 +60,7 @@ export function GroupCreateMemberPicker({
   return (
     <div className="flex flex-col h-full">
       {/* ── Top bar ── */}
-      <div className="flex items-center justify-between px-4 py-3 shrink-0">
+      <div className="flex items-center px-4 py-3 shrink-0">
         <button
           onClick={onBack}
           className="w-9 h-9 rounded-full bg-surface flex items-center justify-center"
@@ -68,27 +68,25 @@ export function GroupCreateMemberPicker({
         >
           <span className="text-text text-[18px] leading-none">&#x2039;</span>
         </button>
-        <span className="text-[10px] font-black tracking-[0.15em] text-text-mute">
-          STEP 2 OF 3
-        </span>
+        <div className="flex-1 flex flex-col items-center">
+          <span className="text-[10px] font-black tracking-[0.15em] text-text-mute">
+            STEP 2 OF 3
+          </span>
+          <h1 className="font-black italic text-2xl tracking-[-0.04em] text-text">
+            ADD MEMBERS
+          </h1>
+        </div>
         <button
           onClick={onNext}
           disabled={!canNext}
-          className={`font-black text-[11px] px-3 py-1.5 rounded-full tracking-[0.1em] ${
+          className={`font-black text-[11px] px-3.5 py-2 rounded-full tracking-[0.1em] ${
             canNext
-              ? "bg-rider-dim border-[1.5px] border-rider text-rider"
+              ? "bg-rider text-bg font-black"
               : "bg-surface border-[1.5px] border-[#333] text-text-mute opacity-50"
           }`}
         >
           NEXT &#x2192;
         </button>
-      </div>
-
-      {/* Headline */}
-      <div className="px-4 mb-4 shrink-0">
-        <h1 className="font-black italic text-2xl tracking-[-0.04em] text-text">
-          ADD MEMBERS
-        </h1>
       </div>
 
       {/* Scrollable content */}
@@ -110,7 +108,7 @@ export function GroupCreateMemberPicker({
         {/* Selected section */}
         <div className="mb-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[10px] font-black tracking-[0.15em] text-text-mute">
+            <span className="text-[10px] font-black tracking-[0.15em] text-rider">
               SELECTED · {selectedMembers.length}
             </span>
             <span className="text-[10px] text-text-mute">
@@ -131,14 +129,14 @@ export function GroupCreateMemberPicker({
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder="Search friends..."
-              className="w-full h-11 pl-9 pr-3 rounded-xl bg-surface border-[1.5px] border-rider/30 font-mono text-[13px] text-text outline-none placeholder:text-text-mute/50"
+              className="w-full h-11 pl-9 pr-3 rounded-[10px] bg-surface font-mono text-[13px] text-text outline-none placeholder:text-text-mute/50"
             />
           </div>
         </div>
 
         {/* Roster header */}
         <div className="flex items-center justify-between mb-3">
-          <span className="text-[12px] font-black italic text-rider tracking-[-0.01em]">
+          <span className="text-[13px] font-black italic text-rider tracking-[0.15em]">
             🤝 FROM YOUR ROSTER · {friends.length}
           </span>
           <button
@@ -150,7 +148,7 @@ export function GroupCreateMemberPicker({
         </div>
 
         {/* Friend list */}
-        <div className="space-y-2 mb-5">
+        <div className="space-y-[5px] mb-5">
           {filteredFriends.map((friend) => (
             <SelectableFriendRow
               key={friend.id}
@@ -174,27 +172,27 @@ export function GroupCreateMemberPicker({
         {/* OR divider */}
         <div className="flex items-center gap-3 mb-5">
           <div className="flex-1 border-t border-border-hi" />
-          <span className="text-[10px] font-black text-text-mute tracking-[0.1em]">
+          <span className="text-[9px] font-black text-text-mute tracking-[0.1em]">
             OR
           </span>
           <div className="flex-1 border-t border-border-hi" />
         </div>
 
         {/* Invite buttons */}
-        <div className="space-y-2">
-          <button className="w-full border-[1.5px] border-dashed border-[#333] rounded-xl p-3 flex items-center justify-center gap-2">
+        <div className="flex gap-1.5">
+          <button className="flex-1 flex flex-col items-center border-[1.5px] border-dashed border-[#333] rounded-xl p-3 gap-1">
             <span className="text-[13px]">🔗</span>
             <span className="text-text font-black text-[12px] tracking-[0.05em]">
               INVITE LINK
             </span>
           </button>
-          <button className="w-full border-[1.5px] border-dashed border-[#333] rounded-xl p-3 flex items-center justify-center gap-2">
+          <button className="flex-1 flex flex-col items-center border-[1.5px] border-dashed border-[#333] rounded-xl p-3 gap-1">
             <span className="text-[13px]">📱</span>
             <span className="text-text font-black text-[12px] tracking-[0.05em]">
               CONTACTS
             </span>
           </button>
-          <button className="w-full border-[1.5px] border-dashed border-[#333] rounded-xl p-3 flex items-center justify-center gap-2">
+          <button className="flex-1 flex flex-col items-center border-[1.5px] border-dashed border-[#333] rounded-xl p-3 gap-1">
             <span className="text-[13px]">@</span>
             <span className="text-text font-black text-[12px] tracking-[0.05em]">
               USERNAME

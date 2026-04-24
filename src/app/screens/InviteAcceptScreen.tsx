@@ -271,7 +271,7 @@ export function InviteAcceptScreen({ code }: InviteAcceptScreenProps) {
   const winPct = totalBets > 0 ? Math.round((profile.wins / totalBets) * 100) : 0
 
   return (
-    <div className="h-full bg-bg px-5 py-4 overflow-y-auto no-scrollbar">
+    <div className="h-full bg-bg diagonal-grid px-5 py-4 overflow-y-auto no-scrollbar">
       <InviteAcceptHero
         displayName={profile.display_name}
         username={profile.username}

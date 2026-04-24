@@ -19,13 +19,13 @@ export function MutualFriendsRow({
     <button
       onClick={onClick}
       disabled={!onClick}
-      className="w-full bg-surface rounded-xl p-3 flex items-center gap-3 cursor-pointer text-left"
+      className="w-full bg-surface rounded-[10px] px-3 py-2.5 flex items-center gap-3 cursor-pointer text-left"
     >
       {/* Avatar stack */}
-      <AvatarStack members={avatars} total={count} size={28} max={3} />
+      <AvatarStack members={avatars} total={count} size={24} max={3} />
 
       {/* Text */}
-      <div className="flex-1 min-w-0 text-[14px]">
+      <div className="flex-1 min-w-0 text-[11px]">
         <span className="text-rider font-bold">{count} mutual</span>
         {namesList && (
           <span className="text-text-dim"> · {namesList}</span>

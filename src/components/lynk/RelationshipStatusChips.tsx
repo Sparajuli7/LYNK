@@ -9,7 +9,7 @@ export function RelationshipStatusChips({
 }: RelationshipStatusChipsProps) {
   const chipBase =
     "text-[10px] font-black px-[7px] py-[3px] rounded-[4px] tracking-[0.1em]";
-  const neutralChip = `${chipBase} bg-white/6 text-text-dim`;
+  const neutralChip = `${chipBase} bg-white/6 text-[#999]`;
   const mutualChip = neutralChip;
 
   return (
@@ -30,7 +30,7 @@ export function RelationshipStatusChips({
 
       {relationship === "rival" && (
         <>
-          <span className={`${chipBase} bg-doubter-dim text-doubter`}>
+          <span className={`${chipBase} bg-[rgba(255,61,87,0.15)] text-doubter`}>
             RIVAL
           </span>
           <span className={neutralChip}>FRIENDS</span>

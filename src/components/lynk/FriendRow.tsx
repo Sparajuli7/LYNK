@@ -33,25 +33,27 @@ export function FriendRow({
     ? "border-l-doubter"
     : "border-l-transparent";
 
-  const ringColor = hasLiveBet
-    ? "ring-rider"
+  const ringBg = hasLiveBet
+    ? "bg-rider"
     : isRival
-    ? "ring-doubter"
-    : "ring-[#333]";
+    ? "bg-doubter"
+    : "bg-[#333]";
+
+  const initial = displayName.charAt(0).toUpperCase();
 
   return (
     <div
       className={`bg-surface rounded-[10px] p-[10px_12px] flex items-center gap-2.5 border-l-[3px] ${borderColor}`}
     >
-      {/* Avatar */}
-      <div
-        className={`w-10 h-10 rounded-full ring-2 ${ringColor} flex-shrink-0 overflow-hidden bg-surface-3`}
-      >
-        {avatarUrl ? (
-          <img src={avatarUrl} alt="" className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full bg-surface-3" />
-        )}
+      {/* Avatar with padding-based ring */}
+      <div className={`w-10 h-10 rounded-full ${ringBg} p-[2px] flex-shrink-0`}>
+        <div className="w-full h-full rounded-full bg-[#2a2a35] overflow-hidden flex items-center justify-center">
+          {avatarUrl ? (
+            <img src={avatarUrl} alt="" className="w-full h-full object-cover" />
+          ) : (
+            <span className="text-white font-black text-[14px]">{initial}</span>
+          )}
+        </div>
       </div>
 
       {/* Middle */}
@@ -60,20 +62,19 @@ export function FriendRow({
           <span className="font-black text-[13px] text-text truncate">
             {displayName}
           </span>
-          {hasLiveBet && <span className="flex-shrink-0">🔥</span>}
+          {hasLiveBet && <span className="flex-shrink-0 text-[10px]">🔥</span>}
           {isRival && (
-            <span className="flex-shrink-0 bg-doubter-dim text-doubter text-[8px] font-black px-[5px] py-[2px] rounded-[3px] tracking-[0.1em]">
+            <span className="flex-shrink-0 bg-[rgba(255,61,87,0.15)] text-doubter text-[8px] font-black px-[5px] py-[2px] rounded-[3px] tracking-[0.1em]">
               RIVAL
             </span>
           )}
         </div>
-        <div className="flex items-center gap-1 text-[10px] mt-0.5">
+        <div className="flex items-center gap-1.5 text-[10px] mt-0.5">
           {hasLiveBet ? (
             <>
               <span className="text-rider font-bold">LIVE BET</span>
-              <span className="text-text-dim">
-                · {h2hWins}W · {h2hLosses}L
-              </span>
+              <span className="text-text-mute">·</span>
+              <span className="text-text-dim">{h2hWins}W · {h2hLosses}L</span>
             </>
           ) : isRival ? (
             <>
@@ -81,7 +82,10 @@ export function FriendRow({
                 H2H: {h2hWins}W · {h2hLosses}L
               </span>
               {owesDisplay && (
-                <span className="text-text-dim">· {owesDisplay}</span>
+                <>
+                  <span className="text-text-mute">·</span>
+                  <span className="text-text-dim">{owesDisplay}</span>
+                </>
               )}
             </>
           ) : (
@@ -90,7 +94,7 @@ export function FriendRow({
                 <span className="text-text-dim">{lastBetDisplay}</span>
               )}
               {lastBetDisplay && (h2hWins > 0 || h2hLosses > 0) && (
-                <span className="text-text-dim">·</span>
+                <span className="text-text-mute">·</span>
               )}
               {(h2hWins > 0 || h2hLosses > 0) && (
                 <span className="text-rider font-bold">

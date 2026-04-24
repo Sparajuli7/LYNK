@@ -60,21 +60,25 @@ const HERO_STYLES: Record<
     borderColor: "rgba(255,255,255,0.08)",
     chipBg: "bg-[#333]",
     chipText: "text-text-dim",
+    avatarRing: "bg-[#444]",
   },
   pending: {
     borderColor: "rgba(245,158,11,0.35)",
     chipBg: "bg-warning",
     chipText: "text-bg",
+    avatarRing: "bg-warning",
   },
   friend: {
     borderColor: "rgba(0,230,118,0.35)",
     chipBg: "bg-rider",
     chipText: "text-bg",
+    avatarRing: "bg-rider",
   },
   rival: {
     borderColor: "rgba(255,61,87,0.35)",
     chipBg: "bg-doubter",
     chipText: "text-white",
+    avatarRing: "bg-doubter",
   },
 };
 
@@ -107,7 +111,7 @@ export function PublicPlayerCard({
           className="w-9 h-9 rounded-full bg-surface flex items-center justify-center"
           aria-label="Back"
         >
-          <span className="text-text text-[18px] leading-none">&#x2039;</span>
+          <span className="text-[#ccc] text-[18px] leading-none">&#x2039;</span>
         </button>
         <div className="flex items-center gap-2">
           {onShare && (
@@ -116,14 +120,14 @@ export function PublicPlayerCard({
               className="w-9 h-9 rounded-full bg-surface flex items-center justify-center"
               aria-label="Share"
             >
-              <span className="text-text text-[14px] leading-none">&#x2197;</span>
+              <span className="text-[#ccc] text-[16px] leading-none">&#x2197;</span>
             </button>
           )}
           <button
             className="w-9 h-9 rounded-full bg-surface flex items-center justify-center"
             aria-label="More options"
           >
-            <span className="text-text text-[18px] leading-none">&#x22EF;</span>
+            <span className="text-[#ccc] text-[16px] leading-none">&#x22EF;</span>
           </button>
         </div>
       </div>
@@ -142,6 +146,7 @@ export function PublicPlayerCard({
         borderColor={heroStyle.borderColor}
         chipBg={heroStyle.chipBg}
         chipText={heroStyle.chipText}
+        avatarRingColor={heroStyle.avatarRing}
         afterName={
           <RelationshipStatusChips
             relationship={relationship}
@@ -288,9 +293,12 @@ export function PublicPlayerCard({
         <div>
           <SectionHeader
             title="HALL OF SHAME"
-            meta={`${shameProofs.length} PROOFS`}
-            metaColor="text-doubter"
-            dotColor="bg-doubter"
+            titleColor="text-doubter"
+            action={
+              <span className="text-[10px] font-bold text-text-mute tracking-[0.1em]">
+                {shameProofs.length} PROOFS
+              </span>
+            }
           />
           <div className="flex gap-2 overflow-x-auto no-scrollbar mt-3 -mx-1 px-1">
             {shameProofs.map((proof, i) => (
@@ -299,7 +307,7 @@ export function PublicPlayerCard({
                 className="w-[100px] flex-shrink-0 bg-surface rounded-lg overflow-hidden"
               >
                 {/* Thumbnail area */}
-                <div className="h-[80px] bg-surface-2 overflow-hidden">
+                <div className="h-[80px] bg-surface-2 overflow-hidden border-b border-doubter/30">
                   {proof.thumbnailUrl ? (
                     <img
                       src={proof.thumbnailUrl}
@@ -308,18 +316,19 @@ export function PublicPlayerCard({
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <div className="flex flex-col items-center gap-1 px-2">
-                        <div className="w-full h-1 bg-doubter/20 rounded-full" />
-                        <div className="w-3/4 h-1 bg-doubter/20 rounded-full" />
+                      <div className="flex flex-col items-center gap-[2px] px-3">
+                        <div className="w-7 h-[3px] bg-doubter" />
+                        <div className="w-5 h-[3px] bg-doubter" />
+                        <div className="w-6 h-[3px] bg-doubter opacity-60" />
                       </div>
                     </div>
                   )}
                 </div>
-                <div className="p-1.5">
-                  <div className="font-mono text-[7px] font-bold text-doubter tracking-[0.1em]">
+                <div className="px-2 py-1.5">
+                  <div className="text-[8px] font-black text-doubter tracking-[0.1em]">
                     FORFEIT
                   </div>
-                  <div className="text-[9px] text-text font-bold mt-0.5 line-clamp-1">
+                  <div className="text-[10px] text-text font-bold mt-0.5 line-clamp-1">
                     {proof.title}
                   </div>
                 </div>

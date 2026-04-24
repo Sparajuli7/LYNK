@@ -16,6 +16,8 @@ interface PlayerCardHeroProps {
   chipText?: string;
   /** Optional node rendered after the username (e.g. RelationshipStatusChips). */
   afterName?: React.ReactNode;
+  /** Override the avatar ring color class. Defaults to "bg-rider". */
+  avatarRingColor?: string;
 }
 
 export function PlayerCardHero({
@@ -32,9 +34,11 @@ export function PlayerCardHero({
   chipBg,
   chipText,
   afterName,
+  avatarRingColor,
 }: PlayerCardHeroProps) {
   const chipBgClass = chipBg ?? "bg-rider";
   const chipTextClass = chipText ?? "text-bg";
+  const ringColorClass = avatarRingColor ?? "bg-rider";
 
   return (
     <div
@@ -42,14 +46,14 @@ export function PlayerCardHero({
       style={{ border: `1.5px solid ${borderColor ?? "rgba(0,230,118,0.3)"}` }}
     >
       {/* Serial number chip — top right */}
-      <div className={`absolute top-[18px] right-[18px] ${chipBgClass} ${chipTextClass} font-mono text-[10px] font-bold px-2 py-0.5 rounded-sm`}>
+      <div className={`absolute top-3 right-3.5 ${chipBgClass} ${chipTextClass} font-mono text-[10px] font-bold px-2 py-1 rounded-[4px]`}>
         #{serialNumber}
       </div>
 
       {/* Top section: avatar + identity */}
       <div className="flex items-center gap-4 mb-4">
         {/* Avatar ring */}
-        <div className="w-[80px] h-[80px] rounded-full p-[3.5px] bg-rider flex-shrink-0">
+        <div className={`w-[80px] h-[80px] rounded-full p-[3.5px] ${ringColorClass} flex-shrink-0`}>
           <div className="w-full h-full rounded-full bg-bg overflow-hidden">
             {avatarUrl ? (
               <img
@@ -65,7 +69,7 @@ export function PlayerCardHero({
 
         {/* Name + handle + streak */}
         <div className="min-w-0 flex-1">
-          <div className="font-black italic text-[32px] tracking-[-0.04em] text-text leading-none truncate pr-2">
+          <div className="font-black italic text-[28px] tracking-[-0.04em] text-text leading-none truncate pr-2">
             {displayName}
           </div>
           <div className="text-[13px] text-text-dim mt-0.5">@{username}</div>
@@ -84,40 +88,40 @@ export function PlayerCardHero({
         <div className="grid grid-cols-4 gap-2 text-center">
           {/* BETS */}
           <div>
-            <div className="font-black font-mono text-2xl tracking-[-0.02em] text-text">
+            <div className="font-black font-mono text-[22px] tracking-[-0.02em] text-text">
               {bets}
             </div>
-            <div className="text-[10px] tracking-[0.12em] text-text-mute font-bold">
+            <div className="text-[9px] tracking-[0.12em] text-text-mute font-bold">
               BETS
             </div>
           </div>
 
           {/* WIN% */}
           <div>
-            <div className="font-black font-mono text-2xl tracking-[-0.02em] text-rider">
+            <div className="font-black font-mono text-[22px] tracking-[-0.02em] text-rider">
               {winPct}%
             </div>
-            <div className="text-[10px] tracking-[0.12em] text-text-mute font-bold">
+            <div className="text-[9px] tracking-[0.12em] text-text-mute font-bold">
               WIN%
             </div>
           </div>
 
           {/* PUNISH */}
           <div>
-            <div className="font-black font-mono text-2xl tracking-[-0.02em] text-doubter">
+            <div className="font-black font-mono text-[22px] tracking-[-0.02em] text-doubter">
               {punishments}
             </div>
-            <div className="text-[10px] tracking-[0.12em] text-text-mute font-bold">
+            <div className="text-[9px] tracking-[0.12em] text-text-mute font-bold">
               PUNISH
             </div>
           </div>
 
           {/* EARNED */}
           <div>
-            <div className="font-black font-mono text-2xl tracking-[-0.02em] text-text">
+            <div className="font-black font-mono text-[22px] tracking-[-0.02em] text-text">
               ${earned}
             </div>
-            <div className="text-[10px] tracking-[0.12em] text-text-mute font-bold">
+            <div className="text-[9px] tracking-[0.12em] text-text-mute font-bold">
               EARNED
             </div>
           </div>

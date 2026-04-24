@@ -7,11 +7,11 @@ export function SelectedPillsRow({ members, onRemove }: SelectedPillsRowProps) {
   if (members.length === 0) return null;
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1.5">
       {members.map((member) => (
         <div
           key={member.id}
-          className="bg-rider-dim border-[1.5px] border-rider rounded-full px-2 py-1 flex items-center gap-1.5"
+          className="bg-rider-dim border-[1.5px] border-rider rounded-full pl-1 pr-2.5 py-1 flex items-center gap-1.5"
         >
           {/* Mini avatar */}
           <div className="w-[22px] h-[22px] rounded-full overflow-hidden bg-surface-3 flex-shrink-0">
@@ -26,13 +26,13 @@ export function SelectedPillsRow({ members, onRemove }: SelectedPillsRowProps) {
             )}
           </div>
 
-          <span className="text-[12px] font-bold text-text">
+          <span className="text-[11px] font-black text-text">
             {member.displayName}
           </span>
 
           <button
             onClick={() => onRemove(member.id)}
-            className="text-rider text-[10px] cursor-pointer leading-none"
+            className="text-rider text-[14px] cursor-pointer leading-none"
             aria-label={`Remove ${member.displayName}`}
           >
             &#x00D7;

@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router'
 import { motion } from 'motion/react'
-import { Bell, Settings } from 'lucide-react'
+import { Bell, Settings, UserPlus } from 'lucide-react'
 import { NotificationPanel } from '../components/NotificationPanel'
 import { PushPermissionBanner } from '../components/PushPermissionBanner'
 import { useGroupStore, useBetStore, useAuthStore, useNotificationStore, useChatStore } from '@/stores'
@@ -12,7 +12,9 @@ import { getProfilesByIds } from '@/lib/api/profiles'
 import { formatMoney } from '@/lib/utils/formatters'
 import { formatOdds } from '@/lib/utils/formatters'
 import { loadPinned, togglePin, PIN_BETS_KEY } from '@/lib/utils/pinStorage'
-import { SectionHeader, ReceiptCard, GroupRow, FABGlow, QuickBetSheet } from '@/components/lynk'
+import { SectionHeader, ReceiptCard, GroupRow, FABGlow, QuickBetSheet, AddFriendsSheet } from '@/components/lynk'
+import { searchUsers } from '@/lib/api/friends'
+import { useFriendStore } from '@/stores'
 import type { BetWithSides } from '@/stores/betStore'
 
 const DEFAULT_AVATAR = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop'
@@ -151,6 +153,10 @@ export function TheBoard() {
   const chatUnreadCount = useChatStore((s) => s.totalUnreadCount)
 
   const [quickBetOpen, setQuickBetOpen] = useState(false)
+  const [addFriendsOpen, setAddFriendsOpen] = useState(false)
+  const [addSearchResults, setAddSearchResults] = useState<{ id: string; displayName: string; username: string; avatarUrl?: string; mutualCount: number }[]>([])
+  const [isAddSearching, setIsAddSearching] = useState(false)
+  const sendFriendRequest = useFriendStore((s) => s.sendRequest)
   const [notificationOpen, setNotificationOpen] = useState(false)
   const [claimantMap, setClaimantMap] = useState<Map<string, { display_name: string; avatar_url: string | null }>>(new Map())
   const [pinBets, setPinBets] = useState<Set<string>>(() => loadPinned(PIN_BETS_KEY))
@@ -410,6 +416,41 @@ export function TheBoard() {
           </div>
         </div>
 
+        {/* ── ADD FRIENDS Section ── */}
+        <div className="px-5 pt-3 pb-2">
+          <div className="bg-surface rounded-xl p-3.5">
+            <div className="flex items-center justify-between mb-2.5">
+              <div className="flex items-center gap-2">
+                <UserPlus className="w-4 h-4 text-rider" />
+                <span className="font-black italic text-[13px] text-text tracking-[-0.02em]">ADD FRIENDS</span>
+              </div>
+              <button
+                onClick={() => navigate('/roster')}
+                className="text-[10px] font-bold text-text-dim tracking-[0.1em]"
+              >
+                VIEW ROSTER
+              </button>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setAddFriendsOpen(true)}
+                className="flex-1 bg-rider-dim border-[1.5px] border-rider text-rider font-black text-[10px] py-2.5 rounded-xl tracking-[0.08em]"
+              >
+                FIND BY USERNAME
+              </button>
+              <button
+                onClick={() => {
+                  const link = `${window.location.origin}/add/${profile?.username ?? ''}`
+                  navigator.clipboard.writeText(link)
+                }}
+                className="flex-1 bg-transparent border-[1.5px] border-[#333] text-[#ccc] font-bold text-[10px] py-2.5 rounded-xl tracking-[0.08em]"
+              >
+                COPY INVITE LINK
+              </button>
+            </div>
+          </div>
+        </div>
+
         {/* ── 3. MY GROUPS Section ── */}
         <div className="px-5 pt-5 pb-4">
           <SectionHeader
@@ -476,6 +517,32 @@ export function TheBoard() {
         onClose={() => setQuickBetOpen(false)}
         groups={groups.map((g) => ({ id: g.id, name: g.name, emoji: g.avatar_emoji }))}
         onSubmit={handleQuickBet}
+      />
+
+      {/* ── 6. Add Friends Sheet ── */}
+      <AddFriendsSheet
+        open={addFriendsOpen}
+        onClose={() => setAddFriendsOpen(false)}
+        inviteLink={`${window.location.origin}/add/${profile?.username ?? ''}`}
+        username={profile?.username ?? ''}
+        onCopyLink={() => navigator.clipboard.writeText(`${window.location.origin}/add/${profile?.username ?? ''}`)}
+        onShareMessages={() => { if (navigator.share) navigator.share({ title: 'Add me on LYNK', url: `${window.location.origin}/add/${profile?.username ?? ''}` }) }}
+        onShareGeneral={() => { if (navigator.share) navigator.share({ title: 'Add me on LYNK', url: `${window.location.origin}/add/${profile?.username ?? ''}` }) }}
+        searchResults={addSearchResults}
+        onSearch={async (q) => {
+          if (!profile?.id || q.trim().length < 2) { setAddSearchResults([]); return }
+          setIsAddSearching(true)
+          try {
+            const results = await searchUsers(q, profile.id)
+            setAddSearchResults(results.map((r) => ({ id: r.id, displayName: r.display_name, username: r.username, avatarUrl: r.avatar_url ?? undefined, mutualCount: 0 })))
+          } catch { setAddSearchResults([]) }
+          finally { setIsAddSearching(false) }
+        }}
+        onAddUser={async (userId) => {
+          await sendFriendRequest(userId, 'search')
+          setAddSearchResults((prev) => prev.filter((r) => r.id !== userId))
+        }}
+        isSearching={isAddSearching}
       />
     </div>
   )

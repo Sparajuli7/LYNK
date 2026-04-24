@@ -7,6 +7,8 @@ interface SectionHeaderProps {
   dotColor?: string;
   /** Optional right-side action element (e.g. a button) */
   action?: React.ReactNode;
+  /** Color class for the title text, e.g. "text-warning" or "text-rider". Defaults to "text-text". */
+  titleColor?: string;
 }
 
 export function SectionHeader({
@@ -15,6 +17,7 @@ export function SectionHeader({
   metaColor = "text-text-mute",
   dotColor,
   action,
+  titleColor = "text-text",
 }: SectionHeaderProps) {
   return (
     <div className="flex items-baseline justify-between gap-3">
@@ -26,7 +29,7 @@ export function SectionHeader({
               aria-hidden="true"
             />
           )}
-          <h2 className="font-black italic tracking-tighter text-text whitespace-nowrap pr-2">
+          <h2 className={`font-black italic tracking-tighter ${titleColor} whitespace-nowrap pr-2`}>
             {title}
           </h2>
         </div>

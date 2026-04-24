@@ -57,10 +57,10 @@ export function InviteAcceptHero({
       {/* Close button — top right */}
       <button
         onClick={onDecline}
-        className="absolute top-0 right-0 w-9 h-9 rounded-full bg-surface-3 flex items-center justify-center"
+        className="absolute top-0 right-0 w-8 h-8 rounded-full bg-surface-3 flex items-center justify-center"
         aria-label="Close"
       >
-        <span className="text-text-dim text-[16px] leading-none">&#x2715;</span>
+        <span className="text-text-dim text-[14px] leading-none">&#x2715;</span>
       </button>
 
       {/* Invite received label */}
@@ -98,7 +98,7 @@ export function InviteAcceptHero({
         {/* Streak badge */}
         {streak != null && streak > 0 && (
           <div
-            className="absolute -top-1 -right-2 bg-doubter text-white text-[10px] font-black rounded-full px-2 py-0.5"
+            className="absolute top-[-6px] -right-2 bg-doubter text-white text-[9px] font-black rounded-[4px] px-[7px] py-[3px]"
             style={{ transform: "rotate(6deg)" }}
           >
             🔥 {streak}
@@ -107,17 +107,17 @@ export function InviteAcceptHero({
       </div>
 
       {/* Name */}
-      <div className="font-black italic text-[32px] tracking-[-0.04em] text-text leading-none mt-4 text-center">
+      <div className="font-black italic text-[32px] tracking-[-0.04em] text-text leading-none mt-4 text-center uppercase">
         {displayName}
       </div>
 
       {/* Handle */}
-      <div className="text-[14px] text-text-dim mt-1 text-center">
+      <div className="text-[13px] text-text-dim mt-1 text-center">
         @{username}
       </div>
 
       {/* Invite copy */}
-      <div className="font-black italic text-[22px] tracking-[-0.03em] text-rider text-center mt-5">
+      <div className="font-black italic text-[22px] tracking-[-0.03em] text-text text-center mt-5">
         {displayName} wants to bet on you.
       </div>
 
@@ -129,37 +129,37 @@ export function InviteAcceptHero({
       </div>
 
       {/* Stats strip */}
-      <div className="w-full bg-surface-2 border-y border-dashed border-border-hi mt-5 py-3">
+      <div className="w-full bg-surface-2 rounded-[14px] border border-white/[0.06] border-y-[1.5px] border-dashed border-border-hi mt-5 p-[14px]">
         <div className="grid grid-cols-4 gap-2 text-center">
           <div>
-            <div className="font-black font-mono text-2xl tracking-[-0.02em] text-text">
+            <div className="font-black font-mono text-[22px] tracking-[-0.02em] text-text">
               {bets}
             </div>
-            <div className="text-[10px] tracking-[0.12em] text-text-mute font-bold">
+            <div className="text-[9px] tracking-[0.12em] text-text-mute font-bold">
               BETS
             </div>
           </div>
           <div>
-            <div className="font-black font-mono text-2xl tracking-[-0.02em] text-rider">
+            <div className="font-black font-mono text-[22px] tracking-[-0.02em] text-rider">
               {winPct}%
             </div>
-            <div className="text-[10px] tracking-[0.12em] text-text-mute font-bold">
+            <div className="text-[9px] tracking-[0.12em] text-text-mute font-bold">
               WIN%
             </div>
           </div>
           <div>
-            <div className="font-black font-mono text-2xl tracking-[-0.02em] text-text">
+            <div className="font-black font-mono text-[22px] tracking-[-0.02em] text-text">
               {currentStreak}
             </div>
-            <div className="text-[10px] tracking-[0.12em] text-text-mute font-bold">
+            <div className="text-[9px] tracking-[0.12em] text-text-mute font-bold">
               STREAK
             </div>
           </div>
           <div>
-            <div className="font-black font-mono text-2xl tracking-[-0.02em] text-doubter">
+            <div className="font-black font-mono text-[22px] tracking-[-0.02em] text-doubter">
               {punishments}
             </div>
-            <div className="text-[10px] tracking-[0.12em] text-text-mute font-bold">
+            <div className="text-[9px] tracking-[0.12em] text-text-mute font-bold">
               PUNISH
             </div>
           </div>
@@ -184,7 +184,7 @@ export function InviteAcceptHero({
       <div className="w-full mt-6 space-y-3 pb-4">
         <button
           onClick={handleAcceptWithPulse}
-          className="w-full bg-rider text-bg font-black text-[12px] py-3 rounded-xl tracking-[0.1em] shadow-[0_0_0_4px] shadow-rider-ring"
+          className="w-full bg-rider text-bg font-black text-[14px] py-4 rounded-[14px] tracking-[0.1em] shadow-[0_0_0_5px_rgba(0,230,118,0.18)]"
         >
           &#x2713; ACCEPT &amp; ADD {nameUpper}
         </button>

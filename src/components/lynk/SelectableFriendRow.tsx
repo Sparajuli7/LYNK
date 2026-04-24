@@ -19,12 +19,6 @@ export function SelectableFriendRow({
   selected,
   onToggle,
 }: SelectableFriendRowProps) {
-  const borderColor = hasLiveBet
-    ? "border-l-rider"
-    : isRival
-    ? "border-l-doubter"
-    : "border-l-transparent";
-
   const ringColor = hasLiveBet
     ? "ring-rider"
     : isRival
@@ -34,7 +28,7 @@ export function SelectableFriendRow({
   return (
     <button
       onClick={onToggle}
-      className={`w-full rounded-[10px] p-[10px_12px] flex items-center gap-2.5 border-l-[3px] text-left ${borderColor} ${
+      className={`w-full rounded-[10px] p-[10px_12px] flex items-center gap-2.5 text-left ${
         selected
           ? "bg-rider/[0.06] border border-rider/30"
           : "bg-surface border border-transparent"
@@ -42,10 +36,10 @@ export function SelectableFriendRow({
     >
       {/* Checkbox */}
       <div
-        className={`w-[22px] h-[22px] rounded-[4px] flex items-center justify-center flex-shrink-0 ${
+        className={`w-[22px] h-[22px] rounded-[6px] flex items-center justify-center flex-shrink-0 ${
           selected
             ? "bg-rider"
-            : "bg-transparent border-2 border-text-mute"
+            : "bg-transparent border-2 border-[#444]"
         }`}
       >
         {selected && (
@@ -69,7 +63,7 @@ export function SelectableFriendRow({
 
       {/* Avatar */}
       <div
-        className={`w-10 h-10 rounded-full ring-2 ${ringColor} flex-shrink-0 overflow-hidden bg-surface-3`}
+        className={`w-[34px] h-[34px] rounded-full ring-2 ${ringColor} flex-shrink-0 overflow-hidden bg-surface-3`}
       >
         {avatarUrl ? (
           <img src={avatarUrl} alt="" className="w-full h-full object-cover" />
@@ -81,7 +75,7 @@ export function SelectableFriendRow({
       {/* Name + subline */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5">
-          <span className="font-black text-[13px] text-text truncate">
+          <span className="font-black text-[12px] text-text truncate">
             {displayName}
           </span>
           {hasLiveBet && <span className="flex-shrink-0">🔥</span>}
