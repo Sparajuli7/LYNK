@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { MessageCircle, Loader2, Archive, IdCard, BookOpen, Pencil, Settings } from 'lucide-react'
 import { useAuthStore, useChatStore } from '@/stores'
+import { supabase } from '@/lib/supabase'
 import { getMyBets, getUserBetStats, getUserCurrentStreak } from '@/lib/api/bets'
 import type { UserBetStats } from '@/lib/api/bets'
 import { getProfile as fetchProfile } from '@/lib/api/profiles'
@@ -96,12 +97,14 @@ function ProfileContent({
   isOwnProfile,
   stats,
   profileProofs,
+  friendCount,
 }: {
   profile: Profile
   recentBets: BetWithSides[]
   isOwnProfile: boolean
   stats: UserBetStats
   profileProofs: PublicProof[]
+  friendCount: number
 }) {
   const navigate = useNavigate()
   const [openingDM, setOpeningDM] = useState(false)
@@ -184,57 +187,66 @@ function ProfileContent({
           {/* Divider */}
           <div className="border-t border-border-subtle" />
 
-          {/* Row 2: compact 5-stat bar */}
-          <div className="flex items-start justify-between pt-3 gap-1">
+          {/* Row 2: compact 6-stat bar */}
+          <div className="flex items-start justify-between pt-3 gap-0.5">
 
-            <div className="flex-1 text-center">
-              <p className="text-base font-black text-accent-green tabular-nums leading-tight">
+            <div className="flex-1 text-center min-w-0">
+              <p className="text-[15px] font-black text-accent-green tabular-nums leading-tight">
                 {winRateDisplay}
               </p>
-              <p className="text-[9px] text-text-muted uppercase tracking-wider mt-0.5">Win%</p>
+              <p className="text-[8px] text-text-muted uppercase tracking-wider mt-0.5">Win%</p>
             </div>
 
-            <div className="w-px self-stretch bg-border-subtle mx-0.5" />
+            <div className="w-px self-stretch bg-border-subtle" />
 
-            <div className="flex-1 text-center">
-              <p className="text-base font-black text-text-primary tabular-nums leading-tight">
+            <div className="flex-1 text-center min-w-0">
+              <p className="text-[15px] font-black text-text-primary tabular-nums leading-tight">
                 {profile.total_bets}
               </p>
-              <p className="text-[9px] text-text-muted uppercase tracking-wider mt-0.5">Bets</p>
+              <p className="text-[8px] text-text-muted uppercase tracking-wider mt-0.5">Bets</p>
             </div>
 
-            <div className="w-px self-stretch bg-border-subtle mx-0.5" />
+            <div className="w-px self-stretch bg-border-subtle" />
 
-            <div className="flex-1 text-center">
-              <p className="text-base font-black text-text-primary tabular-nums leading-tight">
+            <div className="flex-1 text-center min-w-0">
+              <p className="text-[15px] font-black text-text-primary tabular-nums leading-tight">
                 {profile.current_streak > 0
                   ? `+${profile.current_streak}`
                   : profile.current_streak}
               </p>
-              <p className="text-[9px] text-text-muted uppercase tracking-wider mt-0.5">Streak</p>
+              <p className="text-[8px] text-text-muted uppercase tracking-wider mt-0.5">Streak</p>
             </div>
 
-            <div className="w-px self-stretch bg-border-subtle mx-0.5" />
+            <div className="w-px self-stretch bg-border-subtle" />
 
-            <div className="flex-1 text-center">
-              <p className={`text-base font-black tabular-nums leading-tight ${pendingPunishments > 0 ? 'text-amber-400' : 'text-text-primary'}`}>
+            <div className="flex-1 text-center min-w-0">
+              <p className={`text-[15px] font-black tabular-nums leading-tight ${pendingPunishments > 0 ? 'text-amber-400' : 'text-text-primary'}`}>
                 {profile.punishments_taken}
               </p>
-              <p className="text-[9px] text-text-muted uppercase tracking-wider mt-0.5">Punish</p>
+              <p className="text-[8px] text-text-muted uppercase tracking-wider mt-0.5">Punish</p>
               {pendingPunishments > 0 && (
-                <p className="text-[8px] text-amber-400 font-bold leading-none mt-0.5">
+                <p className="text-[7px] text-amber-400 font-bold leading-none mt-0.5">
                   {pendingPunishments}⏳
                 </p>
               )}
             </div>
 
-            <div className="w-px self-stretch bg-border-subtle mx-0.5" />
+            <div className="w-px self-stretch bg-border-subtle" />
 
-            <div className="flex-1 text-center">
-              <p className="text-base font-black text-text-primary tabular-nums leading-tight">
+            <div className="flex-1 text-center min-w-0">
+              <p className="text-[15px] font-black text-text-primary tabular-nums leading-tight">
                 {completionRate}
               </p>
-              <p className="text-[9px] text-text-muted uppercase tracking-wider mt-0.5">Proof</p>
+              <p className="text-[8px] text-text-muted uppercase tracking-wider mt-0.5">Proof</p>
+            </div>
+
+            <div className="w-px self-stretch bg-border-subtle" />
+
+            <div className="flex-1 text-center min-w-0">
+              <p className="text-[15px] font-black text-accent-green tabular-nums leading-tight">
+                {friendCount}
+              </p>
+              <p className="text-[8px] text-text-muted uppercase tracking-wider mt-0.5">Friends</p>
             </div>
 
           </div>
@@ -392,6 +404,7 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
     wins: 0, losses: 0, voids: 0, totalCompleted: 0, winPct: 0,
   })
   const [profileProofs, setProfileProofs] = useState<PublicProof[]>([])
+  const [friendCount, setFriendCount] = useState(0)
   const [loading, setLoading] = useState(true)
 
   const isOwnProfile = !userId || userId === currentUser?.id
@@ -413,6 +426,20 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
       }
     }
 
+    // Count unique friends across all user's groups
+    const fetchFriendCount = async (uid: string): Promise<number> => {
+      const { data: myGroups } = await supabase
+        .from('group_members').select('group_id').eq('user_id', uid)
+      if (!myGroups?.length) return 0
+      const groupIds = myGroups.map((g) => g.group_id)
+      const { data: allMembers } = await supabase
+        .from('group_members').select('user_id').in('group_id', groupIds)
+      if (!allMembers) return 0
+      const unique = new Set(allMembers.map((m) => m.user_id))
+      unique.delete(uid)
+      return unique.size
+    }
+
     // Fetch everything in parallel (public proofs alongside existing calls)
     Promise.all([
       fetchProfile(targetUserId),
@@ -420,7 +447,9 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
       getUserBetStats(targetUserId),
       getUserCurrentStreak(targetUserId),
       getPublicProofsForUser(targetUserId),
-    ]).then(([freshProfile, bets, betStats, streak, proofs]) => {
+      fetchFriendCount(targetUserId),
+    ]).then(([freshProfile, bets, betStats, streak, proofs, friends]) => {
+      setFriendCount(friends)
       const base = freshProfile ?? (isOwnProfile ? useAuthStore.getState().profile : null)
       if (base) {
         setProfile({ ...base, total_bets: bets.length, current_streak: streak })
@@ -476,6 +505,7 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
       isOwnProfile={isOwnProfile}
       stats={stats}
       profileProofs={profileProofs}
+      friendCount={friendCount}
     />
   )
 }
