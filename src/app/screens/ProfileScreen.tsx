@@ -314,38 +314,15 @@ function ProfileContent({
                 <Icon className="w-5 h-5" />
               </button>
             ))}
-          </div>
-
-          {/* ADD FRIENDS section */}
-          <div className="mt-4 bg-surface rounded-xl p-3.5">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <UserPlus className="w-4 h-4 text-rider" />
-                <span className="font-black italic text-[14px] text-text tracking-[-0.02em]">ADD FRIENDS</span>
-              </div>
-              <button
-                onClick={() => navigate('/roster')}
-                className="flex items-center gap-1 text-[10px] font-bold text-text-dim tracking-[0.1em]"
-              >
-                <Users className="w-3 h-3" /> ROSTER
-              </button>
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setAddFriendsOpen(true)}
-                className="flex-1 bg-rider-dim border-[1.5px] border-rider text-rider font-black text-[11px] py-2.5 rounded-xl tracking-[0.08em]"
-              >
-                FIND BY USERNAME
-              </button>
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(inviteLink)
-                }}
-                className="flex-1 bg-transparent border-[1.5px] border-[#333] text-[#ccc] font-bold text-[11px] py-2.5 rounded-xl tracking-[0.08em]"
-              >
-                COPY INVITE LINK
-              </button>
-            </div>
+            {/* Add Friends button — green accent */}
+            <button
+              onClick={() => setAddFriendsOpen(true)}
+              className="w-12 h-12 rounded-xl bg-rider/15 border border-rider/40 flex items-center justify-center text-rider hover:bg-rider/25 transition-colors active:scale-95"
+              aria-label="Add Friends"
+              title="Add Friends"
+            >
+              <UserPlus className="w-5 h-5" />
+            </button>
           </div>
         </div>
       ) : (
