@@ -4,7 +4,7 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 // Enum-style union types (mirror Postgres CHECK constraints / enums)
 // ---------------------------------------------------------------------------
 
-export type UserRole = 'admin' | 'member'
+export type UserRole = 'owner' | 'admin' | 'bet_maker' | 'member'
 
 export type BetCategory = 'fitness' | 'money' | 'social' | 'wildcard'
 
@@ -21,6 +21,8 @@ export type BetStatus =
   | 'voided'
 
 export type BetSide = 'rider' | 'doubter'
+
+export type JoinMode = 'open' | 'auto_all' | 'auto_selected'
 
 export type ProofType = 'camera' | 'screenshot' | 'video' | 'document' | 'text'
 
@@ -109,6 +111,7 @@ export interface BetRow {
   h2h_opponent_id: string | null
   comp_metric: string | null
   is_public: boolean                // whether competition is publicly visible on profiles
+  join_mode: JoinMode               // 'open' | 'auto_all' | 'auto_selected'
   created_at: string
 }
 
@@ -274,7 +277,7 @@ export type GroupInsert = Omit<GroupRow, 'id' | 'created_at'>
 export type GroupMemberInsert = GroupMemberRow
 
 export type BetInsert = Omit<BetRow, 'id' | 'created_at'> &
-  Partial<Pick<BetRow, 'description' | 'stake_money' | 'stake_punishment_id' | 'stake_custom_punishment' | 'h2h_opponent_id' | 'comp_metric' | 'is_public'>>
+  Partial<Pick<BetRow, 'description' | 'stake_money' | 'stake_punishment_id' | 'stake_custom_punishment' | 'h2h_opponent_id' | 'comp_metric' | 'is_public' | 'join_mode'>>
 
 export type BetSideInsert = Omit<BetSideRow, 'id' | 'joined_at'>
 
@@ -369,6 +372,11 @@ export interface Database {
         Row: BetSideRow
         Insert: BetSideInsert
         Update: never
+      }
+      bet_invites: {
+        Row: BetInviteRow
+        Insert: BetInviteInsert
+        Update: Partial<Pick<BetInviteRow, 'auto_joined'>>
       }
       proofs: {
         Row: ProofRow
@@ -472,6 +480,7 @@ export type Group = Database['public']['Tables']['groups']['Row']
 export type GroupMember = Database['public']['Tables']['group_members']['Row']
 export type Bet = Database['public']['Tables']['bets']['Row']
 export type BetSideEntry = Database['public']['Tables']['bet_sides']['Row']
+export type BetInvite = Database['public']['Tables']['bet_invites']['Row']
 export type Proof = Database['public']['Tables']['proofs']['Row']
 export type ProofVote = Database['public']['Tables']['proof_votes']['Row']
 export type Outcome = Database['public']['Tables']['outcomes']['Row']
@@ -533,6 +542,20 @@ export interface FriendProfile extends ProfileRow {
   mutualFriendCount: number
   h2h?: HeadToHead
 }
+
+// ---------------------------------------------------------------------------
+// Bet Invites (auto-join for selected members)
+// ---------------------------------------------------------------------------
+
+export interface BetInviteRow {
+  id: string
+  bet_id: string
+  user_id: string
+  auto_joined: boolean
+  created_at: string
+}
+
+export type BetInviteInsert = Omit<BetInviteRow, 'id' | 'created_at'> & Partial<Pick<BetInviteRow, 'auto_joined'>>
 
 export type FriendshipInsert = Omit<FriendshipRow, 'id' | 'created_at' | 'accepted_at' | 'deleted_at'>
 export type FriendshipUpdate = Partial<Pick<FriendshipRow, 'status' | 'accepted_at' | 'deleted_at'>>

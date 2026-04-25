@@ -1,6 +1,6 @@
 import { supabase, requireUserId } from '@/lib/supabase'
 import { getProfilesByIds } from '@/lib/api/profiles'
-import type { Group, GroupMember } from '@/lib/database.types'
+import type { Group, GroupMember, UserRole } from '@/lib/database.types'
 
 /** Generate a cryptographically random 8-char alphanumeric invite code */
 export function generateInviteCode(): string {
@@ -168,4 +168,61 @@ export async function leaveGroup(groupId: string): Promise<void> {
     .eq('user_id', userId)
 
   if (error) throw error
+}
+
+/** Change a group member's role. Only owners and admins can do this. */
+export async function updateMemberRole(
+  groupId: string,
+  targetUserId: string,
+  newRole: UserRole,
+): Promise<void> {
+  const userId = await requireUserId()
+
+  // Verify caller is owner or admin
+  const { data: callerMember } = await supabase
+    .from('group_members')
+    .select('role')
+    .eq('group_id', groupId)
+    .eq('user_id', userId)
+    .single()
+
+  if (!callerMember || !['owner', 'admin'].includes(callerMember.role)) {
+    throw new Error('Only owners and admins can change roles')
+  }
+
+  // Can't change the owner's role
+  if (newRole !== 'owner') {
+    const { data: target } = await supabase
+      .from('group_members')
+      .select('role')
+      .eq('group_id', groupId)
+      .eq('user_id', targetUserId)
+      .single()
+
+    if (target?.role === 'owner') {
+      throw new Error("Can't change the owner's role")
+    }
+  }
+
+  const { error } = await supabase
+    .from('group_members')
+    .update({ role: newRole })
+    .eq('group_id', groupId)
+    .eq('user_id', targetUserId)
+
+  if (error) throw error
+}
+
+/** Check whether the current user's group role permits creating bets. */
+export async function canCreateBet(groupId: string): Promise<boolean> {
+  const userId = await requireUserId()
+  const { data } = await supabase
+    .from('group_members')
+    .select('role')
+    .eq('group_id', groupId)
+    .eq('user_id', userId)
+    .single()
+
+  if (!data) return false
+  return ['owner', 'admin', 'bet_maker'].includes(data.role)
 }

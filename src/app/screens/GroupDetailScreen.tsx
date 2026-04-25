@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router'
-import { Copy, LogOut, MessageCircle, Share2, Search, UserPlus } from 'lucide-react'
+import { Copy, LogOut, MessageCircle, Share2, Search, UserPlus, Plus } from 'lucide-react'
 import { BackButton } from '@/app/components/BackButton'
 import { useGroupStore, useAuthStore, useChatStore } from '@/stores'
 import { getGroupBets } from '@/lib/api/bets'
@@ -8,9 +8,11 @@ import { searchProfiles, getProfilesWithRepByIds } from '@/lib/api/profiles'
 import { getOutcome } from '@/lib/api/outcomes'
 import { getShamePostByBetId } from '@/lib/api/shame'
 import { computeBetPayouts } from '@/lib/api/betPayouts'
+import { updateMemberRole } from '@/lib/api/groups'
 import { AvatarWithRepBadge } from '@/app/components/RepBadge'
 import { BetCard } from '@/app/components/BetCard'
-import type { Outcome, Profile } from '@/lib/database.types'
+import { RolePickerSheet } from '@/components/lynk'
+import type { Outcome, Profile, UserRole } from '@/lib/database.types'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -132,6 +134,20 @@ function GroupBetCard({
   )
 }
 
+const ROLE_BADGE_STYLES: Record<UserRole, string> = {
+  owner: 'bg-accent-green/15 text-accent-green',
+  admin: 'bg-accent-green/15 text-accent-green',
+  bet_maker: 'bg-amber-500/15 text-amber-400',
+  member: 'bg-white/5 text-text-muted',
+}
+
+const ROLE_LABELS: Record<UserRole, string> = {
+  owner: 'OWNER',
+  admin: 'ADMIN',
+  bet_maker: 'BET MAKER',
+  member: 'MEMBER',
+}
+
 export function GroupDetailScreen() {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
@@ -160,8 +176,18 @@ export function GroupDetailScreen() {
   const [invitingId, setInvitingId] = useState<string | null>(null)
   const searchTimer = useRef<ReturnType<typeof setTimeout>>(null)
 
+  // Role picker state
+  const [rolePickerOpen, setRolePickerOpen] = useState(false)
+  const [selectedMember, setSelectedMember] = useState<{ userId: string; name: string; role: UserRole } | null>(null)
+
   const group = groups.find((g) => g.id === id)
   const memberIds = new Set(members.map((m) => m.user_id))
+
+  // Determine current user's role in this group
+  const myMembership = members.find((m) => m.user_id === user?.id)
+  const myRole: UserRole = (myMembership?.role as UserRole) ?? 'member'
+  const isOwnerOrAdmin = myRole === 'owner' || myRole === 'admin'
+  const canCreateBet = ['owner', 'admin', 'bet_maker'].includes(myRole)
 
   useEffect(() => {
     if (groups.length === 0) fetchGroups()
@@ -263,6 +289,17 @@ export function GroupDetailScreen() {
     navigate('/home', { replace: true })
   }
 
+  const handleRoleChange = async (newRole: 'admin' | 'bet_maker' | 'member') => {
+    if (!id || !selectedMember) return
+    try {
+      await updateMemberRole(id, selectedMember.userId, newRole)
+      // Refresh members to reflect updated roles
+      fetchMembers(id)
+    } catch (e) {
+      // Silently ignore — user sees stale role until refresh
+    }
+  }
+
   if (!group) {
     return (
       <div className="h-full bg-bg-primary flex items-center justify-center">
@@ -297,10 +334,22 @@ export function GroupDetailScreen() {
           <div className="flex flex-wrap gap-3">
             {members.map((m) => {
               const profile = profileMap.get(m.user_id)
+              const memberRole = (m.role as UserRole) ?? 'member'
               return (
-                <div
+                <button
                   key={m.user_id}
-                  className="flex items-center gap-2 bg-bg-card rounded-xl border border-border-subtle px-3 py-2"
+                  onClick={() => {
+                    if (!isOwnerOrAdmin) return
+                    setSelectedMember({
+                      userId: m.user_id,
+                      name: profile?.display_name ?? 'Unknown',
+                      role: memberRole,
+                    })
+                    setRolePickerOpen(true)
+                  }}
+                  className={`flex items-center gap-2 bg-bg-card rounded-xl border border-border-subtle px-3 py-2 text-left ${
+                    isOwnerOrAdmin ? 'cursor-pointer active:bg-bg-elevated transition-colors' : 'cursor-default'
+                  }`}
                 >
                   <div className="relative">
                     <AvatarWithRepBadge
@@ -312,16 +361,40 @@ export function GroupDetailScreen() {
                     />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-text-primary">
-                      {profile?.display_name ?? 'Unknown'}
-                    </p>
-                    <p className="text-xs text-text-muted">@{profile?.username ?? '—'}</p>
+                    <div className="flex items-center gap-1.5">
+                      <p className="text-sm font-semibold text-text-primary">
+                        {profile?.display_name ?? 'Unknown'}
+                      </p>
+                      <span
+                        className={`text-[8px] font-black tracking-[0.1em] px-1.5 py-0.5 rounded-full ${ROLE_BADGE_STYLES[memberRole]}`}
+                      >
+                        {ROLE_LABELS[memberRole]}
+                      </span>
+                    </div>
+                    <p className="text-xs text-text-muted">@{profile?.username ?? '---'}</p>
                   </div>
-                </div>
+                </button>
               )
             })}
           </div>
         </div>
+
+        {/* Create Bet (permission gated) */}
+        {canCreateBet ? (
+          <button
+            onClick={() => navigate('/compete/create')}
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-accent-green text-white font-bold text-sm mb-6 hover:bg-accent-green/90 transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Create Bet
+          </button>
+        ) : (
+          <div className="bg-bg-card rounded-xl border border-border-subtle p-3 mb-6 text-center">
+            <p className="text-xs text-text-muted">
+              Ask an admin to upgrade your role to create bets.
+            </p>
+          </div>
+        )}
 
         {/* Group Chat */}
         <button
@@ -513,6 +586,18 @@ export function GroupDetailScreen() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Role Picker Sheet */}
+      {selectedMember && (
+        <RolePickerSheet
+          open={rolePickerOpen}
+          onClose={() => setRolePickerOpen(false)}
+          memberName={selectedMember.name}
+          currentRole={selectedMember.role}
+          onRoleChange={handleRoleChange}
+          isOwner={selectedMember.role === 'owner'}
+        />
+      )}
     </div>
   )
 }

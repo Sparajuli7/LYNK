@@ -176,6 +176,8 @@ export function TheBoard() {
     stakeCents: number
     groupId: string
     deadline: Date
+    joinMode: 'open' | 'auto_all' | 'auto_selected'
+    selectedMemberIds: string[]
   }) => {
     const group = groups.find((g) => g.id === data.groupId) ?? null
     resetWizard()
@@ -188,6 +190,8 @@ export function TheBoard() {
       stakeType: 'money',
       stakeMoney: data.stakeCents,
       selectedGroup: group,
+      joinMode: data.joinMode,
+      selectedMemberIds: data.selectedMemberIds,
     })
     const bet = await createBet()
     setQuickBetOpen(false)

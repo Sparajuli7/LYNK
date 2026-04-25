@@ -2,6 +2,10 @@ import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { X } from 'lucide-react'
 import { formatMoney } from '@/lib/utils/formatters'
+import { getGroupMembersWithProfiles } from '@/lib/api/groups'
+import { useAuthStore } from '@/stores'
+import { JoinModeSelector } from './JoinModeSelector'
+import type { JoinMode } from '@/lib/database.types'
 
 interface GroupOption {
   id: string
@@ -11,11 +15,13 @@ interface GroupOption {
 
 type DeadlinePreset = 'today' | 'week' | 'month' | 'custom'
 
-interface QuickBetData {
+export interface QuickBetData {
   title: string
   stakeCents: number
   groupId: string
   deadline: Date
+  joinMode: JoinMode
+  selectedMemberIds: string[]
 }
 
 interface QuickBetSheetProps {
@@ -47,6 +53,8 @@ function deadlineToDate(preset: DeadlinePreset): Date {
 }
 
 export function QuickBetSheet({ open, onClose, groups, onSubmit }: QuickBetSheetProps) {
+  const currentUserId = useAuthStore((s) => s.user?.id)
+
   const [claim, setClaim] = useState('')
   const [stakeCents, setStakeCents] = useState(2000)
   const [customAmount, setCustomAmount] = useState(false)
@@ -55,11 +63,38 @@ export function QuickBetSheet({ open, onClose, groups, onSubmit }: QuickBetSheet
   const [deadline, setDeadline] = useState<DeadlinePreset | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  // Join mode state
+  const [joinMode, setJoinMode] = useState<JoinMode>('open')
+  const [selectedMemberIds, setSelectedMemberIds] = useState<string[]>([])
+  const [groupMembers, setGroupMembers] = useState<{ id: string; displayName: string; avatarUrl?: string; role: string }[]>([])
+
+  // Current user's role in the selected group
+  const myRole = groupMembers.find((m) => m.id === currentUserId)?.role ?? 'member'
+  const canCreateBet = ['owner', 'admin', 'bet_maker'].includes(myRole)
+
   useEffect(() => {
     if (groups.length === 1) {
       setSelectedGroupId(groups[0].id)
     }
   }, [groups])
+
+  // Fetch group members when a group is selected
+  useEffect(() => {
+    if (!selectedGroupId) {
+      setGroupMembers([])
+      return
+    }
+    getGroupMembersWithProfiles(selectedGroupId).then((members) => {
+      setGroupMembers(
+        members.map((m) => ({
+          id: m.user_id,
+          displayName: m.profile.display_name,
+          avatarUrl: m.profile.avatar_url ?? undefined,
+          role: m.role,
+        })),
+      )
+    })
+  }, [selectedGroupId])
 
   useEffect(() => {
     if (!open) {
@@ -72,6 +107,9 @@ export function QuickBetSheet({ open, onClose, groups, onSubmit }: QuickBetSheet
         setSelectedGroupId(groups.length === 1 ? groups[0]?.id ?? null : null)
         setDeadline(null)
         setIsSubmitting(false)
+        setJoinMode('open')
+        setSelectedMemberIds([])
+        setGroupMembers([])
       }, 300)
       return () => clearTimeout(t)
     }
@@ -81,6 +119,7 @@ export function QuickBetSheet({ open, onClose, groups, onSubmit }: QuickBetSheet
     claim.trim().length >= 6 &&
     selectedGroupId !== null &&
     deadline !== null &&
+    canCreateBet &&
     !isSubmitting
 
   const handleSubmit = useCallback(() => {
@@ -91,8 +130,16 @@ export function QuickBetSheet({ open, onClose, groups, onSubmit }: QuickBetSheet
       stakeCents,
       groupId: selectedGroupId,
       deadline: deadlineToDate(deadline),
+      joinMode,
+      selectedMemberIds,
     })
-  }, [canSubmit, claim, stakeCents, selectedGroupId, deadline, onSubmit])
+  }, [canSubmit, claim, stakeCents, selectedGroupId, deadline, joinMode, selectedMemberIds, onSubmit])
+
+  const handleToggleMember = useCallback((id: string) => {
+    setSelectedMemberIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    )
+  }, [])
 
   const charCount = claim.length
   const charCountDanger = charCount >= 110
@@ -278,6 +325,21 @@ export function QuickBetSheet({ open, onClose, groups, onSubmit }: QuickBetSheet
                   </div>
                 )}
 
+                {/* ── 5b. Who's In (Join Mode) ── */}
+                {selectedGroupId && (
+                  <div className="mb-5">
+                    <JoinModeSelector
+                      joinMode={joinMode}
+                      onModeChange={setJoinMode}
+                      groupMembers={groupMembers}
+                      selectedMemberIds={selectedMemberIds}
+                      onToggleMember={handleToggleMember}
+                      currentUserId={currentUserId}
+                      totalMemberCount={groupMembers.length}
+                    />
+                  </div>
+                )}
+
                 {/* ── 6. Deadline ── */}
                 <div className="mb-5">
                   <label className="text-[10px] font-black tracking-[0.15em] text-text-mute uppercase block mb-2">
@@ -336,9 +398,15 @@ export function QuickBetSheet({ open, onClose, groups, onSubmit }: QuickBetSheet
                     ? 'PLACING...'
                     : `\u2713 PLACE BET \u00B7 ${formatMoney(stakeCents)}`}
                 </button>
-                <p className="text-center text-[10px] text-text-mute mt-2.5">
-                  Your friends will vote on the outcome
-                </p>
+                {selectedGroupId && !canCreateBet ? (
+                  <p className="text-center text-[10px] text-doubter mt-2.5">
+                    Only bet makers can create bets
+                  </p>
+                ) : (
+                  <p className="text-center text-[10px] text-text-mute mt-2.5">
+                    Your friends will vote on the outcome
+                  </p>
+                )}
               </div>
             </div>
           </motion.div>

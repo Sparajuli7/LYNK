@@ -1,6 +1,6 @@
 import { supabase, requireUserId } from '@/lib/supabase'
 import { getProfilesWithRepByIds } from '@/lib/api/profiles'
-import type { Bet, BetInsert, BetCategory, CompetitionScore, Profile, StakeType } from '@/lib/database.types'
+import type { Bet, BetInsert, BetCategory, CompetitionScore, Profile, StakeType, JoinMode } from '@/lib/database.types'
 
 /** Fetch all competitions for the current user's groups */
 export async function getCompetitionsForUser(): Promise<Bet[]> {
@@ -44,6 +44,8 @@ export interface CompetitionData {
   isPublic?: boolean
   /** Creator's side assignment; all other participants default to 'rider' */
   creatorSide?: 'rider' | 'doubter'
+  joinMode?: JoinMode
+  joinSelectedMemberIds?: string[]
 }
 
 export interface LeaderboardEntry {
@@ -70,6 +72,7 @@ export async function createCompetition(data: CompetitionData): Promise<Bet> {
     comp_metric: data.metric,
     is_public: data.isPublic ?? true,
     status: 'active',
+    join_mode: data.joinMode ?? 'open',
   }
 
   const { data: competition, error } = await supabase

@@ -26,3 +26,5 @@ export { PublicPlayerCard } from "./PublicPlayerCard";
 export { InviteAcceptHero } from "./InviteAcceptHero";
 export { AddFriendsSheet } from "./AddFriendsSheet";
 export { GroupCreateMemberPicker } from "./GroupCreateMemberPicker";
+export { JoinModeSelector } from "./JoinModeSelector";
+export { RolePickerSheet } from "./RolePickerSheet";

@@ -13,6 +13,7 @@ import type {
   StakeType,
   PunishmentCard,
   Group,
+  JoinMode,
 } from '@/lib/database.types'
 
 /** Re-export so existing import paths (`@/stores/betStore`, `@/stores`) keep working. */
@@ -29,6 +30,8 @@ export interface WizardFields {
   stakePunishment: PunishmentCard | null
   stakeCustomPunishment: string | null
   selectedGroup: Group | null
+  joinMode: JoinMode | null
+  selectedMemberIds: string[]        // for 'auto_selected' mode
 }
 
 const WIZARD_DEFAULTS: WizardFields = {
@@ -42,6 +45,8 @@ const WIZARD_DEFAULTS: WizardFields = {
   stakePunishment: null,
   stakeCustomPunishment: null,
   selectedGroup: null,
+  joinMode: null,
+  selectedMemberIds: [],
 }
 
 export interface BetFilters {
@@ -239,6 +244,8 @@ const useBetStore = create<BetStore>()(
         draft.error = null
       })
 
+      const joinMode = wizard.joinMode ?? 'open'
+
       const insert: BetInsert = {
         group_id: wizard.selectedGroup.id,
         claimant_id: userId,
@@ -251,6 +258,7 @@ const useBetStore = create<BetStore>()(
         stake_punishment_id: wizard.stakePunishment?.id ?? null,
         stake_custom_punishment: wizard.stakeCustomPunishment,
         status: 'active',
+        join_mode: joinMode,
       }
 
       const { data, error } = await supabase
@@ -273,6 +281,53 @@ const useBetStore = create<BetStore>()(
         user_id: userId,
         side: wizard.creatorSide ?? 'rider',
       })
+
+      // Handle auto-join modes
+      if (joinMode === 'auto_all') {
+        // Fetch all group members except the creator
+        const { data: members } = await supabase
+          .from('group_members')
+          .select('user_id')
+          .eq('group_id', wizard.selectedGroup!.id)
+          .neq('user_id', userId)
+
+        const otherMembers = members ?? []
+        if (otherMembers.length > 0) {
+          // Insert bet_sides for each member as rider
+          await supabase.from('bet_sides').insert(
+            otherMembers.map((m) => ({
+              bet_id: data.id,
+              user_id: m.user_id,
+              side: 'rider' as const,
+            })),
+          )
+          // Record bet_invites with auto_joined = true
+          await supabase.from('bet_invites').insert(
+            otherMembers.map((m) => ({
+              bet_id: data.id,
+              user_id: m.user_id,
+              auto_joined: true,
+            })),
+          )
+        }
+      } else if (joinMode === 'auto_selected' && wizard.selectedMemberIds.length > 0) {
+        // Insert bet_sides for each selected member as rider
+        await supabase.from('bet_sides').insert(
+          wizard.selectedMemberIds.map((memberId) => ({
+            bet_id: data.id,
+            user_id: memberId,
+            side: 'rider' as const,
+          })),
+        )
+        // Record bet_invites with auto_joined = true
+        await supabase.from('bet_invites').insert(
+          wizard.selectedMemberIds.map((memberId) => ({
+            bet_id: data.id,
+            user_id: memberId,
+            auto_joined: true,
+          })),
+        )
+      }
 
       set((draft) => {
         draft.bets.unshift({ ...data, bet_sides: [] })
@@ -381,6 +436,8 @@ const useBetStore = create<BetStore>()(
           stakePunishment: null,
           stakeCustomPunishment: bet.stake_custom_punishment,
           selectedGroup: group,
+          joinMode: null,
+          selectedMemberIds: [],
         }
       }),
 

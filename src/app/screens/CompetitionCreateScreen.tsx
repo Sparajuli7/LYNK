@@ -37,6 +37,8 @@ import {
   canUseNativeShare,
   copyToClipboard,
 } from '@/lib/share'
+import { JoinModeSelector } from '@/components/lynk'
+import type { JoinMode } from '@/lib/database.types'
 
 const METRIC_STRUCTURES = [
   (fill: string) => `Who can ${fill} the most?`,
@@ -70,6 +72,10 @@ export function CompetitionCreateScreen() {
   const [isSolo, setIsSolo] = useState(false)
   const [peopleTab, setPeopleTab] = useState<'friends' | 'group'>('friends')
   const [inviteCopied, setInviteCopied] = useState(false)
+
+  // Join mode
+  const [joinMode, setJoinMode] = useState<JoinMode>('open')
+  const [joinSelectedMemberIds, setJoinSelectedMemberIds] = useState<string[]>([])
 
   const [startDate, setStartDate] = useState<Date>(() => new Date())
   const [endDate, setEndDate] = useState<Date>(() => {
@@ -276,6 +282,8 @@ export function CompetitionCreateScreen() {
         stakeCustomPunishment: stakePunishmentId ? null : punishmentText.trim() || null,
         isPublic,
         creatorSide: creatorSide ?? 'rider',
+        joinMode,
+        joinSelectedMemberIds,
       })
       setCreatedComp(comp)
       setContractOpen(true)
@@ -669,6 +677,29 @@ export function CompetitionCreateScreen() {
                     )}
                   </div>
                 </>
+              )}
+
+              {/* ── Join Mode ── */}
+              {!isSolo && selectedGroup && (
+                <div>
+                  <JoinModeSelector
+                    joinMode={joinMode}
+                    onModeChange={setJoinMode}
+                    groupMembers={groupMembers.map((m) => ({
+                      id: m.user_id,
+                      displayName: m.profile.display_name,
+                      avatarUrl: m.profile.avatar_url ?? undefined,
+                    }))}
+                    selectedMemberIds={joinSelectedMemberIds}
+                    onToggleMember={(id) =>
+                      setJoinSelectedMemberIds((prev) =>
+                        prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+                      )
+                    }
+                    currentUserId={currentProfile?.id}
+                    totalMemberCount={groupMembers.length}
+                  />
+                </div>
               )}
 
               {/* ── Calendar date range picker ── */}
