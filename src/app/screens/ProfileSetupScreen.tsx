@@ -115,7 +115,7 @@ export function ProfileSetupScreen() {
         const params = pending.groupInviteCode ? `?group=${pending.groupInviteCode}` : ''
         navigate(`/invite/compete/${pending.compId}${params}`, { replace: true })
       } else {
-        navigate('/home', { replace: true })
+        navigate('/onboarding/interests', { replace: true })
       }
     }
   }

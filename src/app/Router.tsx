@@ -39,6 +39,8 @@ import { RosterScreen } from './screens/RosterScreen'
 import { PublicProfileScreen } from './screens/PublicProfileScreen'
 import { InviteAcceptScreen } from './screens/InviteAcceptScreen'
 import { GroupCreateMembersScreen } from './screens/GroupCreateMembersScreen'
+import { BrowseSuggestionsScreen } from './screens/BrowseSuggestionsScreen'
+import { OnboardingInterestsScreen } from './screens/OnboardingInterestsScreen'
 
 // Wrappers adapt callback-prop screens for router navigation
 function SplashRoute() {
@@ -145,6 +147,7 @@ export function AppRouter() {
           <Route path="auth/callback" element={<AuthCallbackScreen />} />
           <Route path="auth/otp" element={<OTPScreen />} />
           <Route path="auth/profile-setup" element={<ProfileSetupScreen />} />
+          <Route path="onboarding/interests" element={<OnboardingInterestsScreen />} />
           {/* Competition invite — public so unauthenticated users can land here */}
           <Route path="invite/compete/:compId" element={<CompetitionInviteScreen />} />
           {/* Friend invite — public so unauthenticated users can land here */}
@@ -222,6 +225,9 @@ export function AppRouter() {
 
             {/* Player Card */}
             <Route path="profile/card" element={<PlayerCardScreen />} />
+
+            {/* Suggestions */}
+            <Route path="suggestions" element={<BrowseSuggestionsScreen />} />
 
             {/* Roster (friends list) */}
             <Route path="roster" element={<RosterScreen />} />

@@ -1,0 +1,6559 @@
+{
+  "_meta": {
+    "schema_version": "1.0",
+    "catalog_version": "2026.04.25",
+    "total_entries": 320,
+    "language": "en-US",
+    "voice_notes": "Sharp, competitive, slightly playful with a dash of edge. Imperative or first-person 'I'. Stakes are real, punishments are worse. No corporate-fitness or wellness-blog phrasing. No emoji in titles unless load-bearing.",
+    "categories": {
+      "fitness": "Body, movement, gym, cardio, strength, sleep, nutrition. Largest category by usage. Skews 22-35.",
+      "habits": "Discipline-flavored personal habits. Reading, meditation, screen time, no-spend, journaling, language learning. Less spicy than fitness; more cerebral.",
+      "party": "Drinking games, party-night dares, group games. Mature-flagged by default. Skews 21-30, urban, social.",
+      "dares": "Stunts, embarrassments, single-event challenges. Distinct from party — dares can be solo. Higher mature-flag rate.",
+      "family": "Bets between parents, siblings, parent-and-adult-child. NOT bets where minors are gambling participants — kids appear as subjects of parent-side bets only. Punishments domestic and gentle.",
+      "goals": "Work, learning, side projects, career, finances. Mature-flag rare; longer durations; larger stakes.",
+      "couples": "Two-person mutual challenges. Many domestic-life. Default 1v1 format and longer durations.",
+      "travel": "Trip-scoped bets. Activate during a trip rather than calendar window. Bucket-list dares, foreign-food challenges, per-city stunts."
+    },
+    "tags_glossary": {
+      "streak": "Consistency — performing X every day/week.",
+      "milestone": "Hitting a single end-state.",
+      "abstinence": "NOT doing something.",
+      "head_to_head": "Comparison bet — first to N, more than the other.",
+      "deadline": "Bet ends on a specific calendar date.",
+      "ongoing": "No end date until someone breaks it.",
+      "improv": "Witness-judged, not measurable.",
+      "embarrassment": "Forfeit involves public discomfort.",
+      "weekend": "Friday-Sunday best.",
+      "monthly": "Roughly 30 days.",
+      "weekly": "Roughly 7 days.",
+      "daily": "Activates every day for the duration.",
+      "season_winter": "Cold months.",
+      "season_summer": "Warm months.",
+      "season_holiday": "Around US holidays.",
+      "trip_scoped": "Activates during a trip rather than a calendar duration. Travel-specific.",
+      "forfeit": "The bet IS a punishment for the loser."
+    }
+  },
+  "templates": [
+    {
+      "id": "fit_gym_streak_week",
+      "category": "fitness",
+      "title": "I'll hit the gym {n} days this week",
+      "emoji": "💪",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "weekly",
+        "gym"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 95,
+      "subcategory": "streak",
+      "template": "I'll hit the gym {n} days this week",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 5,
+          "min": 2,
+          "max": 7
+        }
+      ]
+    },
+    {
+      "id": "fit_run_5k_month",
+      "category": "fitness",
+      "title": "I'll run a 5K this month",
+      "emoji": "🏃",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "monthly",
+        "cardio",
+        "running"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 92,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "fit_run_10k_month",
+      "category": "fitness",
+      "title": "I'll run a 10K before the end of the month",
+      "emoji": "🏃",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "monthly",
+        "cardio",
+        "running"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 70,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "fit_run_half_marathon",
+      "category": "fitness",
+      "title": "I'll finish a half marathon this season",
+      "emoji": "🏃",
+      "suggestedStakeCents": 10000,
+      "suggestedDurationDays": 90,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "running",
+        "long_term"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 55,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "fit_pushups_daily",
+      "category": "fitness",
+      "title": "I'll do {n} push-ups every day for {days} days",
+      "emoji": "💪",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "strength",
+        "monthly"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 85,
+      "subcategory": "streak",
+      "template": "I'll do {n} push-ups every day for {days} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Push-ups?",
+          "type": "number",
+          "default": 50,
+          "min": 10,
+          "max": 200
+        },
+        {
+          "key": "days",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "fit_squats_daily",
+      "category": "fitness",
+      "title": "I'll do {n} squats every day this month",
+      "emoji": "🏋️",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "strength",
+        "monthly"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 78,
+      "subcategory": "streak",
+      "template": "I'll do {n} squats every day this month",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Squats?",
+          "type": "number",
+          "default": 100,
+          "min": 30,
+          "max": 300
+        }
+      ]
+    },
+    {
+      "id": "fit_plank_progression",
+      "category": "fitness",
+      "title": "I'll hold a plank for 3 minutes straight by month end",
+      "emoji": "🏋️",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "monthly",
+        "core"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 60,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "fit_burpees_100",
+      "category": "fitness",
+      "title": "I'll do 100 burpees in one session this week",
+      "emoji": "🔥",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "milestone",
+        "weekly",
+        "high_intensity"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 65,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "fit_steps_daily",
+      "category": "fitness",
+      "title": "I'll hit {n}k steps every day this week",
+      "emoji": "👟",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "low_impact"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 88,
+      "subcategory": "streak",
+      "template": "I'll hit {n}k steps every day this week",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Steps (in thousands)?",
+          "type": "number",
+          "default": 10,
+          "min": 5,
+          "max": 25
+        }
+      ]
+    },
+    {
+      "id": "fit_steps_300k_month",
+      "category": "fitness",
+      "title": "Hit 300k steps before the end of the month",
+      "emoji": "👟",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "milestone",
+        "monthly",
+        "head_to_head"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 50,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "fit_no_skipped_workouts",
+      "category": "fitness",
+      "title": "I won't skip a single planned workout this week",
+      "emoji": "📅",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "weekly",
+        "consistency"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 90,
+      "subcategory": "streak"
+    },
+    {
+      "id": "fit_morning_workout",
+      "category": "fitness",
+      "title": "I'll work out before 8am every weekday this month",
+      "emoji": "🌅",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "monthly",
+        "morning",
+        "discipline"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 72,
+      "subcategory": "streak"
+    },
+    {
+      "id": "fit_pull_ups",
+      "category": "fitness",
+      "title": "I'll do {n} unbroken pull-ups by month end",
+      "emoji": "🏋️",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "milestone",
+        "monthly",
+        "strength",
+        "head_to_head"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 70,
+      "subcategory": "milestone",
+      "template": "I'll do {n} unbroken pull-ups by month end",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Pull-ups?",
+          "type": "number",
+          "default": 10,
+          "min": 3,
+          "max": 25
+        }
+      ]
+    },
+    {
+      "id": "fit_max_bench",
+      "category": "fitness",
+      "title": "I'll hit my bodyweight on bench by next month",
+      "emoji": "🏋️",
+      "suggestedStakeCents": 5000,
+      "suggestedDurationDays": 60,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "milestone",
+        "strength",
+        "long_term"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 55,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "fit_drop_pounds",
+      "category": "fitness",
+      "title": "I'll drop {n} pounds in {days} days",
+      "emoji": "⚖️",
+      "suggestedStakeCents": 5000,
+      "suggestedDurationDays": 60,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "milestone",
+        "weight_loss",
+        "long_term"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 80,
+      "subcategory": "milestone",
+      "template": "I'll drop {n} pounds in {days} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Pounds?",
+          "type": "number",
+          "default": 10,
+          "min": 3,
+          "max": 30
+        },
+        {
+          "key": "days",
+          "label": "Days?",
+          "type": "number",
+          "default": 60,
+          "min": 14,
+          "max": 120
+        }
+      ]
+    },
+    {
+      "id": "fit_no_alcohol_period",
+      "category": "fitness",
+      "title": "I won't drink alcohol for {n} days",
+      "emoji": "🚫",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "monthly",
+        "season_winter"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 85,
+      "subcategory": "abstinence",
+      "template": "I won't drink alcohol for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 90
+        }
+      ]
+    },
+    {
+      "id": "fit_no_sugar_week",
+      "category": "fitness",
+      "title": "No added sugar for a week",
+      "emoji": "🍬",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "weekly",
+        "nutrition"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 75,
+      "subcategory": "abstinence"
+    },
+    {
+      "id": "fit_no_fast_food",
+      "category": "fitness",
+      "title": "No fast food for 30 days",
+      "emoji": "🍔",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "monthly",
+        "nutrition"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 70,
+      "subcategory": "abstinence"
+    },
+    {
+      "id": "fit_water_daily",
+      "category": "fitness",
+      "title": "I'll drink a gallon of water every day this week",
+      "emoji": "💧",
+      "suggestedStakeCents": 1000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "hydration"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 78,
+      "subcategory": "streak"
+    },
+    {
+      "id": "fit_sleep_8_hours",
+      "category": "fitness",
+      "title": "I'll get 8 hours of sleep every night this week",
+      "emoji": "😴",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "sleep"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 82,
+      "subcategory": "streak"
+    },
+    {
+      "id": "fit_bed_by_11",
+      "category": "fitness",
+      "title": "Lights out by 11pm every weeknight this month",
+      "emoji": "🛏️",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "monthly",
+        "sleep",
+        "discipline"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 70,
+      "subcategory": "streak"
+    },
+    {
+      "id": "fit_class_attendance",
+      "category": "fitness",
+      "title": "I'll show up to my fitness class every week for a month",
+      "emoji": "🧘",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "monthly",
+        "consistency"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 65,
+      "subcategory": "streak"
+    },
+    {
+      "id": "fit_yoga_daily",
+      "category": "fitness",
+      "title": "20 minutes of yoga every day for {n} days",
+      "emoji": "🧘",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 21,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "yoga",
+        "low_impact"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 60,
+      "subcategory": "streak",
+      "template": "20 minutes of yoga every day for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 21,
+          "min": 7,
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "fit_cold_shower",
+      "category": "fitness",
+      "title": "Cold shower every morning for {n} days",
+      "emoji": "🥶",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "discipline",
+        "embarrassment"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 72,
+      "subcategory": "streak",
+      "template": "Cold shower every morning for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "fit_run_streak",
+      "category": "fitness",
+      "title": "Run at least a mile every day for {n} days",
+      "emoji": "🏃",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "running",
+        "monthly"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 75,
+      "subcategory": "streak",
+      "template": "Run at least a mile every day for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 100
+        }
+      ]
+    },
+    {
+      "id": "fit_bike_streak",
+      "category": "fitness",
+      "title": "Bike to work every day this month",
+      "emoji": "🚴",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "commute"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 55,
+      "subcategory": "streak"
+    },
+    {
+      "id": "fit_no_elevator",
+      "category": "fitness",
+      "title": "No elevators or escalators for {n} days",
+      "emoji": "🪜",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "monthly",
+        "low_impact"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 50,
+      "subcategory": "abstinence",
+      "template": "No elevators or escalators for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "fit_75_hard",
+      "category": "fitness",
+      "title": "Complete 75 Hard — two workouts a day, gallon of water, no alcohol",
+      "emoji": "🔥",
+      "suggestedStakeCents": 10000,
+      "suggestedDurationDays": 75,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "long_term",
+        "discipline",
+        "extreme"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 70,
+      "subcategory": "streak"
+    },
+    {
+      "id": "fit_protein_target",
+      "category": "fitness",
+      "title": "Hit my protein target every day for {n} days",
+      "emoji": "🍗",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "nutrition"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 68,
+      "subcategory": "streak",
+      "template": "Hit my protein target every day for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "fit_meal_prep_sundays",
+      "category": "fitness",
+      "title": "I'll meal prep every Sunday for a month",
+      "emoji": "🥗",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "weekly",
+        "monthly",
+        "nutrition"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 60,
+      "subcategory": "streak"
+    },
+    {
+      "id": "fit_no_seconds",
+      "category": "fitness",
+      "title": "No second helpings at any meal for {n} days",
+      "emoji": "🍽️",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "weekly",
+        "nutrition",
+        "discipline"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 55,
+      "subcategory": "abstinence",
+      "template": "No second helpings at any meal for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 14,
+          "min": 7,
+          "max": 30
+        }
+      ]
+    },
+    {
+      "id": "fit_jump_rope_streak",
+      "category": "fitness",
+      "title": "Jump rope 1000 reps a day for {n} days",
+      "emoji": "🪢",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "cardio"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 50,
+      "subcategory": "streak",
+      "template": "Jump rope 1000 reps a day for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "fit_swim_weekly",
+      "category": "fitness",
+      "title": "Swim laps {n} times a week for a month",
+      "emoji": "🏊",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "weekly",
+        "monthly",
+        "cardio"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 50,
+      "subcategory": "streak",
+      "template": "Swim laps {n} times a week for a month",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Times per week?",
+          "type": "number",
+          "default": 3,
+          "min": 2,
+          "max": 6
+        }
+      ]
+    },
+    {
+      "id": "fit_train_for_event",
+      "category": "fitness",
+      "title": "I'll finish my upcoming race without walking",
+      "emoji": "🏁",
+      "suggestedStakeCents": 5000,
+      "suggestedDurationDays": 60,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "long_term",
+        "running"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 65,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "fit_handstand",
+      "category": "fitness",
+      "title": "Hold a freestanding handstand for 30 seconds by month end",
+      "emoji": "🤸",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "monthly",
+        "skill"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 50,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "fit_pickup_basketball",
+      "category": "fitness",
+      "title": "First to 21 in pickup basketball",
+      "emoji": "🏀",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "head_to_head",
+        "weekend",
+        "sport"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 70,
+      "subcategory": "head_to_head"
+    },
+    {
+      "id": "fit_tennis_match",
+      "category": "fitness",
+      "title": "Best of three sets, this weekend",
+      "emoji": "🎾",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "head_to_head",
+        "weekend",
+        "weekly",
+        "sport"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 50,
+      "subcategory": "head_to_head"
+    },
+    {
+      "id": "fit_no_alcohol_no_sugar",
+      "category": "fitness",
+      "title": "No alcohol, no sugar, no added salt — for two weeks",
+      "emoji": "🥬",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "weekly",
+        "extreme",
+        "nutrition"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 45,
+      "subcategory": "abstinence"
+    },
+    {
+      "id": "fit_dry_january",
+      "category": "fitness",
+      "title": "Make it through Dry January without breaking",
+      "emoji": "🧊",
+      "suggestedStakeCents": 5000,
+      "suggestedDurationDays": 31,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "season_winter",
+        "season_holiday",
+        "monthly"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 88,
+      "subcategory": "abstinence"
+    },
+    {
+      "id": "fit_sober_october",
+      "category": "fitness",
+      "title": "Sober October — full month, no exceptions",
+      "emoji": "🎃",
+      "suggestedStakeCents": 5000,
+      "suggestedDurationDays": 31,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "season_holiday",
+        "monthly"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 75,
+      "subcategory": "abstinence"
+    },
+    {
+      "id": "hab_read_30min_daily",
+      "category": "habits",
+      "title": "I'll read 30 minutes every day this week",
+      "emoji": "📚",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "reading"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 85,
+      "subcategory": "streak"
+    },
+    {
+      "id": "hab_finish_book",
+      "category": "habits",
+      "title": "I'll finish a book before the end of the month",
+      "emoji": "📖",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "monthly",
+        "reading"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 80,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "hab_books_per_quarter",
+      "category": "habits",
+      "title": "Read {n} books this quarter",
+      "emoji": "📚",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 90,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "long_term",
+        "reading"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 65,
+      "subcategory": "milestone",
+      "template": "Read {n} books this quarter",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Books?",
+          "type": "number",
+          "default": 3,
+          "min": 1,
+          "max": 12
+        }
+      ]
+    },
+    {
+      "id": "hab_meditate_daily",
+      "category": "habits",
+      "title": "10 minutes of meditation every morning for {n} days",
+      "emoji": "🧘",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 21,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "mindfulness"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 78,
+      "subcategory": "streak",
+      "template": "10 minutes of meditation every morning for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 21,
+          "min": 7,
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "hab_journal_daily",
+      "category": "habits",
+      "title": "Journal every night before bed for {n} days",
+      "emoji": "📓",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "writing"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 60,
+      "subcategory": "streak",
+      "template": "Journal every night before bed for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "hab_no_phone_morning",
+      "category": "habits",
+      "title": "No phone for the first hour of every morning, for {n} days",
+      "emoji": "🌅",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "screen_time",
+        "discipline"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 82,
+      "subcategory": "streak",
+      "template": "No phone for the first hour of every morning, for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "hab_no_phone_in_bed",
+      "category": "habits",
+      "title": "No phone in bed for {n} days",
+      "emoji": "📵",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "screen_time",
+        "sleep"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 85,
+      "subcategory": "streak",
+      "template": "No phone in bed for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "hab_no_social_media",
+      "category": "habits",
+      "title": "No social media for {n} days",
+      "emoji": "📱",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "weekly",
+        "screen_time"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 88,
+      "subcategory": "abstinence",
+      "template": "No social media for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 7,
+          "min": 3,
+          "max": 30
+        }
+      ]
+    },
+    {
+      "id": "hab_screen_time_limit",
+      "category": "habits",
+      "title": "Keep daily screen time under {hours} hours for {days} days",
+      "emoji": "📵",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "screen_time"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 72,
+      "subcategory": "streak",
+      "template": "Keep daily screen time under {hours} hours for {days} days",
+      "templateSlots": [
+        {
+          "key": "hours",
+          "label": "Hours?",
+          "type": "number",
+          "default": 3,
+          "min": 1,
+          "max": 6
+        },
+        {
+          "key": "days",
+          "label": "Days?",
+          "type": "number",
+          "default": 14,
+          "min": 7,
+          "max": 30
+        }
+      ]
+    },
+    {
+      "id": "hab_language_streak",
+      "category": "habits",
+      "title": "Hit my language app streak every day for {n} days",
+      "emoji": "🗣️",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 60,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "learning",
+        "long_term"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 72,
+      "subcategory": "streak",
+      "template": "Hit my language app streak every day for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 60,
+          "min": 14,
+          "max": 180
+        }
+      ]
+    },
+    {
+      "id": "hab_learn_a_language",
+      "category": "habits",
+      "title": "Hold a 5-minute conversation in a new language by month end",
+      "emoji": "💬",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "monthly",
+        "learning",
+        "skill"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 55,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "hab_no_spend_week",
+      "category": "habits",
+      "title": "No discretionary spending for a week",
+      "emoji": "💸",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "weekly",
+        "money"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 75,
+      "subcategory": "abstinence"
+    },
+    {
+      "id": "hab_no_spend_month",
+      "category": "habits",
+      "title": "No discretionary spending for {n} days",
+      "emoji": "💸",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "monthly",
+        "money"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 70,
+      "subcategory": "abstinence",
+      "template": "No discretionary spending for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "hab_save_amount",
+      "category": "habits",
+      "title": "Save ${amount} this month",
+      "emoji": "💰",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "monthly",
+        "money"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 65,
+      "subcategory": "milestone",
+      "template": "Save ${amount} this month",
+      "templateSlots": [
+        {
+          "key": "amount",
+          "label": "Amount?",
+          "type": "number",
+          "default": 500,
+          "min": 100,
+          "max": 5000
+        }
+      ]
+    },
+    {
+      "id": "hab_no_takeout",
+      "category": "habits",
+      "title": "No takeout or delivery for {n} days",
+      "emoji": "🥡",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "monthly",
+        "money",
+        "food"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 70,
+      "subcategory": "abstinence",
+      "template": "No takeout or delivery for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "hab_cook_dinner",
+      "category": "habits",
+      "title": "Cook dinner from scratch every weeknight this week",
+      "emoji": "🍳",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "weekly",
+        "food"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 65,
+      "subcategory": "streak"
+    },
+    {
+      "id": "hab_inbox_zero",
+      "category": "habits",
+      "title": "Hit inbox zero every day this week",
+      "emoji": "📧",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "work"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58,
+      "subcategory": "streak"
+    },
+    {
+      "id": "hab_no_news_week",
+      "category": "habits",
+      "title": "No news media for a week",
+      "emoji": "📰",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "weekly",
+        "screen_time"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 55,
+      "subcategory": "abstinence"
+    },
+    {
+      "id": "hab_practice_instrument",
+      "category": "habits",
+      "title": "Practice my instrument 30 minutes every day for {n} days",
+      "emoji": "🎸",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "skill"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 55,
+      "subcategory": "streak",
+      "template": "Practice my instrument 30 minutes every day for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "hab_draw_daily",
+      "category": "habits",
+      "title": "Draw or sketch something every day for {n} days",
+      "emoji": "✏️",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "creative"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 55,
+      "subcategory": "streak",
+      "template": "Draw or sketch something every day for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "hab_write_daily",
+      "category": "habits",
+      "title": "Write 500 words every day for {n} days",
+      "emoji": "✍️",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "writing",
+        "creative"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 58,
+      "subcategory": "streak",
+      "template": "Write 500 words every day for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "hab_no_caffeine",
+      "category": "habits",
+      "title": "No caffeine for {n} days",
+      "emoji": "☕",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "weekly",
+        "extreme",
+        "nutrition"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 60,
+      "subcategory": "abstinence",
+      "template": "No caffeine for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 14,
+          "min": 3,
+          "max": 30
+        }
+      ]
+    },
+    {
+      "id": "hab_no_complaining",
+      "category": "habits",
+      "title": "No complaining for a week — friends decide what counts",
+      "emoji": "🤐",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "weekly",
+        "mindset",
+        "embarrassment"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 72,
+      "subcategory": "abstinence"
+    },
+    {
+      "id": "hab_thank_you_daily",
+      "category": "habits",
+      "title": "Send a real thank-you message to one person every day for a week",
+      "emoji": "💌",
+      "suggestedStakeCents": 1000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "relationships"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 55,
+      "subcategory": "streak"
+    },
+    {
+      "id": "hab_make_bed_streak",
+      "category": "habits",
+      "title": "Make my bed every morning for {n} days",
+      "emoji": "🛏️",
+      "suggestedStakeCents": 1000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "discipline"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 68,
+      "subcategory": "streak",
+      "template": "Make my bed every morning for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "hab_clean_kitchen",
+      "category": "habits",
+      "title": "Sink empty before bed every night for {n} days",
+      "emoji": "🍽️",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 60,
+      "subcategory": "streak",
+      "template": "Sink empty before bed every night for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 14,
+          "min": 7,
+          "max": 30
+        }
+      ]
+    },
+    {
+      "id": "hab_floss_daily",
+      "category": "habits",
+      "title": "Floss every day for 30 days",
+      "emoji": "🦷",
+      "suggestedStakeCents": 1000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "health"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 55,
+      "subcategory": "streak"
+    },
+    {
+      "id": "hab_call_a_friend",
+      "category": "habits",
+      "title": "Call a different friend every week for a month",
+      "emoji": "📞",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "weekly",
+        "monthly",
+        "relationships"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 60,
+      "subcategory": "streak"
+    },
+    {
+      "id": "hab_compliment_daily",
+      "category": "habits",
+      "title": "Give a real, specific compliment to a stranger every day for a week",
+      "emoji": "🌟",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "social",
+        "embarrassment"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 55,
+      "subcategory": "streak"
+    },
+    {
+      "id": "hab_morning_routine",
+      "category": "habits",
+      "title": "Same morning routine — bed made, water, no phone, workout, shower — every weekday this month",
+      "emoji": "⏰",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "discipline",
+        "extreme"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 68,
+      "subcategory": "streak"
+    },
+    {
+      "id": "hab_pomodoros_workday",
+      "category": "habits",
+      "title": "Hit {n} focused-work pomodoros every workday for a week",
+      "emoji": "🍅",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "work",
+        "discipline"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58,
+      "subcategory": "streak",
+      "template": "Hit {n} focused-work pomodoros every workday for a week",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Pomodoros?",
+          "type": "number",
+          "default": 6,
+          "min": 3,
+          "max": 12
+        }
+      ]
+    },
+    {
+      "id": "hab_no_youtube",
+      "category": "habits",
+      "title": "No YouTube for {n} days",
+      "emoji": "📺",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "weekly",
+        "screen_time"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 62,
+      "subcategory": "abstinence",
+      "template": "No YouTube for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 14,
+          "min": 3,
+          "max": 30
+        }
+      ]
+    },
+    {
+      "id": "hab_no_streaming",
+      "category": "habits",
+      "title": "No Netflix/streaming for {n} days",
+      "emoji": "📺",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "weekly",
+        "screen_time"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 58,
+      "subcategory": "abstinence",
+      "template": "No Netflix/streaming for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 14,
+          "min": 3,
+          "max": 30
+        }
+      ]
+    },
+    {
+      "id": "hab_walk_after_meals",
+      "category": "habits",
+      "title": "Take a 10-minute walk after every meal for {n} days",
+      "emoji": "🚶",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "low_impact"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 55,
+      "subcategory": "streak",
+      "template": "Take a 10-minute walk after every meal for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 14,
+          "min": 7,
+          "max": 30
+        }
+      ]
+    },
+    {
+      "id": "hab_no_swearing",
+      "category": "habits",
+      "title": "No swearing for a week — friends call it",
+      "emoji": "🤐",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "weekly",
+        "social",
+        "embarrassment"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 68,
+      "subcategory": "abstinence"
+    },
+    {
+      "id": "hab_one_meal_a_day",
+      "category": "habits",
+      "title": "OMAD — one meal a day for {n} days",
+      "emoji": "🍽️",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "extreme",
+        "nutrition"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 55,
+      "subcategory": "streak",
+      "template": "OMAD — one meal a day for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 14,
+          "min": 3,
+          "max": 30
+        }
+      ]
+    },
+    {
+      "id": "hab_no_sit",
+      "category": "habits",
+      "title": "Stand desk all day, every workday this week",
+      "emoji": "🦵",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "work"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 45,
+      "subcategory": "streak"
+    },
+    {
+      "id": "hab_meditation_streak",
+      "category": "habits",
+      "title": "Don't break my meditation streak for {n} days",
+      "emoji": "🧘",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 60,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "long_term",
+        "mindfulness"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 65,
+      "subcategory": "streak",
+      "template": "Don't break my meditation streak for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 60,
+          "min": 14,
+          "max": 180
+        }
+      ]
+    },
+    {
+      "id": "hab_no_doomscroll",
+      "category": "habits",
+      "title": "No mindless scrolling — set timer or don't open the app — for a week",
+      "emoji": "📱",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "weekly",
+        "screen_time"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 80,
+      "subcategory": "abstinence"
+    },
+    {
+      "id": "hab_no_youtube_shorts",
+      "category": "habits",
+      "title": "No YouTube Shorts, TikTok, or Reels for {n} days",
+      "emoji": "🎬",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "weekly",
+        "screen_time"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 78,
+      "subcategory": "abstinence",
+      "template": "No YouTube Shorts, TikTok, or Reels for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 14,
+          "min": 3,
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "party_first_to_throw_up",
+      "category": "party",
+      "title": "First to throw up tonight loses",
+      "emoji": "🍺",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "embarrassment"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 85
+    },
+    {
+      "id": "party_last_one_standing",
+      "category": "party",
+      "title": "Last one standing at the end of the night wins",
+      "emoji": "🍻",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "head_to_head"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 82
+    },
+    {
+      "id": "party_first_to_pass_out",
+      "category": "party",
+      "title": "First to fall asleep on the couch loses",
+      "emoji": "😴",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "embarrassment"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 78
+    },
+    {
+      "id": "party_beer_pong_3_in_row",
+      "category": "party",
+      "title": "Win 3 beer pong games in a row tonight",
+      "emoji": "🏓",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekend",
+        "head_to_head",
+        "sport"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 85
+    },
+    {
+      "id": "party_kings_cup_no_break",
+      "category": "party",
+      "title": "Make it through King's Cup without breaking a rule",
+      "emoji": "👑",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 72
+    },
+    {
+      "id": "party_flip_cup_undefeated",
+      "category": "party",
+      "title": "Win every round of flip cup tonight",
+      "emoji": "🥤",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekend",
+        "drinking_game",
+        "head_to_head"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 70
+    },
+    {
+      "id": "party_no_phone_at_bar",
+      "category": "party",
+      "title": "No phone at the bar all night",
+      "emoji": "📵",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "screen_time",
+        "social"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 80
+    },
+    {
+      "id": "party_buy_round",
+      "category": "party",
+      "title": "Loser of the next pool game buys the round",
+      "emoji": "🎱",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekend",
+        "head_to_head",
+        "money"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 75
+    },
+    {
+      "id": "party_designated_driver",
+      "category": "party",
+      "title": "Loser is the DD next 3 nights out",
+      "emoji": "🚗",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekend",
+        "head_to_head"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 68
+    },
+    {
+      "id": "party_first_to_cry",
+      "category": "party",
+      "title": "First to get emotional after midnight loses",
+      "emoji": "😭",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "embarrassment"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 72
+    },
+    {
+      "id": "party_dance_floor_first",
+      "category": "party",
+      "title": "First on the dance floor at the next bar",
+      "emoji": "💃",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "embarrassment",
+        "social"
+      ],
+      "matureFlag": true,
+      "proofType": "video",
+      "popularityScore": 70
+    },
+    {
+      "id": "party_strangers_drink",
+      "category": "party",
+      "title": "Get a stranger to buy you a drink in the next hour",
+      "emoji": "🥃",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekend",
+        "social",
+        "embarrassment"
+      ],
+      "matureFlag": true,
+      "proofType": "video",
+      "popularityScore": 78
+    },
+    {
+      "id": "party_get_a_number",
+      "category": "party",
+      "title": "Get a phone number from someone new tonight",
+      "emoji": "📱",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekend",
+        "social",
+        "embarrassment"
+      ],
+      "matureFlag": true,
+      "proofType": "photo",
+      "popularityScore": 80
+    },
+    {
+      "id": "party_karaoke_solo",
+      "category": "party",
+      "title": "Sing a full karaoke song solo before midnight",
+      "emoji": "🎤",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "embarrassment",
+        "performance"
+      ],
+      "matureFlag": true,
+      "proofType": "video",
+      "popularityScore": 85
+    },
+    {
+      "id": "party_karaoke_dare",
+      "category": "party",
+      "title": "Sing a song the group picks for you, no objections",
+      "emoji": "🎤",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "embarrassment",
+        "performance"
+      ],
+      "matureFlag": true,
+      "proofType": "video",
+      "popularityScore": 82
+    },
+    {
+      "id": "party_shotgun_speed",
+      "category": "party",
+      "title": "Shotgun a beer faster than {name}",
+      "emoji": "🍺",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekend",
+        "head_to_head",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "proofType": "video",
+      "popularityScore": 72
+    },
+    {
+      "id": "party_chug_a_pint",
+      "category": "party",
+      "title": "First to finish a pint, loser pays",
+      "emoji": "🍺",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekend",
+        "head_to_head",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "proofType": "video",
+      "popularityScore": 68
+    },
+    {
+      "id": "party_no_seat_all_night",
+      "category": "party",
+      "title": "Don't sit down once the bar opens until last call",
+      "emoji": "🚶",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "embarrassment"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 55
+    },
+    {
+      "id": "party_pool_house_cup",
+      "category": "party",
+      "title": "Pool tournament — winner takes the pot",
+      "emoji": "🎱",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "head_to_head",
+        "sport"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 78
+    },
+    {
+      "id": "party_best_costume",
+      "category": "party",
+      "title": "Best costume at the party — voted by the group",
+      "emoji": "🎭",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "group",
+      "tags": [
+        "season_holiday",
+        "performance",
+        "weekly"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 70
+    },
+    {
+      "id": "party_no_swearing_night",
+      "category": "party",
+      "title": "No swearing all night — every slip is a sip",
+      "emoji": "🤐",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "drinking_game",
+        "embarrassment"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 70
+    },
+    {
+      "id": "party_no_first_names",
+      "category": "party",
+      "title": "No first names all night — every slip is a sip",
+      "emoji": "🤐",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "drinking_game",
+        "social"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 65
+    },
+    {
+      "id": "party_thumb_master",
+      "category": "party",
+      "title": "Thumb on the table, last one to notice drinks",
+      "emoji": "👍",
+      "suggestedStakeCents": 1000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 58
+    },
+    {
+      "id": "party_categories_loser",
+      "category": "party",
+      "title": "Pick a category — first to fail naming an item drinks for 5",
+      "emoji": "🧠",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 60
+    },
+    {
+      "id": "party_no_pointing",
+      "category": "party",
+      "title": "International rules: no pointing, no first names, no saying 'drink' all night",
+      "emoji": "📜",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "drinking_game",
+        "embarrassment"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 72
+    },
+    {
+      "id": "party_drink_with_left",
+      "category": "party",
+      "title": "Drink only with your non-dominant hand all night — every slip is a shot",
+      "emoji": "🍺",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 58
+    },
+    {
+      "id": "party_no_mirror_check",
+      "category": "party",
+      "title": "No checking your phone in the bathroom mirror — every slip is a sip",
+      "emoji": "🪞",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 50
+    },
+    {
+      "id": "party_truth_or_dare",
+      "category": "party",
+      "title": "Truth or Dare round — group picks, no chickening out",
+      "emoji": "🎲",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "embarrassment",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 80
+    },
+    {
+      "id": "party_never_have_i_ever",
+      "category": "party",
+      "title": "Never Have I Ever to ten — first to all ten down loses",
+      "emoji": "✋",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 82
+    },
+    {
+      "id": "party_two_truths_lie",
+      "category": "party",
+      "title": "Two truths and a lie, loser drinks five",
+      "emoji": "🤥",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "drinking_game",
+        "social"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 65
+    },
+    {
+      "id": "party_horse_race",
+      "category": "party",
+      "title": "Pick your horse — last suit out drinks for everyone",
+      "emoji": "🏇",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 58
+    },
+    {
+      "id": "party_movie_drinking_game",
+      "category": "party",
+      "title": "Pick a movie, agree on rules, last one conscious wins",
+      "emoji": "🎬",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 68
+    },
+    {
+      "id": "party_super_bowl_squares",
+      "category": "party",
+      "title": "Super Bowl squares pool — winner takes all",
+      "emoji": "🏈",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "season_holiday",
+        "sport",
+        "money"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 85
+    },
+    {
+      "id": "party_world_cup_bracket",
+      "category": "party",
+      "title": "Bracket challenge — last place buys round one of every game",
+      "emoji": "🏆",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "group",
+      "tags": [
+        "monthly",
+        "sport",
+        "money"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 70
+    },
+    {
+      "id": "party_no_shots_night",
+      "category": "party",
+      "title": "Beer only — no shots all night — first to break drinks five",
+      "emoji": "🥃",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 55
+    },
+    {
+      "id": "party_pre_game_chug",
+      "category": "party",
+      "title": "Finish your pregame drink before the Uber arrives",
+      "emoji": "🚗",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekend",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "proofType": "video",
+      "popularityScore": 60
+    },
+    {
+      "id": "party_only_water_chasers",
+      "category": "party",
+      "title": "Water chaser between every drink, all night — friends call slips",
+      "emoji": "💧",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "drinking_game",
+        "health"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 50
+    },
+    {
+      "id": "party_finish_dance",
+      "category": "party",
+      "title": "Stay on the dance floor every song until last call",
+      "emoji": "🕺",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekend",
+        "embarrassment",
+        "performance"
+      ],
+      "matureFlag": true,
+      "proofType": "video",
+      "popularityScore": 58
+    },
+    {
+      "id": "party_buy_strangers_shot",
+      "category": "party",
+      "title": "Buy a shot for a complete stranger before midnight",
+      "emoji": "🥃",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekend",
+        "social",
+        "money"
+      ],
+      "matureFlag": true,
+      "proofType": "video",
+      "popularityScore": 72
+    },
+    {
+      "id": "party_morning_after_brunch",
+      "category": "party",
+      "title": "Whoever skips brunch tomorrow buys it next time",
+      "emoji": "🥞",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "social"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 68
+    },
+    {
+      "id": "dare_ghost_pepper",
+      "category": "dares",
+      "title": "Eat one ghost pepper. No water for 60 seconds.",
+      "emoji": "🌶️",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "embarrassment",
+        "video"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 92
+    },
+    {
+      "id": "dare_ice_bath",
+      "category": "dares",
+      "title": "Ice bath, 5 minutes, no breaking",
+      "emoji": "🧊",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "either",
+      "tags": [
+        "embarrassment",
+        "extreme"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 78
+    },
+    {
+      "id": "dare_cold_plunge",
+      "category": "dares",
+      "title": "Cold plunge, 3 minutes, eyes open",
+      "emoji": "🥶",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "either",
+      "tags": [
+        "embarrassment"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 72
+    },
+    {
+      "id": "dare_eat_lemon",
+      "category": "dares",
+      "title": "Eat a whole lemon. Skin and all. No reaction.",
+      "emoji": "🍋",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "either",
+      "tags": [
+        "embarrassment"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 70
+    },
+    {
+      "id": "dare_cinnamon_challenge",
+      "category": "dares",
+      "title": "Spoonful of cinnamon, swallow, no water for 30 seconds",
+      "emoji": "🥄",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "either",
+      "tags": [
+        "embarrassment"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 68
+    },
+    {
+      "id": "dare_eat_a_raw_egg",
+      "category": "dares",
+      "title": "Crack and drink a raw egg",
+      "emoji": "🥚",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "either",
+      "tags": [
+        "embarrassment"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 58
+    },
+    {
+      "id": "dare_one_song_one_drink",
+      "category": "dares",
+      "title": "Take one shot every minute for ten minutes",
+      "emoji": "⏱️",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekend",
+        "drinking_game",
+        "extreme"
+      ],
+      "matureFlag": true,
+      "proofType": "video",
+      "popularityScore": 60
+    },
+    {
+      "id": "dare_polar_plunge",
+      "category": "dares",
+      "title": "Polar plunge — fully submerged in cold water",
+      "emoji": "❄️",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "either",
+      "tags": [
+        "season_winter",
+        "embarrassment"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 72
+    },
+    {
+      "id": "dare_shave_head",
+      "category": "dares",
+      "title": "Shave your head if you lose",
+      "emoji": "💇",
+      "suggestedStakeCents": 10000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "embarrassment",
+        "extreme",
+        "forfeit"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 78
+    },
+    {
+      "id": "dare_get_tattoo",
+      "category": "dares",
+      "title": "Loser gets a tattoo of the winner's choice (within reason)",
+      "emoji": "✒️",
+      "suggestedStakeCents": 15000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "embarrassment",
+        "extreme",
+        "forfeit"
+      ],
+      "matureFlag": true,
+      "proofType": "photo",
+      "popularityScore": 68
+    },
+    {
+      "id": "dare_grow_mustache",
+      "category": "dares",
+      "title": "Loser grows a mustache and keeps it for a month",
+      "emoji": "🥸",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 60,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "embarrassment",
+        "monthly"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 70
+    },
+    {
+      "id": "dare_dye_hair",
+      "category": "dares",
+      "title": "Loser dyes their hair a color the winner picks",
+      "emoji": "🎨",
+      "suggestedStakeCents": 8000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "embarrassment",
+        "forfeit"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 65
+    },
+    {
+      "id": "dare_eyebrow_off",
+      "category": "dares",
+      "title": "Loser shaves off one eyebrow — full month no fixing it",
+      "emoji": "🥲",
+      "suggestedStakeCents": 15000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "embarrassment",
+        "extreme",
+        "forfeit"
+      ],
+      "matureFlag": true,
+      "proofType": "photo",
+      "popularityScore": 55
+    },
+    {
+      "id": "dare_public_singing",
+      "category": "dares",
+      "title": "Sing a song in public, full volume, finish it",
+      "emoji": "🎤",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "either",
+      "tags": [
+        "embarrassment",
+        "performance"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 80
+    },
+    {
+      "id": "dare_dance_subway",
+      "category": "dares",
+      "title": "Dance for one full song on public transit",
+      "emoji": "💃",
+      "suggestedStakeCents": 3500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "either",
+      "tags": [
+        "embarrassment",
+        "performance"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 68
+    },
+    {
+      "id": "dare_compliment_strangers",
+      "category": "dares",
+      "title": "Give a real compliment to ten strangers in one day",
+      "emoji": "🌟",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "either",
+      "tags": [
+        "embarrassment",
+        "social"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 62
+    },
+    {
+      "id": "dare_ask_out_crush",
+      "category": "dares",
+      "title": "Ask your crush out by Friday",
+      "emoji": "💌",
+      "suggestedStakeCents": 5000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "social",
+        "embarrassment"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 85
+    },
+    {
+      "id": "dare_text_ex",
+      "category": "dares",
+      "title": "Don't text your ex for {n} days — friends check the phone",
+      "emoji": "📵",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "monthly",
+        "relationships"
+      ],
+      "matureFlag": true,
+      "proofType": "witness",
+      "popularityScore": 80,
+      "subcategory": "abstinence",
+      "template": "Don't text your ex for {n} days — friends check the phone",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 90
+        }
+      ]
+    },
+    {
+      "id": "dare_cold_email",
+      "category": "dares",
+      "title": "Cold email someone you admire by end of week",
+      "emoji": "📧",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "social",
+        "work"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 70
+    },
+    {
+      "id": "dare_ask_for_discount",
+      "category": "dares",
+      "title": "Ask for a discount at three places this week — see how many work",
+      "emoji": "🛍️",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "social",
+        "money"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58
+    },
+    {
+      "id": "dare_strangers_high_five",
+      "category": "dares",
+      "title": "Get high-fives from 20 strangers in a day",
+      "emoji": "✋",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "either",
+      "tags": [
+        "embarrassment",
+        "social"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 55
+    },
+    {
+      "id": "dare_eat_at_random",
+      "category": "dares",
+      "title": "Order a random item off the menu blind, eat the whole thing",
+      "emoji": "🍽️",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "either",
+      "tags": [
+        "food",
+        "embarrassment"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58
+    },
+    {
+      "id": "dare_try_new_food",
+      "category": "dares",
+      "title": "Eat something you've never tried — your friend picks",
+      "emoji": "🍣",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "food",
+        "social"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 68
+    },
+    {
+      "id": "dare_durian",
+      "category": "dares",
+      "title": "Eat durian. Take it like a man.",
+      "emoji": "🍈",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "food",
+        "embarrassment"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 50
+    },
+    {
+      "id": "dare_bug_eat",
+      "category": "dares",
+      "title": "Eat one edible insect on camera",
+      "emoji": "🦗",
+      "suggestedStakeCents": 3500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "food",
+        "embarrassment",
+        "extreme"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 58
+    },
+    {
+      "id": "dare_silent_day",
+      "category": "dares",
+      "title": "Don't speak for a full day — text only",
+      "emoji": "🤐",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "either",
+      "tags": [
+        "embarrassment",
+        "social"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 55
+    },
+    {
+      "id": "dare_smile_strangers",
+      "category": "dares",
+      "title": "Smile at every stranger you make eye contact with for a day",
+      "emoji": "😊",
+      "suggestedStakeCents": 1000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "either",
+      "tags": [
+        "social"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 50
+    },
+    {
+      "id": "dare_fish_in_pajamas",
+      "category": "dares",
+      "title": "Wear pajamas to a public place — restaurant, store, anywhere",
+      "emoji": "🛌",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "either",
+      "tags": [
+        "embarrassment",
+        "weekly"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58
+    },
+    {
+      "id": "dare_costume_to_work",
+      "category": "dares",
+      "title": "Wear a costume to work for a full day — no explanation",
+      "emoji": "🦸",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "either",
+      "tags": [
+        "embarrassment",
+        "weekly"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 72
+    },
+    {
+      "id": "dare_open_mic",
+      "category": "dares",
+      "title": "Perform at an open mic by month end — anything counts",
+      "emoji": "🎤",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "monthly",
+        "performance",
+        "embarrassment"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 70
+    },
+    {
+      "id": "dare_first_marathon",
+      "category": "dares",
+      "title": "Sign up for and complete an event you've never tried — race, comedy night, anything",
+      "emoji": "🏁",
+      "suggestedStakeCents": 5000,
+      "suggestedDurationDays": 60,
+      "suggestedFormat": "either",
+      "tags": [
+        "long_term",
+        "milestone"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58
+    },
+    {
+      "id": "dare_no_haircut",
+      "category": "dares",
+      "title": "No haircut for {n} days",
+      "emoji": "💇",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 90,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "long_term",
+        "embarrassment"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 55,
+      "subcategory": "abstinence",
+      "template": "No haircut for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 90,
+          "min": 30,
+          "max": 365
+        }
+      ]
+    },
+    {
+      "id": "dare_no_shave",
+      "category": "dares",
+      "title": "No-Shave November — full month, no exceptions",
+      "emoji": "🧔",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "abstinence",
+        "monthly",
+        "season_holiday"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 78
+    },
+    {
+      "id": "dare_grow_a_beard",
+      "category": "dares",
+      "title": "Whoever loses grows a beard and keeps it for {n} days",
+      "emoji": "🧔",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 60,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "abstinence",
+        "long_term",
+        "embarrassment",
+        "forfeit"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 65,
+      "subcategory": "abstinence",
+      "template": "Whoever loses grows a beard and keeps it for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 60,
+          "min": 30,
+          "max": 120
+        }
+      ]
+    },
+    {
+      "id": "dare_polar_run",
+      "category": "dares",
+      "title": "Outdoor run in shorts when it's below freezing",
+      "emoji": "🥶",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "either",
+      "tags": [
+        "season_winter",
+        "embarrassment"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 58
+    },
+    {
+      "id": "dare_morning_pages",
+      "category": "dares",
+      "title": "Write three pages, by hand, every morning for a week",
+      "emoji": "📝",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "weekly",
+        "writing"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 50
+    },
+    {
+      "id": "dare_post_unflattering",
+      "category": "dares",
+      "title": "Post the worst photo of you from the camera roll, publicly",
+      "emoji": "📸",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "either",
+      "tags": [
+        "embarrassment",
+        "social_media",
+        "forfeit"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 82
+    },
+    {
+      "id": "dare_sing_grocery_store",
+      "category": "dares",
+      "title": "Sing your order out loud at a coffee shop or restaurant",
+      "emoji": "🎵",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "either",
+      "tags": [
+        "embarrassment",
+        "performance"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 68
+    },
+    {
+      "id": "dare_dunkin_run",
+      "category": "dares",
+      "title": "Run a 5K in a costume your friends pick",
+      "emoji": "🦄",
+      "suggestedStakeCents": 3500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "embarrassment",
+        "weekly",
+        "running"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 55
+    },
+    {
+      "id": "dare_wax",
+      "category": "dares",
+      "title": "Loser gets a body wax of the winner's choice",
+      "emoji": "🪒",
+      "suggestedStakeCents": 8000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "embarrassment",
+        "extreme",
+        "forfeit"
+      ],
+      "matureFlag": true,
+      "proofType": "video",
+      "popularityScore": 60
+    },
+    {
+      "id": "fam_kid_reads_daily",
+      "category": "family",
+      "title": "My kid reads 20 minutes a day for a week",
+      "emoji": "📚",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "kids",
+        "reading"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 82
+    },
+    {
+      "id": "fam_kid_reads_month",
+      "category": "family",
+      "title": "My kid reads 20 minutes a day for a month",
+      "emoji": "📚",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "kids",
+        "reading"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 78
+    },
+    {
+      "id": "fam_no_screens_school_nights",
+      "category": "family",
+      "title": "No screens after 8pm on school nights for two weeks",
+      "emoji": "📱",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "group",
+      "tags": [
+        "abstinence",
+        "weekly",
+        "kids",
+        "screen_time"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 85
+    },
+    {
+      "id": "fam_no_screens_at_dinner",
+      "category": "family",
+      "title": "No phones at the dinner table for {n} days",
+      "emoji": "🍽️",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "group",
+      "tags": [
+        "abstinence",
+        "daily",
+        "monthly",
+        "household"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 88,
+      "subcategory": "abstinence",
+      "template": "No phones at the dinner table for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 90
+        }
+      ]
+    },
+    {
+      "id": "fam_dishes_streak",
+      "category": "family",
+      "title": "Whoever leaves a dish in the sink does kitchen duty all weekend",
+      "emoji": "🍽️",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekly",
+        "household",
+        "chores"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 80
+    },
+    {
+      "id": "fam_chores_done_week",
+      "category": "family",
+      "title": "All chores done by Friday night, every week this month",
+      "emoji": "🧹",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "weekly",
+        "monthly",
+        "household",
+        "chores"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 72
+    },
+    {
+      "id": "fam_no_bedtime_fights",
+      "category": "family",
+      "title": "Bedtime by 8pm without a tantrum every weeknight this week",
+      "emoji": "🛏️",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "kids"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 75
+    },
+    {
+      "id": "fam_homework_no_reminding",
+      "category": "family",
+      "title": "Kid does homework without being asked every weeknight this week",
+      "emoji": "📚",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "kids"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 72
+    },
+    {
+      "id": "fam_lunch_packed_night_before",
+      "category": "family",
+      "title": "Lunch packed the night before, every school night for two weeks",
+      "emoji": "🥪",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "kids",
+        "household"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 68
+    },
+    {
+      "id": "fam_kid_chore_check",
+      "category": "family",
+      "title": "Kid finishes their chore list every Saturday for a month",
+      "emoji": "🧹",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "weekly",
+        "monthly",
+        "kids",
+        "chores"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 70
+    },
+    {
+      "id": "fam_screens_under_limit",
+      "category": "family",
+      "title": "Kid stays under {hours}h screen time daily for a week",
+      "emoji": "📵",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "kids",
+        "screen_time"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 72,
+      "subcategory": "streak",
+      "template": "Kid stays under {hours}h screen time daily for a week",
+      "templateSlots": [
+        {
+          "key": "hours",
+          "label": "Hours?",
+          "type": "number",
+          "default": 2,
+          "min": 1,
+          "max": 4
+        }
+      ]
+    },
+    {
+      "id": "fam_sibling_no_fights",
+      "category": "family",
+      "title": "Siblings don't fight for a full week — parents call it",
+      "emoji": "🧒",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "group",
+      "tags": [
+        "streak",
+        "weekly",
+        "kids"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 75
+    },
+    {
+      "id": "fam_family_dinner_streak",
+      "category": "family",
+      "title": "Family eats dinner together, no exceptions, every weeknight this week",
+      "emoji": "🍽️",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "group",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "household"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 78
+    },
+    {
+      "id": "fam_no_yelling",
+      "category": "family",
+      "title": "Whole household — no yelling for a week",
+      "emoji": "🤐",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "group",
+      "tags": [
+        "streak",
+        "weekly",
+        "household"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 82
+    },
+    {
+      "id": "fam_one_on_one_time",
+      "category": "family",
+      "title": "Spend dedicated 1-on-1 time with each kid this week",
+      "emoji": "❤️",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "weekly",
+        "kids",
+        "relationships"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 68
+    },
+    {
+      "id": "fam_gym_with_kid",
+      "category": "family",
+      "title": "Take my kid to the gym/park three times this week",
+      "emoji": "🏋️",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "weekly",
+        "kids",
+        "fitness"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 62
+    },
+    {
+      "id": "fam_grandparents_call",
+      "category": "family",
+      "title": "Call grandparents weekly for a month",
+      "emoji": "📞",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "weekly",
+        "monthly",
+        "relationships"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 58
+    },
+    {
+      "id": "fam_chore_competition",
+      "category": "family",
+      "title": "Whoever cleans more rooms by Sunday wins",
+      "emoji": "🧹",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekly",
+        "head_to_head",
+        "household",
+        "chores"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 72
+    },
+    {
+      "id": "fam_garage_clean",
+      "category": "family",
+      "title": "Garage cleaned out by end of weekend",
+      "emoji": "🚪",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 2,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "household",
+        "chores"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 65
+    },
+    {
+      "id": "fam_lawn_done",
+      "category": "family",
+      "title": "Lawn mowed and trimmed by Sunday afternoon",
+      "emoji": "🌱",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekly",
+        "household",
+        "chores"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58
+    },
+    {
+      "id": "fam_pet_walk_streak",
+      "category": "family",
+      "title": "Walk the dog every day for two weeks",
+      "emoji": "🐕",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "household"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 78
+    },
+    {
+      "id": "fam_pet_clean_litter",
+      "category": "family",
+      "title": "Whoever doesn't clean the litter box that week loses",
+      "emoji": "🐈",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekly",
+        "household",
+        "chores"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 60
+    },
+    {
+      "id": "fam_kids_in_bed_streak",
+      "category": "family",
+      "title": "Kids in bed by 9pm every night for two weeks",
+      "emoji": "🌙",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "kids"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 80
+    },
+    {
+      "id": "fam_no_takeout_family",
+      "category": "family",
+      "title": "Family eats home-cooked meals all month",
+      "emoji": "🍳",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "group",
+      "tags": [
+        "abstinence",
+        "monthly",
+        "household",
+        "food"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 72
+    },
+    {
+      "id": "fam_screens_off_weekend",
+      "category": "family",
+      "title": "Screen-free Saturday once a month for three months",
+      "emoji": "📵",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 90,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekly",
+        "monthly",
+        "long_term",
+        "household",
+        "screen_time"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 68
+    },
+    {
+      "id": "fam_movie_night_streak",
+      "category": "family",
+      "title": "Family movie night every Friday for a month — no phones",
+      "emoji": "🎬",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "group",
+      "tags": [
+        "streak",
+        "weekly",
+        "monthly",
+        "household"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 72
+    },
+    {
+      "id": "fam_kids_chores_chart",
+      "category": "family",
+      "title": "Kid earns a perfect chore-chart week",
+      "emoji": "⭐",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "weekly",
+        "kids",
+        "chores"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 70
+    },
+    {
+      "id": "fam_birthday_planning",
+      "category": "family",
+      "title": "Whoever forgets a family birthday this year buys dinner",
+      "emoji": "🎂",
+      "suggestedStakeCents": 5000,
+      "suggestedDurationDays": 365,
+      "suggestedFormat": "group",
+      "tags": [
+        "long_term",
+        "relationships"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 55
+    },
+    {
+      "id": "fam_no_complaints_dinner",
+      "category": "family",
+      "title": "No food complaints at dinner all week",
+      "emoji": "🤐",
+      "suggestedStakeCents": 1000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "group",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "kids",
+        "household"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 68
+    },
+    {
+      "id": "fam_household_savings",
+      "category": "family",
+      "title": "Household saves ${amount} this month",
+      "emoji": "💰",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "group",
+      "tags": [
+        "milestone",
+        "monthly",
+        "money",
+        "household"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58,
+      "subcategory": "milestone",
+      "template": "Household saves ${amount} this month",
+      "templateSlots": [
+        {
+          "key": "amount",
+          "label": "Amount?",
+          "type": "number",
+          "default": 500,
+          "min": 100,
+          "max": 3000
+        }
+      ]
+    },
+    {
+      "id": "fam_morning_routine_kids",
+      "category": "family",
+      "title": "Whole family ready and out the door by 8am every weekday",
+      "emoji": "🚪",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "group",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "household",
+        "kids"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 72
+    },
+    {
+      "id": "fam_practice_instrument_kid",
+      "category": "family",
+      "title": "Kid practices instrument 20 minutes a day for two weeks",
+      "emoji": "🎹",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "kids",
+        "skill"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 62
+    },
+    {
+      "id": "fam_room_clean_weekend",
+      "category": "family",
+      "title": "Kid's room clean before Sunday dinner, every week this month",
+      "emoji": "🧸",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "weekly",
+        "monthly",
+        "kids",
+        "chores"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 68
+    },
+    {
+      "id": "fam_park_outings",
+      "category": "family",
+      "title": "Get the family outside three times this week",
+      "emoji": "🌳",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "group",
+      "tags": [
+        "streak",
+        "weekly",
+        "household",
+        "kids"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 72
+    },
+    {
+      "id": "fam_holiday_decorations",
+      "category": "family",
+      "title": "House decorated by family deadline this year",
+      "emoji": "🎄",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekly",
+        "season_holiday",
+        "household"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 65
+    },
+    {
+      "id": "fam_thanksgiving_no_phone",
+      "category": "family",
+      "title": "No phones during Thanksgiving dinner — first to break does dishes",
+      "emoji": "🦃",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 1,
+      "suggestedFormat": "group",
+      "tags": [
+        "season_holiday",
+        "household",
+        "screen_time"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 82
+    },
+    {
+      "id": "fam_holiday_gifts_done",
+      "category": "family",
+      "title": "All holiday shopping done by December 15th",
+      "emoji": "🎁",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "season_holiday",
+        "monthly",
+        "money"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 68
+    },
+    {
+      "id": "fam_kid_tv_off_self",
+      "category": "family",
+      "title": "Kid turns the TV off without being asked, three days in a row",
+      "emoji": "📺",
+      "suggestedStakeCents": 1000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "kids",
+        "screen_time"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 58
+    },
+    {
+      "id": "fam_dad_jokes_streak",
+      "category": "family",
+      "title": "Loser tells a dad joke at every family dinner for a month",
+      "emoji": "👨",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "streak",
+        "monthly",
+        "household",
+        "embarrassment",
+        "forfeit"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 58
+    },
+    {
+      "id": "fam_family_walk_after_dinner",
+      "category": "family",
+      "title": "Family walk after dinner, every weeknight this week",
+      "emoji": "🚶",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "group",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "household",
+        "fitness"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 70
+    },
+    {
+      "id": "goal_ship_commits",
+      "category": "goals",
+      "title": "Ship {n} commits this week to the side project",
+      "emoji": "💻",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "work",
+        "tech"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 80,
+      "subcategory": "streak",
+      "template": "Ship {n} commits this week to the side project",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Commits?",
+          "type": "number",
+          "default": 20,
+          "min": 5,
+          "max": 100
+        }
+      ]
+    },
+    {
+      "id": "goal_finish_project",
+      "category": "goals",
+      "title": "Ship the side project before the end of the month",
+      "emoji": "🚀",
+      "suggestedStakeCents": 10000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "monthly",
+        "work"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 85,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "goal_send_cold_emails",
+      "category": "goals",
+      "title": "Send {n} cold emails this week",
+      "emoji": "📧",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "work",
+        "social"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 72,
+      "subcategory": "milestone",
+      "template": "Send {n} cold emails this week",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Emails?",
+          "type": "number",
+          "default": 20,
+          "min": 5,
+          "max": 50
+        }
+      ]
+    },
+    {
+      "id": "goal_apply_jobs",
+      "category": "goals",
+      "title": "Apply to {n} jobs this week",
+      "emoji": "💼",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "work",
+        "milestone"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 78,
+      "subcategory": "milestone",
+      "template": "Apply to {n} jobs this week",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Applications?",
+          "type": "number",
+          "default": 10,
+          "min": 3,
+          "max": 30
+        }
+      ]
+    },
+    {
+      "id": "goal_finish_thesis_chapter",
+      "category": "goals",
+      "title": "Finish the next chapter of the thesis by the deadline",
+      "emoji": "📖",
+      "suggestedStakeCents": 5000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "monthly",
+        "work",
+        "writing",
+        "milestone"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 68,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "goal_finish_book_writing",
+      "category": "goals",
+      "title": "Write {words} words on the book this month",
+      "emoji": "📝",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "monthly",
+        "writing",
+        "creative"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58,
+      "subcategory": "milestone",
+      "template": "Write {words} words on the book this month",
+      "templateSlots": [
+        {
+          "key": "words",
+          "label": "Words?",
+          "type": "number",
+          "default": 10000,
+          "min": 2000,
+          "max": 50000
+        }
+      ]
+    },
+    {
+      "id": "goal_500_words_daily",
+      "category": "goals",
+      "title": "500 words on the book every day for {n} days",
+      "emoji": "✍️",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "writing",
+        "creative"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 62,
+      "subcategory": "streak",
+      "template": "500 words on the book every day for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 90
+        }
+      ]
+    },
+    {
+      "id": "goal_no_meetings_focus",
+      "category": "goals",
+      "title": "Block four hours of focused work every weekday this week — no meetings",
+      "emoji": "🎯",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "work",
+        "discipline"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 70,
+      "subcategory": "streak"
+    },
+    {
+      "id": "goal_inbox_zero_streak",
+      "category": "goals",
+      "title": "Hit inbox zero by end of every workday for two weeks",
+      "emoji": "📧",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "work"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 65,
+      "subcategory": "streak"
+    },
+    {
+      "id": "goal_call_clients",
+      "category": "goals",
+      "title": "Make {n} sales calls this week",
+      "emoji": "☎️",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "work",
+        "milestone"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 58,
+      "subcategory": "milestone",
+      "template": "Make {n} sales calls this week",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Calls?",
+          "type": "number",
+          "default": 50,
+          "min": 10,
+          "max": 200
+        }
+      ]
+    },
+    {
+      "id": "goal_certification_complete",
+      "category": "goals",
+      "title": "Pass the certification exam by next month",
+      "emoji": "📜",
+      "suggestedStakeCents": 10000,
+      "suggestedDurationDays": 60,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "long_term",
+        "work",
+        "learning"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 72,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "goal_course_finish",
+      "category": "goals",
+      "title": "Finish the online course by deadline",
+      "emoji": "🎓",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 60,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "long_term",
+        "learning"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 70,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "goal_30_lessons",
+      "category": "goals",
+      "title": "Complete {n} lessons of the course this week",
+      "emoji": "📘",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "milestone",
+        "learning"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 65,
+      "subcategory": "milestone",
+      "template": "Complete {n} lessons of the course this week",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Lessons?",
+          "type": "number",
+          "default": 10,
+          "min": 3,
+          "max": 30
+        }
+      ]
+    },
+    {
+      "id": "goal_save_n_dollars",
+      "category": "goals",
+      "title": "Save ${amount} this month",
+      "emoji": "💰",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "monthly",
+        "money"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 72,
+      "subcategory": "milestone",
+      "template": "Save ${amount} this month",
+      "templateSlots": [
+        {
+          "key": "amount",
+          "label": "Amount?",
+          "type": "number",
+          "default": 1000,
+          "min": 100,
+          "max": 10000
+        }
+      ]
+    },
+    {
+      "id": "goal_emergency_fund",
+      "category": "goals",
+      "title": "Build a 3-month emergency fund by year end",
+      "emoji": "🛡️",
+      "suggestedStakeCents": 10000,
+      "suggestedDurationDays": 180,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "long_term",
+        "money"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "goal_pay_off_debt",
+      "category": "goals",
+      "title": "Pay off ${amount} in debt this month",
+      "emoji": "💳",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "monthly",
+        "money"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 65,
+      "subcategory": "milestone",
+      "template": "Pay off ${amount} in debt this month",
+      "templateSlots": [
+        {
+          "key": "amount",
+          "label": "Amount?",
+          "type": "number",
+          "default": 1000,
+          "min": 200,
+          "max": 10000
+        }
+      ]
+    },
+    {
+      "id": "goal_track_expenses",
+      "category": "goals",
+      "title": "Log every expense for a month",
+      "emoji": "📊",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "money",
+        "discipline"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 60,
+      "subcategory": "streak"
+    },
+    {
+      "id": "goal_invest_monthly",
+      "category": "goals",
+      "title": "Hit my monthly investing target {n} months in a row",
+      "emoji": "📈",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 90,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "monthly",
+        "long_term",
+        "money"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 55,
+      "subcategory": "streak",
+      "template": "Hit my monthly investing target {n} months in a row",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Months?",
+          "type": "number",
+          "default": 3,
+          "min": 2,
+          "max": 12
+        }
+      ]
+    },
+    {
+      "id": "goal_start_a_business",
+      "category": "goals",
+      "title": "Make my first dollar from the side business by month end",
+      "emoji": "💵",
+      "suggestedStakeCents": 5000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "monthly",
+        "work",
+        "money"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 78,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "goal_first_thousand",
+      "category": "goals",
+      "title": "Make $1,000 from the side hustle this month",
+      "emoji": "💵",
+      "suggestedStakeCents": 10000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "monthly",
+        "work",
+        "money"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 68,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "goal_post_a_video",
+      "category": "goals",
+      "title": "Post a video to the channel every week for a month",
+      "emoji": "📹",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "weekly",
+        "monthly",
+        "creative"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 70,
+      "subcategory": "streak"
+    },
+    {
+      "id": "goal_post_daily",
+      "category": "goals",
+      "title": "Post every day on social for {n} days",
+      "emoji": "📱",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "creative",
+        "social"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 68,
+      "subcategory": "streak",
+      "template": "Post every day on social for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 90
+        }
+      ]
+    },
+    {
+      "id": "goal_first_clients",
+      "category": "goals",
+      "title": "Land {n} new clients this quarter",
+      "emoji": "🤝",
+      "suggestedStakeCents": 10000,
+      "suggestedDurationDays": 90,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "long_term",
+        "work",
+        "money"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 62,
+      "subcategory": "milestone",
+      "template": "Land {n} new clients this quarter",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Clients?",
+          "type": "number",
+          "default": 3,
+          "min": 1,
+          "max": 20
+        }
+      ]
+    },
+    {
+      "id": "goal_blog_weekly",
+      "category": "goals",
+      "title": "Publish one blog post a week for a month",
+      "emoji": "📝",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "weekly",
+        "monthly",
+        "writing",
+        "creative"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58,
+      "subcategory": "streak"
+    },
+    {
+      "id": "goal_practice_pitch",
+      "category": "goals",
+      "title": "Pitch the idea to {n} people this week",
+      "emoji": "🎤",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "work",
+        "social"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 55,
+      "subcategory": "milestone",
+      "template": "Pitch the idea to {n} people this week",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "People?",
+          "type": "number",
+          "default": 5,
+          "min": 2,
+          "max": 20
+        }
+      ]
+    },
+    {
+      "id": "goal_negotiate_raise",
+      "category": "goals",
+      "title": "Ask for a raise by the end of the quarter",
+      "emoji": "💼",
+      "suggestedStakeCents": 8000,
+      "suggestedDurationDays": 90,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "long_term",
+        "work",
+        "money"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 62,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "goal_one_hard_task",
+      "category": "goals",
+      "title": "Tackle the hardest task on my list first thing every weekday this week",
+      "emoji": "🎯",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "work",
+        "discipline"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 68,
+      "subcategory": "streak"
+    },
+    {
+      "id": "goal_no_distractions_workday",
+      "category": "goals",
+      "title": "No personal phone use during work hours all week",
+      "emoji": "📵",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "work",
+        "screen_time"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 72,
+      "subcategory": "streak"
+    },
+    {
+      "id": "goal_learn_skill_30days",
+      "category": "goals",
+      "title": "Learn a new skill enough to demo it by month end",
+      "emoji": "🎨",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "monthly",
+        "learning",
+        "skill"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 72,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "goal_speed_typing",
+      "category": "goals",
+      "title": "Hit {wpm} wpm typing speed by month end",
+      "emoji": "⌨️",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "monthly",
+        "skill"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 50,
+      "subcategory": "milestone",
+      "template": "Hit {wpm} wpm typing speed by month end",
+      "templateSlots": [
+        {
+          "key": "wpm",
+          "label": "Words per minute?",
+          "type": "number",
+          "default": 80,
+          "min": 40,
+          "max": 150
+        }
+      ]
+    },
+    {
+      "id": "goal_chess_rating",
+      "category": "goals",
+      "title": "Climb {points} chess ELO points this month",
+      "emoji": "♟️",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "monthly",
+        "skill"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 55,
+      "subcategory": "milestone",
+      "template": "Climb {points} chess ELO points this month",
+      "templateSlots": [
+        {
+          "key": "points",
+          "label": "Points?",
+          "type": "number",
+          "default": 100,
+          "min": 50,
+          "max": 300
+        }
+      ]
+    },
+    {
+      "id": "goal_finish_a_book",
+      "category": "goals",
+      "title": "Finish the work-related book on my desk by month end",
+      "emoji": "📖",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "monthly",
+        "reading"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 65,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "goal_taxes_done",
+      "category": "goals",
+      "title": "File taxes by April 1st this year",
+      "emoji": "📋",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 60,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "season_holiday",
+        "money"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "goal_appointments",
+      "category": "goals",
+      "title": "Book all my doctor / dentist appointments this month",
+      "emoji": "🩺",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "monthly",
+        "health"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 55,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "goal_zero_inbox_email",
+      "category": "goals",
+      "title": "Get personal email inbox to zero this weekend",
+      "emoji": "📨",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 2,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekend"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "goal_clean_desktop",
+      "category": "goals",
+      "title": "Empty my computer desktop and downloads by Sunday",
+      "emoji": "💻",
+      "suggestedStakeCents": 1000,
+      "suggestedDurationDays": 2,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekend"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 55
+    },
+    {
+      "id": "goal_unsubscribe",
+      "category": "goals",
+      "title": "Unsubscribe from {n} email lists this week",
+      "emoji": "📧",
+      "suggestedStakeCents": 1000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 50,
+      "subcategory": "milestone",
+      "template": "Unsubscribe from {n} email lists this week",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Lists?",
+          "type": "number",
+          "default": 20,
+          "min": 5,
+          "max": 100
+        }
+      ]
+    },
+    {
+      "id": "goal_meal_plan_for_savings",
+      "category": "goals",
+      "title": "Stick to my grocery budget for two weeks",
+      "emoji": "🛒",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "weekly",
+        "money",
+        "food"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58,
+      "subcategory": "abstinence"
+    },
+    {
+      "id": "goal_donate_amount",
+      "category": "goals",
+      "title": "Donate ${amount} to causes this year",
+      "emoji": "❤️",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 365,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "long_term",
+        "money"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 50,
+      "subcategory": "milestone",
+      "template": "Donate ${amount} to causes this year",
+      "templateSlots": [
+        {
+          "key": "amount",
+          "label": "Amount?",
+          "type": "number",
+          "default": 500,
+          "min": 50,
+          "max": 5000
+        }
+      ]
+    },
+    {
+      "id": "goal_volunteer_streak",
+      "category": "goals",
+      "title": "Volunteer at least once a month for three months",
+      "emoji": "🤝",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 90,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "monthly",
+        "long_term",
+        "social"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 55,
+      "subcategory": "streak"
+    },
+    {
+      "id": "couple_no_phones_dinner",
+      "category": "couples",
+      "title": "No phones at dinner for 30 days",
+      "emoji": "📵",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "abstinence",
+        "daily",
+        "monthly",
+        "relationships",
+        "screen_time"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 92
+    },
+    {
+      "id": "couple_dishes_in_sink",
+      "category": "couples",
+      "title": "Whoever leaves dishes in the sink does laundry that week",
+      "emoji": "🍽️",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekly",
+        "household",
+        "chores",
+        "ongoing"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 88
+    },
+    {
+      "id": "couple_date_night_streak",
+      "category": "couples",
+      "title": "Date night, every week, for {n} weeks — no exceptions",
+      "emoji": "🌹",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 56,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "streak",
+        "weekly",
+        "long_term",
+        "relationships"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 85,
+      "subcategory": "streak",
+      "template": "Date night, every week, for {n} weeks — no exceptions",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Weeks?",
+          "type": "number",
+          "default": 8,
+          "min": 4,
+          "max": 16
+        }
+      ]
+    },
+    {
+      "id": "couple_phone_in_kitchen",
+      "category": "couples",
+      "title": "Phones charge in the kitchen overnight, not the bedroom, for a month",
+      "emoji": "🛏️",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "relationships",
+        "screen_time"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 78
+    },
+    {
+      "id": "couple_no_screens_morning",
+      "category": "couples",
+      "title": "No screens for the first hour after waking, for two weeks",
+      "emoji": "🌅",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "relationships",
+        "screen_time"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 72
+    },
+    {
+      "id": "couple_walk_after_dinner",
+      "category": "couples",
+      "title": "Walk together after dinner every night this week",
+      "emoji": "🚶",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "relationships",
+        "fitness"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 80,
+      "subcategory": "streak"
+    },
+    {
+      "id": "couple_compliment_daily",
+      "category": "couples",
+      "title": "Give your partner one real, specific compliment every day for a month",
+      "emoji": "❤️",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "relationships"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 75,
+      "subcategory": "streak"
+    },
+    {
+      "id": "couple_thank_each_other",
+      "category": "couples",
+      "title": "Say thank-you for one specific thing every day for a week",
+      "emoji": "💛",
+      "suggestedStakeCents": 1000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "relationships"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 70,
+      "subcategory": "streak"
+    },
+    {
+      "id": "couple_one_chore_each",
+      "category": "couples",
+      "title": "We each do one chore the other normally does, for a week",
+      "emoji": "🧹",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekly",
+        "household",
+        "chores"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 68
+    },
+    {
+      "id": "couple_weekly_chore_split",
+      "category": "couples",
+      "title": "Whoever forgets their chore that week does dishes the next week",
+      "emoji": "🧹",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekly",
+        "household",
+        "chores",
+        "ongoing"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 72
+    },
+    {
+      "id": "couple_meal_cooking",
+      "category": "couples",
+      "title": "Take turns cooking dinner Mon-Fri for a month",
+      "emoji": "🍳",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "household",
+        "food"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 75
+    },
+    {
+      "id": "couple_grocery_split",
+      "category": "couples",
+      "title": "Whoever forgets the grocery list pays for the next trip",
+      "emoji": "🛒",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekly",
+        "household",
+        "money"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 58
+    },
+    {
+      "id": "couple_workout_together",
+      "category": "couples",
+      "title": "Work out together {n} times a week for a month",
+      "emoji": "🏋️",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "streak",
+        "weekly",
+        "monthly",
+        "fitness",
+        "relationships"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 78,
+      "subcategory": "streak",
+      "template": "Work out together {n} times a week for a month",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Times per week?",
+          "type": "number",
+          "default": 3,
+          "min": 2,
+          "max": 6
+        }
+      ]
+    },
+    {
+      "id": "couple_no_takeout",
+      "category": "couples",
+      "title": "No takeout, eat in for two weeks straight",
+      "emoji": "🍳",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "abstinence",
+        "weekly",
+        "household",
+        "money",
+        "food"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 72
+    },
+    {
+      "id": "couple_save_together",
+      "category": "couples",
+      "title": "Save ${amount} together this month",
+      "emoji": "💰",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "milestone",
+        "monthly",
+        "money",
+        "household"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 68,
+      "subcategory": "milestone",
+      "template": "Save ${amount} together this month",
+      "templateSlots": [
+        {
+          "key": "amount",
+          "label": "Amount?",
+          "type": "number",
+          "default": 1000,
+          "min": 200,
+          "max": 10000
+        }
+      ]
+    },
+    {
+      "id": "couple_no_tv_in_bed",
+      "category": "couples",
+      "title": "No TV in bed for {n} days",
+      "emoji": "📺",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "abstinence",
+        "daily",
+        "monthly",
+        "relationships",
+        "screen_time"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 65,
+      "subcategory": "abstinence",
+      "template": "No TV in bed for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "couple_one_text_a_day",
+      "category": "couples",
+      "title": "Send a real, non-logistical text to my partner every day this month",
+      "emoji": "💌",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "relationships"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 70,
+      "subcategory": "streak"
+    },
+    {
+      "id": "couple_no_phone_first_hour",
+      "category": "couples",
+      "title": "No phones for the first hour together every evening this week",
+      "emoji": "🌙",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "relationships",
+        "screen_time"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 78,
+      "subcategory": "streak"
+    },
+    {
+      "id": "couple_plan_dates",
+      "category": "couples",
+      "title": "Loser plans the next three dates",
+      "emoji": "📅",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "monthly",
+        "relationships",
+        "forfeit"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 72
+    },
+    {
+      "id": "couple_writes_letter",
+      "category": "couples",
+      "title": "Loser writes their partner a real handwritten letter",
+      "emoji": "💌",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "monthly",
+        "relationships",
+        "forfeit"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 68
+    },
+    {
+      "id": "couple_vacation_save",
+      "category": "couples",
+      "title": "Save ${amount} for the trip by deadline",
+      "emoji": "✈️",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 120,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "milestone",
+        "long_term",
+        "money",
+        "household"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 62,
+      "subcategory": "milestone",
+      "template": "Save ${amount} for the trip by deadline",
+      "templateSlots": [
+        {
+          "key": "amount",
+          "label": "Amount?",
+          "type": "number",
+          "default": 2000,
+          "min": 500,
+          "max": 15000
+        }
+      ]
+    },
+    {
+      "id": "couple_pet_chores_split",
+      "category": "couples",
+      "title": "Take turns walking the dog every other day for a month",
+      "emoji": "🐕",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "household",
+        "chores"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 72
+    },
+    {
+      "id": "couple_litter_box_split",
+      "category": "couples",
+      "title": "Whoever doesn't clean the litter that week handles the next clean",
+      "emoji": "🐈",
+      "suggestedStakeCents": 1000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekly",
+        "household",
+        "chores",
+        "ongoing"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 58
+    },
+    {
+      "id": "couple_kids_bath",
+      "category": "couples",
+      "title": "Whoever skips bath/bedtime that night handles tomorrow's morning",
+      "emoji": "🛁",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekly",
+        "household",
+        "kids"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 68
+    },
+    {
+      "id": "couple_no_arguments",
+      "category": "couples",
+      "title": "No arguments for a week — friend or therapist arbitrates if it happens",
+      "emoji": "🕊️",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "streak",
+        "weekly",
+        "relationships"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 75
+    },
+    {
+      "id": "couple_listen_first",
+      "category": "couples",
+      "title": "Listen all the way through before responding, for {n} days",
+      "emoji": "👂",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "relationships"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 58,
+      "subcategory": "streak",
+      "template": "Listen all the way through before responding, for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 14,
+          "min": 7,
+          "max": 30
+        }
+      ]
+    },
+    {
+      "id": "couple_apology_first",
+      "category": "couples",
+      "title": "Whoever loses next argument apologizes first, sincerely",
+      "emoji": "🤝",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "monthly",
+        "relationships",
+        "ongoing"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 62
+    },
+    {
+      "id": "couple_garden_together",
+      "category": "couples",
+      "title": "Plant and keep a small garden alive together for a season",
+      "emoji": "🌱",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 90,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "long_term",
+        "season_summer",
+        "household"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 50
+    },
+    {
+      "id": "couple_paint_room",
+      "category": "couples",
+      "title": "Finish painting the room together by Sunday night",
+      "emoji": "🎨",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 2,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekend",
+        "household"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 55
+    },
+    {
+      "id": "couple_finish_project",
+      "category": "couples",
+      "title": "Finish the home project we keep avoiding by month end",
+      "emoji": "🔨",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "milestone",
+        "monthly",
+        "household"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 72,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "couple_money_meeting",
+      "category": "couples",
+      "title": "Weekly money check-in — every Sunday for two months",
+      "emoji": "📊",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 60,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "streak",
+        "weekly",
+        "long_term",
+        "money",
+        "relationships"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 58,
+      "subcategory": "streak"
+    },
+    {
+      "id": "couple_book_together",
+      "category": "couples",
+      "title": "Read the same book and discuss by month end",
+      "emoji": "📚",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "milestone",
+        "monthly",
+        "reading",
+        "relationships"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 58
+    },
+    {
+      "id": "couple_class_together",
+      "category": "couples",
+      "title": "Take a class together — cooking, dance, anything — by month end",
+      "emoji": "🎓",
+      "suggestedStakeCents": 3500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "milestone",
+        "monthly",
+        "relationships",
+        "skill"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 62
+    },
+    {
+      "id": "couple_phones_off_weekend",
+      "category": "couples",
+      "title": "Phones off all Saturday — every Saturday this month",
+      "emoji": "📵",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "streak",
+        "weekly",
+        "monthly",
+        "relationships",
+        "screen_time"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 68,
+      "subcategory": "streak"
+    },
+    {
+      "id": "couple_anniversary_gift",
+      "category": "couples",
+      "title": "Anniversary gift, no late wrapping, no last-minute panic",
+      "emoji": "🎁",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "monthly",
+        "relationships",
+        "season_holiday"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 72
+    },
+    {
+      "id": "couple_kid_pickup_split",
+      "category": "couples",
+      "title": "Take turns on school pickup, every other day, for a month",
+      "emoji": "🚗",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "household",
+        "kids"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 65
+    },
+    {
+      "id": "couple_tidy_5min",
+      "category": "couples",
+      "title": "Five-minute tidy together every night for two weeks",
+      "emoji": "🧹",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "household",
+        "chores"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 68,
+      "subcategory": "streak"
+    },
+    {
+      "id": "couple_tackle_subscription",
+      "category": "couples",
+      "title": "Audit and cancel unused subscriptions together this weekend",
+      "emoji": "💳",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 2,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekend",
+        "money",
+        "household"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 55
+    },
+    {
+      "id": "couple_holiday_neutral_zone",
+      "category": "couples",
+      "title": "No work talk during holiday week — first to bring it up handles dinner cleanup",
+      "emoji": "🎄",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekly",
+        "season_holiday",
+        "relationships"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 62
+    },
+    {
+      "id": "couple_morning_kiss",
+      "category": "couples",
+      "title": "Real morning kiss before either of us touches our phone, for {n} days",
+      "emoji": "💋",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "streak",
+        "daily",
+        "monthly",
+        "relationships"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 68,
+      "subcategory": "streak",
+      "template": "Real morning kiss before either of us touches our phone, for {n} days",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Days?",
+          "type": "number",
+          "default": 30,
+          "min": 7,
+          "max": 90
+        }
+      ]
+    },
+    {
+      "id": "travel_local_food",
+      "category": "travel",
+      "title": "Try the local 'spiciest dish' challenge in every city",
+      "emoji": "🌶️",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "food",
+        "embarrassment",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 75
+    },
+    {
+      "id": "travel_cold_plunge_country",
+      "category": "travel",
+      "title": "Cold plunge in every country we visit",
+      "emoji": "🥶",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 30,
+      "suggestedFormat": "either",
+      "tags": [
+        "monthly",
+        "extreme",
+        "trip_scoped",
+        "embarrassment"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 78
+    },
+    {
+      "id": "travel_local_phrase",
+      "category": "travel",
+      "title": "Order in the local language at every meal",
+      "emoji": "💬",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "skill",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 72
+    },
+    {
+      "id": "travel_off_grid",
+      "category": "travel",
+      "title": "No phone for one full day on the trip",
+      "emoji": "📵",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "screen_time",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 80
+    },
+    {
+      "id": "travel_no_chains",
+      "category": "travel",
+      "title": "No restaurant chains the entire trip — local only",
+      "emoji": "🥘",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekly",
+        "food",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 78
+    },
+    {
+      "id": "travel_morning_run",
+      "category": "travel",
+      "title": "Run in every city we visit, even just a mile",
+      "emoji": "🏃",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "weekly",
+        "running",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 68
+    },
+    {
+      "id": "travel_5am_sunrise",
+      "category": "travel",
+      "title": "Wake up for sunrise at least once",
+      "emoji": "🌅",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 72
+    },
+    {
+      "id": "travel_one_random_stop",
+      "category": "travel",
+      "title": "Each person picks one off-itinerary stop the group has to do",
+      "emoji": "🗺️",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekly",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 78
+    },
+    {
+      "id": "travel_eat_street_food",
+      "category": "travel",
+      "title": "Eat at least one street food per day, no exceptions",
+      "emoji": "🍢",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "food",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 75
+    },
+    {
+      "id": "travel_walk_10k_daily",
+      "category": "travel",
+      "title": "10k+ steps every day on the trip",
+      "emoji": "👟",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "fitness",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 82,
+      "subcategory": "streak"
+    },
+    {
+      "id": "travel_no_uber",
+      "category": "travel",
+      "title": "No rideshares the whole trip — public transit, walking, or local taxis",
+      "emoji": "🚇",
+      "suggestedStakeCents": 3500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekly",
+        "money",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 68
+    },
+    {
+      "id": "travel_three_museums",
+      "category": "travel",
+      "title": "Hit at least three museums or cultural sites this trip",
+      "emoji": "🏛️",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "milestone",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 62,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "travel_postcards_send",
+      "category": "travel",
+      "title": "Send a postcard from every country / city",
+      "emoji": "✉️",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58
+    },
+    {
+      "id": "travel_journal_daily",
+      "category": "travel",
+      "title": "Write at least 200 words in the travel journal every day",
+      "emoji": "📓",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "writing",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58,
+      "subcategory": "streak"
+    },
+    {
+      "id": "travel_photo_daily",
+      "category": "travel",
+      "title": "Post one photo a day to the trip group chat",
+      "emoji": "📸",
+      "suggestedStakeCents": 1000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "group",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 75,
+      "subcategory": "streak"
+    },
+    {
+      "id": "travel_currency_converter_off",
+      "category": "travel",
+      "title": "No currency converter app — calculate prices yourself",
+      "emoji": "💱",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekly",
+        "skill",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 58
+    },
+    {
+      "id": "travel_get_lost",
+      "category": "travel",
+      "title": "Get intentionally lost for an hour — no maps, find your way back",
+      "emoji": "🗺️",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 62
+    },
+    {
+      "id": "travel_haggle",
+      "category": "travel",
+      "title": "Successfully haggle a price down at a market this trip",
+      "emoji": "💰",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "money",
+        "skill",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 65
+    },
+    {
+      "id": "travel_ask_locals",
+      "category": "travel",
+      "title": "Get a meal recommendation from a local stranger every day",
+      "emoji": "👋",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "either",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "social",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58,
+      "subcategory": "streak"
+    },
+    {
+      "id": "travel_no_complaining",
+      "category": "travel",
+      "title": "No complaining about the trip — first to whine buys dinner",
+      "emoji": "🤐",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekly",
+        "trip_scoped",
+        "relationships"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 78
+    },
+    {
+      "id": "travel_each_one_dish",
+      "category": "travel",
+      "title": "Each person orders a different dish — share family-style every dinner",
+      "emoji": "🍱",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "group",
+      "tags": [
+        "streak",
+        "daily",
+        "weekly",
+        "food",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 72
+    },
+    {
+      "id": "travel_passport_stamps",
+      "category": "travel",
+      "title": "Hit {n} new countries this year",
+      "emoji": "🛂",
+      "suggestedStakeCents": 10000,
+      "suggestedDurationDays": 365,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "milestone",
+        "long_term",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58,
+      "subcategory": "milestone",
+      "template": "Hit {n} new countries this year",
+      "templateSlots": [
+        {
+          "key": "n",
+          "label": "Countries?",
+          "type": "number",
+          "default": 3,
+          "min": 1,
+          "max": 15
+        }
+      ]
+    },
+    {
+      "id": "travel_50_states",
+      "category": "travel",
+      "title": "Visit all 50 states by 30",
+      "emoji": "🇺🇸",
+      "suggestedStakeCents": 15000,
+      "suggestedDurationDays": 365,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "milestone",
+        "long_term",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 55
+    },
+    {
+      "id": "travel_first_solo_trip",
+      "category": "travel",
+      "title": "Take a solo trip somewhere new this year",
+      "emoji": "🛄",
+      "suggestedStakeCents": 5000,
+      "suggestedDurationDays": 365,
+      "suggestedFormat": "either",
+      "tags": [
+        "milestone",
+        "long_term",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 72,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "travel_camp_no_phone",
+      "category": "travel",
+      "title": "Camping weekend, no phone signal, no exceptions",
+      "emoji": "⛺",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 3,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekend",
+        "screen_time",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "self_report",
+      "popularityScore": 78
+    },
+    {
+      "id": "travel_hike_summit",
+      "category": "travel",
+      "title": "Summit the peak this trip — no excuses",
+      "emoji": "🏔️",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekly",
+        "milestone",
+        "fitness",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 72
+    },
+    {
+      "id": "travel_swim_in_ocean",
+      "category": "travel",
+      "title": "Swim in every ocean / sea on the itinerary",
+      "emoji": "🌊",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekly",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 68
+    },
+    {
+      "id": "travel_skydive",
+      "category": "travel",
+      "title": "Skydive on this trip — winner picks the spot",
+      "emoji": "🪂",
+      "suggestedStakeCents": 10000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekly",
+        "extreme",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 62
+    },
+    {
+      "id": "travel_bungee_jump",
+      "category": "travel",
+      "title": "Bungee jump or zipline this trip",
+      "emoji": "🪢",
+      "suggestedStakeCents": 4000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "extreme",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "video",
+      "popularityScore": 68
+    },
+    {
+      "id": "travel_meal_budget",
+      "category": "travel",
+      "title": "Stick to ${amount}/day food budget for the whole trip",
+      "emoji": "💵",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekly",
+        "money",
+        "food",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 62,
+      "subcategory": "milestone",
+      "template": "Stick to ${amount}/day food budget for the whole trip",
+      "templateSlots": [
+        {
+          "key": "amount",
+          "label": "Amount?",
+          "type": "number",
+          "default": 50,
+          "min": 20,
+          "max": 200
+        }
+      ]
+    },
+    {
+      "id": "travel_carry_on_only",
+      "category": "travel",
+      "title": "Pack carry-on only for a 2-week trip",
+      "emoji": "🎒",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekly",
+        "trip_scoped",
+        "skill"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 68
+    },
+    {
+      "id": "travel_one_packing_pound",
+      "category": "travel",
+      "title": "Loser carries the heaviest bag the whole trip",
+      "emoji": "🎒",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekly",
+        "trip_scoped",
+        "forfeit"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 58
+    },
+    {
+      "id": "travel_first_to_speak",
+      "category": "travel",
+      "title": "Loser handles all the language stuff at the airport / hotel",
+      "emoji": "✈️",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekly",
+        "trip_scoped",
+        "social",
+        "forfeit"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 60
+    },
+    {
+      "id": "travel_drive_split",
+      "category": "travel",
+      "title": "Loser drives the entire road trip leg",
+      "emoji": "🚗",
+      "suggestedStakeCents": 3000,
+      "suggestedDurationDays": 3,
+      "suggestedFormat": "1v1",
+      "tags": [
+        "weekend",
+        "trip_scoped",
+        "forfeit"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 65
+    },
+    {
+      "id": "travel_no_chain_hotels",
+      "category": "travel",
+      "title": "No chain hotels the whole trip — only Airbnbs, hostels, or local stays",
+      "emoji": "🏠",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekly",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58
+    },
+    {
+      "id": "travel_first_to_complain",
+      "category": "travel",
+      "title": "First to complain about jet lag does laundry on return",
+      "emoji": "😴",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 7,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekly",
+        "trip_scoped",
+        "embarrassment",
+        "forfeit"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 62
+    },
+    {
+      "id": "travel_souvenir_under_20",
+      "category": "travel",
+      "title": "Bring back a souvenir for everyone, all under $20",
+      "emoji": "🎁",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "money",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 58,
+      "subcategory": "milestone"
+    },
+    {
+      "id": "travel_local_sport",
+      "category": "travel",
+      "title": "Watch a local sports event live this trip",
+      "emoji": "🏟️",
+      "suggestedStakeCents": 2000,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "either",
+      "tags": [
+        "weekly",
+        "trip_scoped",
+        "sport"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 55
+    },
+    {
+      "id": "travel_random_train",
+      "category": "travel",
+      "title": "Take a train to a place none of us has heard of",
+      "emoji": "🚆",
+      "suggestedStakeCents": 2500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekly",
+        "trip_scoped"
+      ],
+      "matureFlag": false,
+      "proofType": "photo",
+      "popularityScore": 60
+    },
+    {
+      "id": "travel_first_to_bed",
+      "category": "travel",
+      "title": "First to bed before midnight loses the next day's breakfast",
+      "emoji": "🌙",
+      "suggestedStakeCents": 1500,
+      "suggestedDurationDays": 14,
+      "suggestedFormat": "group",
+      "tags": [
+        "weekly",
+        "trip_scoped",
+        "forfeit"
+      ],
+      "matureFlag": false,
+      "proofType": "witness",
+      "popularityScore": 58
+    }
+  ]
+}

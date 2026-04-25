@@ -4,7 +4,7 @@ import { motion } from 'motion/react'
 import { Bell, Settings, UserPlus } from 'lucide-react'
 import { NotificationPanel } from '../components/NotificationPanel'
 import { PushPermissionBanner } from '../components/PushPermissionBanner'
-import { useGroupStore, useBetStore, useAuthStore, useNotificationStore, useChatStore } from '@/stores'
+import { useGroupStore, useBetStore, useAuthStore, useNotificationStore, useChatStore, useSuggestionStore } from '@/stores'
 import { useCountdown } from '@/lib/hooks/useCountdown'
 import { useRealtime } from '@/lib/hooks/useRealtime'
 import { usePrefersReducedMotion } from '@/lib/hooks/usePrefersReducedMotion'
@@ -12,7 +12,8 @@ import { getProfilesByIds } from '@/lib/api/profiles'
 import { formatMoney } from '@/lib/utils/formatters'
 import { formatOdds } from '@/lib/utils/formatters'
 import { loadPinned, togglePin, PIN_BETS_KEY } from '@/lib/utils/pinStorage'
-import { SectionHeader, ReceiptCard, GroupRow, FABGlow, QuickBetSheet, AddFriendsSheet } from '@/components/lynk'
+import { SectionHeader, ReceiptCard, GroupRow, FABGlow, QuickBetSheet, AddFriendsSheet, SuggestionEmptyState } from '@/components/lynk'
+import type { RankedSuggestion } from '@/lib/suggestions'
 import { searchUsers } from '@/lib/api/friends'
 import { useFriendStore } from '@/stores'
 import type { BetWithSides } from '@/stores/betStore'
@@ -130,6 +131,21 @@ function StripReceiptCard({
       stakeCents={bet.stake_money ?? undefined}
       stakeLabel={!bet.stake_money ? formatStake(bet) : undefined}
       onView={onView}
+    />
+  )
+}
+
+function EmptyBetsState({ onPlaceBet }: { onPlaceBet: () => void }) {
+  const navigate = useNavigate()
+  const suggestions = useSuggestionStore((s) => s.suggestions)
+  const refreshSuggestions = useSuggestionStore((s) => s.refreshSuggestions)
+  useEffect(() => { refreshSuggestions() }, [refreshSuggestions])
+
+  return (
+    <SuggestionEmptyState
+      suggestions={suggestions}
+      onUse={(s: RankedSuggestion) => navigate('/compete/create', { state: { prefillTemplate: s.template } })}
+      onPlaceBet={onPlaceBet}
     />
   )
 }
@@ -390,7 +406,7 @@ export function TheBoard() {
                 <div className="w-8 h-8 border-2 border-rider border-t-transparent rounded-full animate-spin" />
               </div>
             ) : stripBets.length === 0 ? (
-              <div className="py-6 text-text-mute text-sm">No bets yet. Create one to get started!</div>
+              <EmptyBetsState onPlaceBet={() => setShowQuickBet(true)} />
             ) : (
               stripBets.map((bet, i) => {
                 const claimant = claimantMap.get(bet.claimant_id)
