@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router'
 import { ChevronLeft } from 'lucide-react'
 import { CategoryPillBar, SuggestionRow, ShuffleBlock } from '@/components/lynk'
@@ -29,7 +29,15 @@ export function BrowseSuggestionsScreen() {
   const navigate = useNavigate()
   const preferences = useSuggestionStore((s) => s.preferences)
   const [query, setQuery] = useState('')
+  const [debouncedQuery, setDebouncedQuery] = useState('')
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>()
   const [selectedCategory, setSelectedCategory] = useState<BetCategory | null>(null)
+
+  const handleQueryChange = (value: string) => {
+    setQuery(value)
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => setDebouncedQuery(value), 250)
+  }
 
   // Filter templates
   const filteredTemplates = useMemo(() => {
@@ -42,8 +50,8 @@ export function BrowseSuggestionsScreen() {
       pool = pool.filter((t) => !t.matureFlag)
     }
 
-    if (query.trim()) {
-      const words = query.toLowerCase().split(/\s+/).filter(Boolean)
+    if (debouncedQuery.trim()) {
+      const words = debouncedQuery.toLowerCase().split(/\s+/).filter(Boolean)
       pool = pool.filter((t) => {
         const haystack = `${t.title} ${t.category} ${t.subcategory ?? ''} ${t.tags.join(' ')}`.toLowerCase()
         return words.some((w) => haystack.includes(w))
@@ -51,22 +59,22 @@ export function BrowseSuggestionsScreen() {
     }
 
     return pool
-  }, [query, selectedCategory, preferences])
+  }, [debouncedQuery, selectedCategory, preferences])
 
   // Trending = top 5 by popularity
   const trending = useMemo(() => {
-    if (selectedCategory || query.trim()) return []
+    if (selectedCategory || debouncedQuery.trim()) return []
     return [...filteredTemplates]
       .sort((a, b) => b.popularityScore - a.popularityScore)
       .slice(0, 5)
-  }, [filteredTemplates, selectedCategory, query])
+  }, [filteredTemplates, selectedCategory, debouncedQuery])
 
   // Group by category for section view
   const sections = useMemo(() => {
     if (selectedCategory) {
       return [{ category: selectedCategory, templates: filteredTemplates }]
     }
-    if (query.trim()) {
+    if (debouncedQuery.trim()) {
       return [{ category: null as BetCategory | null, templates: filteredTemplates }]
     }
     return SECTION_ORDER
@@ -75,7 +83,7 @@ export function BrowseSuggestionsScreen() {
         templates: filteredTemplates.filter((t) => t.category === s.category).slice(0, 5),
       }))
       .filter((s) => s.templates.length > 0)
-  }, [filteredTemplates, selectedCategory, query])
+  }, [filteredTemplates, selectedCategory, debouncedQuery])
 
   // Categories user hasn't engaged with
   const unusedCategories = useMemo(() => {
@@ -122,7 +130,7 @@ export function BrowseSuggestionsScreen() {
           <input
             type="text"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => handleQueryChange(e.target.value)}
             placeholder="Search bets by name, category, or tag..."
             className="flex-1 bg-transparent text-[12px] text-text placeholder:text-text-mute outline-none"
           />
@@ -197,7 +205,7 @@ export function BrowseSuggestionsScreen() {
             })}
 
             {/* Shuffle block at bottom */}
-            {!query.trim() && !selectedCategory && (
+            {!debouncedQuery.trim() && !selectedCategory && (
               <div className="px-5 mt-2">
                 <ShuffleBlock
                   unusedCategories={unusedCategories}

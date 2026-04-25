@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0d14; font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 40px; }
+  .frame { width: 420px; height: 900px; background: #0A0A0F; border: 10px solid #1a1a22; border-radius: 54px; overflow: hidden; position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.5); }
+  .statusbar { height: 40px; background: #0A0A0F; display: flex; align-items: center; justify-content: space-between; padding: 0 32px 0 28px; font-size: 14px; color: white; font-weight: 600; }
+  .notch { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 120px; height: 32px; background: #000; border-radius: 0 0 18px 18px; z-index: 10; }
+  .diagonal-grid {
+    background-image:
+      linear-gradient(45deg, rgba(0,230,118,0.03) 1px, transparent 1px),
+      linear-gradient(-45deg, rgba(0,230,118,0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+</style>
+</head>
+<body>
+<div class="frame diagonal-grid">
+  <div class="notch"></div>
+
+  <div class="statusbar">
+    <span>9:41</span>
+    <span style="display: flex; gap: 5px; align-items: center;">
+      <span style="font-size: 11px;">●●●</span>
+      <span style="display: inline-block; width: 18px; height: 11px; border: 1.5px solid white; border-radius: 3px; position: relative;"><span style="position: absolute; top: 1.5px; left: 1.5px; bottom: 1.5px; right: 5px; background: white;"></span></span>
+    </span>
+  </div>
+
+  <!-- Close button -->
+  <div style="padding: 14px 20px; display: flex; justify-content: flex-end;">
+    <div style="width: 32px; height: 32px; border-radius: 50%; background: #1a1a22; display: flex; align-items: center; justify-content: center; color: #888; font-size: 14px;">✕</div>
+  </div>
+
+  <!-- Pre-header label -->
+  <div style="padding: 10px 20px 4px; text-align: center;">
+    <div style="font-size: 11px; font-weight: 900; color: #00E676; letter-spacing: 0.25em;">● OUTCOME REVEALED</div>
+  </div>
+
+  <!-- Giant WON stamp -->
+  <div style="padding: 20px 20px 10px; display: flex; justify-content: center; position: relative;">
+    <div style="position: relative; display: inline-block; transform: rotate(-4deg);">
+      <!-- Stamp outer border -->
+      <div style="border: 4px solid #00E676; border-radius: 12px; padding: 14px 36px; background: rgba(0,230,118,0.08); position: relative;">
+        <!-- Inner double border -->
+        <div style="border: 1.5px solid rgba(0,230,118,0.5); border-radius: 4px; padding: 8px 28px; text-align: center;">
+          <div style="font-size: 12px; font-weight: 900; color: #00E676; letter-spacing: 0.3em; margin-bottom: 2px;">VERIFIED</div>
+          <div style="font-weight: 900; font-style: italic; font-size: 72px; color: #00E676; letter-spacing: -0.05em; line-height: 0.95;">WON</div>
+          <div style="font-size: 11px; font-weight: 900; color: #00E676; letter-spacing: 0.3em; margin-top: 4px; font-family: 'SF Mono', ui-monospace, monospace;">#0247 · APR 23</div>
+        </div>
+      </div>
+      <!-- Corner dots -->
+      <div style="position: absolute; top: 8px; left: 8px; width: 6px; height: 6px; background: #00E676; border-radius: 50%;"></div>
+      <div style="position: absolute; top: 8px; right: 8px; width: 6px; height: 6px; background: #00E676; border-radius: 50%;"></div>
+      <div style="position: absolute; bottom: 8px; left: 8px; width: 6px; height: 6px; background: #00E676; border-radius: 50%;"></div>
+      <div style="position: absolute; bottom: 8px; right: 8px; width: 6px; height: 6px; background: #00E676; border-radius: 50%;"></div>
+    </div>
+  </div>
+
+  <!-- Congratulations message -->
+  <div style="padding: 24px 20px 6px; text-align: center;">
+    <div style="font-weight: 900; font-style: italic; font-size: 22px; color: white; letter-spacing: -0.03em; line-height: 1.1;">You ran that 5K. Cash it in.</div>
+    <div style="font-size: 13px; color: #888; margin-top: 6px;">Final vote: 8 riders for, 4 doubters against</div>
+  </div>
+
+  <!-- Earnings counter -->
+  <div style="padding: 24px 20px 16px; text-align: center;">
+    <div style="font-size: 10px; font-weight: 900; color: #00E676; letter-spacing: 0.25em; margin-bottom: 4px;">PAYOUT</div>
+    <div style="font-family: 'SF Mono', ui-monospace, monospace; font-weight: 900; font-size: 56px; color: #00E676; letter-spacing: -0.04em; line-height: 1;">+$45.00</div>
+    <div style="font-size: 11px; color: #666; margin-top: 6px; font-family: 'SF Mono', ui-monospace, monospace;">$20.00 stake + $25.00 from doubters</div>
+  </div>
+
+  <!-- Who's paying you -->
+  <div style="padding: 0 20px 14px;">
+    <div style="background: #15151c; border-radius: 12px; padding: 12px 14px;">
+      <div style="font-size: 10px; font-weight: 900; color: #FF3D57; letter-spacing: 0.12em; margin-bottom: 8px;">● DOUBTERS WHO OWE YOU</div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 22px; height: 22px; border-radius: 50%; background: #555;"></div>
+            <span style="font-size: 13px; font-weight: 700; color: white;">@jakereed</span>
+          </div>
+          <span style="font-size: 13px; font-weight: 900; color: #FF3D57; font-family: 'SF Mono', ui-monospace, monospace;">-$10.00</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 22px; height: 22px; border-radius: 50%; background: #666;"></div>
+            <span style="font-size: 13px; font-weight: 700; color: white;">@mayarod</span>
+          </div>
+          <span style="font-size: 13px; font-weight: 900; color: #FF3D57; font-family: 'SF Mono', ui-monospace, monospace;">-$10.00</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 22px; height: 22px; border-radius: 50%; background: #444;"></div>
+            <span style="font-size: 13px; font-weight: 700; color: white;">+ 2 more</span>
+          </div>
+          <span style="font-size: 13px; font-weight: 900; color: #FF3D57; font-family: 'SF Mono', ui-monospace, monospace;">-$5.00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div style="position: absolute; bottom: 24px; left: 20px; right: 20px;">
+    <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+      <button style="flex: 1; background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 900; font-size: 12px; padding: 12px; border-radius: 12px; letter-spacing: 0.1em;">📸 SHARE WIN</button>
+      <button style="flex: 1; background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 900; font-size: 12px; padding: 12px; border-radius: 12px; letter-spacing: 0.1em;">🔄 REMATCH</button>
+    </div>
+    <button style="width: 100%; background: #00E676; color: #0A0A0F; font-weight: 900; font-size: 14px; padding: 14px; border: none; border-radius: 14px; letter-spacing: 0.12em; box-shadow: 0 0 0 5px rgba(0,230,118,0.18);">PLACE NEXT BET →</button>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0d14; font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 40px; }
+  .frame { width: 420px; height: 900px; background: #0A0A0F; border: 10px solid #1a1a22; border-radius: 54px; overflow: hidden; position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.5); }
+  .statusbar { height: 40px; background: #0A0A0F; display: flex; align-items: center; justify-content: space-between; padding: 0 32px 0 28px; font-size: 14px; color: white; font-weight: 600; }
+  .notch { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 120px; height: 32px; background: #000; border-radius: 0 0 18px 18px; z-index: 10; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="notch"></div>
+
+  <div class="statusbar">
+    <span>9:41</span>
+    <span style="display: flex; gap: 5px; align-items: center;">
+      <span style="font-size: 11px;">●●●</span>
+      <span style="display: inline-block; width: 18px; height: 11px; border: 1.5px solid white; border-radius: 3px; position: relative;"><span style="position: absolute; top: 1.5px; left: 1.5px; bottom: 1.5px; right: 5px; background: white;"></span></span>
+    </span>
+  </div>
+
+  <!-- Top bar -->
+  <div style="padding: 14px 20px 4px; display: flex; align-items: center; gap: 10px;">
+    <div style="width: 36px; height: 36px; border-radius: 50%; background: #15151c; display: flex; align-items: center; justify-content: center; color: #ccc; font-size: 18px;">‹</div>
+    <div style="flex: 1;">
+      <div style="font-weight: 900; font-style: italic; font-size: 24px; color: white; letter-spacing: -0.04em; line-height: 1;">BROWSE</div>
+      <div style="font-size: 11px; color: #888; margin-top: 2px;">200+ ways to put it on the line.</div>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <div style="padding: 12px 20px 12px;">
+    <div style="background: #15151c; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 8px;">
+      <span style="color: #666; font-size: 12px;">🔍</span>
+      <span style="font-size: 12px; color: #666;">Search bets by name, category, or tag...</span>
+    </div>
+  </div>
+
+  <!-- Category pills -->
+  <div style="padding: 0 20px 14px; display: flex; gap: 6px; overflow: hidden;">
+    <button style="background: #00E676; color: #0A0A0F; font-weight: 900; font-size: 10px; padding: 6px 12px; border: none; border-radius: 16px; letter-spacing: 0.08em; white-space: nowrap;">ALL</button>
+    <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 700; font-size: 10px; padding: 6px 10px; border-radius: 16px; white-space: nowrap;">🏋️</button>
+    <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 700; font-size: 10px; padding: 6px 10px; border-radius: 16px; white-space: nowrap;">🧠</button>
+    <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 700; font-size: 10px; padding: 6px 10px; border-radius: 16px; white-space: nowrap;">🍻</button>
+    <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 700; font-size: 10px; padding: 6px 10px; border-radius: 16px; white-space: nowrap;">🎲</button>
+    <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 700; font-size: 10px; padding: 6px 10px; border-radius: 16px; white-space: nowrap;">👨‍👩‍👧</button>
+    <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 700; font-size: 10px; padding: 6px 10px; border-radius: 16px; white-space: nowrap;">💕</button>
+    <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 700; font-size: 10px; padding: 6px 10px; border-radius: 16px; white-space: nowrap;">✈️</button>
+    <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 700; font-size: 10px; padding: 6px 10px; border-radius: 16px; white-space: nowrap;">💼</button>
+  </div>
+
+  <!-- TRENDING THIS WEEK section -->
+  <div style="padding: 0 20px 6px; display: flex; align-items: center; gap: 6px;">
+    <span style="color: #00E676; font-size: 12px;">🔥</span>
+    <span style="font-weight: 900; font-style: italic; font-size: 13px; color: #00E676; letter-spacing: 0.15em;">TRENDING THIS WEEK</span>
+  </div>
+
+  <div style="padding: 0 20px 14px; display: flex; flex-direction: column; gap: 6px;">
+    <div style="background: #15151c; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px;">
+      <div style="width: 32px; height: 32px; background: #1e2014; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px;">💪</div>
+      <div style="flex: 1; min-width: 0;">
+        <div style="font-weight: 900; font-size: 12px; color: white; line-height: 1.2;">No skipped workouts for 7 days</div>
+        <div style="font-size: 9px; color: #888; margin-top: 1px;">Fitness · 47 active bets · ~$15 avg</div>
+      </div>
+      <button style="background: rgba(0,230,118,0.15); border: 1.5px solid #00E676; color: #00E676; font-weight: 900; font-size: 10px; padding: 5px 10px; border-radius: 8px; letter-spacing: 0.08em;">+ USE</button>
+    </div>
+
+    <div style="background: #15151c; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px;">
+      <div style="width: 32px; height: 32px; background: #2a1810; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px;">🌶️</div>
+      <div style="flex: 1; min-width: 0;">
+        <div style="font-weight: 900; font-size: 12px; color: white; line-height: 1.2;">Eat one ghost pepper. No water for 60 sec.</div>
+        <div style="font-size: 9px; color: #888; margin-top: 1px;">Dares · 23 active · ~$30 avg</div>
+      </div>
+      <button style="background: rgba(0,230,118,0.15); border: 1.5px solid #00E676; color: #00E676; font-weight: 900; font-size: 10px; padding: 5px 10px; border-radius: 8px; letter-spacing: 0.08em;">+ USE</button>
+    </div>
+  </div>
+
+  <!-- DRINKING GAMES & PARTY section -->
+  <div style="padding: 4px 20px 6px; display: flex; align-items: center; gap: 6px;">
+    <span style="font-size: 12px;">🍻</span>
+    <span style="font-weight: 900; font-style: italic; font-size: 13px; color: white; letter-spacing: 0.15em;">DRINKING GAMES & PARTY</span>
+  </div>
+
+  <div style="padding: 0 20px 14px; display: flex; flex-direction: column; gap: 6px;">
+    <div style="background: #15151c; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px;">
+      <div style="width: 32px; height: 32px; background: #2a1830; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px;">🍺</div>
+      <div style="flex: 1; min-width: 0;">
+        <div style="font-weight: 900; font-size: 12px; color: white; line-height: 1.2;">First to throw up loses tonight</div>
+        <div style="font-size: 9px; color: #888; margin-top: 1px;">Group bet · loser pays cab home</div>
+      </div>
+      <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 900; font-size: 10px; padding: 5px 10px; border-radius: 8px; letter-spacing: 0.08em;">+ USE</button>
+    </div>
+
+    <div style="background: #15151c; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px;">
+      <div style="width: 32px; height: 32px; background: #2a1830; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px;">🏓</div>
+      <div style="flex: 1; min-width: 0;">
+        <div style="font-weight: 900; font-size: 12px; color: white; line-height: 1.2;">Win 3 beer pong games in a row</div>
+        <div style="font-size: 9px; color: #888; margin-top: 1px;">1v1 challenge · best of party</div>
+      </div>
+      <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 900; font-size: 10px; padding: 5px 10px; border-radius: 8px; letter-spacing: 0.08em;">+ USE</button>
+    </div>
+
+    <div style="background: #15151c; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px;">
+      <div style="width: 32px; height: 32px; background: #2a1830; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px;">🎤</div>
+      <div style="flex: 1; min-width: 0;">
+        <div style="font-weight: 900; font-size: 12px; color: white; line-height: 1.2;">Sing karaoke before midnight</div>
+        <div style="font-size: 9px; color: #888; margin-top: 1px;">Dare · video proof required</div>
+      </div>
+      <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 900; font-size: 10px; padding: 5px 10px; border-radius: 8px; letter-spacing: 0.08em;">+ USE</button>
+    </div>
+  </div>
+
+  <!-- KIDS & FAMILY section -->
+  <div style="padding: 4px 20px 6px; display: flex; align-items: center; gap: 6px;">
+    <span style="font-size: 12px;">👨‍👩‍👧</span>
+    <span style="font-weight: 900; font-style: italic; font-size: 13px; color: white; letter-spacing: 0.15em;">KIDS & FAMILY</span>
+  </div>
+
+  <div style="padding: 0 20px 14px; display: flex; flex-direction: column; gap: 6px;">
+    <div style="background: #15151c; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px;">
+      <div style="width: 32px; height: 32px; background: #1a2a30; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px;">📚</div>
+      <div style="flex: 1; min-width: 0;">
+        <div style="font-weight: 900; font-size: 12px; color: white; line-height: 1.2;">Kid reads 20 min/day for a week</div>
+        <div style="font-size: 9px; color: #888; margin-top: 1px;">Family · loser does dishes 7 nights</div>
+      </div>
+      <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 900; font-size: 10px; padding: 5px 10px; border-radius: 8px; letter-spacing: 0.08em;">+ USE</button>
+    </div>
+
+    <div style="background: #15151c; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px;">
+      <div style="width: 32px; height: 32px; background: #1a2a30; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px;">📱</div>
+      <div style="flex: 1; min-width: 0;">
+        <div style="font-weight: 900; font-size: 12px; color: white; line-height: 1.2;">No screens after 8pm school nights</div>
+        <div style="font-size: 9px; color: #888; margin-top: 1px;">Family · whole household</div>
+      </div>
+      <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 900; font-size: 10px; padding: 5px 10px; border-radius: 8px; letter-spacing: 0.08em;">+ USE</button>
+    </div>
+  </div>
+
+  <!-- COUPLES section -->
+  <div style="padding: 4px 20px 6px; display: flex; align-items: center; gap: 6px;">
+    <span style="font-size: 12px;">💕</span>
+    <span style="font-weight: 900; font-style: italic; font-size: 13px; color: white; letter-spacing: 0.15em;">COUPLES & RELATIONSHIPS</span>
+  </div>
+
+  <div style="padding: 0 20px 14px; display: flex; flex-direction: column; gap: 6px;">
+    <div style="background: #15151c; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px;">
+      <div style="width: 32px; height: 32px; background: #2a1822; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px;">💌</div>
+      <div style="flex: 1; min-width: 0;">
+        <div style="font-weight: 900; font-size: 12px; color: white; line-height: 1.2;">No phones at dinner for 30 days</div>
+        <div style="font-size: 9px; color: #888; margin-top: 1px;">Couples · loser plans next 3 dates</div>
+      </div>
+      <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 900; font-size: 10px; padding: 5px 10px; border-radius: 8px; letter-spacing: 0.08em;">+ USE</button>
+    </div>
+
+    <div style="background: #15151c; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px;">
+      <div style="width: 32px; height: 32px; background: #2a1822; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px;">🏠</div>
+      <div style="flex: 1; min-width: 0;">
+        <div style="font-weight: 900; font-size: 12px; color: white; line-height: 1.2;">Whoever leaves dishes in sink does laundry</div>
+        <div style="font-size: 9px; color: #888; margin-top: 1px;">Couples · ongoing · weekly settle</div>
+      </div>
+      <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 900; font-size: 10px; padding: 5px 10px; border-radius: 8px; letter-spacing: 0.08em;">+ USE</button>
+    </div>
+  </div>
+
+  <!-- TRAVEL section -->
+  <div style="padding: 4px 20px 6px; display: flex; align-items: center; gap: 6px;">
+    <span style="font-size: 12px;">✈️</span>
+    <span style="font-weight: 900; font-style: italic; font-size: 13px; color: white; letter-spacing: 0.15em;">TRAVEL & ADVENTURE</span>
+  </div>
+
+  <div style="padding: 0 20px 14px; display: flex; flex-direction: column; gap: 6px;">
+    <div style="background: #15151c; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px;">
+      <div style="width: 32px; height: 32px; background: #182830; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px;">🥶</div>
+      <div style="flex: 1; min-width: 0;">
+        <div style="font-weight: 900; font-size: 12px; color: white; line-height: 1.2;">Cold plunge in every country we visit</div>
+        <div style="font-size: 9px; color: #888; margin-top: 1px;">Travel · video proof · trip-long</div>
+      </div>
+      <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 900; font-size: 10px; padding: 5px 10px; border-radius: 8px; letter-spacing: 0.08em;">+ USE</button>
+    </div>
+
+    <div style="background: #15151c; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px;">
+      <div style="width: 32px; height: 32px; background: #182830; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px;">🌶️</div>
+      <div style="flex: 1; min-width: 0;">
+        <div style="font-weight: 900; font-size: 12px; color: white; line-height: 1.2;">Try the local "spiciest dish" challenge</div>
+        <div style="font-size: 9px; color: #888; margin-top: 1px;">Travel · per-city · loser pays meal</div>
+      </div>
+      <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 900; font-size: 10px; padding: 5px 10px; border-radius: 8px; letter-spacing: 0.08em;">+ USE</button>
+    </div>
+  </div>
+
+  <!-- Discover more — non-LLM browse prompt -->
+  <div style="padding: 0 20px 14px;">
+    <div style="background: #15151c; border: 1.5px solid rgba(0,230,118,0.2); border-radius: 12px; padding: 12px 14px;">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+        <span style="font-size: 14px;">🎲</span>
+        <span style="font-weight: 900; font-style: italic; font-size: 12px; color: white; letter-spacing: 0.1em;">SHUFFLE — TRY SOMETHING NEW</span>
+      </div>
+      <div style="font-size: 11px; color: #888; margin-bottom: 10px; line-height: 1.4;">Get a random pick from a category you haven't bet on yet.</div>
+      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+        <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 700; font-size: 10px; padding: 5px 10px; border-radius: 12px; letter-spacing: 0.08em;">💕 COUPLES</button>
+        <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 700; font-size: 10px; padding: 5px 10px; border-radius: 12px; letter-spacing: 0.08em;">✈️ TRAVEL</button>
+        <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 700; font-size: 10px; padding: 5px 10px; border-radius: 12px; letter-spacing: 0.08em;">💼 GOALS</button>
+        <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 700; font-size: 10px; padding: 5px 10px; border-radius: 12px; letter-spacing: 0.08em;">🎲 SURPRISE ME</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

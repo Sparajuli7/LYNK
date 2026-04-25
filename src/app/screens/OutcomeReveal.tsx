@@ -10,7 +10,7 @@ import type { BetOutcomeDetails } from '@/lib/api/outcomes'
 import type { OutcomeResult } from '@/lib/database.types'
 import { PrimaryButton } from '../components/PrimaryButton'
 import { ShareSheet } from '../components/ShareSheet'
-import { OutcomeStamp, PunishmentCard } from '@/components/lynk'
+import { OutcomeStamp, PunishmentCard, RematchSuggestions } from '@/components/lynk'
 import { getBetShareUrl, getOutcomeShareText, shareWithNative, getProofShareFiles } from '@/lib/share'
 import { captureElementAsImage, shareImage } from '@/lib/utils/imageExport'
 import { computeBetPayouts } from '@/lib/api/betPayouts'
@@ -60,6 +60,7 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
   const [shareSheetOpen, setShareSheetOpen] = useState(false)
   const [savingImage, setSavingImage] = useState(false)
   const [shamePost, setShamePost] = useState<HallOfShameEntry | null | undefined>(undefined)
+  const [showRematchOptions, setShowRematchOptions] = useState(false)
   const receiptRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -694,13 +695,36 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
           )}
 
           {/* If not a loser who owes punishment, or proof already submitted, show standard actions */}
+          {/* Rematch suggestions — toggleable */}
+          {isParticipant && id && showRematchOptions && bet && (
+            <div className="mb-3">
+              <RematchSuggestions
+                originalTitle={bet.title}
+                originalCategory={(bet.category as 'fitness' | 'habits' | 'party' | 'dares' | 'family' | 'goals' | 'couples' | 'travel') ?? 'fitness'}
+                originalStakeCents={bet.stake_money ?? 2000}
+                originalDurationDays={Math.max(1, Math.round((new Date(bet.deadline).getTime() - new Date(bet.created_at).getTime()) / (1000 * 60 * 60 * 24)))}
+                opponentName={loserNames.length > 0 ? undefined : winnerNames[0]}
+                onSelect={(data) => {
+                  navigate('/compete/create', {
+                    state: {
+                      prefillTitle: data.title,
+                      prefillStake: data.stakeCents,
+                      prefillDuration: data.durationDays,
+                      groupId: bet.group_id,
+                    },
+                  })
+                }}
+              />
+            </div>
+          )}
+
           <div className="flex gap-3">
             {isParticipant && id && (
               <button
-                onClick={() => navigate(`/bet/${id}/rematch`)}
+                onClick={() => setShowRematchOptions((v) => !v)}
                 className="flex-1 h-11 rounded-xl border border-doubter/30 text-doubter text-[13px] font-bold btn-pressed"
               >
-                DEMAND REMATCH
+                {showRematchOptions ? 'HIDE OPTIONS' : 'DEMAND REMATCH'}
               </button>
             )}
             <button

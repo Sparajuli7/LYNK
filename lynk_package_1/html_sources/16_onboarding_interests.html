@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0d14; font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 40px; }
+  .frame { width: 420px; height: 900px; background: #0A0A0F; border: 10px solid #1a1a22; border-radius: 54px; overflow: hidden; position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.5); }
+  .statusbar { height: 40px; background: #0A0A0F; display: flex; align-items: center; justify-content: space-between; padding: 0 32px 0 28px; font-size: 14px; color: white; font-weight: 600; }
+  .notch { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 120px; height: 32px; background: #000; border-radius: 0 0 18px 18px; z-index: 10; }
+  .diagonal-grid {
+    background-image:
+      linear-gradient(45deg, rgba(0,230,118,0.04) 1px, transparent 1px),
+      linear-gradient(-45deg, rgba(0,230,118,0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+</style>
+</head>
+<body>
+<div class="frame diagonal-grid">
+  <div class="notch"></div>
+
+  <div class="statusbar">
+    <span>9:41</span>
+    <span style="display: flex; gap: 5px; align-items: center;">
+      <span style="font-size: 11px;">●●●</span>
+      <span style="display: inline-block; width: 18px; height: 11px; border: 1.5px solid white; border-radius: 3px; position: relative;"><span style="position: absolute; top: 1.5px; left: 1.5px; bottom: 1.5px; right: 5px; background: white;"></span></span>
+    </span>
+  </div>
+
+  <!-- Top row: skip + step -->
+  <div style="padding: 14px 20px 6px; display: flex; justify-content: space-between; align-items: center;">
+    <div style="font-size: 10px; color: #666; font-weight: 700; letter-spacing: 0.15em;">STEP 3 OF 3</div>
+    <span style="font-size: 11px; color: #888; font-weight: 700; letter-spacing: 0.1em;">SKIP →</span>
+  </div>
+
+  <!-- Header -->
+  <div style="padding: 16px 20px 6px;">
+    <div style="font-weight: 900; font-style: italic; font-size: 28px; color: white; letter-spacing: -0.04em; line-height: 1.05;">What do you bet on?</div>
+    <div style="font-size: 12px; color: #888; margin-top: 5px; line-height: 1.4;">Pick a few. We'll suggest bets you'll actually want to make.</div>
+  </div>
+
+  <!-- Selected count -->
+  <div style="padding: 10px 20px 8px;">
+    <div style="display: flex; align-items: center; gap: 6px;">
+      <span style="width: 8px; height: 8px; background: #00E676; border-radius: 50%; display: inline-block;"></span>
+      <span style="font-weight: 900; font-style: italic; font-size: 12px; color: #00E676; letter-spacing: 0.15em;">3 SELECTED</span>
+      <span style="color: #666; font-size: 11px; margin-left: auto; font-weight: 700;">PICK AT LEAST 1</span>
+    </div>
+  </div>
+
+  <!-- Interest grid - 2 columns x 4 rows -->
+  <div style="padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+
+    <!-- Selected: Fitness -->
+    <div style="background: rgba(0,230,118,0.08); border: 2px solid #00E676; border-radius: 14px; padding: 12px 12px; position: relative;">
+      <div style="position: absolute; top: 8px; right: 8px; width: 18px; height: 18px; background: #00E676; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0A0A0F; font-weight: 900; font-size: 11px;">✓</div>
+      <div style="font-size: 26px; margin-bottom: 4px;">🏋️</div>
+      <div style="font-weight: 900; font-size: 14px; color: white; letter-spacing: -0.01em;">Fitness</div>
+      <div style="font-size: 10px; color: #888; margin-top: 2px;">Workouts · runs · streaks</div>
+    </div>
+
+    <!-- Selected: Habits -->
+    <div style="background: rgba(0,230,118,0.08); border: 2px solid #00E676; border-radius: 14px; padding: 12px 12px; position: relative;">
+      <div style="position: absolute; top: 8px; right: 8px; width: 18px; height: 18px; background: #00E676; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0A0A0F; font-weight: 900; font-size: 11px;">✓</div>
+      <div style="font-size: 26px; margin-bottom: 4px;">🧠</div>
+      <div style="font-weight: 900; font-size: 14px; color: white; letter-spacing: -0.01em;">Habits</div>
+      <div style="font-size: 10px; color: #888; margin-top: 2px;">Reading · meditation · screen time</div>
+    </div>
+
+    <!-- Selected: Drinking & Party -->
+    <div style="background: rgba(0,230,118,0.08); border: 2px solid #00E676; border-radius: 14px; padding: 12px 12px; position: relative;">
+      <div style="position: absolute; top: 8px; right: 8px; width: 18px; height: 18px; background: #00E676; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0A0A0F; font-weight: 900; font-size: 11px;">✓</div>
+      <div style="font-size: 26px; margin-bottom: 4px;">🍻</div>
+      <div style="font-weight: 900; font-size: 14px; color: white; letter-spacing: -0.01em;">Party</div>
+      <div style="font-size: 10px; color: #888; margin-top: 2px;">Drinking games · dares · nights out</div>
+    </div>
+
+    <!-- Unselected: Dares -->
+    <div style="background: #15151c; border: 2px solid transparent; border-radius: 14px; padding: 12px 12px;">
+      <div style="font-size: 26px; margin-bottom: 4px;">🎲</div>
+      <div style="font-weight: 900; font-size: 14px; color: white; letter-spacing: -0.01em;">Dares</div>
+      <div style="font-size: 10px; color: #888; margin-top: 2px;">Stunts · embarrassments · forfeits</div>
+    </div>
+
+    <!-- Unselected: Family -->
+    <div style="background: #15151c; border: 2px solid transparent; border-radius: 14px; padding: 12px 12px;">
+      <div style="font-size: 26px; margin-bottom: 4px;">👨‍👩‍👧</div>
+      <div style="font-weight: 900; font-size: 14px; color: white; letter-spacing: -0.01em;">Family</div>
+      <div style="font-size: 10px; color: #888; margin-top: 2px;">Chores · screens · sibling rivalries</div>
+    </div>
+
+    <!-- Unselected: Work & Goals -->
+    <div style="background: #15151c; border: 2px solid transparent; border-radius: 14px; padding: 12px 12px;">
+      <div style="font-size: 26px; margin-bottom: 4px;">💼</div>
+      <div style="font-weight: 900; font-size: 14px; color: white; letter-spacing: -0.01em;">Goals</div>
+      <div style="font-size: 10px; color: #888; margin-top: 2px;">Work · learning · side projects</div>
+    </div>
+
+    <!-- Unselected: Couples -->
+    <div style="background: #15151c; border: 2px solid transparent; border-radius: 14px; padding: 12px 12px;">
+      <div style="font-size: 26px; margin-bottom: 4px;">💕</div>
+      <div style="font-weight: 900; font-size: 14px; color: white; letter-spacing: -0.01em;">Couples</div>
+      <div style="font-size: 10px; color: #888; margin-top: 2px;">Date nights · chores · habits</div>
+    </div>
+
+    <!-- Unselected: Travel -->
+    <div style="background: #15151c; border: 2px solid transparent; border-radius: 14px; padding: 12px 12px;">
+      <div style="font-size: 26px; margin-bottom: 4px;">✈️</div>
+      <div style="font-weight: 900; font-size: 14px; color: white; letter-spacing: -0.01em;">Travel</div>
+      <div style="font-size: 10px; color: #888; margin-top: 2px;">Adventures · stunts · per-trip</div>
+    </div>
+
+  </div>
+
+  <!-- Tone preference (secondary, smaller) -->
+  <div style="padding: 14px 20px 10px;">
+    <div style="font-size: 10px; font-weight: 900; color: #666; letter-spacing: 0.15em; margin-bottom: 8px;">PUNISHMENT VIBE</div>
+    <div style="display: flex; gap: 6px;">
+      <button style="flex: 1; background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 700; font-size: 10px; padding: 8px 0; border-radius: 10px; letter-spacing: 0.08em;">😇 KEEP IT TAME</button>
+      <button style="flex: 1; background: rgba(0,230,118,0.15); border: 1.5px solid #00E676; color: #00E676; font-weight: 900; font-size: 10px; padding: 8px 0; border-radius: 10px; letter-spacing: 0.08em;">😈 BRING THE PAIN</button>
+      <button style="flex: 1; background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 700; font-size: 10px; padding: 8px 0; border-radius: 10px; letter-spacing: 0.08em;">💀 NO MERCY</button>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div style="position: absolute; bottom: 24px; left: 20px; right: 20px;">
+    <button style="width: 100%; background: #00E676; color: #0A0A0F; font-weight: 900; font-size: 14px; padding: 16px; border: none; border-radius: 14px; letter-spacing: 0.12em; box-shadow: 0 0 0 5px rgba(0,230,118,0.18);">START BETTING →</button>
+    <div style="font-size: 10px; color: #666; text-align: center; margin-top: 8px;">We'll personalize your suggestions based on this</div>
+  </div>
+</div>
+</body>
+</html>

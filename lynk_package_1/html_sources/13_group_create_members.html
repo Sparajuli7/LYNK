@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0d14; font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 40px; }
+  .frame { width: 420px; height: 900px; background: #0A0A0F; border: 10px solid #1a1a22; border-radius: 54px; overflow: hidden; position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.5); }
+  .statusbar { height: 40px; background: #0A0A0F; display: flex; align-items: center; justify-content: space-between; padding: 0 32px 0 28px; font-size: 14px; color: white; font-weight: 600; }
+  .notch { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 120px; height: 32px; background: #000; border-radius: 0 0 18px 18px; z-index: 10; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="notch"></div>
+
+  <div class="statusbar">
+    <span>9:41</span>
+    <span style="display: flex; gap: 5px; align-items: center;">
+      <span style="font-size: 11px;">●●●</span>
+      <span style="display: inline-block; width: 18px; height: 11px; border: 1.5px solid white; border-radius: 3px; position: relative;"><span style="position: absolute; top: 1.5px; left: 1.5px; bottom: 1.5px; right: 5px; background: white;"></span></span>
+    </span>
+  </div>
+
+  <!-- Top bar -->
+  <div style="padding: 14px 20px 6px; display: flex; align-items: center; gap: 12px;">
+    <div style="width: 36px; height: 36px; border-radius: 50%; background: #15151c; display: flex; align-items: center; justify-content: center; color: #ccc; font-size: 18px;">‹</div>
+    <div style="flex: 1;">
+      <div style="font-size: 10px; color: #666; font-weight: 700; letter-spacing: 0.15em;">STEP 2 OF 3</div>
+      <div style="font-weight: 900; font-style: italic; font-size: 22px; color: white; letter-spacing: -0.04em; line-height: 1; margin-top: 2px;">ADD MEMBERS</div>
+    </div>
+    <button style="background: #00E676; color: #0A0A0F; font-weight: 900; font-size: 11px; padding: 8px 14px; border: none; border-radius: 20px; letter-spacing: 0.1em;">NEXT →</button>
+  </div>
+
+  <!-- Group preview row -->
+  <div style="padding: 10px 20px 14px;">
+    <div style="background: #15151c; border-radius: 10px; padding: 8px 12px; display: flex; align-items: center; gap: 10px; border-left: 3px solid #00E676;">
+      <div style="width: 34px; height: 34px; background: #2a1810; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px;">🔥</div>
+      <div style="flex: 1; min-width: 0;">
+        <div style="font-size: 12px; font-weight: 900; color: white;">The Weekend Warriors</div>
+        <div style="font-size: 10px; color: #00E676; font-weight: 700; letter-spacing: 0.1em;">NEW GROUP</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Selected pills (the chosen ones) -->
+  <div style="padding: 0 20px 10px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+      <span style="font-size: 10px; font-weight: 900; color: #00E676; letter-spacing: 0.15em;">SELECTED · 3</span>
+      <span style="font-size: 10px; color: #666; font-weight: 700;">min 2 · max 20</span>
+    </div>
+    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+      <div style="background: rgba(0,230,118,0.15); border: 1.5px solid #00E676; border-radius: 20px; padding: 4px 10px 4px 4px; display: flex; align-items: center; gap: 6px;">
+        <div style="width: 22px; height: 22px; border-radius: 50%; background: #2a2a35; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 10px;">E</div>
+        <span style="font-size: 11px; font-weight: 900; color: white;">Emma</span>
+        <span style="color: #00E676; font-size: 14px; line-height: 1;">×</span>
+      </div>
+      <div style="background: rgba(0,230,118,0.15); border: 1.5px solid #00E676; border-radius: 20px; padding: 4px 10px 4px 4px; display: flex; align-items: center; gap: 6px;">
+        <div style="width: 22px; height: 22px; border-radius: 50%; background: #2a2a35; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 10px;">S</div>
+        <span style="font-size: 11px; font-weight: 900; color: white;">Sam</span>
+        <span style="color: #00E676; font-size: 14px; line-height: 1;">×</span>
+      </div>
+      <div style="background: rgba(0,230,118,0.15); border: 1.5px solid #00E676; border-radius: 20px; padding: 4px 10px 4px 4px; display: flex; align-items: center; gap: 6px;">
+        <div style="width: 22px; height: 22px; border-radius: 50%; background: #2a2a35; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 10px;">A</div>
+        <span style="font-size: 11px; font-weight: 900; color: white;">Alex</span>
+        <span style="color: #00E676; font-size: 14px; line-height: 1;">×</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <div style="padding: 0 20px 12px;">
+    <div style="background: #15151c; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 8px;">
+      <span style="color: #666; font-size: 12px;">🔍</span>
+      <span style="font-size: 12px; color: #666;">Search friends or username...</span>
+    </div>
+  </div>
+
+  <!-- ADD FROM YOUR ROSTER section (the key entry point per your answer) -->
+  <div style="padding: 0 20px 8px; display: flex; justify-content: space-between; align-items: center;">
+    <div style="display: flex; align-items: center; gap: 6px;">
+      <span style="color: #00E676; font-size: 13px;">🤝</span>
+      <span style="font-weight: 900; font-style: italic; font-size: 13px; color: #00E676; letter-spacing: 0.15em;">FROM YOUR ROSTER · 12</span>
+    </div>
+    <span style="font-size: 10px; color: #666; font-weight: 700; letter-spacing: 0.1em;">SELECT ALL</span>
+  </div>
+
+  <!-- Roster rows with selection state -->
+  <div style="padding: 0 20px; display: flex; flex-direction: column; gap: 5px;">
+
+    <!-- Selected -->
+    <div style="background: rgba(0,230,118,0.06); border: 1px solid rgba(0,230,118,0.3); border-radius: 10px; padding: 8px 10px; display: flex; align-items: center; gap: 10px;">
+      <div style="width: 22px; height: 22px; border: 2px solid #00E676; background: #00E676; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #0A0A0F; font-weight: 900; font-size: 12px;">✓</div>
+      <div style="width: 34px; height: 34px; border-radius: 50%; background: #00E676; padding: 2px;">
+        <div style="width: 100%; height: 100%; border-radius: 50%; background: #2a2a35; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 12px;">E</div>
+      </div>
+      <div style="flex: 1; min-width: 0;">
+        <div style="display: flex; align-items: center; gap: 5px;">
+          <span style="font-weight: 900; font-size: 12px; color: white;">Emma Lee</span>
+          <span style="font-size: 10px;">🔥</span>
+        </div>
+        <div style="font-size: 9px; color: #00E676; font-weight: 700;">LIVE BET · 8W · 2L</div>
+      </div>
+    </div>
+
+    <!-- Selected -->
+    <div style="background: rgba(0,230,118,0.06); border: 1px solid rgba(0,230,118,0.3); border-radius: 10px; padding: 8px 10px; display: flex; align-items: center; gap: 10px;">
+      <div style="width: 22px; height: 22px; border: 2px solid #00E676; background: #00E676; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #0A0A0F; font-weight: 900; font-size: 12px;">✓</div>
+      <div style="width: 34px; height: 34px; border-radius: 50%; background: #333; padding: 2px;">
+        <div style="width: 100%; height: 100%; border-radius: 50%; background: #2a2a35; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 12px;">S</div>
+      </div>
+      <div style="flex: 1; min-width: 0;">
+        <span style="font-weight: 900; font-size: 12px; color: white;">Sam Park</span>
+        <div style="font-size: 9px; color: #888;">4W · 1L · Last bet 3d ago</div>
+      </div>
+    </div>
+
+    <!-- Selected -->
+    <div style="background: rgba(0,230,118,0.06); border: 1px solid rgba(0,230,118,0.3); border-radius: 10px; padding: 8px 10px; display: flex; align-items: center; gap: 10px;">
+      <div style="width: 22px; height: 22px; border: 2px solid #00E676; background: #00E676; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #0A0A0F; font-weight: 900; font-size: 12px;">✓</div>
+      <div style="width: 34px; height: 34px; border-radius: 50%; background: #333; padding: 2px;">
+        <div style="width: 100%; height: 100%; border-radius: 50%; background: #2a2a35; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 12px;">A</div>
+      </div>
+      <div style="flex: 1; min-width: 0;">
+        <span style="font-weight: 900; font-size: 12px; color: white;">Alex Chen</span>
+        <div style="font-size: 9px; color: #888;">6W · 2L · Last bet 1w ago</div>
+      </div>
+    </div>
+
+    <!-- Unselected (rival with H2H) -->
+    <div style="background: #15151c; border: 1px solid transparent; border-radius: 10px; padding: 8px 10px; display: flex; align-items: center; gap: 10px;">
+      <div style="width: 22px; height: 22px; border: 2px solid #444; border-radius: 6px; background: transparent;"></div>
+      <div style="width: 34px; height: 34px; border-radius: 50%; background: #FF3D57; padding: 2px;">
+        <div style="width: 100%; height: 100%; border-radius: 50%; background: #2a2a35; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 12px;">J</div>
+      </div>
+      <div style="flex: 1; min-width: 0;">
+        <div style="display: flex; align-items: center; gap: 5px;">
+          <span style="font-weight: 900; font-size: 12px; color: white;">Jake Reed</span>
+          <span style="background: rgba(255,61,87,0.15); color: #FF3D57; font-size: 7px; font-weight: 900; padding: 1px 4px; border-radius: 2px; letter-spacing: 0.1em;">RIVAL</span>
+        </div>
+        <div style="font-size: 9px; color: #FF3D57; font-weight: 700;">H2H: 1W · 3L · owes $15</div>
+      </div>
+    </div>
+
+    <!-- Unselected -->
+    <div style="background: #15151c; border: 1px solid transparent; border-radius: 10px; padding: 8px 10px; display: flex; align-items: center; gap: 10px;">
+      <div style="width: 22px; height: 22px; border: 2px solid #444; border-radius: 6px; background: transparent;"></div>
+      <div style="width: 34px; height: 34px; border-radius: 50%; background: #333; padding: 2px;">
+        <div style="width: 100%; height: 100%; border-radius: 50%; background: #2a2a35; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 12px;">M</div>
+      </div>
+      <div style="flex: 1; min-width: 0;">
+        <span style="font-weight: 900; font-size: 12px; color: white;">Maya Rod</span>
+        <div style="font-size: 9px; color: #888;">5W · 3L · Last bet 2d ago</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- OR divider -->
+  <div style="padding: 14px 20px 10px; display: flex; align-items: center; gap: 10px;">
+    <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.08);"></div>
+    <span style="font-size: 9px; color: #666; font-weight: 900; letter-spacing: 0.2em;">OR</span>
+    <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.08);"></div>
+  </div>
+
+  <!-- Alternate invite methods -->
+  <div style="padding: 0 20px 10px;">
+    <div style="display: flex; gap: 6px;">
+      <button style="flex: 1; background: #15151c; border: 1.5px dashed #444; color: #ccc; font-weight: 900; font-size: 11px; padding: 10px 6px; border-radius: 10px; letter-spacing: 0.08em; display: flex; flex-direction: column; align-items: center; gap: 3px;">
+        <span style="font-size: 18px;">🔗</span>
+        <span>INVITE LINK</span>
+      </button>
+      <button style="flex: 1; background: #15151c; border: 1.5px dashed #444; color: #ccc; font-weight: 900; font-size: 11px; padding: 10px 6px; border-radius: 10px; letter-spacing: 0.08em; display: flex; flex-direction: column; align-items: center; gap: 3px;">
+        <span style="font-size: 18px;">📱</span>
+        <span>CONTACTS</span>
+      </button>
+      <button style="flex: 1; background: #15151c; border: 1.5px dashed #444; color: #ccc; font-weight: 900; font-size: 11px; padding: 10px 6px; border-radius: 10px; letter-spacing: 0.08em; display: flex; flex-direction: column; align-items: center; gap: 3px;">
+        <span style="font-size: 18px;">@</span>
+        <span>USERNAME</span>
+      </button>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0d14; font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 40px; }
+  .frame { width: 420px; height: 900px; background: #0A0A0F; border: 10px solid #1a1a22; border-radius: 54px; overflow: hidden; position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.5); }
+  .statusbar { height: 40px; background: #0A0A0F; display: flex; align-items: center; justify-content: space-between; padding: 0 32px 0 28px; font-size: 14px; color: white; font-weight: 600; }
+  .notch { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 120px; height: 32px; background: #000; border-radius: 0 0 18px 18px; z-index: 10; }
+  .diagonal-grid {
+    background-image:
+      linear-gradient(45deg, rgba(255,61,87,0.03) 1px, transparent 1px),
+      linear-gradient(-45deg, rgba(255,61,87,0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+</style>
+</head>
+<body>
+<div class="frame diagonal-grid">
+  <div class="notch"></div>
+
+  <div class="statusbar">
+    <span>9:41</span>
+    <span style="display: flex; gap: 5px; align-items: center;">
+      <span style="font-size: 11px;">●●●</span>
+      <span style="display: inline-block; width: 18px; height: 11px; border: 1.5px solid white; border-radius: 3px; position: relative;"><span style="position: absolute; top: 1.5px; left: 1.5px; bottom: 1.5px; right: 5px; background: white;"></span></span>
+    </span>
+  </div>
+
+  <!-- Close button -->
+  <div style="padding: 14px 20px; display: flex; justify-content: flex-end;">
+    <div style="width: 32px; height: 32px; border-radius: 50%; background: #1a1a22; display: flex; align-items: center; justify-content: center; color: #888; font-size: 14px;">✕</div>
+  </div>
+
+  <!-- Pre-header label -->
+  <div style="padding: 10px 20px 4px; text-align: center;">
+    <div style="font-size: 11px; font-weight: 900; color: #FF3D57; letter-spacing: 0.25em;">● OUTCOME REVEALED</div>
+  </div>
+
+  <!-- Giant LOST stamp (cross-outs / defaced) -->
+  <div style="padding: 20px 20px 10px; display: flex; justify-content: center; position: relative;">
+    <div style="position: relative; display: inline-block; transform: rotate(3deg);">
+      <div style="border: 4px solid #FF3D57; border-radius: 12px; padding: 14px 36px; background: rgba(255,61,87,0.08); position: relative;">
+        <div style="border: 1.5px solid rgba(255,61,87,0.5); border-radius: 4px; padding: 8px 32px; text-align: center; position: relative; overflow: hidden;">
+          <!-- Diagonal slash -->
+          <div style="position: absolute; top: 50%; left: -10%; right: -10%; height: 2.5px; background: #FF3D57; transform: rotate(-8deg); opacity: 0.8; z-index: 1;"></div>
+          <div style="font-size: 12px; font-weight: 900; color: #FF3D57; letter-spacing: 0.3em; margin-bottom: 2px; position: relative; z-index: 2;">FORFEITED</div>
+          <div style="font-weight: 900; font-style: italic; font-size: 72px; color: #FF3D57; letter-spacing: -0.05em; line-height: 0.95; position: relative; z-index: 2;">LOST</div>
+          <div style="font-size: 11px; font-weight: 900; color: #FF3D57; letter-spacing: 0.3em; margin-top: 4px; font-family: 'SF Mono', ui-monospace, monospace; position: relative; z-index: 2;">#0241 · APR 23</div>
+        </div>
+      </div>
+      <div style="position: absolute; top: 8px; left: 8px; width: 6px; height: 6px; background: #FF3D57; border-radius: 50%;"></div>
+      <div style="position: absolute; top: 8px; right: 8px; width: 6px; height: 6px; background: #FF3D57; border-radius: 50%;"></div>
+      <div style="position: absolute; bottom: 8px; left: 8px; width: 6px; height: 6px; background: #FF3D57; border-radius: 50%;"></div>
+      <div style="position: absolute; bottom: 8px; right: 8px; width: 6px; height: 6px; background: #FF3D57; border-radius: 50%;"></div>
+    </div>
+  </div>
+
+  <!-- Bitter message -->
+  <div style="padding: 24px 20px 6px; text-align: center;">
+    <div style="font-weight: 900; font-style: italic; font-size: 22px; color: white; letter-spacing: -0.03em; line-height: 1.1;">You missed day 4. Pay up.</div>
+    <div style="font-size: 13px; color: #888; margin-top: 6px;">Final vote: 4 riders for, 4 doubters against · tie broken by proof</div>
+  </div>
+
+  <!-- Loss amount -->
+  <div style="padding: 20px 20px 14px; text-align: center;">
+    <div style="font-size: 10px; font-weight: 900; color: #FF3D57; letter-spacing: 0.25em; margin-bottom: 4px;">STAKE SURRENDERED</div>
+    <div style="font-family: 'SF Mono', ui-monospace, monospace; font-weight: 900; font-size: 48px; color: #FF3D57; letter-spacing: -0.04em; line-height: 1;">-$50.00</div>
+    <div style="font-size: 11px; color: #666; margin-top: 6px; font-family: 'SF Mono', ui-monospace, monospace;">Split among 4 doubters</div>
+  </div>
+
+  <!-- Punishment section -->
+  <div style="padding: 0 20px 14px;">
+    <div style="background: #1a0c10; border: 1.5px solid rgba(255,61,87,0.35); border-radius: 12px; padding: 14px 16px; position: relative; overflow: hidden;">
+      <!-- Warning tape stripe -->
+      <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: repeating-linear-gradient(-45deg, #FF3D57 0 6px, #1a0c10 6px 12px);"></div>
+      <div style="padding-top: 4px;">
+        <div style="font-size: 10px; font-weight: 900; color: #FF3D57; letter-spacing: 0.2em; margin-bottom: 6px;">⚠ YOUR PUNISHMENT</div>
+        <div style="font-weight: 900; font-size: 17px; color: white; line-height: 1.2; margin-bottom: 6px; letter-spacing: -0.01em;">Post a cringe karaoke video to the group chat</div>
+        <div style="font-size: 11px; color: #888; line-height: 1.4;">Deadline: <span style="color: #FF3D57; font-weight: 900;">72 hours</span> · Assigned by the Degenerates on Apr 23</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div style="position: absolute; bottom: 24px; left: 20px; right: 20px;">
+    <button style="width: 100%; background: #FF3D57; color: white; font-weight: 900; font-size: 14px; padding: 14px; border: none; border-radius: 14px; letter-spacing: 0.12em; margin-bottom: 10px; box-shadow: 0 0 0 5px rgba(255,61,87,0.18);">📸 SUBMIT PROOF OF PUNISHMENT</button>
+    <div style="display: flex; gap: 8px;">
+      <button style="flex: 1; background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 900; font-size: 12px; padding: 12px; border-radius: 12px; letter-spacing: 0.1em;">DEMAND REMATCH</button>
+      <button style="flex: 1; background: transparent; border: 1.5px solid #333; color: #888; font-weight: 700; font-size: 12px; padding: 12px; border-radius: 12px; letter-spacing: 0.1em;">ACCEPT SHAME</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -38,3 +38,4 @@ export { SuggestionCarousel } from "./SuggestionCarousel";
 export { SuggestionRow } from "./SuggestionRow";
 export { ShuffleBlock } from "./ShuffleBlock";
 export { SuggestionEmptyState } from "./SuggestionEmptyState";
+export { RematchSuggestions } from "./RematchSuggestions";

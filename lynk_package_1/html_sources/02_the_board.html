@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0d14; font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 40px; }
+  .frame { width: 420px; height: 900px; background: #0A0A0F; border: 10px solid #1a1a22; border-radius: 54px; overflow: hidden; position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.5); }
+  .statusbar { height: 40px; background: #0A0A0F; display: flex; align-items: center; justify-content: space-between; padding: 0 32px 0 28px; font-size: 14px; color: white; font-weight: 600; }
+  .notch { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 120px; height: 32px; background: #000; border-radius: 0 0 18px 18px; z-index: 10; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="notch"></div>
+
+  <div class="statusbar">
+    <span>9:41</span>
+    <span style="display: flex; gap: 5px; align-items: center;">
+      <span style="font-size: 11px;">●●●</span>
+      <span style="display: inline-block; width: 18px; height: 11px; border: 1.5px solid white; border-radius: 3px; position: relative;"><span style="position: absolute; top: 1.5px; left: 1.5px; bottom: 1.5px; right: 5px; background: white;"></span></span>
+    </span>
+  </div>
+
+  <!-- Header -->
+  <div style="padding: 18px 20px 8px;">
+    <div style="font-weight: 900; font-style: italic; font-size: 32px; color: white; letter-spacing: -0.04em; line-height: 1;">THE BOARD</div>
+    <div style="font-size: 13px; color: #888; margin-top: 5px;">Challenges. Competitions. Rematches.</div>
+  </div>
+
+  <!-- Create CTA -->
+  <div style="padding: 0 20px 14px;">
+    <button style="width: 100%; background: #00E676; color: #0A0A0F; font-weight: 900; font-size: 14px; padding: 14px; border: none; border-radius: 12px; letter-spacing: 0.12em; box-shadow: 0 0 0 5px rgba(0,230,118,0.18);">+ CREATE COMPETITION</button>
+  </div>
+
+  <!-- Filter pills -->
+  <div style="padding: 0 20px 14px; display: flex; gap: 7px; overflow: hidden;">
+    <button style="background: #00E676; color: #0A0A0F; font-weight: 900; font-size: 11px; padding: 6px 14px; border: none; border-radius: 16px; letter-spacing: 0.1em; white-space: nowrap;">ALL · 8</button>
+    <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 700; font-size: 11px; padding: 6px 14px; border-radius: 16px; letter-spacing: 0.1em; white-space: nowrap;">LIVE · 3</button>
+    <button style="background: rgba(245,158,11,0.15); border: 1.5px solid rgba(245,158,11,0.4); color: #F59E0B; font-weight: 700; font-size: 11px; padding: 6px 14px; border-radius: 16px; letter-spacing: 0.1em; white-space: nowrap;">VOTING · 2</button>
+    <button style="background: transparent; border: 1.5px solid #333; color: #ccc; font-weight: 700; font-size: 11px; padding: 6px 14px; border-radius: 16px; letter-spacing: 0.1em; white-space: nowrap;">SETTLED</button>
+  </div>
+
+  <!-- LIVE section header -->
+  <div style="padding: 4px 20px 8px; display: flex; justify-content: space-between; align-items: center;">
+    <div style="display: flex; align-items: center; gap: 7px;">
+      <span style="width: 8px; height: 8px; background: #00E676; border-radius: 50%; display: inline-block;"></span>
+      <span style="font-weight: 900; font-style: italic; font-size: 14px; color: #00E676; letter-spacing: 0.15em;">LIVE · 3</span>
+    </div>
+    <span style="font-size: 11px; color: #666; letter-spacing: 0.1em; font-weight: 700;">$420 AT STAKE</span>
+  </div>
+
+  <!-- Live ticket #1 -->
+  <div style="padding: 0 20px 8px;">
+    <div style="background: #15151c; border-radius: 12px; overflow: hidden;">
+      <div style="height: 6px; background: repeating-linear-gradient(90deg, #0A0A0F 0 4px, transparent 4px 8px);"></div>
+      <div style="padding: 12px 14px 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-size: 9px; font-weight: 700; color: #666; letter-spacing: 0.15em; font-family: 'SF Mono', ui-monospace, monospace;">#0243 · DEGENERATES 🔥</span>
+          <span style="font-size: 12px; color: #00E676; font-weight: 900; font-family: 'SF Mono', ui-monospace, monospace;">$120</span>
+        </div>
+        <div style="font-weight: 900; font-size: 16px; color: white; line-height: 1.15; margin-bottom: 10px;">I'll push 50 more commits 🏆</div>
+        <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: 900; letter-spacing: 0.05em; margin-bottom: 5px;">
+          <span style="color: #00E676;">RIDERS 75%</span>
+          <span style="color: #FF3D57;">25% DOUBTERS</span>
+        </div>
+        <div style="height: 6px; background: #FF3D57; border-radius: 2px; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 75%; background: #00E676;"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 10px; color: #666; margin-top: 5px;">
+          <span>6 riders · 2 doubters</span><span>⏱ 3d 14h left</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live ticket #2 -->
+  <div style="padding: 0 20px 8px;">
+    <div style="background: #15151c; border-radius: 12px; overflow: hidden;">
+      <div style="height: 6px; background: repeating-linear-gradient(90deg, #0A0A0F 0 4px, transparent 4px 8px);"></div>
+      <div style="padding: 12px 14px 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-size: 9px; font-weight: 700; color: #666; letter-spacing: 0.15em; font-family: 'SF Mono', ui-monospace, monospace;">#0241 · GYM RATS 💪</span>
+          <span style="font-size: 12px; color: #00E676; font-weight: 900; font-family: 'SF Mono', ui-monospace, monospace;">$80</span>
+        </div>
+        <div style="font-weight: 900; font-size: 16px; color: white; line-height: 1.15; margin-bottom: 10px;">I'll go to the gym 5 days this week</div>
+        <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: 900; letter-spacing: 0.05em; margin-bottom: 5px;">
+          <span style="color: #00E676;">RIDERS 50%</span>
+          <span style="color: #FF3D57;">50% DOUBTERS</span>
+        </div>
+        <div style="height: 6px; background: #FF3D57; border-radius: 2px; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 50%; background: #00E676;"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 10px; color: #666; margin-top: 5px;">
+          <span>4 riders · 4 doubters</span><span>⏱ 1d 6h left</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VOTE NOW section header -->
+  <div style="padding: 12px 20px 8px; display: flex; justify-content: space-between; align-items: center;">
+    <div style="display: flex; align-items: center; gap: 7px;">
+      <span style="width: 8px; height: 8px; background: #F59E0B; border-radius: 50%; display: inline-block;"></span>
+      <span style="font-weight: 900; font-style: italic; font-size: 14px; color: #F59E0B; letter-spacing: 0.15em;">VOTE NOW · 2</span>
+    </div>
+    <span style="font-size: 11px; color: #F59E0B; letter-spacing: 0.1em; font-weight: 700;">⏳ ENDS SOON</span>
+  </div>
+
+  <!-- Voting ticket -->
+  <div style="padding: 0 20px 10px;">
+    <div style="background: #1a1509; border: 1px solid rgba(245,158,11,0.3); border-radius: 12px; overflow: hidden;">
+      <div style="padding: 12px 14px 10px;">
+        <div style="font-size: 9px; font-weight: 700; color: #F59E0B; letter-spacing: 0.15em; margin-bottom: 5px; font-family: 'SF Mono', ui-monospace, monospace;">#0238 · CLAIM SUBMITTED</div>
+        <div style="font-weight: 900; font-size: 16px; color: white; line-height: 1.15; margin-bottom: 4px;">I read 30 minutes every day this week 📖</div>
+        <div style="font-size: 12px; color: #888; margin-bottom: 12px;">Claimed by @emmalee · proof attached</div>
+        <div style="display: flex; gap: 6px;">
+          <button style="flex: 1; background: rgba(0,230,118,0.15); color: #00E676; border: 1.5px solid #00E676; font-weight: 900; font-size: 11px; padding: 10px; border-radius: 8px; letter-spacing: 0.1em;">✓ RIDE · SHE DID</button>
+          <button style="flex: 1; background: rgba(255,61,87,0.1); color: #FF3D57; border: 1.5px solid #FF3D57; font-weight: 900; font-size: 11px; padding: 10px; border-radius: 8px; letter-spacing: 0.1em;">✗ DOUBT · CAP</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom nav -->
+  <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 68px; background: #0A0A0F; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-around; align-items: center; padding-bottom: 18px;">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+      <div style="width: 20px; height: 20px; border: 2px solid #666; border-radius: 3px; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; padding: 2px;">
+        <span style="background: #666;"></span><span style="background: #666;"></span>
+        <span style="background: #666;"></span><span style="background: #666;"></span>
+      </div>
+      <span style="font-size: 10px; color: #666; font-weight: 700; letter-spacing: 0.1em;">HOME</span>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; position: relative;">
+      <div style="width: 20px; height: 20px; border: 2px solid #00E676; border-radius: 3px;"></div>
+      <span style="font-size: 10px; color: #00E676; font-weight: 900; letter-spacing: 0.1em;">COMPETE</span>
+      <div style="position: absolute; bottom: -6px; width: 5px; height: 5px; background: #00E676; border-radius: 50%;"></div>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+      <div style="width: 20px; height: 20px; border: 2px solid #666; border-radius: 3px;"></div>
+      <span style="font-size: 10px; color: #666; font-weight: 700; letter-spacing: 0.1em;">JOURNAL</span>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+      <div style="width: 20px; height: 20px; border: 2px solid #666; border-radius: 50%;"></div>
+      <span style="font-size: 10px; color: #666; font-weight: 700; letter-spacing: 0.1em;">PROFILE</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
