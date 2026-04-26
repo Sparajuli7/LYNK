@@ -177,6 +177,9 @@ export function CompetitionCreateScreen() {
   const [creatorSide, setCreatorSide] = useState<'rider' | 'doubter' | null>(null)
   const [templatesOpen, setTemplatesOpen] = useState(false)
   const [step1Error, setStep1Error] = useState<string | null>(null)
+  /** Currently selected template (for slot editing) */
+  const [activeTemplate, setActiveTemplate] = useState<BetTemplate | null>(null)
+  const [slotValues, setSlotValues] = useState<Record<string, string | number>>({})
 
   // Step 2
   const [selectedGroup, setSelectedGroup] = useState<{ id: string; name: string; invite_code: string } | null>(null)
@@ -495,14 +498,67 @@ export function CompetitionCreateScreen() {
                     Browse challenges
                   </button>
                 </div>
-                <textarea
-                  value={metric}
-                  onChange={(e) => setMetric(e.target.value.slice(0, 200))}
-                  placeholder="Describe the challenge… e.g. Who can do the most gym sessions this month?"
-                  className="w-full h-28 rounded-xl bg-bg-elevated border border-border-subtle p-4 text-text-primary placeholder:text-text-muted resize-none text-sm"
-                  maxLength={200}
-                />
-                <p className="text-right text-xs text-text-muted mt-1">{metric.length}/200</p>
+                {activeTemplate?.templateSlots?.length ? (
+                  <>
+                    <div className="w-full min-h-[7rem] rounded-xl bg-bg-elevated border border-accent-green/40 p-4 text-text-primary text-sm leading-relaxed">
+                      {(() => {
+                        const source = activeTemplate.template ?? activeTemplate.title
+                        const parts = source.split(/(\{[^}]+\})/)
+                        return parts.map((part, i) => {
+                          const match = part.match(/^\{(.+)\}$/)
+                          if (!match) return <span key={i}>{part}</span>
+                          const key = match[1]
+                          const slot = activeTemplate.templateSlots!.find((s) => s.key === key)
+                          const val = slotValues[key] ?? slot?.default ?? key
+                          return (
+                            <input
+                              key={i}
+                              type={slot?.type === 'number' ? 'number' : 'text'}
+                              value={val}
+                              min={slot?.min}
+                              max={slot?.max}
+                              onChange={(e) => {
+                                let newVal: string | number = e.target.value
+                                if (slot?.type === 'number') {
+                                  const n = parseInt(e.target.value, 10)
+                                  if (!isNaN(n)) newVal = Math.min(Math.max(n, slot.min ?? 0), slot.max ?? 999)
+                                  else return
+                                }
+                                const newVals = { ...slotValues, [key]: newVal }
+                                setSlotValues(newVals)
+                                let resolved = source
+                                for (const [k, v] of Object.entries(newVals)) resolved = resolved.replace(`{${k}}`, String(v))
+                                setMetric(resolved)
+                              }}
+                              className="inline-block w-12 bg-accent-green/20 text-accent-green font-black text-center text-sm border border-accent-green/50 rounded-md px-1 py-0.5 mx-1 outline-none focus:border-accent-green transition-colors"
+                              style={{ width: `${Math.max(String(val).length * 10 + 16, 40)}px` }}
+                            />
+                          )
+                        })
+                      })()}
+                    </div>
+                    <div className="flex justify-between mt-1">
+                      <button
+                        onClick={() => { setActiveTemplate(null); setSlotValues({}) }}
+                        className="text-xs text-text-muted hover:text-text-primary"
+                      >
+                        Switch to free text
+                      </button>
+                      <p className="text-xs text-text-muted">{metric.length}/200</p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <textarea
+                      value={metric}
+                      onChange={(e) => setMetric(e.target.value.slice(0, 200))}
+                      placeholder="Describe the challenge... e.g. Who can do the most gym sessions this month?"
+                      className="w-full h-28 rounded-xl bg-bg-elevated border border-border-subtle p-4 text-text-primary placeholder:text-text-muted resize-none text-sm"
+                      maxLength={200}
+                    />
+                    <p className="text-right text-xs text-text-muted mt-1">{metric.length}/200</p>
+                  </>
+                )}
               </div>
 
               {/* Rider / Doubter side picker */}
@@ -1076,7 +1132,15 @@ export function CompetitionCreateScreen() {
         onOpenChange={setTemplatesOpen}
         onSelect={(text, template) => {
           setMetric(text)
-          if (!title) setTitle(template.title)
+          if (!title) setTitle(resolveTemplateTitle(template))
+          setActiveTemplate(template.templateSlots?.length ? template : null)
+          if (template.templateSlots?.length) {
+            const vals: Record<string, string | number> = {}
+            for (const slot of template.templateSlots) vals[slot.key] = slot.default
+            setSlotValues(vals)
+          } else {
+            setSlotValues({})
+          }
         }}
       />
 
