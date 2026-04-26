@@ -311,7 +311,7 @@ export function QuickBetSheet({ open, onClose, groups, onSubmit, prefillTemplate
                       </span>
                     </div>
                     <button
-                      onClick={() => navigate('/suggestions')}
+                      onClick={() => { onClose(); setTimeout(() => navigate('/suggestions'), 300) }}
                       className="text-[11px] text-text-dim font-bold tracking-[0.1em]"
                     >
                       SEE ALL {'\u203A'}
