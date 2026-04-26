@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router'
-import { Copy, LogOut, MessageCircle, Share2, Search, UserPlus, Plus } from 'lucide-react'
+import { Copy, Check, LogOut, MessageCircle, Share2, Search, UserPlus, Plus } from 'lucide-react'
 import { BackButton } from '@/app/components/BackButton'
 import { useGroupStore, useAuthStore, useChatStore } from '@/stores'
 import { getGroupBets } from '@/lib/api/bets'
@@ -266,9 +266,13 @@ export function GroupDetailScreen() {
     setInvitingId(null)
   }
 
+  const [inviteCopied, setInviteCopied] = useState(false)
+
   const handleCopyInvite = () => {
     if (group?.invite_code) {
       navigator.clipboard.writeText(getGroupInviteUrl(group.invite_code))
+      setInviteCopied(true)
+      setTimeout(() => setInviteCopied(false), 2000)
     }
   }
 
@@ -434,10 +438,14 @@ export function GroupDetailScreen() {
             />
             <button
               onClick={handleCopyInvite}
-              className="p-2 rounded-lg bg-accent-green/20 text-accent-green hover:bg-accent-green/30 transition-colors"
-              aria-label="Copy link"
+              className={`p-2 rounded-lg transition-colors ${
+                inviteCopied
+                  ? 'bg-accent-green text-white'
+                  : 'bg-accent-green/20 text-accent-green hover:bg-accent-green/30'
+              }`}
+              aria-label={inviteCopied ? 'Copied' : 'Copy link'}
             >
-              <Copy className="w-4 h-4" />
+              {inviteCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             </button>
           </div>
           <button

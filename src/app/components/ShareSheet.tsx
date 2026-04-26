@@ -114,10 +114,20 @@ export function ShareSheet({
     }
   }
 
+  const [copied, setCopied] = useState(false)
+
   const handleCopy = async () => {
     const ok = await copyToClipboard(fullText)
-    if (ok) onCopied?.()
-    closeAndNotify()
+    if (ok) {
+      setCopied(true)
+      onCopied?.()
+      setTimeout(() => {
+        setCopied(false)
+        closeAndNotify()
+      }, 800)
+    } else {
+      closeAndNotify()
+    }
   }
 
   const btnClass =
@@ -169,9 +179,9 @@ export function ShareSheet({
             <MessageSquare className="w-5 h-5 text-text-primary" aria-hidden />
             Send via SMS
           </button>
-          <button type="button" onClick={handleCopy} className={btnClass}>
-            <span className="text-xl" aria-hidden></span>
-            Copy link
+          <button type="button" onClick={handleCopy} className={`${btnClass} ${copied ? '!bg-accent-green/20 !text-accent-green' : ''}`}>
+            <span className="text-xl" aria-hidden>{copied ? '\u2713' : '\uD83D\uDCCB'}</span>
+            {copied ? 'Copied!' : 'Copy link'}
           </button>
         </div>
       </DialogContent>

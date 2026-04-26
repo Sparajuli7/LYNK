@@ -49,9 +49,13 @@ export function GroupCreateScreen() {
   const inviteLink = createdGroup ? getGroupInviteUrl(createdGroup.invite_code) : ''
   const shareText = createdGroup ? getGroupInviteShareText(createdGroup.name) : ''
 
+  const [linkCopied, setLinkCopied] = useState(false)
+
   const handleCopyLink = () => {
     if (inviteLink) {
       navigator.clipboard.writeText(inviteLink)
+      setLinkCopied(true)
+      setTimeout(() => setLinkCopied(false), 2000)
     }
   }
 
@@ -86,9 +90,13 @@ export function GroupCreateScreen() {
               <Button
                 onClick={handleCopyLink}
                 variant="outline"
-                className="flex-1 rounded-xl border-accent-green text-accent-green hover:bg-accent-green/10"
+                className={`flex-1 rounded-xl transition-colors ${
+                  linkCopied
+                    ? 'border-accent-green bg-accent-green text-white hover:bg-accent-green'
+                    : 'border-accent-green text-accent-green hover:bg-accent-green/10'
+                }`}
               >
-                Copy Link
+                {linkCopied ? '\u2713 Copied!' : 'Copy Link'}
               </Button>
               <Button
                 onClick={handleShare}
