@@ -1,6 +1,6 @@
 import { formatMoney } from '@/lib/utils/formatters'
 import { SignalLabel } from './SignalLabel'
-import type { RankedSuggestion } from '@/lib/suggestions'
+import { resolveTitle, type RankedSuggestion } from '@/lib/suggestions'
 
 interface SuggestionCardProps {
   suggestion: RankedSuggestion
@@ -36,7 +36,7 @@ export function SuggestionCard({ suggestion, onUse, onLongPress }: SuggestionCar
       </div>
 
       <div className="font-black text-[14px] text-text leading-[1.2] tracking-[-0.01em] mb-2">
-        {template.title}
+        {resolveTitle(template)}
       </div>
 
       {contextLine && (

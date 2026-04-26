@@ -1,5 +1,5 @@
+import { CATEGORY_META, resolveTitle } from '@/lib/suggestions'
 import type { BetTemplate } from '@/lib/suggestions'
-import { CATEGORY_META } from '@/lib/suggestions'
 
 interface SuggestionRowProps {
   template: BetTemplate
@@ -19,7 +19,7 @@ export function SuggestionRow({ template, subtitle, onUse, highlight = false }: 
       </div>
       <div className="flex-1 min-w-0">
         <div className="font-black text-[12px] text-text leading-[1.2]">
-          {template.title}
+          {resolveTitle(template)}
         </div>
         <div className="text-[9px] text-text-dim mt-0.5">
           {subtitle ?? defaultSubtitle}

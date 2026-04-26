@@ -38,6 +38,17 @@ export function searchTemplates(query: string): BetTemplate[] {
   })
 }
 
+/** Replace {key} slots with their default values in a template title */
+export function resolveTitle(template: BetTemplate): string {
+  let text = template.title
+  if (template.templateSlots) {
+    for (const slot of template.templateSlots) {
+      text = text.replace(`{${slot.key}}`, String(slot.default))
+    }
+  }
+  return text
+}
+
 export function getCatalogStats() {
   const byCategory = indexByCategory()
   return {

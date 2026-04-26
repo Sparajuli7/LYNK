@@ -42,6 +42,45 @@ import type { JoinMode } from '@/lib/database.types'
 import { getAllTemplates, getTemplatesByCategory, CATEGORY_META, type BetCategory, type BetTemplate } from '@/lib/suggestions'
 import { useSuggestionStore } from '@/stores'
 
+/** Replace {key} slots with their default values */
+function resolveTemplateTitle(template: BetTemplate): string {
+  let text = template.title
+  if (template.templateSlots) {
+    for (const slot of template.templateSlots) {
+      text = text.replace(`{${slot.key}}`, String(slot.default))
+    }
+  }
+  return text
+}
+
+/** Display title with slot values shown as styled chips */
+function TemplateTitle({ template }: { template: BetTemplate }) {
+  if (!template.templateSlots || template.templateSlots.length === 0) {
+    return <>{template.title}</>
+  }
+  const source = template.template ?? template.title
+  const parts = source.split(/(\{[^}]+\})/)
+  return (
+    <>
+      {parts.map((part, i) => {
+        const match = part.match(/^\{(.+)\}$/)
+        if (!match) return <span key={i}>{part}</span>
+        const key = match[1]
+        const slot = template.templateSlots!.find((s) => s.key === key)
+        const val = slot ? String(slot.default) : key
+        return (
+          <span
+            key={i}
+            className="inline-block bg-accent-green/20 text-accent-green font-black px-1.5 py-0 rounded mx-0.5 text-xs"
+          >
+            {val}
+          </span>
+        )
+      })}
+    </>
+  )
+}
+
 function BrowseSuggestionsDialog({
   open,
   onOpenChange,
@@ -100,7 +139,7 @@ function BrowseSuggestionsDialog({
               <button
                 key={t.id}
                 onClick={() => {
-                  onSelect(t.title, t)
+                  onSelect(resolveTemplateTitle(t), t)
                   onOpenChange(false)
                 }}
                 className="w-full text-left p-3 rounded-xl bg-bg-elevated hover:bg-accent-green/20 hover:text-accent-green transition-colors group flex items-center gap-2.5"
@@ -108,7 +147,7 @@ function BrowseSuggestionsDialog({
                 <span className="text-lg shrink-0">{t.emoji}</span>
                 <div className="min-w-0 flex-1">
                   <p className="font-bold text-sm text-text-primary group-hover:text-accent-green leading-tight">
-                    {t.title}
+                    <TemplateTitle template={t} />
                   </p>
                   <p className="text-xs text-text-muted mt-0.5">
                     {CATEGORY_META[t.category].label} {'\u00B7'} ${t.suggestedStakeCents / 100} {'\u00B7'} {t.suggestedDurationDays}d
