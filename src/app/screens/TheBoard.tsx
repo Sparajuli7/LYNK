@@ -392,6 +392,7 @@ export function TheBoard() {
             action={
               <button
                 onClick={() => navigate('/compete/create')}
+                data-tour="place-bet"
                 className="bg-rider text-bg font-black text-[12px] px-4 py-2 rounded-full tracking-[0.08em]"
               >
                 + PLACE BET
@@ -472,7 +473,7 @@ export function TheBoard() {
         </div>
 
         {/* ── 3. MY GROUPS Section ── */}
-        <div className="px-5 pt-5 pb-4">
+        <div className="px-5 pt-5 pb-4" data-tour="my-groups">
           <SectionHeader
             title="MY GROUPS"
             meta={`${groups.length} ACTIVE · ${totalFriends} FRIENDS`}

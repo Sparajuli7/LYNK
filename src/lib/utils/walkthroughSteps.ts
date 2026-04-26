@@ -1,61 +1,56 @@
 export interface WalkthroughStep {
   id: string
-  emoji: string
+  /** CSS selector for the element to highlight — tooltip points at this */
+  target?: string
+  /** Which edge of the target to place the tooltip */
+  placement: 'top' | 'bottom' | 'center'
   title: string
   description: string
-  hint?: string
+  /** If set, tapping the CTA navigates here instead of advancing */
+  navigateTo?: string
+  /** CTA label. Default: "Next" */
+  cta?: string
 }
 
-/**
- * Walkthrough step definitions.
- * Edit this array to customize the onboarding walkthrough content.
- * Add, remove, or reorder steps — the overlay renders them dynamically.
- */
 export const WALKTHROUGH_STEPS: WalkthroughStep[] = [
   {
     id: 'welcome',
-    emoji: '🔥',
+    placement: 'center',
     title: 'Welcome to LYNK',
-    description:
-      'The social betting app where friend groups make claims, pick sides, and face the consequences.',
+    description: 'Bet on your friends. Ride or doubt. Losers face the consequences.',
+    cta: 'Show me around',
   },
   {
-    id: 'riders-doubters',
-    emoji: '🤝 vs 💀',
-    title: 'Riders vs Doubters',
-    description:
-      'Every bet has two sides. Ride with someone (bet they succeed) or doubt them (bet they fail).',
-    hint: 'The odds shift as more people pick sides.',
+    id: 'create-group',
+    target: '[data-tour="my-groups"]',
+    placement: 'top',
+    title: 'Start with a group',
+    description: 'Every bet happens inside a group. Create one and invite your crew.',
+    cta: 'Create a group',
+    navigateTo: '/group/create',
   },
   {
-    id: 'groups',
-    emoji: '👥',
-    title: 'Build Your Crew',
-    description:
-      'Create a group and invite your friends. All bets happen inside groups.',
-    hint: 'Tap "Create" or "Join" on the home screen to get started.',
+    id: 'place-bet',
+    target: '[data-tour="place-bet"]',
+    placement: 'top',
+    title: 'Place your first bet',
+    description: 'Tap here to make a claim. Pick from 320+ challenges or write your own.',
+    cta: 'Got it',
   },
   {
-    id: 'bets',
-    emoji: '🎯',
-    title: 'Make a Claim',
-    description:
-      'Bet on anything — fitness goals, dares, challenges. Set a deadline and pick your stakes.',
-    hint: 'Hit the green + button to drop your first bet.',
+    id: 'compete-tab',
+    target: '[data-tour="nav-compete"]',
+    placement: 'top',
+    title: 'Competitions & challenges',
+    description: 'Head here to create group competitions and see active bets to vote on.',
+    cta: 'Got it',
   },
   {
-    id: 'competitions',
-    emoji: '🏆',
-    title: 'Competitions',
-    description:
-      'Challenge your whole group. Whoever scores highest wins — losers face the forfeit.',
-    hint: 'Find competitions in the trophy tab at the bottom.',
-  },
-  {
-    id: 'stakes',
-    emoji: '💵🔥',
-    title: 'Stakes & Forfeits',
-    description:
-      'Put money on it, pick a punishment, or both. Losers pay up or face the Hall of Shame.',
+    id: 'add-friends',
+    target: '[data-tour="nav-profile"]',
+    placement: 'top',
+    title: 'Add your friends',
+    description: 'Go to your profile to add friends, share your invite link, and build your roster.',
+    cta: "Let's go!",
   },
 ]

@@ -78,6 +78,7 @@ export function AppLayout() {
             <button
               key={item.id}
               onClick={() => navigate(item.path)}
+              data-tour={`nav-${item.id}`}
               className={`flex flex-col items-center gap-0.5 transition-all`}
             >
               <Icon
