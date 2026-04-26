@@ -4,7 +4,7 @@ import { motion } from 'motion/react'
 import { Trophy, Lock, Users, User, DollarSign, ChevronDown } from 'lucide-react'
 import { getCompetitionsForUser, getLeaderboard } from '@/lib/api/competitions'
 import { getMyBets } from '@/lib/api/bets'
-import { getVotedBetIds } from '@/lib/api/proofs'
+import { getVotedBetIds, getProofsForBet, voteOnProof } from '@/lib/api/proofs'
 import { formatMoney } from '@/lib/utils/formatters'
 import type { Bet } from '@/lib/database.types'
 import type { LeaderboardEntry } from '@/lib/api/competitions'
@@ -534,15 +534,36 @@ function LiveCompetitionCard({ competition, leaderboard, userId, onView }: Compe
 }
 
 /** ── VOTING card ── */
-function VotingCard({ bet, groups, onView, alreadyVoted = false }: ChallengeCardProps & { alreadyVoted?: boolean }) {
+function VotingCard({ bet, groups, onView, alreadyVoted = false, onVoted }: ChallengeCardProps & { alreadyVoted?: boolean; onVoted?: () => void }) {
   const betGroup = groups.find((g) => g.id === bet.group_id)
   const shortId = bet.id.slice(0, 4).toUpperCase()
+  const [voting, setVoting] = useState(false)
+  const [voted, setVoted] = useState(alreadyVoted)
+
+  const castVote = async (choice: 'confirm' | 'dispute') => {
+    setVoting(true)
+    try {
+      const proofs = await getProofsForBet(bet.id)
+      if (proofs.length === 0) {
+        onView()
+        return
+      }
+      await voteOnProof(proofs[0].id, choice)
+      setVoted(true)
+      onVoted?.()
+    } catch {
+      // On error, navigate to detail page where they can retry
+      onView()
+    } finally {
+      setVoting(false)
+    }
+  }
 
   return (
     <div
       onClick={onView}
       className={`border-[1.5px] rounded-xl cursor-pointer overflow-hidden transition-transform active:scale-[0.98] ${
-        alreadyVoted
+        voted
           ? 'bg-surface border-border-hi'
           : 'bg-warning-dim border-warning/30'
       }`}
@@ -556,7 +577,7 @@ function VotingCard({ bet, groups, onView, alreadyVoted = false }: ChallengeCard
           {bet.title}
         </h3>
 
-        {alreadyVoted ? (
+        {voted ? (
           <div className="flex items-center gap-1.5 mt-2">
             <span className="text-[12px] text-text-dim">{'\u2713'} You voted — awaiting result</span>
           </div>
@@ -567,16 +588,18 @@ function VotingCard({ bet, groups, onView, alreadyVoted = false }: ChallengeCard
             </p>
             <div className="flex gap-2">
               <button
-                onClick={(e) => { e.stopPropagation(); onView() }}
-                className="flex-1 bg-rider-dim border-[1.5px] border-rider text-rider font-black text-[11px] tracking-[0.06em] py-2.5 rounded-lg active:scale-[0.97] transition-transform"
+                disabled={voting}
+                onClick={(e) => { e.stopPropagation(); castVote('confirm') }}
+                className="flex-1 bg-rider-dim border-[1.5px] border-rider text-rider font-black text-[11px] tracking-[0.06em] py-2.5 rounded-lg active:scale-[0.97] transition-transform disabled:opacity-50"
               >
-                RIDE
+                {voting ? '...' : 'RIDE'}
               </button>
               <button
-                onClick={(e) => { e.stopPropagation(); onView() }}
-                className="flex-1 bg-doubter-dim border-[1.5px] border-doubter text-doubter font-black text-[11px] tracking-[0.06em] py-2.5 rounded-lg active:scale-[0.97] transition-transform"
+                disabled={voting}
+                onClick={(e) => { e.stopPropagation(); castVote('dispute') }}
+                className="flex-1 bg-doubter-dim border-[1.5px] border-doubter text-doubter font-black text-[11px] tracking-[0.06em] py-2.5 rounded-lg active:scale-[0.97] transition-transform disabled:opacity-50"
               >
-                DOUBT
+                {voting ? '...' : 'DOUBT'}
               </button>
             </div>
           </>
