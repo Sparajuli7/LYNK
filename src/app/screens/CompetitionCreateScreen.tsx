@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { useNavigate, useLocation } from 'react-router'
 import { ChevronLeft, Shuffle, BookOpen, UserPlus, Check } from 'lucide-react'
 import { format } from 'date-fns'
@@ -8,7 +8,7 @@ import { createCompetition } from '@/lib/api/competitions'
 import { getGroupMembersWithProfiles, getAllGroupMembersForUser } from '@/lib/api/groups'
 import { getApprovedPunishments, createPunishment } from '@/lib/api/punishments'
 import { getBetDetail } from '@/lib/api/bets'
-import { STAKE_PRESETS, COMPETITION_TEMPLATES } from '@/lib/utils/constants'
+import { STAKE_PRESETS } from '@/lib/utils/constants'
 import { formatMoney } from '@/lib/utils/formatters'
 import type { StakeType, PunishmentCard, Bet } from '@/lib/database.types'
 import type { GroupMemberWithProfile } from '@/lib/api/groups'
@@ -37,16 +37,91 @@ import {
   canUseNativeShare,
   copyToClipboard,
 } from '@/lib/share'
-import { JoinModeSelector } from '@/components/lynk'
+import { JoinModeSelector, CategoryPillBar } from '@/components/lynk'
 import type { JoinMode } from '@/lib/database.types'
+import { getAllTemplates, getTemplatesByCategory, CATEGORY_META, type BetCategory, type BetTemplate } from '@/lib/suggestions'
+import { useSuggestionStore } from '@/stores'
 
-const METRIC_STRUCTURES = [
-  (fill: string) => `Who can ${fill} the most?`,
-  (fill: string) => `Who can ${fill} the fastest?`,
-  (fill: string) => `Who can ${fill} the least?`,
-  (fill: string) => `Most ${fill} wins`,
-  (fill: string) => `Highest ${fill} wins`,
-]
+function BrowseSuggestionsDialog({
+  open,
+  onOpenChange,
+  onSelect,
+}: {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  onSelect: (title: string, template: BetTemplate) => void
+}) {
+  const [query, setQuery] = useState('')
+  const [filterCat, setFilterCat] = useState<BetCategory | null>(null)
+  const preferences = useSuggestionStore((s) => s.preferences)
+
+  const filtered = useMemo(() => {
+    let pool = filterCat ? getTemplatesByCategory(filterCat) : getAllTemplates()
+    if (preferences?.punishmentVibe === 'tame') pool = pool.filter((t) => !t.matureFlag)
+    if (query.trim()) {
+      const words = query.toLowerCase().split(/\s+/).filter(Boolean)
+      pool = pool.filter((t) => {
+        const hay = `${t.title} ${t.category} ${t.tags.join(' ')}`.toLowerCase()
+        return words.some((w) => hay.includes(w))
+      })
+    }
+    return pool.sort((a, b) => b.popularityScore - a.popularityScore).slice(0, 50)
+  }, [query, filterCat, preferences])
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-md max-h-[80vh] flex flex-col overflow-hidden">
+        <DialogHeader>
+          <DialogTitle>Browse challenges</DialogTitle>
+        </DialogHeader>
+        <p className="text-xs text-text-muted -mt-2 mb-2">
+          320 ideas across 8 categories. Tap to use.
+        </p>
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search by name, category, or tag..."
+          className="w-full rounded-lg bg-bg-elevated border border-border-subtle px-3 py-2 text-sm text-text-primary placeholder:text-text-muted outline-none mb-2"
+        />
+        <div className="mb-2 -mx-1 px-1">
+          <CategoryPillBar
+            selected={filterCat}
+            onSelect={setFilterCat}
+            allLabel="ALL"
+            compact
+          />
+        </div>
+        <div className="flex-1 overflow-y-auto space-y-1.5 -mx-1 px-1">
+          {filtered.length === 0 ? (
+            <p className="text-sm text-text-muted text-center py-6">No matches. Try a different search.</p>
+          ) : (
+            filtered.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => {
+                  onSelect(t.title, t)
+                  onOpenChange(false)
+                }}
+                className="w-full text-left p-3 rounded-xl bg-bg-elevated hover:bg-accent-green/20 hover:text-accent-green transition-colors group flex items-center gap-2.5"
+              >
+                <span className="text-lg shrink-0">{t.emoji}</span>
+                <div className="min-w-0 flex-1">
+                  <p className="font-bold text-sm text-text-primary group-hover:text-accent-green leading-tight">
+                    {t.title}
+                  </p>
+                  <p className="text-xs text-text-muted mt-0.5">
+                    {CATEGORY_META[t.category].label} {'\u00B7'} ${t.suggestedStakeCents / 100} {'\u00B7'} {t.suggestedDurationDays}d
+                  </p>
+                </div>
+              </button>
+            ))
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}
 
 export function CompetitionCreateScreen() {
   const navigate = useNavigate()
@@ -378,7 +453,7 @@ export function CompetitionCreateScreen() {
                     onClick={() => setTemplatesOpen(true)}
                     className="text-xs font-bold text-accent-green flex items-center gap-1"
                   >
-                    Browse structures
+                    Browse challenges
                   </button>
                 </div>
                 <textarea
@@ -956,37 +1031,15 @@ export function CompetitionCreateScreen() {
         </AnimatePresence>
       </div>
 
-      {/* ─── Browse structures dialog ─── */}
-      <Dialog open={templatesOpen} onOpenChange={setTemplatesOpen}>
-        <DialogContent className="max-w-md max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Challenge structures</DialogTitle>
-          </DialogHeader>
-          <p className="text-xs text-text-muted -mt-2 mb-3">
-            Pick a starting format — then edit it to fit your competition.
-          </p>
-          <div className="space-y-2">
-            {COMPETITION_TEMPLATES.map((t) => {
-              const challengeText = METRIC_STRUCTURES[t.metricTemplateIdx]?.(t.fill) ?? t.fill
-              return (
-                <button
-                  key={t.title}
-                  onClick={() => {
-                    setMetric(challengeText)
-                    setTemplatesOpen(false)
-                  }}
-                  className="w-full text-left p-3 rounded-xl bg-bg-elevated hover:bg-accent-green/20 hover:text-accent-green transition-colors group"
-                >
-                  <p className="font-bold text-sm text-text-primary group-hover:text-accent-green">
-                    {challengeText}
-                  </p>
-                  <p className="text-xs text-text-muted mt-0.5">{t.title}</p>
-                </button>
-              )
-            })}
-          </div>
-        </DialogContent>
-      </Dialog>
+      {/* ─── Browse challenges dialog ─── */}
+      <BrowseSuggestionsDialog
+        open={templatesOpen}
+        onOpenChange={setTemplatesOpen}
+        onSelect={(text, template) => {
+          setMetric(text)
+          if (!title) setTitle(template.title)
+        }}
+      />
 
       {/* ─── Punishment library dialog ─── */}
       <Dialog open={libraryOpen} onOpenChange={setLibraryOpen}>
