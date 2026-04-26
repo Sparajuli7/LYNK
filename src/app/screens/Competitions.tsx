@@ -4,6 +4,7 @@ import { motion } from 'motion/react'
 import { Trophy, Lock, Users, User, DollarSign, ChevronDown } from 'lucide-react'
 import { getCompetitionsForUser, getLeaderboard } from '@/lib/api/competitions'
 import { getMyBets } from '@/lib/api/bets'
+import { getVotedBetIds } from '@/lib/api/proofs'
 import { formatMoney } from '@/lib/utils/formatters'
 import type { Bet } from '@/lib/database.types'
 import type { LeaderboardEntry } from '@/lib/api/competitions'
@@ -117,6 +118,7 @@ export function Competitions() {
   const [isLoading, setIsLoading] = useState(true)
   const [filter, setFilter] = useState<FilterTab>('all')
   const [settledExpanded, setSettledExpanded] = useState(false)
+  const [alreadyVotedIds, setAlreadyVotedIds] = useState<Set<string>>(new Set())
 
   useEffect(() => { fetchGroups() }, [fetchGroups])
 
@@ -127,9 +129,18 @@ export function Competitions() {
         user ? getMyBets(user.id) : Promise.resolve([]),
       ])
       setCompetitions(comps)
-      // Show non-competition bets (quick, long, etc.) that the user is in
       const compIds = new Set(comps.map((c) => c.id))
-      setChallengeBets(myBets.filter((b) => b.bet_type !== 'competition' && !compIds.has(b.id)))
+      const challenges = myBets.filter((b) => b.bet_type !== 'competition' && !compIds.has(b.id))
+      setChallengeBets(challenges)
+
+      // Check which proof_submitted bets the user has already voted on
+      if (user) {
+        const votingBetIds = challenges
+          .filter((b) => b.status === 'proof_submitted' || b.status === 'disputed')
+          .map((b) => b.id)
+        const voted = await getVotedBetIds(votingBetIds, user.id)
+        setAlreadyVotedIds(voted)
+      }
       setIsLoading(false)
     }
     fetchAll()
@@ -155,7 +166,9 @@ export function Competitions() {
   const sortedCompetitions = sortCompetitions(competitions)
 
   const liveChallenges = sortedChallenges.filter((b) => challengeSection(b) === 'live')
-  const votingChallenges = sortedChallenges.filter((b) => challengeSection(b) === 'voting')
+  const allVotingChallenges = sortedChallenges.filter((b) => challengeSection(b) === 'voting')
+  const votingChallenges = allVotingChallenges.filter((b) => !alreadyVotedIds.has(b.id))
+  const alreadyVotedChallenges = allVotingChallenges.filter((b) => alreadyVotedIds.has(b.id))
   const settledChallenges = sortedChallenges.filter((b) => challengeSection(b) === 'settled')
 
   const liveComps = sortedCompetitions.filter((c) => competitionSection(c) === 'live')
@@ -276,13 +289,13 @@ export function Competitions() {
             )}
 
             {/* ════════ VOTE NOW SECTION ════════ */}
-            {showVoting && votingCount > 0 && (
+            {showVoting && (votingCount > 0 || alreadyVotedChallenges.length > 0) && (
               <section>
                 <SectionHeader
                   title={`VOTE NOW \u00B7 ${votingCount}`}
                   dotColor="bg-warning"
                   metaColor="text-warning"
-                  meta="ENDS SOON"
+                  meta={votingCount > 0 ? 'ENDS SOON' : undefined}
                 />
                 <div className="mt-3 space-y-3">
                   {votingChallenges.map((bet, i) => (
@@ -296,6 +309,21 @@ export function Competitions() {
                         bet={bet}
                         groups={groups}
                         onView={() => navigate(`/compete/${bet.id}`)}
+                      />
+                    </motion.div>
+                  ))}
+                  {alreadyVotedChallenges.map((bet, i) => (
+                    <motion.div
+                      key={bet.id}
+                      initial={prefersReduced ? false : { opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.35, delay: prefersReduced ? 0 : Math.min((votingCount + i) * 0.06, 0.3) }}
+                    >
+                      <VotingCard
+                        bet={bet}
+                        groups={groups}
+                        onView={() => navigate(`/compete/${bet.id}`)}
+                        alreadyVoted
                       />
                     </motion.div>
                   ))}
@@ -506,52 +534,53 @@ function LiveCompetitionCard({ competition, leaderboard, userId, onView }: Compe
 }
 
 /** ── VOTING card ── */
-function VotingCard({ bet, groups, onView }: ChallengeCardProps) {
+function VotingCard({ bet, groups, onView, alreadyVoted = false }: ChallengeCardProps & { alreadyVoted?: boolean }) {
   const betGroup = groups.find((g) => g.id === bet.group_id)
   const shortId = bet.id.slice(0, 4).toUpperCase()
 
   return (
     <div
       onClick={onView}
-      className="bg-warning-dim border-[1.5px] border-warning/30 rounded-xl cursor-pointer overflow-hidden transition-transform active:scale-[0.98]"
+      className={`border-[1.5px] rounded-xl cursor-pointer overflow-hidden transition-transform active:scale-[0.98] ${
+        alreadyVoted
+          ? 'bg-surface border-border-hi'
+          : 'bg-warning-dim border-warning/30'
+      }`}
     >
       <div className="px-4 pt-3.5 pb-3.5">
-        {/* Meta row */}
         <span className="font-mono text-[10px] font-bold text-text-mute tracking-[0.15em] truncate block mb-2">
           #{shortId} {betGroup ? `\u00B7 ${betGroup.avatar_emoji} ${betGroup.name}` : ''}
         </span>
 
-        {/* Title */}
         <h3 className="font-black text-[17px] leading-tight text-text line-clamp-2 mb-1 tracking-[-0.01em]">
           {bet.title}
         </h3>
 
-        {/* Claimant info */}
-        <p className="text-[12px] text-text-dim mb-4">
-          Proof submitted — cast your vote
-        </p>
-
-        {/* Vote buttons side by side */}
-        <div className="flex gap-2">
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              onView()
-            }}
-            className="flex-1 bg-rider-dim border-[1.5px] border-rider text-rider font-black text-[11px] tracking-[0.06em] py-2.5 rounded-lg active:scale-[0.97] transition-transform"
-          >
-            RIDE
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              onView()
-            }}
-            className="flex-1 bg-doubter-dim border-[1.5px] border-doubter text-doubter font-black text-[11px] tracking-[0.06em] py-2.5 rounded-lg active:scale-[0.97] transition-transform"
-          >
-            DOUBT
-          </button>
-        </div>
+        {alreadyVoted ? (
+          <div className="flex items-center gap-1.5 mt-2">
+            <span className="text-[12px] text-text-dim">{'\u2713'} You voted — awaiting result</span>
+          </div>
+        ) : (
+          <>
+            <p className="text-[12px] text-text-dim mb-4">
+              Proof submitted — cast your vote
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={(e) => { e.stopPropagation(); onView() }}
+                className="flex-1 bg-rider-dim border-[1.5px] border-rider text-rider font-black text-[11px] tracking-[0.06em] py-2.5 rounded-lg active:scale-[0.97] transition-transform"
+              >
+                RIDE
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); onView() }}
+                className="flex-1 bg-doubter-dim border-[1.5px] border-doubter text-doubter font-black text-[11px] tracking-[0.06em] py-2.5 rounded-lg active:scale-[0.97] transition-transform"
+              >
+                DOUBT
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   )

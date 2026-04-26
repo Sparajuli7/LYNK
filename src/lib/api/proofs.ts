@@ -145,6 +145,39 @@ export async function getVotes(proofId: string): Promise<ProofVote[]> {
 }
 
 /**
+ * Returns the set of bet IDs (from the given list) where the user has already
+ * cast a proof vote. Used to filter out "already voted" bets from the VOTE NOW section.
+ */
+export async function getVotedBetIds(betIds: string[], userId: string): Promise<Set<string>> {
+  if (betIds.length === 0) return new Set()
+
+  // Get proofs for those bets
+  const { data: proofs } = await supabase
+    .from('proofs')
+    .select('id, bet_id')
+    .in('bet_id', betIds)
+
+  if (!proofs || proofs.length === 0) return new Set()
+
+  const proofIds = proofs.map((p) => p.id)
+  const proofToBet = new Map(proofs.map((p) => [p.id, p.bet_id]))
+
+  // Get user's votes on those proofs
+  const { data: votes } = await supabase
+    .from('proof_votes')
+    .select('proof_id')
+    .in('proof_id', proofIds)
+    .eq('user_id', userId)
+
+  const votedBetIds = new Set<string>()
+  for (const v of votes ?? []) {
+    const betId = proofToBet.get(v.proof_id)
+    if (betId) votedBetIds.add(betId)
+  }
+  return votedBetIds
+}
+
+/**
  * A proof eligible to appear on a user's public profile grid.
  * Only included when the parent bet has `is_public = true`.
  */
