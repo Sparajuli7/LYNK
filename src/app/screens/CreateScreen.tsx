@@ -433,6 +433,7 @@ export function CreateScreen() {
   const [creatorSide, setCreatorSide] = useState<'rider' | 'doubter'>('rider')
   const [groupDropOpen, setGroupDropOpen] = useState(false)
   const [participationDropOpen, setParticipationDropOpen] = useState(false)
+  const [peopleDropOpen, setPeopleDropOpen] = useState(false)
 
   // ── Section 03: Stakes ──
   const [stakeType, setStakeType] = useState<StakeType>('punishment')
@@ -448,9 +449,6 @@ export function CreateScreen() {
   const [customDate, setCustomDate] = useState<Date | undefined>(undefined)
   const [calendarOpen, setCalendarOpen] = useState(false)
 
-  // ── Section 05: How It Settles ──
-  const [scoringMethod, setScoringMethod] = useState<'self_reported' | 'group_verified'>('self_reported')
-  const [isPublic, setIsPublic] = useState(true)
 
   // ── Submission ──
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -531,9 +529,9 @@ export function CreateScreen() {
 
   // ── Autosave ──
   useEffect(() => {
-    const draft = { claim, stakeType, forfeitText, stakeMoney, duration, formatType, creatorSide, scoringMethod, isPublic, selectedGroup }
+    const draft = { claim, stakeType, forfeitText, stakeMoney, duration, formatType, creatorSide, selectedGroup }
     try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)) } catch {}
-  }, [claim, stakeType, forfeitText, stakeMoney, duration, formatType, creatorSide, scoringMethod, isPublic, selectedGroup])
+  }, [claim, stakeType, forfeitText, stakeMoney, duration, formatType, creatorSide, selectedGroup])
 
   // Restore draft on mount (only if no prefill)
   useEffect(() => {
@@ -549,8 +547,6 @@ export function CreateScreen() {
       if (d.duration) setDuration(d.duration)
       if (d.formatType) setFormatType(d.formatType)
       if (d.creatorSide) setCreatorSide(d.creatorSide)
-      if (d.scoringMethod) setScoringMethod(d.scoringMethod)
-      if (d.isPublic !== undefined) setIsPublic(d.isPublic)
     } catch {}
   }, [])
 
@@ -649,12 +645,12 @@ export function CreateScreen() {
         participantIds,
         startDate: new Date().toISOString(),
         deadline: deadline.toISOString(),
-        scoringMethod,
+        scoringMethod: 'group_verified',
         stakeType,
         stakeMoney: stakeType === 'money' || stakeType === 'both' ? stakeMoney : undefined,
         stakePunishmentId: stakePunishmentId ?? undefined,
         stakeCustomPunishment: stakePunishmentId ? null : forfeitText.trim() || null,
-        isPublic,
+        isPublic: true,
         creatorSide,
         joinMode,
         joinSelectedMemberIds: joinMode === 'auto_selected' ? participantIds : [],
@@ -975,37 +971,34 @@ export function CreateScreen() {
           </div>
         )}
 
-        {/* Pick members / Select friends list */}
+        {/* Pick members / Select friends — dropdown */}
         {((formatType === 'group' && participation === 'pick') || formatType === 'select') && (
           <div className="px-5 pb-2">
-            <div className="space-y-1 max-h-40 overflow-y-auto">
-              {peopleList.map((m) => {
-                const sel = selectedPeople.some((p) => p.user_id === m.user_id)
-                return (
-                  <button
-                    key={m.user_id}
-                    onClick={() => togglePerson(m)}
-                    className={`w-full flex items-center gap-2.5 p-2.5 rounded-[10px] border transition-colors ${
-                      sel ? 'border-accent-green bg-accent-green/10' : 'border-border-subtle bg-surface'
-                    }`}
-                  >
-                    <div className="w-7 h-7 rounded-full overflow-hidden bg-bg-elevated shrink-0">
-                      {m.profile.avatar_url ? (
-                        <img src={m.profile.avatar_url} alt="" className="w-full h-full object-cover" />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-accent-green/30 to-accent-green/10" />
-                      )}
-                    </div>
-                    <span className="font-bold text-[13px] text-white flex-1 text-left">{m.profile.display_name}</span>
-                    <span className={`text-sm font-black ${sel ? 'text-accent-green' : 'text-text-muted'}`}>
-                      {sel ? '\u2713' : '+'}
-                    </span>
-                  </button>
-                )
-              })}
-            </div>
+            <p className="text-[10px] text-text-muted font-bold tracking-[0.12em] mb-1.5">
+              {formatType === 'select' ? 'FRIENDS' : 'MEMBERS'}
+            </p>
+
+            {/* Collapsed summary row */}
+            <button
+              onClick={() => setPeopleDropOpen((v) => !v)}
+              className="w-full flex items-center gap-2.5 p-3 rounded-[10px] bg-surface border-[1.5px] border-accent-green/40 transition-colors"
+            >
+              <span className="text-lg">{'\u{1F465}'}</span>
+              <div className="flex-1 text-left">
+                <span className="font-black text-[13px] text-white">
+                  {selectedPeople.length === 0
+                    ? `Tap to pick ${formatType === 'select' ? 'friends' : 'members'}`
+                    : `${selectedPeople.length} selected`}
+                </span>
+              </div>
+              <span className={`text-text-muted text-sm transition-transform ${peopleDropOpen ? 'rotate-180' : ''}`}>
+                {'\u25BE'}
+              </span>
+            </button>
+
+            {/* Selected chips (always visible when people are picked) */}
             {selectedPeople.length > 0 && (
-              <div className="flex flex-wrap gap-1 mt-2">
+              <div className="flex flex-wrap gap-1 mt-1.5">
                 {selectedPeople.map((p) => (
                   <button
                     key={p.user_id}
@@ -1015,6 +1008,36 @@ export function CreateScreen() {
                     {p.profile.display_name} <span className="text-accent-green/60 text-[10px]">&times;</span>
                   </button>
                 ))}
+              </div>
+            )}
+
+            {/* Expanded list */}
+            {peopleDropOpen && (
+              <div className="mt-1.5 bg-bg-elevated rounded-[10px] border border-border-subtle p-1.5 max-h-48 overflow-y-auto space-y-1">
+                {peopleList.map((m) => {
+                  const sel = selectedPeople.some((p) => p.user_id === m.user_id)
+                  return (
+                    <button
+                      key={m.user_id}
+                      onClick={() => togglePerson(m)}
+                      className={`w-full flex items-center gap-2.5 p-2.5 rounded-lg transition-colors ${
+                        sel ? 'bg-accent-green/10' : 'hover:bg-white/5'
+                      }`}
+                    >
+                      <div className="w-6 h-6 rounded-full overflow-hidden bg-bg-elevated shrink-0">
+                        {m.profile.avatar_url ? (
+                          <img src={m.profile.avatar_url} alt="" className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-accent-green/30 to-accent-green/10" />
+                        )}
+                      </div>
+                      <span className="font-bold text-[12px] text-white flex-1 text-left">{m.profile.display_name}</span>
+                      <span className={`text-sm font-black ${sel ? 'text-accent-green' : 'text-text-muted'}`}>
+                        {sel ? '\u2713' : '+'}
+                      </span>
+                    </button>
+                  )
+                })}
               </div>
             )}
           </div>
@@ -1202,57 +1225,6 @@ export function CreateScreen() {
           <div className="bg-[#0f1418] border border-accent-green/15 rounded-lg py-2 px-3 flex items-center gap-2">
             <span className="text-accent-green text-[11px]">{'\u2713'}</span>
             <span className="text-[11px] text-text-muted">{formatDeadlinePreview(duration, customDate)}</span>
-          </div>
-        </div>
-
-        <div className="px-5 py-1"><Perforation /></div>
-
-        {/* ================================================================
-           05 · HOW IT SETTLES
-           ================================================================ */}
-        <SectionLabel num="05" label="HOW IT SETTLES" />
-
-        <div className="px-5 pb-2.5">
-          <div className="flex gap-1.5">
-            {([
-              { id: 'self_reported' as const, label: 'SELF-REPORT', desc: 'Honor system' },
-              { id: 'group_verified' as const, label: 'GROUP VOTE', desc: 'Friends decide' },
-            ]).map((opt) => (
-              <button
-                key={opt.id}
-                onClick={() => setScoringMethod(opt.id)}
-                className={`flex-1 p-3 rounded-xl text-left transition-all ${
-                  scoringMethod === opt.id
-                    ? 'bg-accent-green/12 border-[1.5px] border-accent-green'
-                    : 'border-[1.5px] border-border-subtle'
-                }`}
-              >
-                <p className={`font-black italic text-[11px] tracking-[0.05em] mb-0.5 ${
-                  scoringMethod === opt.id ? 'text-accent-green' : 'text-text-muted'
-                }`}>
-                  {opt.label}
-                </p>
-                <p className={`text-[10px] ${scoringMethod === opt.id ? 'text-white/80' : 'text-text-muted'}`}>
-                  {opt.desc}
-                </p>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Privacy toggle */}
-        <div className="px-5 pb-3">
-          <div className="bg-surface rounded-[10px] p-3 flex items-center justify-between">
-            <div>
-              <p className="font-black text-[12px] text-white">Show on profile</p>
-              <p className="text-[10px] text-text-muted mt-0.5">Visible to friends</p>
-            </div>
-            <button
-              onClick={() => setIsPublic(!isPublic)}
-              className={`relative w-10 h-[22px] rounded-full transition-colors ${isPublic ? 'bg-accent-green' : 'bg-bg-elevated'}`}
-            >
-              <span className={`absolute top-[2px] w-[18px] h-[18px] rounded-full bg-white transition-transform ${isPublic ? 'left-[20px]' : 'left-[2px]'}`} />
-            </button>
           </div>
         </div>
 
