@@ -1,0 +1,4839 @@
+{
+  "_meta": {
+    "schema_version": "1.0",
+    "library_version": "2026.04.26",
+    "total_games": 98,
+    "language": "en-US",
+    "voice_notes": "Crisp, instructional, fun. Rules should be unambiguous. Equipment lists should be exact. Avoid wellness-blog or hand-wavy language. The reader is at a party trying to learn the game in 2 minutes.",
+    "skill_types": {
+      "luck": "Chance-based — dice, cards, etc.",
+      "physical": "Throwing, bouncing, flipping skills.",
+      "memory": "Remember rules, sequences, lists.",
+      "social": "Truth, dares, group dynamics.",
+      "mixed": "Combo of multiple skill types."
+    },
+    "tags_glossary": {
+      "weekend": "Best for Friday-Sunday evening.",
+      "classic": "Universally recognized — most groups will know it.",
+      "team": "Played in teams.",
+      "endurance": "Long-form challenge.",
+      "extreme": "Heavier drinking — limit usage.",
+      "outdoor_friendly": "Works at backyard / lawn parties.",
+      "bar_friendly": "Can be played in a bar setting.",
+      "no_equipment": "Just people and drinks needed.",
+      "card_game": "Uses a deck of cards.",
+      "video_game": "Played alongside a video game.",
+      "media": "Played alongside a movie/TV show.",
+      "fast_paced": "Quick rounds, lots of action.",
+      "ongoing": "Continuous — runs in the background of an evening.",
+      "regional": "More common in specific US regions."
+    }
+  },
+  "games": [
+    {
+      "id": "game_beer_pong",
+      "name": "Beer Pong",
+      "aliases": [
+        "BP",
+        "Pong"
+      ],
+      "playersMin": 2,
+      "playersMax": 4,
+      "equipment": [
+        "10–22 plastic Solo cups",
+        "2 ping pong balls",
+        "Long table (~8ft)",
+        "Beer or any drink"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 45
+      },
+      "description": "The undisputed king of party games. Two teams of two stand at opposite ends of a long table with a triangle of cups in front of each team. Throw ping pong balls into the other team's cups. When a ball lands in your cup, you drink it and remove it. First team to eliminate all the opponent's cups wins.",
+      "setup": [
+        "Arrange 10 cups in a triangle (4-3-2-1) at each end of the table, point facing the opponent.",
+        "Fill each cup roughly 1/4 with beer (or water, with one designated drinking beer per team).",
+        "Two players per side, standing behind the cups."
+      ],
+      "rules": [
+        "Each player throws one ball per turn. Both partners throw before the other team rebuts.",
+        "Ball in cup: opposing team drinks that cup and removes it.",
+        "If both partners hit on the same turn ('balls back'), each gets another shot.",
+        "Bounce shots count for two cups (defending team can swat bounces).",
+        "Re-rack: opposing team can request a re-rack into a tighter shape (e.g., diamond) at certain cup counts (typically 6, 4, 3, 2).",
+        "Last cup: when one cup remains, the other team gets a 'redemption' chance — match the kill or lose.",
+        "Loser team drinks all remaining cups."
+      ],
+      "houseRules": [
+        "Death cup: if you make it in a cup the opponent is currently holding/sipping, instant loss for them.",
+        "Bitch cup: if the first cup hit is the center cup, shooter does a forfeit (lap around the table, etc.).",
+        "On Fire: 3 makes in a row, you stay 'on fire' until you miss — every shot in a row counts."
+      ],
+      "relatedBetTemplateIds": [
+        "party_bp_tournament",
+        "party_bp_3_in_row",
+        "party_bp_solo_run"
+      ],
+      "tags": [
+        "weekend",
+        "skill",
+        "team",
+        "head_to_head",
+        "classic",
+        "outdoor_friendly"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 98,
+      "source": "curated"
+    },
+    {
+      "id": "game_kings_cup",
+      "name": "King's Cup",
+      "aliases": [
+        "Kings",
+        "Ring of Fire",
+        "Circle of Death",
+        "Waterfall"
+      ],
+      "playersMin": 3,
+      "playersMax": 12,
+      "equipment": [
+        "Deck of cards",
+        "1 large central cup ('the king's cup')",
+        "Drink for each player"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 45
+      },
+      "description": "A circle game built around a deck of cards spread face-down around a central cup. Each card has an action. Break the chain of cards or draw the fourth king and you chug whatever's been poured into the king's cup — usually a horrible mix of everyone's drinks.",
+      "setup": [
+        "Spread the deck face-down in a circle around an empty central cup ('the king's cup').",
+        "Players sit in a circle around the cards.",
+        "Each player has their own drink."
+      ],
+      "rules": [
+        "Take turns drawing one card. Don't break the circle of cards (chain rule).",
+        "Card actions (most common ruleset): Ace = Waterfall (everyone drinks together starting with drawer; you can't stop until the person before you stops). 2 = You (give 2 sips). 3 = Me (drawer drinks 3). 4 = Floor (last to touch floor drinks). 5 = Guys (all guys drink). 6 = Chicks (all girls drink). 7 = Heaven (last to point up drinks). 8 = Mate (pick a drinking buddy who drinks when you drink). 9 = Rhyme (say a word, go around rhyming, first to fail drinks). 10 = Categories (pick a category, name items going around, first fail drinks). Jack = Never Have I Ever. Queen = Question Master (anyone who answers your question drinks, until next queen). King = Pour into the king's cup AND make a rule.",
+        "When the fourth king is drawn, that player chugs the entire king's cup."
+      ],
+      "houseRules": [
+        "Break the chain rule: if you accidentally move a card off the line, drink.",
+        "Specific ruleset variants exist by region — agree on which one before starting.",
+        "Spicy variant: replace 'Guys/Chicks' with 'Left side/Right side' for inclusivity."
+      ],
+      "relatedBetTemplateIds": [
+        "party_kings_no_break",
+        "party_kings_avoid_kc"
+      ],
+      "tags": [
+        "weekend",
+        "drinking_game",
+        "classic",
+        "social",
+        "memory"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 96,
+      "source": "curated"
+    },
+    {
+      "id": "game_flip_cup",
+      "name": "Flip Cup",
+      "aliases": [
+        "Tippy Cup",
+        "Canoe",
+        "Tap Cup"
+      ],
+      "playersMin": 4,
+      "playersMax": 20,
+      "equipment": [
+        "Plastic Solo cups (one per player)",
+        "Long table",
+        "Beer"
+      ],
+      "durationMinutes": {
+        "min": 5,
+        "max": 20
+      },
+      "description": "Team relay race. Two teams line up on opposite sides of a table. First player drinks their beer, sets the cup at the table edge, and uses one finger to flip it upside down. Once it lands rim-down, the next teammate can go. First team to flip all cups wins.",
+      "setup": [
+        "Two teams of equal size line up on opposite sides of a long table.",
+        "Each player has a Solo cup with ~1 inch of beer in front of them at the table edge.",
+        "Cups should hang slightly over the table edge for easier flipping."
+      ],
+      "rules": [
+        "First players from each team start by clinking cups, then drink.",
+        "Once finished, set the cup at the edge of the table, rim up.",
+        "Flick the bottom of the cup so it lands rim-down. Use one finger only.",
+        "Cup must land fully on its rim. If it lands on its side or doesn't fully flip, keep trying.",
+        "When your cup is flipped, the next teammate down the line starts drinking.",
+        "First team to flip all their cups wins.",
+        "Losing team drinks a designated penalty (round, shot, etc.)."
+      ],
+      "houseRules": [
+        "Anchor: each team designates a strongest flipper as the anchor (last position).",
+        "Re-rack: if a team is dominating, the loser can request the round be redone with mixed teams.",
+        "Drink-off: if last flippers tie, both finish a fresh beer to break the tie."
+      ],
+      "relatedBetTemplateIds": [
+        "party_fc_undefeated",
+        "party_fc_anchor"
+      ],
+      "tags": [
+        "weekend",
+        "team",
+        "skill",
+        "physical",
+        "speed",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 92,
+      "source": "curated"
+    },
+    {
+      "id": "game_power_hour",
+      "name": "Power Hour",
+      "aliases": [
+        "Centurion (variant)"
+      ],
+      "playersMin": 2,
+      "playersMax": 20,
+      "equipment": [
+        "1 oz / 30ml shot glass per player",
+        "Beer (you'll need ~5–6 cans per person for a full hour)",
+        "Timer or playlist"
+      ],
+      "durationMinutes": {
+        "min": 60,
+        "max": 100
+      },
+      "description": "Take one shot of beer every minute for 60 minutes. That's roughly 5–6 beers in an hour, drunk on a strict schedule. There's a 100-minute variant ('Centurion') for the truly dedicated.",
+      "setup": [
+        "Each player has a 1 oz shot glass, a stack of beers, and a timer.",
+        "Best run with a 60-minute Power Hour playlist (changes songs every minute as the cue).",
+        "Designated bathroom-break window? None. That's part of the challenge."
+      ],
+      "rules": [
+        "Every minute on the minute, everyone takes a 1 oz shot of beer.",
+        "Miss a shot, you're out (or do a penalty shot of liquor — group decides).",
+        "Continue for 60 minutes. Finishing = you 'made the hour'.",
+        "Centurion variant: 100 minutes = 100 shots = roughly 8–9 beers."
+      ],
+      "houseRules": [
+        "Mario Power Hour: assign random rules to specific minutes (e.g., minute 17 = waterfall).",
+        "Hard mode: 1.5 oz instead of 1 oz.",
+        "Soft mode: skip every 5th minute."
+      ],
+      "relatedBetTemplateIds": [
+        "party_ph_complete"
+      ],
+      "tags": [
+        "weekend",
+        "endurance",
+        "extreme",
+        "drinking_game",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 78,
+      "source": "curated"
+    },
+    {
+      "id": "game_thunderstruck",
+      "name": "Thunderstruck",
+      "aliases": [
+        "AC/DC Game"
+      ],
+      "playersMin": 3,
+      "playersMax": 10,
+      "equipment": [
+        "AC/DC's 'Thunderstruck' on a loud speaker",
+        "1–2 beers per player"
+      ],
+      "durationMinutes": {
+        "min": 5,
+        "max": 10
+      },
+      "description": "Pregame ritual built around AC/DC's 'Thunderstruck'. The song says 'thunder' or 'thunderstruck' 33+ times. Players take turns drinking continuously each time the word is said, passing the duty around the circle until the song ends.",
+      "setup": [
+        "Cue 'Thunderstruck' by AC/DC on loud speakers.",
+        "Players stand in a circle, each with at least one beer in hand.",
+        "Pick a starting player and a direction (clockwise or counterclockwise)."
+      ],
+      "rules": [
+        "When the song starts, no one drinks until the first 'thunder'.",
+        "First time 'thunder' or 'thunderstruck' is sung, the starting player begins chugging.",
+        "They keep chugging until the next 'thunder' is sung — at which point the next player around the circle takes over.",
+        "Continue until the song ends.",
+        "AC/DC says 'thunder' or 'thunderstruck' a combined ~33 times in the song. Each turn is variable length — some quick, some brutally long during the bridge."
+      ],
+      "houseRules": [
+        "Tap-out: during the long guitar solo turn, the drinker can tap out and pass to the next person if they're truly drowning.",
+        "Double team: with big groups, two people drink simultaneously — left and right of the previous drinker.",
+        "Air guitar: when the solo hits, the current drinker stops chugging and must perform an air guitar solo. Group judges. Bad performance = drink double next turn."
+      ],
+      "relatedBetTemplateIds": [
+        "party_ts_no_choke",
+        "party_ts_long_solo"
+      ],
+      "tags": [
+        "weekend",
+        "music",
+        "endurance",
+        "classic",
+        "pregame"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 85,
+      "source": "curated"
+    },
+    {
+      "id": "game_cheers_to_governor",
+      "name": "Cheers to the Governor",
+      "aliases": [
+        "21",
+        "Governor"
+      ],
+      "playersMin": 4,
+      "playersMax": 15,
+      "equipment": [
+        "Drinks",
+        "(Optional) good memory"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 60
+      },
+      "description": "A counting game that becomes a memory test. Players count from 1 to 21 around the circle; whoever says 21 yells 'Cheers to the Governor!' and invents a new rule for one of the numbers. The game gets harder every round as rules accumulate. Eventually nobody remembers anything and chaos reigns.",
+      "setup": [
+        "Players sit in a circle with their drinks.",
+        "Pick a starting player and a direction.",
+        "(Optional) decide on a base rule before starting (e.g., 7 and 11 are switched)."
+      ],
+      "rules": [
+        "Players count out loud, going around the circle, one number per player.",
+        "Goal: reach 21 without breaking a rule.",
+        "Whoever says 21 shouts 'Cheers to the Governor!' (in your best British accent), everyone drinks, and the player who said 21 invents a new rule.",
+        "New rules can change ANY number's behavior: swap two numbers, replace a number with an action (clap, dance, animal sound), force a person to drink on a number, reverse direction on a number, etc.",
+        "If anyone breaks a rule or messes up the count, they drink and counting restarts at 1 (next player).",
+        "Rules stack — each new round brings a new rule on top of all the previous ones.",
+        "The game theoretically ends when every number has a rule and the group successfully counts to 21 again — but in practice it ends when everyone forgets everything."
+      ],
+      "houseRules": [
+        "Limit to 5 rules max for shorter games.",
+        "Themed rounds: all rules must be movie quotes, animal sounds, etc.",
+        "Two-rule round: the player who reaches 21 makes TWO rules at once (chaos accelerates)."
+      ],
+      "relatedBetTemplateIds": [
+        "party_ctg_say_21",
+        "party_ctg_no_mistakes",
+        "party_ctg_make_rule"
+      ],
+      "tags": [
+        "weekend",
+        "memory",
+        "social",
+        "no_equipment",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "memory",
+      "popularityScore": 88,
+      "source": "curated"
+    },
+    {
+      "id": "game_palm_tree",
+      "name": "Palm Tree",
+      "aliases": [
+        "Christmas Tree",
+        "Dirty Pint"
+      ],
+      "playersMin": 3,
+      "playersMax": 10,
+      "equipment": [
+        "Pint glass or large cup",
+        "Deck of cards",
+        "Each player's drink"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 40
+      },
+      "description": "A card-stacking game with a dirty-pint twist. Each player adds a splash of their drink to a central pint glass ('the dirty pint'). Players take turns drawing cards and balancing them on top of the pint to build a 'palm tree'. Drop the tree, drink the pint.",
+      "setup": [
+        "Place a pint glass in the middle of the table.",
+        "Each player pours a splash of their drink into it (creates the 'dirty pint').",
+        "Shuffle a standard deck of cards.",
+        "Spread some cards face-down in a ring around the pint."
+      ],
+      "rules": [
+        "Take turns drawing one card. Place it face-up on top of the pint glass — but at least two corners must hang off the edge.",
+        "If the card you flip is RED, you drink (1 sip per round, accumulating if you build a streak).",
+        "If BLACK, you're safe; the drink-debt passes to the next player.",
+        "If your card placement knocks the pile off the pint, you chug the entire dirty pint.",
+        "Continue until the pile collapses or the deck runs out."
+      ],
+      "houseRules": [
+        "Flamingo mode: stand on one leg while placing your card.",
+        "Animal sound: make a random animal sound before placing.",
+        "Loser also wears a tropical hat for the rest of the night."
+      ],
+      "relatedBetTemplateIds": [
+        "party_pt_no_collapse"
+      ],
+      "tags": [
+        "weekend",
+        "physical",
+        "skill",
+        "drinking_game",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 72,
+      "source": "curated"
+    },
+    {
+      "id": "game_quarters",
+      "name": "Quarters",
+      "aliases": [
+        "Bouncing Quarters"
+      ],
+      "playersMin": 2,
+      "playersMax": 8,
+      "equipment": [
+        "Quarter (or any coin)",
+        "Shot glass or pint glass",
+        "Hard table",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 10,
+        "max": 30
+      },
+      "description": "Ancient and simple. Bounce a quarter off the table and try to land it in a glass. Make it, give a drink. Miss, lose your turn (or drink yourself, depending on rules).",
+      "setup": [
+        "Place a glass in the center of the table.",
+        "Each player has a quarter.",
+        "Sit around the table within bouncing range."
+      ],
+      "rules": [
+        "Take turns bouncing a quarter off the table into the glass.",
+        "If you make it, point at any other player — they drink.",
+        "If you miss, pass the quarter clockwise.",
+        "Three makes in a row = make a rule (any rule, persists for the rest of the game).",
+        "Common variation: if the quarter lands ON the rim, everyone at the table drinks."
+      ],
+      "houseRules": [
+        "Speed quarters: two quarters in play at once, bouncing simultaneously.",
+        "If you sink it on a dime (one bounce, one shot), the target chugs.",
+        "First to break a glass loses."
+      ],
+      "relatedBetTemplateIds": [
+        "party_quarters_streak"
+      ],
+      "tags": [
+        "weekend",
+        "skill",
+        "physical",
+        "classic",
+        "bar_friendly"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 68,
+      "source": "curated"
+    },
+    {
+      "id": "game_never_have_i_ever",
+      "name": "Never Have I Ever",
+      "aliases": [
+        "NHIE",
+        "10 Fingers"
+      ],
+      "playersMin": 3,
+      "playersMax": 15,
+      "equipment": [
+        "Drinks",
+        "(Hands)"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 45
+      },
+      "description": "The classic confession game. Each player holds up 10 fingers (or 5 in the short version). Take turns saying things you've 'never done.' Anyone who HAS done it puts a finger down and drinks. First person to lower all fingers loses.",
+      "setup": [
+        "Players sit in a circle with drinks.",
+        "Everyone starts with 10 fingers up (or 5 for short games).",
+        "Pick a starting player."
+      ],
+      "rules": [
+        "On your turn, say 'Never have I ever ___' with something you genuinely haven't done.",
+        "Anyone in the circle who HAS done it lowers a finger and takes a drink.",
+        "Play passes around the circle.",
+        "First person to lose all fingers loses the game (or chugs a finishing drink).",
+        "Statements that are too obvious (no one has done it) or too universal (everyone has) are weak — aim for the middle."
+      ],
+      "houseRules": [
+        "Truth penalty: if you're caught lying about having done something, double penalty.",
+        "Categories round: all statements must be on a theme (relationships, school, travel, etc.).",
+        "Storytime: anyone who put a finger down has to share the story before play continues."
+      ],
+      "relatedBetTemplateIds": [
+        "party_nhie_last"
+      ],
+      "tags": [
+        "weekend",
+        "social",
+        "no_equipment",
+        "classic",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 90,
+      "source": "curated"
+    },
+    {
+      "id": "game_truth_or_dare",
+      "name": "Truth or Dare",
+      "aliases": [
+        "T or D"
+      ],
+      "playersMin": 3,
+      "playersMax": 12,
+      "equipment": [
+        "Drinks",
+        "Bottle (optional, for spinning)"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 60
+      },
+      "description": "The eternal party game. Each player chooses 'truth' or 'dare' on their turn. Refuse either? Drink. Lie or chicken out? Drink more.",
+      "setup": [
+        "Players sit in a circle.",
+        "Pick a starting player or use a bottle spin to determine targets."
+      ],
+      "rules": [
+        "On your turn (or when targeted), choose Truth or Dare.",
+        "Truth: answer the asker's question honestly.",
+        "Dare: complete the assigned challenge.",
+        "Refuse either? Drink a designated penalty (typically a shot or finish your drink).",
+        "Get caught lying on a Truth? Drink + take the dare anyway.",
+        "Chicken out of a Dare? Drink + lose your next turn."
+      ],
+      "houseRules": [
+        "No repeat questions or dares within a session.",
+        "Group veto: any dare considered too much can be vetoed by 2+ other players.",
+        "PG version: replace alcohol with hot sauce, raw onion, or a forfeit chore."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "no_equipment",
+        "classic",
+        "embarrassment"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 86,
+      "source": "curated"
+    },
+    {
+      "id": "game_two_truths_a_lie",
+      "name": "Two Truths and a Lie",
+      "aliases": [
+        "TTAL"
+      ],
+      "playersMin": 3,
+      "playersMax": 10,
+      "equipment": [
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 30
+      },
+      "description": "Each player tells three statements about themselves — two true, one false. The group votes on which is the lie. Wrong guessers drink; if everyone gets it right, the storyteller drinks.",
+      "setup": [
+        "Players sit in a circle with drinks.",
+        "Each takes a moment to think of two true and one false personal statements (or do this round-by-round)."
+      ],
+      "rules": [
+        "On your turn, share three statements about yourself: two true, one false.",
+        "After all are said, each other player votes on which is the lie.",
+        "Anyone who voted wrong drinks.",
+        "If EVERYONE guesses correctly, the storyteller drinks for being too obvious.",
+        "If NO ONE guesses correctly, everyone except the storyteller drinks."
+      ],
+      "houseRules": [
+        "Theme rounds: all statements must be from a category (childhood, exes, work).",
+        "Detailed mode: storyteller must answer follow-up questions, but can lie further.",
+        "Truth penalty: if your lie was actually true once, double drink for hiding the dirt."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "no_equipment",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 70,
+      "source": "curated"
+    },
+    {
+      "id": "game_most_likely_to",
+      "name": "Most Likely To",
+      "aliases": [
+        "The Image Game",
+        "Pointing Game"
+      ],
+      "playersMin": 4,
+      "playersMax": 15,
+      "equipment": [
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 30
+      },
+      "description": "The asker poses 'Who's most likely to...' and on a count of three, everyone points at who they think. Whoever gets the most votes drinks (number of votes = number of sips).",
+      "setup": [
+        "Players sit in a circle.",
+        "Pick a starting player."
+      ],
+      "rules": [
+        "On your turn, ask the group: 'Most likely to ___' (e.g., 'win a Nobel Prize', 'cry at a wedding', 'sleep through their alarm').",
+        "Everyone counts down 3, 2, 1 and points at the person they think is most likely.",
+        "Whoever gets the most points drinks that many sips.",
+        "Ties: both/all tied players drink full count.",
+        "Yes, you can vote for yourself."
+      ],
+      "houseRules": [
+        "Block: cross your arms in an X to block. If you get the most votes AND blocked, everyone who voted for you drinks. If you blocked but didn't get the most, you drink.",
+        "Storytime: top vote-getter has to tell why they think they got picked.",
+        "Themed rounds: rounds dedicated to one category (e.g., 'work scenarios')."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "no_equipment",
+        "embarrassment"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 78,
+      "source": "curated"
+    },
+    {
+      "id": "game_categories",
+      "name": "Categories",
+      "aliases": [
+        "Name 5"
+      ],
+      "playersMin": 3,
+      "playersMax": 10,
+      "equipment": [
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 10,
+        "max": 25
+      },
+      "description": "Pick a broad category. Going around the circle, name an item in that category. First to repeat, hesitate, or fail drinks. The art is picking categories that are easy enough to be fun and just hard enough that everyone freezes under pressure.",
+      "setup": [
+        "Players sit in a circle.",
+        "Starter picks a category."
+      ],
+      "rules": [
+        "Starter names the category and the first item (e.g., 'Cereals — Cheerios').",
+        "Each player around the circle adds another item from that category.",
+        "If you repeat, hesitate too long (~5 seconds), or name something invalid, you drink.",
+        "After someone drinks, next player picks a new category.",
+        "Best categories: broad enough that everyone can play, narrow enough to run out (e.g., 'breakfast cereals', 'NBA teams', 'colors')."
+      ],
+      "houseRules": [
+        "5-second strict timer.",
+        "Themed nights: only horror movies, only cocktails, etc.",
+        "First letter rule: each item must start with a different letter."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "no_equipment",
+        "memory",
+        "fast_paced"
+      ],
+      "matureFlag": true,
+      "skillType": "memory",
+      "popularityScore": 68,
+      "source": "curated"
+    },
+    {
+      "id": "game_horse_race",
+      "name": "Horse Race",
+      "aliases": [
+        "Kentucky Derby"
+      ],
+      "playersMin": 4,
+      "playersMax": 10,
+      "equipment": [
+        "Deck of cards",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 10,
+        "max": 20
+      },
+      "description": "Bet on which suit (the 'horse') will be eliminated last. Aces of each suit start as the four horses. Cards are turned over one at a time; whichever horse matches the suit moves forward. First horse to the finish wins; backers of losing horses drink.",
+      "setup": [
+        "Lay out the four aces side by side, vertically (each represents a horse: hearts, diamonds, clubs, spades).",
+        "Place 7 cards face-down in a column above the aces (these are the 'fences' — drinks at each level).",
+        "Each player bets a number of drinks (1–5) on which horse will win.",
+        "Shuffle the rest of the deck and set aside as the draw pile."
+      ],
+      "rules": [
+        "Reveal one card at a time from the draw pile.",
+        "The horse matching the suit of the revealed card moves forward one space.",
+        "When a horse passes a fence card, that fence is revealed; backers of that suit drink the number of sips equal to the fence card's value.",
+        "First horse to cross the finish line wins.",
+        "Backers of losing horses drink the total they bet × position from last place."
+      ],
+      "houseRules": [
+        "Trifecta: bet on 1st, 2nd, AND 3rd place for bonus drinks.",
+        "Photo finish: if two horses tie at the line, they race a single sudden-death card.",
+        "Side bets: bet on a specific fence triggering — pays off in extra sips for non-bettors."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "drinking_game",
+        "card_game",
+        "luck"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_buzz",
+      "name": "Buzz",
+      "aliases": [
+        "7s"
+      ],
+      "playersMin": 3,
+      "playersMax": 15,
+      "equipment": [
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 10,
+        "max": 25
+      },
+      "description": "Counting game with a twist: skip the number 7 and any multiple of 7. Say 'buzz' instead. First person to mess up drinks.",
+      "setup": [
+        "Players sit in a circle. Pick a starter and direction."
+      ],
+      "rules": [
+        "Count up from 1, going around the circle.",
+        "Replace 7, 14, 21, 28, 35, etc. with 'buzz'.",
+        "Replace any number containing a 7 (17, 27, 70-79) with 'buzz' too.",
+        "Mess up = drink + restart from 1.",
+        "Speed up the pace as it gets boring — strict 2-second clock."
+      ],
+      "houseRules": [
+        "Double buzz: also skip multiples of 11 (or any chosen number).",
+        "Reverse direction on every buzz.",
+        "Combine with Cheers to the Governor for compounding chaos."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "memory",
+        "no_equipment",
+        "fast_paced"
+      ],
+      "matureFlag": true,
+      "skillType": "memory",
+      "popularityScore": 62,
+      "source": "curated"
+    },
+    {
+      "id": "game_international_rules",
+      "name": "International Drinking Rules",
+      "aliases": [
+        "House Rules",
+        "Bar Rules"
+      ],
+      "playersMin": 3,
+      "playersMax": 20,
+      "equipment": [
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 60,
+        "max": 240
+      },
+      "description": "Not a discrete game — a set of rules layered over an entire night out. You go about your evening normally, but break a rule and you drink. Perfect when you can't be bothered to set up an actual game.",
+      "setup": [
+        "Group agrees on a set of rules at the start of the night.",
+        "Anyone can call out a violation."
+      ],
+      "rules": [
+        "Standard ruleset (mix and match):",
+        "• No swearing.",
+        "• No saying the word 'drink'.",
+        "• No calling anyone by their first name.",
+        "• No pointing (with finger OR thumb).",
+        "• Drink with your non-dominant hand only.",
+        "• Don't put your glass within a thumb's-length of the table edge — opponents can challenge.",
+        "• Empty glasses must not be set down (must be refilled or held).",
+        "Break any rule = take a sip / shot.",
+        "Continues all night."
+      ],
+      "houseRules": [
+        "Add a 'name' rule each night for variety: nicknames only, accents only, sing-song voice only.",
+        "Invisible-friend rule: each player has a tiny invisible character on their drink — must mime removing them before sipping.",
+        "Tougher mode: violation = chug your current drink."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "endurance",
+        "ongoing",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 80,
+      "source": "curated"
+    },
+    {
+      "id": "game_drunk_jenga",
+      "name": "Drunk Jenga",
+      "aliases": [
+        "Jenga with Rules"
+      ],
+      "playersMin": 2,
+      "playersMax": 10,
+      "equipment": [
+        "Jenga set with rules written on each block (Sharpie works)",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 40
+      },
+      "description": "Standard Jenga + a rule on every block. Pull a block, do whatever the block says, place it on top. Knock over the tower, chug.",
+      "setup": [
+        "Write a different rule on every block in the Jenga set (54 blocks).",
+        "Build the tower normally.",
+        "Mix of mild rules and dares is best."
+      ],
+      "rules": [
+        "Take turns pulling a block from anywhere except the top three rows.",
+        "Whatever the block says, do it.",
+        "Place the pulled block on top.",
+        "Knock the tower over = chug a full drink."
+      ],
+      "houseRules": [
+        "Rule examples: 'take 2 sips', 'give 3 sips to anyone', 'social' (everyone drinks), 'kiss the person to your left', 'truth question to the group', 'no swearing for the rest of the game', 'one-eye-closed for the next 5 minutes'.",
+        "Permanent rule blocks: write a few that create persistent rules for the rest of the game.",
+        "Rebuild challenge: whoever knocks the tower must rebuild it solo while everyone watches."
+      ],
+      "relatedBetTemplateIds": [
+        "party_jenga_no_topple"
+      ],
+      "tags": [
+        "weekend",
+        "physical",
+        "skill",
+        "social",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 82,
+      "source": "curated"
+    },
+    {
+      "id": "game_beer_die",
+      "name": "Beer Die",
+      "aliases": [
+        "Snappa",
+        "Die"
+      ],
+      "playersMin": 4,
+      "playersMax": 4,
+      "equipment": [
+        "Square table",
+        "2 dice (or 1 die)",
+        "4 cups",
+        "Beer"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 45
+      },
+      "description": "Toss a die over a divider line; the opposing team has to catch it before it bounces twice or sinks in their cup. Common dorm game in the Northeast US.",
+      "setup": [
+        "Square or rectangular table. Place a cup at each corner.",
+        "Two teams of 2, opposite each other.",
+        "Imaginary or marked centerline divides the table."
+      ],
+      "rules": [
+        "Throwing team must arc the die above an imaginary 'plinth' line (~10 ft up).",
+        "Die must land on the opposite half of the table.",
+        "Receiving team tries to catch the die one-handed before it bounces twice.",
+        "Drop = drink. Sink (die in your cup) = drink full cup. Pong (table on first bounce) = score 1.",
+        "First team to 5 (or 7, or 11, agreed up front) wins — losing team finishes their beers."
+      ],
+      "houseRules": [
+        "5x5: every 5 points triggers a 5-second chug from the losing team.",
+        "Sink rules: instant loss if a die sinks in any cup.",
+        "Tournament style: best 2 of 3 series."
+      ],
+      "relatedBetTemplateIds": [
+        "party_die_5_points"
+      ],
+      "tags": [
+        "weekend",
+        "skill",
+        "physical",
+        "team",
+        "regional",
+        "outdoor_friendly"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 68,
+      "source": "curated"
+    },
+    {
+      "id": "game_civil_war",
+      "name": "Civil War",
+      "aliases": [
+        "3v3 Beer Pong"
+      ],
+      "playersMin": 6,
+      "playersMax": 6,
+      "equipment": [
+        "Long table",
+        "18 plastic cups",
+        "3 ping pong balls per side",
+        "Beer"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 45
+      },
+      "description": "Three-on-three beer pong played simultaneously. All three players on each team can shoot at any time — no turns, no waiting. Pure chaos.",
+      "setup": [
+        "Long table, 9 cups in a triangle on each side, OR 3 cups in a triangle in front of each player (totaling 9 per side).",
+        "Each player gets a ping pong ball.",
+        "Both teams of 3."
+      ],
+      "rules": [
+        "No turns — players shoot whenever they have a ball.",
+        "If your cups (the ones in front of you) get all eliminated, you're out and your teammates play on.",
+        "Last team with cups remaining wins.",
+        "Bounces, re-racks, redemption rules same as standard beer pong."
+      ],
+      "houseRules": [
+        "Reload only at certain checkpoints (e.g., when one team loses a player).",
+        "Death cup applies (in cup someone is currently drinking from = instant loss).",
+        "Defensive shots allowed — slap balls out of the air."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "team",
+        "skill",
+        "physical",
+        "fast_paced"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 64,
+      "source": "curated"
+    },
+    {
+      "id": "game_slap_cup",
+      "name": "Slap Cup",
+      "aliases": [
+        "Rage Cage",
+        "Chandeliers",
+        "Stack Cup"
+      ],
+      "playersMin": 4,
+      "playersMax": 15,
+      "equipment": [
+        "20+ Solo cups",
+        "2 ping pong balls",
+        "Beer"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 30
+      },
+      "description": "Bouncing cups in a continuous loop. Two players bounce ping pong balls into a cup; success passes the cup left. If you get the second ball before the player to your left finishes, slap their cup off the table — they have to chug.",
+      "setup": [
+        "Form a circle around a table.",
+        "Place a large pool of cups (20+) in the center, all filled with a small amount of beer.",
+        "One special cup ('slap cup' or 'chug cup') is the one being passed.",
+        "Two non-adjacent players each have a ping pong ball."
+      ],
+      "rules": [
+        "Both players with balls try to bounce-and-sink simultaneously.",
+        "Sink: pass the ball + their cup to the player on their left.",
+        "If you sink before the player to your left has, you can slap their cup off the table — they must chug a fresh beer from the center pool.",
+        "Continuous play: the ball never stops moving.",
+        "Game ends when the cup pool runs dry."
+      ],
+      "houseRules": [
+        "Rage Cage: slap as a forfeit, with a chug-and-restart loop.",
+        "Speed kills: forced timer per shot.",
+        "Solo cup snipers can call shots ahead — 'cup 4' — and get bonus passes if landed."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "skill",
+        "physical",
+        "fast_paced",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 74,
+      "source": "curated"
+    },
+    {
+      "id": "game_three_man",
+      "name": "Three Man",
+      "aliases": [
+        "3-Man"
+      ],
+      "playersMin": 3,
+      "playersMax": 10,
+      "equipment": [
+        "Two dice",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 40
+      },
+      "description": "Roll the dice, react to combos. Specific sums and combos trigger drinks; one unfortunate player is the 'Three Man' and drinks anytime a 3 (or sum of 3) is rolled until someone else takes the role.",
+      "setup": [
+        "Players sit in a circle.",
+        "Whoever rolls a 3 first becomes the Three Man.",
+        "Pick a starter."
+      ],
+      "rules": [
+        "Roll combos and effects: 1+2 (sum 3) or any 3 = Three Man drinks. 7 = player to right drinks. 11 = player to left drinks. 9 = social (everyone drinks). Doubles = give that many drinks. Double 1s or double 6s = take a shot. Double 3s = Three Man + double penalty.",
+        "Three Man stays the Three Man until someone else rolls doubles — the Three Man title transfers (or is shared, in some rules).",
+        "Continue around the circle indefinitely."
+      ],
+      "houseRules": [
+        "Three Man hat: physical hat or marker for the Three Man.",
+        "Triple 3s with three dice: house drinks.",
+        "Add a 'Spare Man' for 4+ ruleset variations."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "drinking_game",
+        "luck",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 64,
+      "source": "curated"
+    },
+    {
+      "id": "game_chandeliers",
+      "name": "Chandeliers",
+      "aliases": [
+        "Quarters Chandeliers"
+      ],
+      "playersMin": 4,
+      "playersMax": 8,
+      "equipment": [
+        "1 pint glass",
+        "4–8 small Solo cups",
+        "Quarters",
+        "Beer"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 30
+      },
+      "description": "Bouncing quarters with center-cup penalties. A pint glass sits in the middle, surrounded by smaller cups (one per player). Bounce a quarter into your own small cup (drink it). Bounce into someone else's cup (they drink). Bounce into the pint = everyone chugs.",
+      "setup": [
+        "Pint glass in the center of the table.",
+        "Each player has a small Solo cup with ~1/3 beer in front of them.",
+        "Each player has a quarter."
+      ],
+      "rules": [
+        "Take turns bouncing a quarter off the table.",
+        "Quarter in your own cup: drink it.",
+        "Quarter in someone else's cup: they drink it.",
+        "Quarter in the center pint: everyone chugs the pint together.",
+        "If two quarters land in the pint at once, double penalty (chug twice / a shot)."
+      ],
+      "houseRules": [
+        "Chain reactions: if your quarter knocks another into a cup, that drink also counts.",
+        "Forfeit shot: every center-pint trigger costs the central glass refill from a designated 'house' beer.",
+        "Tournament style: first to 3 makes wins, all losers chug."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "skill",
+        "physical",
+        "drinking_game",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_beer_ball",
+      "name": "Beer Ball",
+      "aliases": [
+        "Four Banger",
+        "4 Corners"
+      ],
+      "playersMin": 4,
+      "playersMax": 4,
+      "equipment": [
+        "Long table",
+        "4 cans of beer",
+        "Ping pong ball"
+      ],
+      "durationMinutes": {
+        "min": 10,
+        "max": 20
+      },
+      "description": "Two-on-two team race. Each player has an unopened can at their corner. Hit the opponent's can with a ping pong ball — they have to crack and chug until you get the ball back to the table. First team to finish their beers wins.",
+      "setup": [
+        "Two teams of 2 stand at opposite ends of a rectangular table.",
+        "Each player has an unopened beer at their corner.",
+        "One ping pong ball in play."
+      ],
+      "rules": [
+        "Throwing team: throw the ping pong ball at the opposing team's beer cans.",
+        "Hit (the can rings): the player whose can wasn't hit on their team starts chugging their beer immediately. Throwing team's drinker continues drinking until the receiving team grabs the ball and touches it to the table.",
+        "Receiving team yells 'DOWN' and play resets.",
+        "Alternate throws until one team finishes both their beers (must be empty — hold the can over your head to prove it).",
+        "If a team's first beer is finished, the ball can ricochet onto their second beer."
+      ],
+      "houseRules": [
+        "Quick draw: the ball must be returned to the table within 3 seconds of being grabbed.",
+        "Spillage: any spilled beer must be restored to the can — slows play down.",
+        "Double-or-nothing: losing team can challenge to a rematch with double beers."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "team",
+        "skill",
+        "physical",
+        "fast_paced"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 62,
+      "source": "curated"
+    },
+    {
+      "id": "game_stump",
+      "name": "Stump",
+      "aliases": [
+        "Hammerschlagen",
+        "Nail Game"
+      ],
+      "playersMin": 2,
+      "playersMax": 8,
+      "equipment": [
+        "Tree stump",
+        "Hammer",
+        "1 nail per player",
+        "Beer"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 45
+      },
+      "description": "A backyard classic. Each player starts a nail in a tree stump. On your turn, flip the hammer in the air, catch it, and try to drive your opponents' nails further in with a single one-handed strike. Last nail standing wins.",
+      "setup": [
+        "Tree stump (or thick log section) on flat ground.",
+        "Each player drives their nail into the stump enough to stand upright.",
+        "Each player has a beer in their non-dominant hand."
+      ],
+      "rules": [
+        "Take turns. On your turn, flip the hammer in front of you (one rotation), catch it, and strike one opponent's nail.",
+        "Different flips = different rules: front flip = 1 strike; under-leg = 2 strikes; behind-back = 3 strikes.",
+        "If your nail goes flush with the stump, you're out.",
+        "Beer must always be in your non-dominant hand. Drop or move it = lose your turn.",
+        "Last player with a nail above the stump wins."
+      ],
+      "houseRules": [
+        "Trick shots: spin the hammer for bonus strikes.",
+        "Spectator's shot: if you catch a hammer that someone drops, you get a free strike.",
+        "End-game: when only one nail is left, that player chooses the loser's punishment."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "outdoor_friendly",
+        "physical",
+        "skill",
+        "regional"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_edward_fortyhands",
+      "name": "Edward Fortyhands",
+      "aliases": [
+        "Forty Hands"
+      ],
+      "playersMin": 2,
+      "playersMax": 10,
+      "equipment": [
+        "1 forty-ounce malt liquor per player",
+        "Duct tape"
+      ],
+      "durationMinutes": {
+        "min": 30,
+        "max": 120
+      },
+      "description": "Pop-culture classic from college dorms. Tape a 40 oz to each of your hands. Cannot remove the bottles until both are empty. Awkwardness, urgency, and chaos ensue.",
+      "setup": [
+        "Each player gets two 40 oz bottles of malt liquor.",
+        "Tape one bottle to each hand securely with duct tape.",
+        "Once taped, the game has begun."
+      ],
+      "rules": [
+        "Bottles cannot be removed until both are completely empty.",
+        "Continue with normal social activities (party, etc.) — that's the point.",
+        "First player to finish both 40s wins — they get to pick a punishment for the last finisher.",
+        "If you absolutely must use the bathroom, you need help — and a witness."
+      ],
+      "houseRules": [
+        "Liquid only — no pouring out.",
+        "Smaller bottles for lighter weights — not everyone can do a 40.",
+        "Time limit: must finish within 1 hour or pay forfeit."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "endurance",
+        "extreme",
+        "embarrassment",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 48,
+      "source": "curated"
+    },
+    {
+      "id": "game_rage_cage",
+      "name": "Rage Cage",
+      "aliases": [
+        "Stack Cup",
+        "Slap Cup"
+      ],
+      "playersMin": 6,
+      "playersMax": 15,
+      "equipment": [
+        "20+ Solo cups",
+        "2 ping pong balls",
+        "Beer (lots)"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 45
+      },
+      "description": "Faster, more chaotic version of Slap Cup. Big group circles a table covered in cups. Two ball-bouncers try to sink shots simultaneously and stack their cups onto opponents' to force chug-and-restart cycles. Madness.",
+      "setup": [
+        "Large table covered with 20+ Solo cups, all with a small amount of beer.",
+        "One 'death cup' of beer in the center.",
+        "Two non-adjacent players start with ping pong balls."
+      ],
+      "rules": [
+        "Both ball-holders bounce balls into their nearest cup.",
+        "Sink: stack your sunken cup on top of the cup of the player to your left, pass the ball to them, they must now sink their cup.",
+        "If a player to your left hasn't yet sunk their cup when you sink yours, you can stack on top — they have to chug AND start fresh.",
+        "Death cup: if anyone sinks the center cup, the entire table chugs.",
+        "Game ends when the table runs out of cups."
+      ],
+      "houseRules": [
+        "Slap mode: physical slapping the cup onto theirs allowed.",
+        "Reload limits: can only refill cups with center pitcher.",
+        "Speed kills: 3-second clock per attempt."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "skill",
+        "physical",
+        "fast_paced",
+        "extreme"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 72,
+      "source": "curated"
+    },
+    {
+      "id": "game_quarters_speed",
+      "name": "Speed Quarters",
+      "aliases": [
+        "Anchorman"
+      ],
+      "playersMin": 4,
+      "playersMax": 10,
+      "equipment": [
+        "2 quarters",
+        "1 pitcher of beer",
+        "Glasses for each player"
+      ],
+      "durationMinutes": {
+        "min": 10,
+        "max": 20
+      },
+      "description": "Two quarters in play simultaneously, both bouncing into glasses around the table. If both quarters end up at the same player, they chug the pitcher. Fast and brutal.",
+      "setup": [
+        "Players sit around a hard-surface table.",
+        "Each player has a glass.",
+        "Two players (opposite each other) start with a quarter each.",
+        "A full pitcher of beer in the center."
+      ],
+      "rules": [
+        "Both starting players try to bounce their quarter into their own glass simultaneously.",
+        "Make it: pass the quarter clockwise. The next player tries.",
+        "Miss: pass clockwise anyway, but you keep trying until you make it.",
+        "If both quarters arrive at the same player at any point, that player must chug the entire pitcher.",
+        "First make in a row gives bonus passes — the quarter skips a player."
+      ],
+      "houseRules": [
+        "Anchorman variant: instead of a pitcher, the loser becomes the next 'anchor' and chugs whatever's poured at them.",
+        "Three quarters mode: utter chaos.",
+        "Spillage rule: any spilled beer = automatic chug for that player."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "skill",
+        "physical",
+        "fast_paced",
+        "extreme",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_movie_drinking",
+      "name": "Movie Drinking Game",
+      "aliases": [
+        "Film Bingo"
+      ],
+      "playersMin": 2,
+      "playersMax": 15,
+      "equipment": [
+        "A movie",
+        "TV/projector",
+        "Drinks",
+        "Cheat sheet of rules"
+      ],
+      "durationMinutes": {
+        "min": 90,
+        "max": 180
+      },
+      "description": "Watch a movie with rules attached to specific events, lines, or character actions. Ranges from 'sip' to 'finish your drink' depending on rarity. Tons of pre-made rule sets exist online for popular movies.",
+      "setup": [
+        "Pick a movie everyone agrees on.",
+        "Pull a rule set from online (or write your own — see below).",
+        "Everyone has drinks ready before the movie starts."
+      ],
+      "rules": [
+        "Rules are tied to events in the film. Examples:",
+        "• Sip: every time the main character says their catchphrase.",
+        "• Drink: every time someone dies on screen.",
+        "• Chug: every plot twist.",
+        "• Finish your drink: ending credits.",
+        "Common rule sets exist for: Star Wars, Lord of the Rings, Fast & Furious, Disney films, Shrek, Anchorman, Fight Club, etc.",
+        "Watch the movie. Drink as triggered. Drink responsibly during 3-hour epics."
+      ],
+      "houseRules": [
+        "Custom rules: each player picks one rule of their own at the start.",
+        "Bingo mode: 5x5 grid of tropes; first to bingo gets to give out drinks.",
+        "Rules escalate: rules added every 30 minutes."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "drinking_game",
+        "media",
+        "passive"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 70,
+      "source": "curated"
+    },
+    {
+      "id": "game_mario_kart_drinking",
+      "name": "Mario Kart Drinking Game",
+      "aliases": [
+        "Drunk Karts"
+      ],
+      "playersMin": 2,
+      "playersMax": 4,
+      "equipment": [
+        "Nintendo Switch (or any Mario Kart)",
+        "Beers",
+        "Controllers"
+      ],
+      "durationMinutes": {
+        "min": 30,
+        "max": 90
+      },
+      "description": "Race Mario Kart with beers in hand. Finishing position determines drinks. The catch: you can't have your hands on the controller while drinking. Pause to chug, or chug while drifting. Bottom of the leaderboard chugs the most.",
+      "setup": [
+        "Set up Mario Kart for 2–4 players.",
+        "Each player has at least one beer in front of them.",
+        "Decide: 4-race tournament or single race?"
+      ],
+      "rules": [
+        "Race normally — all standard kart rules apply.",
+        "After each race:",
+        "• 1st place: drink water (or just sip).",
+        "• 2nd place: 1 sip.",
+        "• 3rd place: 3 sips.",
+        "• 4th place: shotgun a beer or chug.",
+        "OPTIONAL twist: must finish a beer before crossing the finish line. Hands off the controller while drinking.",
+        "Run a 4-race grand prix; cumulative position = total damage."
+      ],
+      "houseRules": [
+        "Banana = take a sip when you're hit.",
+        "Blue shell = chug while you're stationary.",
+        "First place gets a 'curse': must drive holding controller upside-down."
+      ],
+      "relatedBetTemplateIds": [
+        "party_mk_grand_prix"
+      ],
+      "tags": [
+        "weekend",
+        "video_game",
+        "drinking_game",
+        "competitive"
+      ],
+      "matureFlag": true,
+      "skillType": "mixed",
+      "popularityScore": 78,
+      "source": "curated"
+    },
+    {
+      "id": "game_smash_drinking",
+      "name": "Smash Bros Drinking Game",
+      "aliases": [
+        "Drunk Smash"
+      ],
+      "playersMin": 2,
+      "playersMax": 4,
+      "equipment": [
+        "Switch + Smash Bros",
+        "Beers"
+      ],
+      "durationMinutes": {
+        "min": 30,
+        "max": 90
+      },
+      "description": "Drink based on your stocks lost, KOs landed, and combo damage. Light up the leaderboard, drink the loser into oblivion.",
+      "setup": [
+        "Set up Smash Bros for 2–4 players.",
+        "Each player has beers ready.",
+        "Decide stock count (3 or 5) before starting."
+      ],
+      "rules": [
+        "Lose a stock: drink 3 sips.",
+        "Get KOed by a self-destruct: drink 5 sips and laugh at yourself.",
+        "Land a 0-to-death combo: opponent chugs.",
+        "Bottom 2 finishers: drink 5 sips each.",
+        "Last place per match: chug a fresh beer."
+      ],
+      "houseRules": [
+        "Items on chaos mode: any item pickup = take a sip.",
+        "Final smash penalty: getting hit by a final smash = chug.",
+        "Mirror match: same character on both sides = double drinks."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "video_game",
+        "drinking_game",
+        "competitive"
+      ],
+      "matureFlag": true,
+      "skillType": "mixed",
+      "popularityScore": 68,
+      "source": "curated"
+    },
+    {
+      "id": "game_dirty_pint",
+      "name": "Dirty Pint",
+      "aliases": [
+        "The Pint",
+        "Dare Pint"
+      ],
+      "playersMin": 3,
+      "playersMax": 10,
+      "equipment": [
+        "Pint glass",
+        "Various drink mixers (everyone's drinks)"
+      ],
+      "durationMinutes": {
+        "min": 10,
+        "max": 30
+      },
+      "description": "Standalone format that pairs with most card games. Build a 'dirty pint' (everyone adds a splash of their drink). Whoever loses any round of the night chugs from it. Slow accumulation = horror.",
+      "setup": [
+        "Place a pint glass in the center of the table.",
+        "Each player adds a small pour of whatever they're drinking.",
+        "Pick which game(s) determine who 'loses' each round."
+      ],
+      "rules": [
+        "Whenever a designated 'loser' moment happens (loses a hand of cards, breaks a rule, etc.), they take a sip from the dirty pint.",
+        "If the pint runs low, top it up with everyone's drinks.",
+        "Designated 'finish the pint' moments can be set by group rule (every 30 minutes, every new game, etc.)."
+      ],
+      "houseRules": [
+        "Dirty pint roulette: at the end of the night, the dirty pint gets chugged by whoever has the most penalties.",
+        "Pretty pint variant: only one liquid type allowed in (tequila pint, beer pint).",
+        "Gross-out mode: anyone can add ONE non-drink ingredient (hot sauce, salt, lemon juice). One per game."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "drinking_game",
+        "extreme"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_irish_poker",
+      "name": "Irish Poker",
+      "aliases": [
+        "Across the Bridge"
+      ],
+      "playersMin": 2,
+      "playersMax": 8,
+      "equipment": [
+        "Deck of cards",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 10,
+        "max": 20
+      },
+      "description": "Card guessing game. Each player gets four cards face-down. Guess each card's properties (red/black, higher/lower, in-between, suit) one at a time. Wrong guesses = drinks. Right guesses = give drinks. Then you cross the 'bridge' for bonus penalties.",
+      "setup": [
+        "Deal 4 cards face-down to each player.",
+        "Stack the rest of the deck face-down in the center."
+      ],
+      "rules": [
+        "Each player guesses their first card: red or black? Flip it. Wrong = 1 drink. Right = give 1 drink.",
+        "Second card: higher or lower than the first? Flip it. Wrong = 2 drinks. Right = give 2 drinks.",
+        "Third card: in-between or outside the first two? Flip. Wrong = 3 drinks. Right = give 3 drinks.",
+        "Fourth card: guess the suit. Flip. Wrong = 4 drinks. Right = give 4 drinks.",
+        "After all players have guessed all four cards, deal a row of cards face-down on the table — 'the bridge'. Flip them one at a time. If matches a card you have, you drink (or give drinks) according to value."
+      ],
+      "houseRules": [
+        "Double drinks for face cards (J/Q/K).",
+        "Choose your own poison: instead of drink amounts, use shots / chugs.",
+        "Captain's pick: round leader picks who drinks each penalty."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "card_game",
+        "drinking_game",
+        "luck"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_centurion",
+      "name": "Centurion",
+      "aliases": [
+        "100 Shots"
+      ],
+      "playersMin": 2,
+      "playersMax": 10,
+      "equipment": [
+        "1 oz shot glass per player",
+        "Beer (~9 cans/person)",
+        "Timer"
+      ],
+      "durationMinutes": {
+        "min": 100,
+        "max": 120
+      },
+      "description": "Power Hour's bigger cousin. 100 shots of beer in 100 minutes. ~8–9 beers per person. The 'Centurion' is the rare survivor who completes all 100.",
+      "setup": [
+        "Each player has a 1 oz shot glass and enough beer.",
+        "Set a timer for 100 minutes.",
+        "Play a 100-minute Centurion playlist (changes song every minute).",
+        "Designate a 'master of ceremonies' who calls each shot."
+      ],
+      "rules": [
+        "Take a 1 oz shot of beer every minute on the minute, for 100 minutes.",
+        "Miss a shot = penalty (group decides: liquor shot, jumping jacks, sit out one round but resume).",
+        "Bathroom breaks must be timed between minutes.",
+        "Make it to 100 = you are a Centurion. Frame the moment."
+      ],
+      "houseRules": [
+        "Mini-centurion: 50 shots in 50 minutes.",
+        "Mario Centurion: random rule activates every 10 minutes (waterfall, dance break, etc.).",
+        "Hard mode: 2 oz instead of 1 oz."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "endurance",
+        "extreme",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 60,
+      "source": "curated"
+    },
+    {
+      "id": "game_shotgun_race",
+      "name": "Shotgun Race",
+      "aliases": [
+        "Shotgun"
+      ],
+      "playersMin": 2,
+      "playersMax": 10,
+      "equipment": [
+        "1 can of beer per player",
+        "A key, knife, or finger"
+      ],
+      "durationMinutes": {
+        "min": 1,
+        "max": 3
+      },
+      "description": "Speed-drinking, popular as a pregame ritual. Punch a hole in the side of a beer can, put your mouth over it, pop the top, and let gravity rip. First done wins.",
+      "setup": [
+        "Each player has a beer can.",
+        "Optional: small puncture tool (key works fine).",
+        "Line up at the starting position."
+      ],
+      "rules": [
+        "On 'GO':",
+        "1. Punch a small hole in the lower side of the can.",
+        "2. Cover the hole with your mouth.",
+        "3. Tilt and crack the top of the can — air flows in, beer flows out.",
+        "4. Drink as fast as possible.",
+        "5. Show empty can over your head.",
+        "First to finish wins. Last gets a forfeit."
+      ],
+      "houseRules": [
+        "Best 2 of 3 series.",
+        "Chain shotgun: winners get to pick the next loser they race.",
+        "Holiday variant: shotgun in costume on Halloween / 4th of July."
+      ],
+      "relatedBetTemplateIds": [
+        "party_shotgun_first"
+      ],
+      "tags": [
+        "weekend",
+        "endurance",
+        "physical",
+        "fast_paced",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 78,
+      "source": "curated"
+    },
+    {
+      "id": "game_drink_your_card",
+      "name": "Across the Board",
+      "aliases": [
+        "The Pyramid"
+      ],
+      "playersMin": 3,
+      "playersMax": 8,
+      "equipment": [
+        "Deck of cards",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 30
+      },
+      "description": "Pyramid memory game. Cards are arranged in a pyramid; players have hands of cards. Match cards as the pyramid is revealed; force opponents to drink based on values.",
+      "setup": [
+        "Build a pyramid of face-down cards: 5 cards on bottom row, 4 on next, 3, 2, 1 (15 cards total).",
+        "Deal 4 cards face-down to each player.",
+        "Players look at their cards, memorize them, then turn them face-down in front of them."
+      ],
+      "rules": [
+        "Reveal pyramid cards one at a time, starting from the bottom row.",
+        "If you 'have' that card (you remember matching it in your hand), you can call it out and assign a drink to anyone — they drink the value × pyramid row.",
+        "But you might be bluffing. Anyone can call your bluff. Wrong bluff = double penalty to you. Right bluff (you actually had it) = double penalty to caller.",
+        "Continue up the pyramid; values increase by row (row 1 = 1 drink, row 5 = 5 drinks)."
+      ],
+      "houseRules": [
+        "Pyramid masters: row 5 cards trigger 'social' (everyone drinks).",
+        "Open hand variant: cards face-up — pure assignment game.",
+        "Sloshed: face cards count double."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "card_game",
+        "memory",
+        "drinking_game",
+        "luck"
+      ],
+      "matureFlag": true,
+      "skillType": "memory",
+      "popularityScore": 62,
+      "source": "curated"
+    },
+    {
+      "id": "game_buffalo",
+      "name": "Buffalo",
+      "aliases": [
+        "Buffalo Club"
+      ],
+      "playersMin": 2,
+      "playersMax": 20,
+      "equipment": [
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 60,
+        "max": 240
+      },
+      "description": "A subtle, all-night rule. Once you join the Buffalo Club, you must always drink with your non-dominant hand. Get caught using your dominant hand and you must chug your drink. Lasts forever — you're a member for life.",
+      "setup": [
+        "Anyone can declare 'I'm a buffalo' and join the club at any time.",
+        "Once you're in, you're in for life (or for the night, depending on agreement)."
+      ],
+      "rules": [
+        "Buffalo members must always drink with their non-dominant hand.",
+        "If caught using your dominant hand to drink, anyone can yell 'BUFFALO!' and you must chug whatever's in your glass.",
+        "There's no winning — it's a layered ongoing rule.",
+        "Members can recruit non-members at any time. Once you're invited and accept, you're in."
+      ],
+      "houseRules": [
+        "Lifetime variant: you're a buffalo forever, even outside the night.",
+        "Reverse buffalo: must drink with dominant hand only — chaos for southpaws.",
+        "Buffalo bingo: combine with international rules for layered chaos."
+      ],
+      "relatedBetTemplateIds": [
+        "party_buffalo_no_chug"
+      ],
+      "tags": [
+        "weekend",
+        "social",
+        "ongoing",
+        "no_equipment",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 64,
+      "source": "curated"
+    },
+    {
+      "id": "game_pong_dares",
+      "name": "Pong-Dare",
+      "aliases": [
+        "Beer Pong with Dare Cups"
+      ],
+      "playersMin": 4,
+      "playersMax": 4,
+      "equipment": [
+        "Standard beer pong setup",
+        "10 dare cards on the cups",
+        "Beer"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 45
+      },
+      "description": "Beer pong, but every cup has a dare card under it. Sink a cup, the opposing team drinks AND completes the dare. Adds escalating chaos to a classic game.",
+      "setup": [
+        "Standard beer pong setup with 10 cups in a triangle on each side.",
+        "Write 10 dares on small pieces of paper, place one under each cup on each side.",
+        "Mix mild dares (sing a chorus) with bigger ones (run a lap, shotgun a beer)."
+      ],
+      "rules": [
+        "Standard beer pong rules apply.",
+        "Sink a cup: opposing team's chosen player drinks the cup AND reads/performs the dare under it.",
+        "Skip the dare: drink double cup volume + take a shot.",
+        "Refuse to participate: lose 3 cups instantly."
+      ],
+      "houseRules": [
+        "Dare types: physical (push-ups), embarrassing (call your ex), social (truth), trivia.",
+        "Wild card cup: one cup has 'pick your own dare from the box'.",
+        "Death cup variant: getting last cup forces full deck of dares."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "skill",
+        "physical",
+        "team",
+        "embarrassment"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 66,
+      "source": "curated"
+    },
+    {
+      "id": "game_drinky_pool",
+      "name": "Drinky Pool",
+      "aliases": [
+        "Bar Pool Drinking"
+      ],
+      "playersMin": 2,
+      "playersMax": 4,
+      "equipment": [
+        "Pool table",
+        "Beers"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 60
+      },
+      "description": "Standard pool, but every pocket has a drink rule. Sink a striped ball, opponent drinks. Sink solid, you drink. Scratch on the 8-ball, you chug your beer. Combine with house rules for added chaos.",
+      "setup": [
+        "Set up standard 8-ball pool.",
+        "Players have beers nearby."
+      ],
+      "rules": [
+        "Sink one of your balls: opponent drinks.",
+        "Sink an opponent's ball (illegal): you drink.",
+        "Scratch (cue ball in pocket): you drink.",
+        "Sink the 8-ball early or in wrong pocket: chug entire beer.",
+        "Standard pool win conditions otherwise."
+      ],
+      "houseRules": [
+        "Trick shot bonus: making a called bank shot = give 3 drinks.",
+        "Combo shot: every additional ball sunk in one stroke = +1 drink.",
+        "Loser racks the next game and chugs a beer."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "skill",
+        "bar_friendly",
+        "drinking_game",
+        "physical"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 70,
+      "source": "curated"
+    },
+    {
+      "id": "game_presidents_assholes",
+      "name": "Presidents and Assholes",
+      "aliases": [
+        "Asshole",
+        "P&A",
+        "Scum",
+        "Capitalism"
+      ],
+      "playersMin": 4,
+      "playersMax": 8,
+      "equipment": [
+        "Standard 52-card deck (add a 2nd deck for 6+ players)",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 60
+      },
+      "description": "Climbing card game with brutal social hierarchy. First to dump their hand becomes President; last is the Asshole. The Asshole shuffles, deals, and gives their two best cards to the President every round. Once you're the Asshole, your only goal is to climb out before the night ends.",
+      "setup": [
+        "Deal the entire deck out evenly to all players.",
+        "Player with the 3 of Clubs starts the first round (kicks off by playing it).",
+        "On subsequent rounds, the previous Asshole shuffles and deals; the President leads."
+      ],
+      "rules": [
+        "Goal: dump all your cards. First out = President. Last with cards = Asshole.",
+        "Card rank (low to high): 3, 4, 5... J, Q, K, A. 2 = wild/clear.",
+        "On your turn, play one card or matching set (pair, triple, quad) of higher rank than the last play.",
+        "Match the previous play's count: if a pair was played, you must play a pair too.",
+        "Can't play? Pass. If everyone passes, the last player to play starts a new round.",
+        "Playing a 2 = clears the table; that player starts the next round.",
+        "Round ends when only the Asshole has cards.",
+        "Hierarchy next round: Asshole → President swap top 2 cards. VP → VP-Asshole swap top 1 card.",
+        "Asshole shuffles, deals, and waits on the President. President can call drinks at will."
+      ],
+      "houseRules": [
+        "Three Strikes: stay President 3 rounds in a row, you make a permanent rule.",
+        "Slap Pile: pairs cause everyone to slap the pile — last to slap drinks.",
+        "Silent Game: President can call 'silent game' at any time; first to speak drinks.",
+        "Power Hour Asshole: Asshole takes a sip every minute until they win a round."
+      ],
+      "relatedBetTemplateIds": [
+        "party_pa_president",
+        "party_pa_no_asshole"
+      ],
+      "tags": [
+        "weekend",
+        "card_game",
+        "classic",
+        "social",
+        "long_form"
+      ],
+      "matureFlag": true,
+      "skillType": "mixed",
+      "popularityScore": 88,
+      "source": "curated"
+    },
+    {
+      "id": "game_pyramid",
+      "name": "Pyramid",
+      "aliases": [
+        "The Pyramid Game"
+      ],
+      "playersMin": 3,
+      "playersMax": 8,
+      "equipment": [
+        "Deck of cards",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 30
+      },
+      "description": "Bluffing card game. Cards arranged in a pyramid get revealed one row at a time. Players claim to have matching cards in hand to assign drinks to others — but they could be lying. Call the bluff and you might be wrong, drink double.",
+      "setup": [
+        "Deal each player 3-4 cards face down. Players look at their cards, memorize, set face-down in front of them.",
+        "Build a pyramid of cards face-down: 5-card base, then 4, 3, 2, 1 at the top.",
+        "Decide a drink value per row before starting (e.g., row 1=1 sip, row 5=5 sips)."
+      ],
+      "rules": [
+        "Reveal cards one at a time, starting from the bottom row.",
+        "When a card is revealed, anyone who 'has' that rank can claim it and assign drinks (rank value × row).",
+        "You can lie. If someone calls 'BS!', flip your card.",
+        "Caught lying: you drink double the assigned drinks.",
+        "Wrong call (you actually had it): caller drinks double.",
+        "Your card stays face-down — others only see it if you're called out.",
+        "Continue up the pyramid; row 5 (the apex) is the heaviest single card."
+      ],
+      "houseRules": [
+        "Pyramid masters: the top card triggers a 'social' (everyone drinks).",
+        "Open hand variant: cards face-up — pure assignment game with no bluffing.",
+        "Stair climb: each row doubles instead of increments."
+      ],
+      "relatedBetTemplateIds": [
+        "party_pyramid_no_drink"
+      ],
+      "tags": [
+        "weekend",
+        "card_game",
+        "bluffing",
+        "memory",
+        "social"
+      ],
+      "matureFlag": true,
+      "skillType": "memory",
+      "popularityScore": 72,
+      "source": "curated"
+    },
+    {
+      "id": "game_ride_the_bus",
+      "name": "Ride the Bus",
+      "aliases": [
+        "Driving the Bus",
+        "Last Card"
+      ],
+      "playersMin": 2,
+      "playersMax": 8,
+      "equipment": [
+        "Standard 52-card deck",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 40
+      },
+      "description": "Multi-stage card guessing game. Players answer 4 questions per turn (red/black, higher/lower, in-between, suit) — wrong = drink, right = give drinks. The unluckiest player ends up 'riding the bus' — guessing 5 cards in a row correctly to escape. Brutal endings.",
+      "setup": [
+        "Pick a dealer (often the loser of a chug-off).",
+        "Players sit in a circle with drinks ready."
+      ],
+      "rules": [
+        "Round 1 — Red or Black? Each player guesses, dealer flips. Right = give 1 sip, wrong = drink 1.",
+        "Round 2 — Higher or Lower? Compared to your first card. Right = give 2, wrong = drink 2. Same value = automatic drink.",
+        "Round 3 — In-Between or Outside? Compared to your two cards. Right = give 3, wrong = drink 3. Match either = drink.",
+        "Round 4 — What suit? (Hearts, diamonds, clubs, spades.) Right = give 5, wrong = drink 1.",
+        "After all 4 rounds, dealer builds a pyramid (5-4-3-2-1) and flips cards. Anyone with a matching card assigns drinks (row 1=1 each, row 5=5 each).",
+        "Player with most cards left at the end RIDES THE BUS:",
+        "  Bus: dealer flips 6-10 cards in a row. The rider must guess R/B for each. One wrong = drink + restart.",
+        "  Get all correct in a row = freedom."
+      ],
+      "houseRules": [
+        "Death Bus: 10 cards instead of 6 for cinematic ending.",
+        "Mercy Rule: rider can tap out after 3 failed buses, chug a beer, done.",
+        "Express bus: only red/black for the entire bus segment."
+      ],
+      "relatedBetTemplateIds": [
+        "party_rtb_no_bus"
+      ],
+      "tags": [
+        "weekend",
+        "card_game",
+        "drinking_game",
+        "endurance",
+        "luck"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 80,
+      "source": "curated"
+    },
+    {
+      "id": "game_fck_the_dealer",
+      "name": "Fuck the Dealer",
+      "aliases": [
+        "F the Dealer",
+        "FTD"
+      ],
+      "playersMin": 3,
+      "playersMax": 8,
+      "equipment": [
+        "Standard 52-card deck",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 60
+      },
+      "description": "Number-guessing game where the dealer pays the price for player wins. Guess the rank of the card the dealer holds; close guesses still cost you, but a correct guess pours pain on the dealer.",
+      "setup": [
+        "Pick a dealer to start.",
+        "Dealer has the deck face-down."
+      ],
+      "rules": [
+        "On each turn, the player to the dealer's left guesses the rank of the next card (Ace through King).",
+        "Dealer flips the card.",
+        "Wrong: dealer tells player higher or lower. Player guesses again.",
+        "Wrong twice: player drinks the difference between their second guess and the actual card.",
+        "Correct on first guess: dealer drinks 4.",
+        "Correct on second guess: dealer drinks 2.",
+        "Dealer rotates left every two correct guesses against them, OR after 5 cards if you prefer.",
+        "Run through the deck; new dealer when current one is 'fucked' twice (got 2+ correct guesses against them)."
+      ],
+      "houseRules": [
+        "Dealer's revenge: dealer can cap any drink at 5 sips (no monster ranks).",
+        "Buddy system: pick a co-dealer to share the punishment.",
+        "Open mode: deck face-up next to the dealer — pure memory test."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "card_game",
+        "memory",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "skillType": "memory",
+      "popularityScore": 68,
+      "source": "curated"
+    },
+    {
+      "id": "game_circle_of_death",
+      "name": "Circle of Death",
+      "aliases": [
+        "Variant of King's Cup"
+      ],
+      "playersMin": 3,
+      "playersMax": 10,
+      "equipment": [
+        "Deck of cards",
+        "Beer can in the center",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 45
+      },
+      "description": "A King's Cup variant where the goal is to stuff cards UNDER a beer can's tab. Pop the tab, chug the can. The penalty for breaking the circle of cards is identical to King's Cup but the centerpiece is a single can instead of a dirty pint.",
+      "setup": [
+        "Place an unopened beer can in the middle of the table.",
+        "Spread cards face-down in a circle around the can.",
+        "Players sit in a circle."
+      ],
+      "rules": [
+        "Same card actions as King's Cup (Ace=Waterfall, 2=You, 3=Me, etc).",
+        "Instead of pouring into a king's cup, players who draw Kings slide their card UNDER the beer can's tab.",
+        "Eventually, the accumulated cards pop the tab.",
+        "Whoever popped the tab chugs the entire beer.",
+        "Round resets with a new can in the center."
+      ],
+      "houseRules": [
+        "Difficulty mode: multiple cans (one per side of the table); each has its own rules card pile.",
+        "Tab counter: weakest tab ends the game (loser chugs, game over)."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "card_game",
+        "classic",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 68,
+      "source": "curated"
+    },
+    {
+      "id": "game_bullshit",
+      "name": "Bullshit",
+      "aliases": [
+        "BS",
+        "I Doubt It",
+        "Cheat"
+      ],
+      "playersMin": 3,
+      "playersMax": 10,
+      "equipment": [
+        "Standard 52-card deck",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 45
+      },
+      "description": "Lying card game with drinking. Players claim to play cards in sequence (Aces, then 2s, then 3s, etc). Anyone can call 'Bullshit!' — caught lying or wrongly accused, drink and pick up the pile.",
+      "setup": [
+        "Deal the entire deck evenly to all players.",
+        "First player starts with Aces."
+      ],
+      "rules": [
+        "On your turn, play 1-4 cards face-down and announce 'one Ace,' 'two Aces,' etc.",
+        "Next player must play 2s, then 3s, etc, around the rotation.",
+        "You can lie about what you're playing — the cards stay face-down.",
+        "Anyone can yell 'BULLSHIT!' at any time.",
+        "If the caller is right (cards weren't what was claimed): the player drinks 5 + picks up the pile.",
+        "If the caller is wrong: the caller drinks 5 + picks up the pile.",
+        "First player to dump all cards wins; everyone else drinks for losing."
+      ],
+      "houseRules": [
+        "Multiple decks: for 6+ players, use 2 decks for faster turns.",
+        "Speed BS: 5-second turn timer.",
+        "Sequence BS: instead of Aces→2s→3s, use any sequence the player chooses."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "card_game",
+        "bluffing",
+        "social",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 72,
+      "source": "curated"
+    },
+    {
+      "id": "game_spoons",
+      "name": "Spoons",
+      "aliases": [
+        "Pig"
+      ],
+      "playersMin": 3,
+      "playersMax": 8,
+      "equipment": [
+        "Standard 52-card deck",
+        "(N-1) spoons (one fewer than players)",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 10,
+        "max": 20
+      },
+      "description": "Speed card game with a tense, slap-the-spoon ending. Players race to collect 4 of a kind, then quietly grab a spoon — when one disappears, everyone scrambles. Last to grab a spoon drinks. Brutal physical comedy.",
+      "setup": [
+        "Place (number of players minus 1) spoons in the center of the table, equidistant.",
+        "Deal 4 cards to each player.",
+        "Designate a dealer who holds the rest of the deck."
+      ],
+      "rules": [
+        "Dealer draws one card, passes one card to the left simultaneously and continuously.",
+        "Each player passes one card from their hand to the left.",
+        "Goal: collect 4 of a kind in your hand (4 Jacks, 4 sevens, etc.).",
+        "When you have 4 of a kind, quietly grab a spoon. The moment one spoon disappears, everyone else scrambles.",
+        "Last person to grab a spoon drinks (or gets a 'letter' — see house rules).",
+        "Reshuffle and play again."
+      ],
+      "houseRules": [
+        "S-P-O-O-N-S: instead of drinking, the loser gets a letter. Spell out 'SPOONS' and you're out + chug.",
+        "No-look mode: dealer hides the deck under the table — pure shuffle chaos.",
+        "Stealth grab: anyone caught grabbing without 4-of-a-kind drinks double."
+      ],
+      "relatedBetTemplateIds": [
+        "party_spoons_no_loss"
+      ],
+      "tags": [
+        "weekend",
+        "card_game",
+        "physical",
+        "fast_paced",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 66,
+      "source": "curated"
+    },
+    {
+      "id": "game_drunk_uno",
+      "name": "Drunk UNO",
+      "aliases": [
+        "UNO Drunk"
+      ],
+      "playersMin": 2,
+      "playersMax": 10,
+      "equipment": [
+        "UNO deck",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 45
+      },
+      "description": "Standard UNO with drinking penalties layered on. Every special card triggers drinks; forgetting to call 'UNO' costs you. The Wild card lets the player invent a permanent rule for the rest of the game.",
+      "setup": [
+        "Deal 7 UNO cards to each player.",
+        "Place the rest face-down as a draw pile, flip the top card to start the discard pile."
+      ],
+      "rules": [
+        "Standard UNO rules: match color or number.",
+        "Drinking layers:",
+        "• Draw 2 played: target drinks 2 sips and draws 2.",
+        "• Draw 4 played: target drinks 4 sips, draws 4.",
+        "• Skip: skipped player drinks 1.",
+        "• Reverse: original player drinks 1.",
+        "• Wild card played: player makes a NEW house rule (everyone calls each other 'sir' for the round, etc.). Break the rule, drink.",
+        "• Forget to say 'UNO' on your last card: drink 4 + draw 2.",
+        "• If anyone calls you on it before your next turn, you drink 4.",
+        "Winner of each hand: assigns 5 sips to anyone.",
+        "Loser: chugs whatever's left in their cup."
+      ],
+      "houseRules": [
+        "Stack the deck: special cards are 2x in count.",
+        "Wild reset: a Wild can also delete a previous house rule.",
+        "Penalty escalation: each time someone forgets UNO, the penalty doubles for the next forgetter."
+      ],
+      "relatedBetTemplateIds": [
+        "party_uno_no_forget"
+      ],
+      "tags": [
+        "weekend",
+        "card_game",
+        "social",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "mixed",
+      "popularityScore": 80,
+      "source": "curated"
+    },
+    {
+      "id": "game_red_or_black",
+      "name": "Red or Black",
+      "aliases": [
+        "Black or Red",
+        "Easy Pyramid"
+      ],
+      "playersMin": 2,
+      "playersMax": 8,
+      "equipment": [
+        "Standard 52-card deck",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 10,
+        "max": 20
+      },
+      "description": "Pure-luck guessing game. Dealer flips cards from the deck; player guesses Red or Black. Wrong = drink. Simple, brutal, perfect for warming up.",
+      "setup": [
+        "Pick a dealer.",
+        "Players sit in a circle with drinks."
+      ],
+      "rules": [
+        "Dealer holds the deck.",
+        "Each player in turn calls 'Red' or 'Black'. Dealer flips the next card.",
+        "Wrong: drink.",
+        "Right: give 1 drink to anyone.",
+        "Continue until the deck is exhausted."
+      ],
+      "houseRules": [
+        "Streaks: 3 right in a row = make a rule. 3 wrong in a row = chug.",
+        "Higher stakes: face cards are 'mega' — wrong on a face card = drink 3.",
+        "Dealer's whim: dealer can swap places with anyone after any card."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "card_game",
+        "luck",
+        "fast_paced",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 60,
+      "source": "curated"
+    },
+    {
+      "id": "game_higher_or_lower",
+      "name": "Higher or Lower",
+      "aliases": [
+        "Hi-Lo"
+      ],
+      "playersMin": 2,
+      "playersMax": 6,
+      "equipment": [
+        "Standard 52-card deck",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 10,
+        "max": 20
+      },
+      "description": "Sequential guessing game. Dealer flips a card; you guess if the next is higher or lower. Streak builds your safety; one wrong move and you drink the streak count.",
+      "setup": [
+        "Pick a dealer.",
+        "Place the deck face-down."
+      ],
+      "rules": [
+        "Dealer flips one card to start.",
+        "Player calls 'Higher' or 'Lower' for the next card.",
+        "Wrong: drink as many sips as your current streak (so streak of 5 = 5 sips).",
+        "Right: continue. Streak builds.",
+        "Same card (tie): drink 2 + reset streak.",
+        "Voluntary cash-out: stop at any time and give your streak in sips to a target."
+      ],
+      "houseRules": [
+        "All-in mode: must continue until you lose. No cash-out.",
+        "Reverse: streak count goes to YOU when you lose, not the table.",
+        "Long-form: continue through the entire deck, accumulating misses."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "card_game",
+        "luck",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_high_card_drinks",
+      "name": "High Card",
+      "aliases": [
+        "War",
+        "War Drinks"
+      ],
+      "playersMin": 2,
+      "playersMax": 6,
+      "equipment": [
+        "Standard 52-card deck",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 5,
+        "max": 15
+      },
+      "description": "Simplest drinking card game. Each player flips a card; lowest drinks. Resolves in seconds, brutal in volume.",
+      "setup": [
+        "Shuffle the deck.",
+        "Deal cards face-down evenly to all players."
+      ],
+      "rules": [
+        "On each round, every player flips their top card simultaneously.",
+        "Lowest card: drinks the difference between their card and the highest card (or just 1 sip — agree before).",
+        "Tie at the bottom: both drink.",
+        "Tie at the top: 'war' — flip 3 cards face-down + 1 face-up; new highest wins.",
+        "Continue until deck runs out."
+      ],
+      "houseRules": [
+        "Aces low for chaos: 'lowest' becomes Ace.",
+        "Suit tiebreaker: spades > hearts > clubs > diamonds.",
+        "Doubling: every tie doubles the next round's stakes."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "card_game",
+        "luck",
+        "fast_paced"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 55,
+      "source": "curated"
+    },
+    {
+      "id": "game_drinky_blackjack",
+      "name": "Drunk Blackjack",
+      "aliases": [
+        "21 Card",
+        "Drinking Blackjack"
+      ],
+      "playersMin": 2,
+      "playersMax": 6,
+      "equipment": [
+        "Standard 52-card deck",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 45
+      },
+      "description": "Blackjack with drink stakes instead of money. Players hit and stand normally; the bust margin determines the drink. The dealer suffers the most when many players win, gaining drink debts.",
+      "setup": [
+        "Pick a dealer.",
+        "Each player gets 2 cards face-up. Dealer takes 2 (one face-up, one face-down)."
+      ],
+      "rules": [
+        "Standard blackjack rules: hit, stand, double down. Aim for 21 without busting.",
+        "Bust (over 21): drink the bust margin in sips (e.g., 23 = 2 sips).",
+        "Beat the dealer: dealer drinks the win margin in sips.",
+        "Lose to dealer (without busting): drink the loss margin.",
+        "Blackjack (21 on first 2 cards): dealer chugs.",
+        "Tie: nobody drinks, but cards stay in.",
+        "Dealer rotates every 5 hands or after a blackjack against them."
+      ],
+      "houseRules": [
+        "Insurance bets pay in sips on the dealer's first ace.",
+        "Split mode: split pairs into separate hands, drink/give per hand.",
+        "Double-down doubles the drink stakes too."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "card_game",
+        "skill",
+        "casino",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "mixed",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_liars_dice",
+      "name": "Liar's Dice",
+      "aliases": [
+        "Dudo",
+        "Doubting Dice",
+        "Pirate Dice"
+      ],
+      "playersMin": 2,
+      "playersMax": 8,
+      "equipment": [
+        "5 dice per player",
+        "1 cup per player (opaque)",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 60
+      },
+      "description": "Bluffing dice game made famous by Pirates of the Caribbean. All players roll dice in secret under their cups, then bid on how many of a value are on the table across everyone. Call 'liar' (or 'dudo') when you don't believe a bid. Wrong call costs a die and a drink.",
+      "setup": [
+        "Each player gets 5 dice and an opaque cup.",
+        "Players sit around a table."
+      ],
+      "rules": [
+        "Each round: everyone shakes dice in their cup, slams down, peeks at their own dice.",
+        "First player bids: '[number] [face]', e.g., 'four 5s' = claim that across all hidden dice, there are at least four 5s.",
+        "Next player must raise: more dice OR same count higher face.",
+        "Or call 'LIAR!' / 'DUDO!' to challenge the previous bid.",
+        "All dice revealed:",
+        "  Bid was true: challenger drinks the bid count + loses 1 die.",
+        "  Bid was false: bidder drinks + loses 1 die.",
+        "Out of dice = out of the game (and chug a fresh drink).",
+        "1s are wild — count toward any face value. Until someone bids 1s, then 1s lock in."
+      ],
+      "houseRules": [
+        "Spot on: instead of liar, call 'spot on!' If exactly the bid amount, all others drink + lose a die.",
+        "Palifico: when down to one die, you can declare a no-wild round.",
+        "Pirate stakes: lose all dice = chug a beer + ride the bus / do a dare."
+      ],
+      "relatedBetTemplateIds": [
+        "party_ld_last_dice"
+      ],
+      "tags": [
+        "weekend",
+        "dice_game",
+        "bluffing",
+        "skill",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "mixed",
+      "popularityScore": 78,
+      "source": "curated"
+    },
+    {
+      "id": "game_ship_captain_crew",
+      "name": "Ship, Captain, Crew",
+      "aliases": [
+        "7-5-3",
+        "Cargo"
+      ],
+      "playersMin": 2,
+      "playersMax": 10,
+      "equipment": [
+        "5 dice",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 10,
+        "max": 20
+      },
+      "description": "Classic dice game where you must roll a 6 (ship), then a 5 (captain), then a 4 (crew) — in order — using up to 3 rolls. The remaining 2 dice are your 'cargo'; lowest cargo total drinks. Fast and rhythmic.",
+      "setup": [
+        "Players take turns rolling all 5 dice.",
+        "Each player gets up to 3 rolls per turn."
+      ],
+      "rules": [
+        "Goal: get a 6, a 5, and a 4 (in that order — Ship, Captain, Crew) and accumulate the highest cargo total with the remaining 2 dice.",
+        "After roll 1: set aside any 6 you rolled. Re-roll the rest.",
+        "After roll 2: if you have a 6, you can now set aside a 5. Re-roll the rest.",
+        "After roll 3: with 6 and 5 set aside, set aside a 4. Add up your remaining 2 dice = your cargo.",
+        "Cargo must be set on the last roll only.",
+        "If you don't get all of 6, 5, 4 in 3 rolls, you 'sink' = drink immediately and skip your turn.",
+        "Lowest cargo each round drinks the difference vs highest."
+      ],
+      "houseRules": [
+        "Battle Mode: head-to-head between two players, others drink the loser amount.",
+        "Mutiny: 5 of the same number = re-roll the entire game.",
+        "Sink-and-chug: sinking on your last try in any round = chug."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "dice_game",
+        "luck",
+        "fast_paced"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 62,
+      "source": "curated"
+    },
+    {
+      "id": "game_mexico",
+      "name": "Mexico",
+      "aliases": [
+        "Mexicana"
+      ],
+      "playersMin": 2,
+      "playersMax": 10,
+      "equipment": [
+        "2 dice",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 30
+      },
+      "description": "Two-dice game where the highest two-digit number wins each round. The killer combo is 2-1 ('Mexico') — auto-win. Lowest each round loses a life; out of lives = chug.",
+      "setup": [
+        "Each player starts with 5 lives.",
+        "Pick a starting player."
+      ],
+      "rules": [
+        "Each player rolls 2 dice on their turn. Highest die first, lower second = your number (e.g., 5+3 = 53).",
+        "Pairs always rank above non-pairs (66 > 65).",
+        "2-1 = 'Mexico' = highest possible roll, auto-wins the round.",
+        "Players can re-roll once if they don't like their result, but they must accept the second roll.",
+        "After everyone has rolled: lowest number loses a life.",
+        "Tied for lowest: both lose.",
+        "Lose all lives = chug a fresh beer + you're out (or restart with full lives, group decides)."
+      ],
+      "houseRules": [
+        "Kamikaze: re-rolling allowed twice but you drink each time.",
+        "Mexico bonus: rolling Mexico forces all others to drink a sip.",
+        "Suicide pairs: 1-1 = lose 2 lives."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "dice_game",
+        "luck",
+        "fast_paced"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 60,
+      "source": "curated"
+    },
+    {
+      "id": "game_seven_eleven_doubles",
+      "name": "7-11-Doubles",
+      "aliases": [
+        "7s and 11s",
+        "Run the Boot"
+      ],
+      "playersMin": 4,
+      "playersMax": 10,
+      "equipment": [
+        "2 dice",
+        "Cup",
+        "Communal pint glass full of beer",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 30
+      },
+      "description": "High-tempo dice game. Roll a 7, 11, or doubles to assign the pint to anyone. The chosen victim chugs; if they're slow, the next roller can target them again. Pure chaos.",
+      "setup": [
+        "Place a pint glass full of beer in the center.",
+        "Players stand around the table.",
+        "Pick a starting roller."
+      ],
+      "rules": [
+        "Roller rolls 2 dice.",
+        "Roll a 7, 11, or any doubles: they pick a player to chug the pint.",
+        "Target picks up the pint and starts chugging.",
+        "Roller IMMEDIATELY rolls again, repeatedly, trying to roll another 7/11/doubles before the target finishes.",
+        "If the roller hits another, they target another player (or refill and pass) before the original chugger finishes — chaos.",
+        "If the roller fails to hit a 7/11/doubles before the chugger finishes: chugger sets down empty pint, refill, become the new roller.",
+        "Don't roll a 7/11/doubles? Pass dice clockwise."
+      ],
+      "houseRules": [
+        "Refill on the fly: a teammate refills the pint while the chugger drinks.",
+        "Snake eyes: 1-1 = roller chugs.",
+        "Mid-roll target: target can pass the pint to anyone if they hit 7/11/doubles before the next roll."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "dice_game",
+        "fast_paced",
+        "extreme",
+        "drinking_game"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 64,
+      "source": "curated"
+    },
+    {
+      "id": "game_dice_chess",
+      "name": "Dice Chess",
+      "aliases": [
+        "Yahtzee Drinking",
+        "Roll for Drinks"
+      ],
+      "playersMin": 2,
+      "playersMax": 6,
+      "equipment": [
+        "5 dice",
+        "Yahtzee scorecard or paper",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 40
+      },
+      "description": "Yahtzee played as a drinking game. Score categories trigger drinks based on outcomes; lowest scorer per round drinks; full Yahtzees (5 of a kind) make the table chug.",
+      "setup": [
+        "Standard Yahtzee setup.",
+        "Each player gets 13 turns to fill 13 categories."
+      ],
+      "rules": [
+        "Standard Yahtzee scoring rules.",
+        "After each turn:",
+        "• Zero in any category = drink 3.",
+        "• Yahtzee (5 of a kind) = entire table chugs.",
+        "• Full house = give out 3 sips.",
+        "• 4 of a kind = give out 2 sips.",
+        "• Lowest score so far drinks a sip.",
+        "After all 13 turns: lowest total chugs."
+      ],
+      "houseRules": [
+        "Open scoring: see opponents' scorecards. Strategic chaos.",
+        "Double Yahtzee bonus: second Yahtzee = group shotgun.",
+        "Time pressure: 30-second turn timer."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "dice_game",
+        "skill",
+        "long_form",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "mixed",
+      "popularityScore": 55,
+      "source": "curated"
+    },
+    {
+      "id": "game_baseball",
+      "name": "Baseball Dice",
+      "aliases": [
+        "Beer Baseball"
+      ],
+      "playersMin": 2,
+      "playersMax": 10,
+      "equipment": [
+        "3 dice",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 45
+      },
+      "description": "Dice version of baseball with drink penalties. Roll for hits, outs, home runs. Score runs, batter rotates. Loser of each inning drinks; loser of game chugs.",
+      "setup": [
+        "Two teams (or 1v1).",
+        "Each team takes turns 'batting' — rolling 3 dice per at-bat."
+      ],
+      "rules": [
+        "Scoring per at-bat:",
+        "• Roll any 1 = strike (3 strikes = out, drink).",
+        "• Roll any 2 = single.",
+        "• Roll any 3 = double.",
+        "• Roll any 4 = triple.",
+        "• Roll any 5 = home run!",
+        "• Roll any 6 = out (drink).",
+        "• Doubles = double the result.",
+        "• Triples = triple.",
+        "Runners advance based on the hit type. Standard baseball runner mechanics.",
+        "Losing team each inning drinks the runs scored against them.",
+        "Game ends after 9 innings; loser chugs."
+      ],
+      "houseRules": [
+        "Three strikes: chug instead of just drink.",
+        "Grand slam (homer with bases loaded): everyone on the other team chugs.",
+        "Mercy rule: 10-run lead ends the game early."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "dice_game",
+        "team",
+        "long_form"
+      ],
+      "matureFlag": true,
+      "skillType": "mixed",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_roxanne",
+      "name": "Roxanne",
+      "aliases": [
+        "The Police Game",
+        "Red Light Drinking"
+      ],
+      "playersMin": 2,
+      "playersMax": 10,
+      "equipment": [
+        "'Roxanne' by The Police on a loud speaker",
+        "Beers"
+      ],
+      "durationMinutes": {
+        "min": 3,
+        "max": 5
+      },
+      "description": "Sting says 'Roxanne' 27 times in 3:13. Drink every time. The chorus is brutal. A 3-minute speedrun to oblivion.",
+      "setup": [
+        "Cue 'Roxanne' by The Police.",
+        "Players form a circle, beers in hand."
+      ],
+      "rules": [
+        "Play the song.",
+        "Drink every time the word 'Roxanne' is sung. (~27 times.)",
+        "Drink every time 'put on the red light' is sung. (~13 times.)",
+        "Two-team variant: half the room drinks for 'Roxanne', other half for 'red light'.",
+        "Last chorus has you drinking nearly nonstop. That's the joke."
+      ],
+      "houseRules": [
+        "Solo mode: drink for both phrases. Approaching 40 sips in 3 minutes.",
+        "Switch teams mid-song.",
+        "Live version (longer): even more brutal."
+      ],
+      "relatedBetTemplateIds": [
+        "party_roxanne_no_skip"
+      ],
+      "tags": [
+        "weekend",
+        "music",
+        "fast_paced",
+        "endurance",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 72,
+      "source": "curated"
+    },
+    {
+      "id": "game_bohemian_rhapsody",
+      "name": "Bohemian Rhapsody",
+      "aliases": [
+        "Queen Drinking Game"
+      ],
+      "playersMin": 2,
+      "playersMax": 8,
+      "equipment": [
+        "'Bohemian Rhapsody' by Queen",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 5,
+        "max": 8
+      },
+      "description": "A drinking game with phases that match the song's structure. Sip during the ballad, chug through the operatic section, headbang in the rock part. Designed to map every section of the 6-minute song to a different challenge.",
+      "setup": [
+        "Cue 'Bohemian Rhapsody'.",
+        "Players in a circle with drinks."
+      ],
+      "rules": [
+        "Phase 1 (intro/ballad): Drink whenever Freddie says 'Mama'.",
+        "Phase 2 (Mama Mia): Drink on every 'Galileo'.",
+        "Phase 3 (operatic): Continuous drinking until the heavy guitar hits.",
+        "Phase 4 (rock): Headbang. Stop headbanging = drink double.",
+        "Phase 5 (outro): Pass your drink to your right; the person to your left now drinks the rest.",
+        "Loser is whoever spilled, missed a cue, or stopped too early."
+      ],
+      "houseRules": [
+        "Wayne's World version: replace headbang with full air-guitar choreography.",
+        "Solo edition: do all parts yourself.",
+        "Long-form: play side B of the album with rules for each track."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "music",
+        "endurance",
+        "performance"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 62,
+      "source": "curated"
+    },
+    {
+      "id": "game_song_drinking_general",
+      "name": "Song Drinking Game",
+      "aliases": [
+        "Lyric Trigger",
+        "Pick a Word"
+      ],
+      "playersMin": 2,
+      "playersMax": 10,
+      "equipment": [
+        "Speakers",
+        "Any song with a repeated word",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 3,
+        "max": 6
+      },
+      "description": "Generic format. Pick any song and a trigger word; drink whenever sung. Works with any music genre. Great for parties where multiple subgroups want different songs.",
+      "setup": [
+        "Pick a song.",
+        "Pick a trigger word/phrase that appears repeatedly.",
+        "All players ready their drinks."
+      ],
+      "rules": [
+        "Play the song.",
+        "Every time the trigger is sung, everyone drinks.",
+        "Pause = drink penalty.",
+        "Suggested songs and triggers:",
+        "• 'Roxanne' by The Police → 'Roxanne'",
+        "• 'Tubthumping' by Chumbawamba → 'I get knocked down'",
+        "• 'Africa' by Toto → 'Africa'",
+        "• 'Smells Like Teen Spirit' → 'Hello, hello'",
+        "• 'I'm Yours' by Jason Mraz → 'I'm yours'",
+        "• Any song where you can pick a high-frequency word."
+      ],
+      "houseRules": [
+        "Two-trigger mode: pick two words, one for each side of the room.",
+        "Trip-up mode: trigger plus a 'pause' word that everyone must STOP drinking on.",
+        "Dance break: certain triggers = dance instead of drink."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "music",
+        "social",
+        "no_setup"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 68,
+      "source": "curated"
+    },
+    {
+      "id": "game_album_drinking",
+      "name": "Album Drinking Game",
+      "aliases": [
+        "Side A Side B"
+      ],
+      "playersMin": 2,
+      "playersMax": 8,
+      "equipment": [
+        "A full album on speakers (45–60 min)",
+        "Beers",
+        "Custom rule sheet"
+      ],
+      "durationMinutes": {
+        "min": 45,
+        "max": 75
+      },
+      "description": "Pick a full-length album. Each track has its own rules. Lasts the entire album — like Power Hour but musical. Great for fans of a specific band.",
+      "setup": [
+        "Pick an album everyone likes.",
+        "Write rules for each track in advance (or assign on the fly).",
+        "Players in a circle with beers."
+      ],
+      "rules": [
+        "Press play. Don't pause.",
+        "Each track has a rule, e.g.,:",
+        "• Track 1: drink on every chorus.",
+        "• Track 2: drink whenever the band name is sung.",
+        "• Track 3: continuous drink during guitar solos.",
+        "• Track 4: drink on every reference to a body part.",
+        "• Track 5: pass your drink right on every cymbal crash.",
+        "• Last track: chug the remainder of your beer.",
+        "Players who fall behind, drink double on the next track."
+      ],
+      "houseRules": [
+        "Themed albums: 'Dark Side of the Moon', '1989', 'Rumours' all have known fan rule sets.",
+        "Cover albums: drink whenever a familiar lyric appears in a different version.",
+        "Playlist version: 60-min playlist with one rule per track."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "music",
+        "endurance",
+        "long_form"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_fuzzy_duck",
+      "name": "Fuzzy Duck",
+      "aliases": [
+        "Friar Tuck",
+        "Reverse Duck"
+      ],
+      "playersMin": 4,
+      "playersMax": 12,
+      "equipment": [
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 5,
+        "max": 15
+      },
+      "description": "British verbal trap game. Sit in a circle, say 'fuzzy duck' clockwise. At any time, someone can say 'does he?' to reverse direction and switch the phrase to 'ducky fuzz'. The accidental swears that come out of slurring people's mouths are the entire point.",
+      "setup": [
+        "Players sit in a circle.",
+        "Pick a starter."
+      ],
+      "rules": [
+        "Player 1: 'Fuzzy duck.'",
+        "Pass clockwise. Each next player says 'fuzzy duck'.",
+        "ANY player on their turn can say 'Does he?' to reverse direction and switch the phrase.",
+        "After 'does he?', the new direction continues with 'ducky fuzz'.",
+        "Mess up the phrase, say the wrong one, accidentally swear ('ducky fuck' or 'fuzzy fuck' is common): drink.",
+        "Same player can't be 'does he'd' twice in a row.",
+        "Game speeds up over time — half the fun is watching it collapse."
+      ],
+      "houseRules": [
+        "Variant: Friar Tuck / Fire Truck. Same mechanic, different phrases.",
+        "Hostile reverse: 'does he?' twice in a row = both players drink.",
+        "Speed mode: 2-second turn limit."
+      ],
+      "relatedBetTemplateIds": [
+        "party_fd_no_swear"
+      ],
+      "tags": [
+        "weekend",
+        "social",
+        "no_equipment",
+        "tongue_twister",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 72,
+      "source": "curated"
+    },
+    {
+      "id": "game_questions",
+      "name": "Questions",
+      "aliases": [
+        "Game of Thrones (the bar version)",
+        "Question Game"
+      ],
+      "playersMin": 3,
+      "playersMax": 8,
+      "equipment": [
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 10,
+        "max": 25
+      },
+      "description": "Conversation game where every statement must be a question. The first to slip into a non-question (or hesitate) drinks. Familiar from the Game of Thrones brothel scene with Tyrion.",
+      "setup": [
+        "Players sit in a circle.",
+        "Pick a starter."
+      ],
+      "rules": [
+        "Starter asks any question to anyone.",
+        "Target must respond with another question — to anyone, on any topic.",
+        "Continue indefinitely; conversation must ONLY be questions.",
+        "Hesitate (~3 seconds) = drink.",
+        "Repeat a previous question = drink.",
+        "Make a statement instead of a question = drink.",
+        "Answer the question instead of redirecting = drink."
+      ],
+      "houseRules": [
+        "Themed rounds: only relationship questions, only philosophical questions, etc.",
+        "Truth penalty: any answer-that-leaks-info still drinks.",
+        "Co-op mode: pairs share drink penalties."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "no_equipment",
+        "verbal",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 68,
+      "source": "curated"
+    },
+    {
+      "id": "game_paranoia",
+      "name": "Paranoia",
+      "aliases": [
+        "The Whisper Game"
+      ],
+      "playersMin": 4,
+      "playersMax": 10,
+      "equipment": [
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 30
+      },
+      "description": "Whisper-based gossip game. Whisper a question to your neighbor; they say the answer out loud — but only the answer. The rest of the table doesn't know what was asked. Players can pay (drink-style) to find out the question.",
+      "setup": [
+        "Players sit in a circle.",
+        "Pick a starter."
+      ],
+      "rules": [
+        "Starter whispers a question into the ear of the person on their left.",
+        "Question must be 'who in the group is most/least likely to ___' style.",
+        "The chosen player says ONLY THE NAME out loud.",
+        "Everyone else hears the name but not the question.",
+        "The named player has two options:",
+        "• Drink, and stay in the dark about what the question was.",
+        "• Don't drink, and demand to know the question. The asker reveals it.",
+        "Then the named player whispers a new question to the next player in the circle."
+      ],
+      "houseRules": [
+        "No follow-ups: questions can't reference earlier questions.",
+        "Mandatory honesty: askers must answer THEIR own question if asked.",
+        "Speed paranoia: 5-second deliberation per question."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "no_equipment",
+        "drama",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 78,
+      "source": "curated"
+    },
+    {
+      "id": "game_straight_face",
+      "name": "Straight Face",
+      "aliases": [
+        "Don't Laugh",
+        "Cards Against Inhibition"
+      ],
+      "playersMin": 3,
+      "playersMax": 10,
+      "equipment": [
+        "Pen",
+        "Slips of paper",
+        "A bowl",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 30
+      },
+      "description": "Each player writes an absurd or filthy sentence on a slip. Mix in a bowl. Take turns drawing and reading aloud — keeping a straight face. Crack a smile, drink. The longer the night goes, the worse this gets.",
+      "setup": [
+        "Each player writes 3-5 sentences on slips of paper. Anything weird, gross, dirty, or just absurd.",
+        "Fold and place in a bowl.",
+        "Players sit in a circle with drinks."
+      ],
+      "rules": [
+        "On your turn, draw a slip. Read it out loud, with a straight face.",
+        "Crack a smile, laugh, or chuckle: drink 3.",
+        "Make it through clean: pass the bowl to the next player.",
+        "If you laugh while ANOTHER player is reading: you drink 1.",
+        "Continue until the bowl runs out, then refill."
+      ],
+      "houseRules": [
+        "Read in funny accents only.",
+        "Truth round: any sentence about a real person at the table = double drinks.",
+        "Eye contact mode: you must hold eye contact with one person while reading."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "creative",
+        "embarrassment"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 70,
+      "source": "curated"
+    },
+    {
+      "id": "game_would_you_rather",
+      "name": "Would You Rather",
+      "aliases": [
+        "WYR",
+        "Hypothetical Game"
+      ],
+      "playersMin": 3,
+      "playersMax": 12,
+      "equipment": [
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 30
+      },
+      "description": "Pose impossible dilemmas: 'Would you rather...' with two terrible options. Everyone votes simultaneously. Minority drinks. The fun is in the dilemmas you invent.",
+      "setup": [
+        "Players sit in a circle.",
+        "Pick a starter."
+      ],
+      "rules": [
+        "Starter poses 'Would you rather A or B?'",
+        "On a 3-2-1 countdown, everyone simultaneously points 'left' or 'right' (for option A or B).",
+        "Whoever's in the minority drinks.",
+        "If it's a perfect split, everyone drinks.",
+        "Each player must briefly defend their choice before drinking.",
+        "Pass to the next player."
+      ],
+      "houseRules": [
+        "Confessional: the asker must reveal their own choice and answer first.",
+        "Theme nights: only food dilemmas, only relationship dilemmas, etc.",
+        "Minority report: everyone in minority chugs (not just sips)."
+      ],
+      "relatedBetTemplateIds": [
+        "party_wyr_majority"
+      ],
+      "tags": [
+        "weekend",
+        "social",
+        "no_equipment",
+        "verbal",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 78,
+      "source": "curated"
+    },
+    {
+      "id": "game_thumb_master",
+      "name": "Thumb Master",
+      "aliases": [
+        "Thumb on Table",
+        "Last Thumb Drinks"
+      ],
+      "playersMin": 3,
+      "playersMax": 10,
+      "equipment": [
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 60,
+        "max": 240
+      },
+      "description": "Subtle, ongoing rule. The Thumb Master can put their thumb on the edge of the table at any time, silently. Everyone else must follow. Last person to notice and place their thumb drinks. Persists all night.",
+      "setup": [
+        "Pick a Thumb Master.",
+        "No formal start — happens during other activities."
+      ],
+      "rules": [
+        "At any time, the Thumb Master quietly places their thumb on the edge of the table.",
+        "All other players must place their thumbs the moment they notice.",
+        "Last person to do so drinks.",
+        "If you call attention to it (by saying 'thumb!' or pointing), you drink instead.",
+        "Thumb Master title can transfer if someone else is given the role (e.g., via Cards Against Humanity, King's Cup 5-rule, etc.)."
+      ],
+      "houseRules": [
+        "Two-thumb master: pick a co-master to keep things active.",
+        "Thumb fail: if the Thumb Master forgets to do it for 30+ minutes, THEY drink.",
+        "Cumulative thumbs: third time you're last, chug a beer."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "ongoing",
+        "no_equipment",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 64,
+      "source": "curated"
+    },
+    {
+      "id": "game_three_word_story",
+      "name": "Three Word Story",
+      "aliases": [
+        "One Word at a Time"
+      ],
+      "playersMin": 4,
+      "playersMax": 10,
+      "equipment": [
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 10,
+        "max": 25
+      },
+      "description": "Group storytelling. Each player adds three words, building a single story. Hesitate, repeat, or break grammar — drink. Stories get progressively unhinged.",
+      "setup": [
+        "Players sit in a circle.",
+        "Pick a starter."
+      ],
+      "rules": [
+        "First player says three words to start a story (e.g., 'Once upon a').",
+        "Next player adds three more words ('time, a man').",
+        "Continue indefinitely.",
+        "Hesitate longer than 3 seconds: drink.",
+        "Repeat words from earlier in the story without justification: drink.",
+        "Break grammar (story doesn't make sense): everyone votes; drink if voted out.",
+        "Story ends when someone successfully says 'The end.' as their three words."
+      ],
+      "houseRules": [
+        "Single-word version: each player adds one word.",
+        "Genre rounds: the story must be horror, romance, sci-fi, etc.",
+        "Time pressure: 1-second turn limit (hardcore)."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "no_equipment",
+        "verbal",
+        "creative"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_taskmaster",
+      "name": "Taskmaster",
+      "aliases": [
+        "Mini Tasks"
+      ],
+      "playersMin": 3,
+      "playersMax": 8,
+      "equipment": [
+        "Random household items",
+        "Phone timer",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 30,
+        "max": 90
+      },
+      "description": "Inspired by the British TV show. One person is the Taskmaster, gives absurd tasks ('build a house from kitchen items in 60 seconds'). Players compete; loser per task drinks; overall champion at end of night gets a punishment.",
+      "setup": [
+        "Pick a Taskmaster (rotates each session).",
+        "Taskmaster prepares 5-10 tasks in advance.",
+        "Players have access to random items around the house."
+      ],
+      "rules": [
+        "Taskmaster announces a task with a time limit.",
+        "Examples: 'Build the tallest free-standing structure with the contents of your wallet, you have 90 seconds.' Or: 'Get a kiss on the cheek from a stranger in the next 5 minutes.' Or: 'Recreate the Mona Lisa using only items from the fridge.'",
+        "Taskmaster judges performance.",
+        "Winner per task: gives 3 drinks.",
+        "Loser per task: drinks 3.",
+        "Mid-pack: 1 drink each.",
+        "Overall winner over the night: chooses one player to do a punishment dare. Overall loser: chugs a beer."
+      ],
+      "houseRules": [
+        "Team mode: pairs cooperate on tasks.",
+        "Anonymous voting: players score each other in secret.",
+        "Themed nights: all tasks involve cooking / drawing / acting."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "creative",
+        "competitive",
+        "performance"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 68,
+      "source": "curated"
+    },
+    {
+      "id": "game_polish_horseshoes",
+      "name": "Polish Horseshoes",
+      "aliases": [
+        "Beersbee",
+        "Frisbeener",
+        "French Darts"
+      ],
+      "playersMin": 4,
+      "playersMax": 4,
+      "equipment": [
+        "2 ski poles or PVC pipes",
+        "2 empty bottles",
+        "1 frisbee",
+        "Beers"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 45
+      },
+      "description": "Two-on-two outdoor classic. Stick poles in the ground 25-40 feet apart, balance bottles on top. Throw a frisbee at the opposite team's bottle to knock it off. Defenders must catch the frisbee AND the bottle one-handed — beer in the other hand at all times.",
+      "setup": [
+        "Drive 2 poles into the ground 25-40 feet apart.",
+        "Balance an empty bottle on top of each pole.",
+        "Two teams of 2 stand at opposite ends.",
+        "Each player has a beer in one hand at all times."
+      ],
+      "rules": [
+        "One team throws the frisbee at the opposite bottle.",
+        "Throw must be catchable — between knee and head height. Uncatchable throws score nothing.",
+        "Scoring (offense only):",
+        "• Hit the bottle and knock it off: 2 points (3 if defenders also fail to catch the frisbee).",
+        "• Hit the pole, bottle stays: 0 points.",
+        "• Frisbee hits ground without being caught: 1 point.",
+        "• Defenders catch frisbee + catch bottle: 0 points.",
+        "Defenders must use ONE hand only (other holds beer).",
+        "First team to 11 wins. Win by 2.",
+        "Spilling beer = catch doesn't count."
+      ],
+      "houseRules": [
+        "Death match: bottle full of beer instead of empty.",
+        "Sudden death: tied at 10-10, first to score wins.",
+        "Drink-stuck: must finish drink before next throw."
+      ],
+      "relatedBetTemplateIds": [
+        "party_ph_team_win"
+      ],
+      "tags": [
+        "weekend",
+        "outdoor_friendly",
+        "skill",
+        "team",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 68,
+      "source": "curated"
+    },
+    {
+      "id": "game_cornhole_drinking",
+      "name": "Cornhole Drinking",
+      "aliases": [
+        "Bags Drinking",
+        "Tailgate Toss"
+      ],
+      "playersMin": 2,
+      "playersMax": 4,
+      "equipment": [
+        "Cornhole boards",
+        "8 bean bags (4 per team)",
+        "Beers"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 45
+      },
+      "description": "Cornhole + drinks. Each scored point = the other team drinks. Sink a bag in the hole = double drinks. Miss the board entirely = drink yourself. Easy to combine with house rules for extra chaos.",
+      "setup": [
+        "Set boards 27 feet apart.",
+        "Two teams of 1 or 2.",
+        "Each player has bags assigned by color."
+      ],
+      "rules": [
+        "Standard cornhole scoring: bag in the hole = 3 points, bag on board = 1 point.",
+        "Drinking layers:",
+        "• Each point your team scores = opposing team drinks 1 sip per point.",
+        "• Hole-in-bag (bag goes through cleanly): opposing team drinks 3 sips immediately.",
+        "• Miss the board entirely: thrower drinks 1 sip.",
+        "• Knock another bag into the hole: bonus 2 sips for opposing team.",
+        "First team to 21 wins. Loser team chugs the rest of their beers."
+      ],
+      "houseRules": [
+        "Airmail (bag goes straight in the hole, no board contact): 4 sips + 4 points.",
+        "Roulette bags: write 'sip', 'shot', 'social' on bags; whatever lands in the hole is the action.",
+        "Reversal: sink in the hole, opponent picks who drinks; on board, you pick."
+      ],
+      "relatedBetTemplateIds": [
+        "party_cornhole_airmail"
+      ],
+      "tags": [
+        "weekend",
+        "outdoor_friendly",
+        "skill",
+        "classic",
+        "tailgate"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 80,
+      "source": "curated"
+    },
+    {
+      "id": "game_kanjam",
+      "name": "KanJam Drinking",
+      "aliases": [
+        "KanJam Beer"
+      ],
+      "playersMin": 4,
+      "playersMax": 4,
+      "equipment": [
+        "KanJam set (2 cans + frisbee)",
+        "Beers"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 30
+      },
+      "description": "2-on-2 frisbee game with cans. Throw a frisbee for your partner to deflect into the slot of the other team's can. Scores a 1, 2, or 3 depending on how it lands. Drink for opponents' points. The instant-win 'slot shot' triggers chaos.",
+      "setup": [
+        "Place 2 plastic cans 50 feet apart.",
+        "Two teams of 2: thrower and deflector at one can; opposite team at the other."
+      ],
+      "rules": [
+        "Thrower aims a frisbee at the opposite team's can.",
+        "Deflector (their teammate) tries to redirect it into the can or slot.",
+        "Scoring:",
+        "• Frisbee deflects and hits the can: 1 point.",
+        "• Frisbee hits the can directly without deflection: 2 points.",
+        "• Frisbee goes into the slot at the top of the can (deflected): 3 points.",
+        "• Frisbee goes through the slot from a direct unassisted throw ('slot shot'): INSTANT WIN.",
+        "Drinking layers:",
+        "• Each opponent point = drink 1.",
+        "• Direct hit (2 points) = drink 2.",
+        "• Slot deflection (3 points) = drink 3.",
+        "• Slot shot win = chug.",
+        "First team to 21 (or instant win) wins."
+      ],
+      "houseRules": [
+        "Win by 2 always (no instant win).",
+        "Spilled beer = -1 point.",
+        "Speed mode: 5-second turn limit."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "outdoor_friendly",
+        "skill",
+        "team",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 72,
+      "source": "curated"
+    },
+    {
+      "id": "game_giant_jenga",
+      "name": "Giant Jenga",
+      "aliases": [
+        "Lawn Jenga",
+        "Block Stack"
+      ],
+      "playersMin": 2,
+      "playersMax": 10,
+      "equipment": [
+        "Giant Jenga set (54+ blocks, ~6-inch each)",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 40
+      },
+      "description": "Standard Drunk Jenga but on a backyard scale. Stack reaches over 4 feet tall. Knock it over and you chug. Bonus rules on each block. Sometimes used at weddings.",
+      "setup": [
+        "Stack the 54 blocks in a 3x18 tower.",
+        "Mark each block with a rule (Sharpie).",
+        "Players gather around — the tower is too tall for sitting."
+      ],
+      "rules": [
+        "Take turns pulling a block from anywhere except the top three rows.",
+        "Read the rule on the block, perform the action.",
+        "Place the block on top.",
+        "Knock the tower over: chug a full drink.",
+        "Tower stability suffers as it grows past 5 feet."
+      ],
+      "houseRules": [
+        "Outdoor only — you'll need space.",
+        "Themed blocks: write personalized rules per friend group.",
+        "Last block standing: whoever pulls the final block (block #54) wins, others chug."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "outdoor_friendly",
+        "physical",
+        "skill",
+        "social"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 72,
+      "source": "curated"
+    },
+    {
+      "id": "game_drunk_minigolf",
+      "name": "Drunk Mini Golf",
+      "aliases": [
+        "Putting Pong"
+      ],
+      "playersMin": 2,
+      "playersMax": 6,
+      "equipment": [
+        "Mini golf course (real or DIY)",
+        "Beers"
+      ],
+      "durationMinutes": {
+        "min": 45,
+        "max": 90
+      },
+      "description": "Standard mini golf with drinking penalties per stroke. Above par = drink the difference. Hole-in-one = group chug. Build a backyard course with cups and ramps for a custom version.",
+      "setup": [
+        "Find a mini golf course or set up a DIY backyard course (cups, ramps, obstacles).",
+        "Each player has a putter and a ball.",
+        "Beers in carts or on the green."
+      ],
+      "rules": [
+        "Standard mini golf rules — get the ball in the hole in as few strokes as possible.",
+        "Drinking layers:",
+        "• Per hole: drink (strokes - par) sips. Birdie = give 2 sips. Eagle = give 4. Hole-in-one = group chug.",
+        "• Water hazard / out of bounds: drink 1 sip per occurrence.",
+        "• Lowest cumulative score wins; highest chugs."
+      ],
+      "houseRules": [
+        "Match play: head-to-head per hole, loser drinks. Winner pays.",
+        "Mulligans bought with shots: take a shot to redo a stroke.",
+        "Putt-on-the-rocks: every drink is a shot, not a sip."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "outdoor_friendly",
+        "skill",
+        "long_form"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_drinko",
+      "name": "Drinko",
+      "aliases": [
+        "Plinko Drinking",
+        "Beer Plinko"
+      ],
+      "playersMin": 2,
+      "playersMax": 10,
+      "equipment": [
+        "Plinko-style board (DIY or purchased)",
+        "Tokens or coins",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 30
+      },
+      "description": "Plinko adapted as a drinking game. Drop a token through pegs; the slot it lands in tells you (or another player) what to drink. Premade boards are sold; DIY versions exist.",
+      "setup": [
+        "Set up a Plinko board with labeled slots at the bottom: '1 sip', '3 sips', 'shot', 'social', 'truth or dare', etc.",
+        "Each player has tokens."
+      ],
+      "rules": [
+        "On your turn, drop a token from the top of the board.",
+        "Whatever slot it falls into, perform the action.",
+        "Some slots can be punishments, some assignments ('give 3 sips'), some social ('everyone drinks').",
+        "Continue around the circle."
+      ],
+      "houseRules": [
+        "High-stakes slots: one slot = chug.",
+        "Tournament: each player drops 5 tokens, lowest cumulative drinks the difference.",
+        "Custom labels: rotate slot labels every 30 minutes."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "luck",
+        "novelty",
+        "social"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 55,
+      "source": "curated"
+    },
+    {
+      "id": "game_drinking_charades",
+      "name": "Drinking Charades",
+      "aliases": [
+        "Drunk Charades"
+      ],
+      "playersMin": 4,
+      "playersMax": 12,
+      "equipment": [
+        "Slips of paper (or a charades app)",
+        "Bowl",
+        "Timer",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 30,
+        "max": 60
+      },
+      "description": "Standard Charades, but every wrong guess costs a sip and every successful act earns a give-out. Acting impaired makes it harder.",
+      "setup": [
+        "Players write 5-10 phrases each on slips. Mix in a bowl.",
+        "Two teams."
+      ],
+      "rules": [
+        "Standard Charades — actor draws a slip and acts it out without speaking.",
+        "Team has 60 seconds to guess.",
+        "Successful guess: actor's team gives 3 sips to opposing team.",
+        "Failed guess: actor's team drinks 3 sips.",
+        "Wrong guess (per slip): drink 1 each time.",
+        "Game ends after a fixed round count or when bowl is empty."
+      ],
+      "houseRules": [
+        "Speed mode: 30-second timer.",
+        "Triple actors: 3 actors at once, no coordination.",
+        "Themed rounds: only movie titles, only celebrity names, etc."
+      ],
+      "relatedBetTemplateIds": [
+        "party_charades_team_win"
+      ],
+      "tags": [
+        "weekend",
+        "social",
+        "physical",
+        "creative"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 70,
+      "source": "curated"
+    },
+    {
+      "id": "game_drink_or_dare",
+      "name": "Drink or Dare",
+      "aliases": [
+        "Sip or Stunt"
+      ],
+      "playersMin": 3,
+      "playersMax": 10,
+      "equipment": [
+        "Pre-written dare cards (optional)",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 60
+      },
+      "description": "Like Truth or Dare without the truth. Pick a dare from the deck. Refuse, drink. Complete the dare, give 3 sips. Escalation built in via tier-based dare cards.",
+      "setup": [
+        "Write or buy 30+ dares of varying intensity (mild, medium, extreme).",
+        "Pile face-down."
+      ],
+      "rules": [
+        "On your turn, draw a dare card.",
+        "Choose: complete the dare OR drink the assigned penalty.",
+        "Mild dare refusal: 2 sips.",
+        "Medium refusal: chug.",
+        "Extreme refusal: chug + lose your next turn.",
+        "Successfully complete the dare: assign 3 sips to anyone.",
+        "Continue around the circle."
+      ],
+      "houseRules": [
+        "Personal dares: write dares specifically for the friend group.",
+        "Group veto: 2+ players can veto a dare.",
+        "Tier locks: must complete a mild before pulling medium."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "physical",
+        "embarrassment",
+        "performance"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 72,
+      "source": "curated"
+    },
+    {
+      "id": "game_higher_lower_band",
+      "name": "Band Battle",
+      "aliases": [
+        "Concert Drinking"
+      ],
+      "playersMin": 2,
+      "playersMax": 10,
+      "equipment": [
+        "Spotify or YouTube",
+        "Speakers",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 45
+      },
+      "description": "Music trivia drinking game. Play song intros (5-10 seconds); first to name the band drinks LESS. Wrong answers and slow guesses cost sips.",
+      "setup": [
+        "Pick a curator (DJ).",
+        "DJ plays 5-10 second intros from songs.",
+        "Players in a circle with phones to buzz in (or shout)."
+      ],
+      "rules": [
+        "DJ plays intro.",
+        "First to correctly name the band: 0 drinks.",
+        "Second-fastest correct: 1 sip.",
+        "Wrong guess: 2 sips immediately.",
+        "Nobody guesses in 15 seconds: everyone drinks 3.",
+        "Tournament: 20-30 songs.",
+        "Lowest total = winner; highest = chug."
+      ],
+      "houseRules": [
+        "Genre rounds: only rock, only hip-hop, etc.",
+        "Decade rounds: only 70s, only 90s.",
+        "Lyric mode: name the song from a single lyric."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "music",
+        "trivia",
+        "social",
+        "competitive"
+      ],
+      "matureFlag": true,
+      "skillType": "memory",
+      "popularityScore": 68,
+      "source": "curated"
+    },
+    {
+      "id": "game_spin_the_bottle_drink",
+      "name": "Spin the Bottle (Drinking)",
+      "aliases": [
+        "Spin and Sip"
+      ],
+      "playersMin": 4,
+      "playersMax": 10,
+      "equipment": [
+        "Empty bottle",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 30
+      },
+      "description": "Spin a bottle in the middle. Whoever it points to drinks AND chooses an action: take a dare, answer truth, or pass it back to the spinner. Less PG than the high-school version but with similar mechanics.",
+      "setup": [
+        "Players sit in a circle, bottle in the middle.",
+        "Pick a starting spinner."
+      ],
+      "rules": [
+        "Spin the bottle.",
+        "Whoever the bottle points to drinks 1 sip.",
+        "They then choose: answer a truth (asked by spinner), do a dare (assigned by spinner), or pass it back.",
+        "Pass back: spinner does the truth or dare instead, doubled.",
+        "After completion, the chosen player becomes the next spinner."
+      ],
+      "houseRules": [
+        "Adult mode: dares can include kissing the chosen target if they consent.",
+        "Drink scaling: tie sip count to where the bottle lands (1-12 by clock position).",
+        "Truth tax: refusing truth = 2 sips, refusing dare = chug."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "embarrassment",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_dudo",
+      "name": "Dudo (South American Liar's Dice)",
+      "aliases": [
+        "Cacho",
+        "Pirate's Dice"
+      ],
+      "playersMin": 2,
+      "playersMax": 8,
+      "equipment": [
+        "5 dice per player",
+        "Cup per player",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 60
+      },
+      "description": "South American/Andean liar's dice. Specifically the variant from Peru. 1s ('paco') are wild and double-counted unless paco mode is called. Different bidding mechanic than US Liar's Dice.",
+      "setup": [
+        "Each player gets 5 dice and a cup.",
+        "Players sit around a table."
+      ],
+      "rules": [
+        "Each player rolls their dice secretly under their cup.",
+        "Bidding: '[count] [face]'.",
+        "1s ('paco') count as wild — they count toward whatever face is bid.",
+        "Calling 'dudo!' challenges the bid.",
+        "Bid was true: challenger loses 1 die + drinks the bid count.",
+        "Bid was false: bidder loses 1 die + drinks.",
+        "When down to 1 die, you can call 'palifico' — round disables wilds.",
+        "Special rule: someone bidding ON 1s only locks 1s as non-wild for the round.",
+        "Out of dice = chug + you're out."
+      ],
+      "houseRules": [
+        "Spot-on call: if you call exactly the right number, all others drink double.",
+        "Triple Pisco: 3 wins in a row = drink shot of pisco.",
+        "Paco mode: declare paco at start to ban wilds for entire game."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "dice_game",
+        "international",
+        "bluffing",
+        "skill"
+      ],
+      "matureFlag": true,
+      "skillType": "mixed",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_kastenlauf",
+      "name": "Kastenlauf",
+      "aliases": [
+        "German Crate Race"
+      ],
+      "playersMin": 2,
+      "playersMax": 10,
+      "equipment": [
+        "Crate of beer per team (10-20 bottles)",
+        "Long course",
+        "Stopwatch"
+      ],
+      "durationMinutes": {
+        "min": 60,
+        "max": 180
+      },
+      "description": "German endurance drinking sport. Teams hike a long course (often 10+ km) carrying a crate of beer. The crate must be empty by the finish line. Combined drinking + hiking, often done as a stag party tradition.",
+      "setup": [
+        "Plan a 5-15 km route (hiking trail, road, etc.).",
+        "Each team has a full crate of beer (typically 20 x 0.5L bottles).",
+        "Start line and finish line."
+      ],
+      "rules": [
+        "Teams must drink the entire crate during the hike.",
+        "Crate must be empty when crossing the finish line.",
+        "First team to finish wins.",
+        "Penalty: any unfinished bottles add 5 minutes per bottle to your time.",
+        "Vomiting: team must wait 10 minutes before continuing.",
+        "Standard hiking rules — stay on the trail, etc."
+      ],
+      "houseRules": [
+        "Mini Kasten: 6-pack instead of crate, shorter route.",
+        "Sing-along: must sing a German drinking song at every km marker.",
+        "Costume requirement: lederhosen or worse."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "outdoor_friendly",
+        "endurance",
+        "extreme",
+        "international"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 48,
+      "source": "curated"
+    },
+    {
+      "id": "game_bizz_buzz",
+      "name": "Bizz Buzz",
+      "aliases": [
+        "Buzz Bizz",
+        "Counting Drinking"
+      ],
+      "playersMin": 3,
+      "playersMax": 10,
+      "equipment": [
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 10,
+        "max": 25
+      },
+      "description": "Counting drinking game with two trigger numbers. Skip multiples of 5 by saying 'bizz'; skip multiples of 7 by saying 'buzz'. Multiples of both? 'Bizz buzz'. Mistakes drink and reset to 1.",
+      "setup": [
+        "Players sit in a circle.",
+        "Pick a starter."
+      ],
+      "rules": [
+        "Count up from 1 around the circle.",
+        "Multiples of 5 (5, 10, 15, etc): say 'bizz' instead.",
+        "Multiples of 7 (7, 14, 21, etc): say 'buzz'.",
+        "Multiples of both 5 and 7 (35, 70): say 'bizz buzz'.",
+        "Numbers containing the digit 5 or 7 also trigger the swap (15, 17, 25, etc).",
+        "Mess up: drink + restart from 1."
+      ],
+      "houseRules": [
+        "Triple bizz: also skip multiples of 3 with 'fizz'.",
+        "Speed mode: 1-second turn limit.",
+        "Reverse: count down from 100."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "no_equipment",
+        "memory",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "memory",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_crocodile",
+      "name": "Crocodile",
+      "aliases": [
+        "The Bottle Game (Russian variant)"
+      ],
+      "playersMin": 4,
+      "playersMax": 10,
+      "equipment": [
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 30
+      },
+      "description": "Russian / Eastern European charades variant. One player picks a word and acts it out wordlessly; others guess. Wrong guesses drink. Word is usually weird, abstract, or rude.",
+      "setup": [
+        "Players in a semicircle facing one player (the 'crocodile').",
+        "Pick a starter."
+      ],
+      "rules": [
+        "Crocodile thinks of a word — typically weird, abstract, or hard (e.g., 'existentialism', 'butter knife', 'nostalgia').",
+        "Acts it out without speaking.",
+        "Other players guess.",
+        "Correct guess: that player becomes the next crocodile, current crocodile drinks 2.",
+        "Wrong guess: drink 1 per wrong guess.",
+        "Run out of guesses (5 minutes): everyone drinks, crocodile picks next person."
+      ],
+      "houseRules": [
+        "Word categories: only verbs, only emotions, only foreign words.",
+        "Penalty escalation: 5 wrong guesses = chug.",
+        "Multilingual: words in different languages allowed."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "international",
+        "physical",
+        "creative"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 52,
+      "source": "curated"
+    },
+    {
+      "id": "game_jackbox_drinking",
+      "name": "Jackbox Party Pack Drinking",
+      "aliases": [
+        "Jackbox Drunk"
+      ],
+      "playersMin": 3,
+      "playersMax": 8,
+      "equipment": [
+        "Jackbox Party Pack on TV/console",
+        "Phones for each player",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 30,
+        "max": 120
+      },
+      "description": "Any Jackbox game (Quiplash, Trivia Murder Party, Drawful, etc.) with drinking layered on. Last place each round drinks; winners give out drinks. Adapts to any Jackbox title.",
+      "setup": [
+        "Boot up Jackbox on TV/console.",
+        "Players join via phone browsers.",
+        "Set up rules before starting."
+      ],
+      "rules": [
+        "Standard Jackbox rules per game.",
+        "Drinking layers (universal):",
+        "• Last place per round: drink 3.",
+        "• First place per round: assign 5 sips.",
+        "• Lowest total at game end: chug.",
+        "Game-specific:",
+        "• Quiplash: no votes for your prompt = drink 5.",
+        "• Drawful: nobody votes for your real answer = drink 3.",
+        "• Trivia Murder Party: every wrong answer = sip.",
+        "• You Don't Know Jack: each Wrong Answer of the Game = drink 5."
+      ],
+      "houseRules": [
+        "DIY rules: set them per Jackbox title.",
+        "Bonus drinks: any 'social' answer triggers everyone drinking.",
+        "Streaks: 3 wins in a row = call a permanent rule."
+      ],
+      "relatedBetTemplateIds": [
+        "party_jb_first_place"
+      ],
+      "tags": [
+        "weekend",
+        "video_game",
+        "social",
+        "long_form"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 78,
+      "source": "curated"
+    },
+    {
+      "id": "game_picolo",
+      "name": "Picolo",
+      "aliases": [
+        "Picolo App"
+      ],
+      "playersMin": 2,
+      "playersMax": 10,
+      "equipment": [
+        "Picolo app on a phone",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 90
+      },
+      "description": "Phone app that generates personalized challenges based on player names. Variable intensity (mild → wild). Auto-escalates over time. The most popular app drinking game globally.",
+      "setup": [
+        "Download the Picolo app (or similar challenge-generator).",
+        "Enter all player names.",
+        "Pass the phone around in a circle."
+      ],
+      "rules": [
+        "On your turn, hit 'next' on the app.",
+        "Read the prompt out loud.",
+        "Examples: 'Alex drinks if Sarah has ever been to Vegas', 'Two truths and a lie about [player]', 'Whoever last sent a text drinks'.",
+        "Perform the prompt's action.",
+        "Most prompts assign drinks based on player history or random selection.",
+        "Difficulty escalates over time as the app warms up."
+      ],
+      "houseRules": [
+        "Skip-tax: skipping a prompt = drink 3.",
+        "Group vote: any prompt can be vetoed by 2+ players.",
+        "Round resets: refresh the app every 30 minutes for new prompts."
+      ],
+      "relatedBetTemplateIds": [
+        "party_picolo_no_skip"
+      ],
+      "tags": [
+        "weekend",
+        "social",
+        "modern",
+        "novelty"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 82,
+      "source": "curated"
+    },
+    {
+      "id": "game_houseparty_drinking",
+      "name": "Trivia Drinking",
+      "aliases": [
+        "Pub Trivia Drinking",
+        "Quiz Night Drunk"
+      ],
+      "playersMin": 3,
+      "playersMax": 10,
+      "equipment": [
+        "Trivia question source (book, app, or pre-written)",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 30,
+        "max": 90
+      },
+      "description": "Pub-style trivia with drink penalties. Wrong answer = drink. Right answer = give. Themed rounds keep it interesting. Works with Trivial Pursuit, Sporcle, or any quiz app.",
+      "setup": [
+        "Pick a trivia source.",
+        "Players form teams or play solo.",
+        "Designate a question-reader."
+      ],
+      "rules": [
+        "Reader poses a question.",
+        "Each player/team writes their answer.",
+        "Right: assign 2 sips to anyone.",
+        "Wrong: drink 1.",
+        "Last place per category: drink 3.",
+        "Lowest total at the end: chug."
+      ],
+      "houseRules": [
+        "Multiple choice mode for casual play.",
+        "Themed rounds: 80s movies, science, etc.",
+        "Wager mode: bet sips on confidence."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "trivia",
+        "social",
+        "team"
+      ],
+      "matureFlag": true,
+      "skillType": "memory",
+      "popularityScore": 68,
+      "source": "curated"
+    },
+    {
+      "id": "game_videogame_2v2",
+      "name": "Any Sports Video Game (2v2)",
+      "aliases": [
+        "FIFA Drinking",
+        "NBA 2K Drunk",
+        "Madden Sip"
+      ],
+      "playersMin": 2,
+      "playersMax": 4,
+      "equipment": [
+        "Sports video game (FIFA, NBA 2K, Madden, etc.)",
+        "Beers"
+      ],
+      "durationMinutes": {
+        "min": 30,
+        "max": 90
+      },
+      "description": "Sports video game with drinking penalties. Each goal/score against = drink. Mercy goal? Chug. Easily layered onto any sports game; works for couch co-op too.",
+      "setup": [
+        "Set up a sports game (FIFA / NBA 2K / Madden / NHL / etc.).",
+        "1v1 or 2v2.",
+        "Each player has a beer."
+      ],
+      "rules": [
+        "Each goal/touchdown/point scored against you = drink 1 sip.",
+        "Special plays:",
+        "• Steal/interception: opponent drinks 2.",
+        "• Block/save (defense): drink 1 sip yourself for celebrating.",
+        "• Mercy rule (10+ run lead in your sport): losing player chugs.",
+        "Match end: loser chugs the difference (e.g., FIFA 4-1, loser chugs 3 sips).",
+        "Tournament mode: best 3 of 5; loser of series chugs full beer."
+      ],
+      "houseRules": [
+        "Star player rule: if your created player scores, give 3 sips.",
+        "Penalty kicks: each PK either way = group sip.",
+        "Difficulty escalation: harder AI per win."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "video_game",
+        "sport",
+        "competitive"
+      ],
+      "matureFlag": true,
+      "skillType": "mixed",
+      "popularityScore": 72,
+      "source": "curated"
+    },
+    {
+      "id": "game_icing",
+      "name": "Icing",
+      "aliases": [
+        "Bros Icing Bros"
+      ],
+      "playersMin": 2,
+      "playersMax": 20,
+      "equipment": [
+        "Smirnoff Ice (any flavor)",
+        "Knee"
+      ],
+      "durationMinutes": {
+        "min": 1,
+        "max": 3
+      },
+      "description": "Late-2000s viral prank. Hide a Smirnoff Ice somewhere a friend will find it. They must drop to one knee and chug it on the spot. Iconic.",
+      "setup": [
+        "Acquire Smirnoff Ice bottles.",
+        "Hide them in unexpected places where friends will find them."
+      ],
+      "rules": [
+        "Discover a Smirnoff Ice presented to you (in your bag, fridge, car, etc.) = you've been Iced.",
+        "Drop to one knee and chug the entire bottle on the spot.",
+        "Counter-icing: if you have a Smirnoff Ice on your person and someone tries to Ice you, present yours — they must chug both.",
+        "Continues all night, all weekend, all year."
+      ],
+      "houseRules": [
+        "Block move: only counter-Ice if you have one within 5 seconds.",
+        "Public Ice: bonus humiliation if it happens in public.",
+        "Group Ice: pre-staged at events for max chaos."
+      ],
+      "relatedBetTemplateIds": [
+        "party_ice_someone"
+      ],
+      "tags": [
+        "weekend",
+        "novelty",
+        "embarrassment",
+        "ongoing",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 72,
+      "source": "curated"
+    },
+    {
+      "id": "game_assassin",
+      "name": "Assassin",
+      "aliases": [
+        "Drink Assassin"
+      ],
+      "playersMin": 4,
+      "playersMax": 20,
+      "equipment": [
+        "Slips of paper",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 120,
+        "max": 480
+      },
+      "description": "All-night drinking assassin game. Each player draws a target. You must trick them into saying a banned word — if successful, they drink and you assassinate them, then take their target. Last assassin standing wins.",
+      "setup": [
+        "Each player writes their name on a slip.",
+        "Slips shuffled; each player draws one secretly = their target.",
+        "Pick a banned word (e.g., 'right', 'tonight', any common word)."
+      ],
+      "rules": [
+        "Without being obvious, get your target to say the banned word.",
+        "If they say it: you've assassinated them. They drink + give you their target.",
+        "Target now becomes your new target.",
+        "Last assassin standing wins; everyone else has chugged at least once.",
+        "If you accidentally say the word yourself: drink + lose your turn for 5 minutes."
+      ],
+      "houseRules": [
+        "Multiple words: 3 banned words at once.",
+        "Costume mode: assassins must point a finger gun at the target after the kill.",
+        "Innocent civilians: bystanders not in the game must announce themselves."
+      ],
+      "relatedBetTemplateIds": [
+        "party_assassin_winner"
+      ],
+      "tags": [
+        "weekend",
+        "social",
+        "long_form",
+        "ongoing",
+        "creative"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 68,
+      "source": "curated"
+    },
+    {
+      "id": "game_wizard_staff",
+      "name": "Wizard Staff",
+      "aliases": [
+        "Wizard Staffs at Dawn"
+      ],
+      "playersMin": 2,
+      "playersMax": 10,
+      "equipment": [
+        "Beer cans",
+        "Tape",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 120,
+        "max": 300
+      },
+      "description": "Tape your empty cans on top of each other to build a 'staff'. Tallest staff wins the night. The longer you can drink, the more impressive your wizardry. Famously seen in 'How I Met Your Mother'.",
+      "setup": [
+        "Players each have tape and cans.",
+        "Start with 1 full can."
+      ],
+      "rules": [
+        "Drink your beer.",
+        "Tape the empty can to the top of your previous can = your staff grows by 1.",
+        "Continue all night.",
+        "Tallest staff at the end = wizard.",
+        "Staff falls or breaks: forfeit + chug another can.",
+        "Standing rule: you must always carry your staff with you (or face penalty)."
+      ],
+      "houseRules": [
+        "Staff battles: physical battles with staffs as swords (foam or empty cans only).",
+        "Spell casting: tallest staff can 'cast' commands (you must drink, you must dance).",
+        "Trophy: photo of the winning staff for posterity."
+      ],
+      "relatedBetTemplateIds": [
+        "party_ws_tallest"
+      ],
+      "tags": [
+        "weekend",
+        "endurance",
+        "novelty",
+        "long_form",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_caps",
+      "name": "Caps",
+      "aliases": [
+        "Bottle Caps"
+      ],
+      "playersMin": 2,
+      "playersMax": 4,
+      "equipment": [
+        "Bottle caps",
+        "2 pint glasses or cups",
+        "Beers"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 30
+      },
+      "description": "Two-on-two beer pong precursor. Throw a bottle cap into the opposite team's cup. Make it = they drink. Cheap and minimal — good when you don't have ping pong balls.",
+      "setup": [
+        "Place 1 cup at each end of a table.",
+        "Two teams of 2.",
+        "Each player has 5+ bottle caps."
+      ],
+      "rules": [
+        "Take turns throwing a bottle cap at the opposite team's cup.",
+        "Cap in cup: the opposing team drinks the cup, refill.",
+        "First team to make 5 cups wins.",
+        "Loser team chugs."
+      ],
+      "houseRules": [
+        "Bouncer: caps that hit and drop in count for double.",
+        "On fire: 3 in a row = unlimited shots until you miss.",
+        "Bitch cap: write 'bitch' on one cap; whoever scores it forces the other team to do a forfeit."
+      ],
+      "relatedBetTemplateIds": [
+        "party_caps_5_makes"
+      ],
+      "tags": [
+        "weekend",
+        "skill",
+        "bar_friendly",
+        "improvised"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_drink_with_left",
+      "name": "Left-Hand Only",
+      "aliases": [
+        "Lefty Hour"
+      ],
+      "playersMin": 2,
+      "playersMax": 20,
+      "equipment": [
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 60,
+        "max": 240
+      },
+      "description": "Subtle ongoing rule. For the duration of the night (or game), you must drink with your non-dominant hand only. Use your dominant hand and you chug. Same idea as Buffalo but in a single-game context.",
+      "setup": [
+        "Group agrees on the rule.",
+        "Specify the duration."
+      ],
+      "rules": [
+        "Drink only with your non-dominant hand.",
+        "Anyone catches you using your dominant hand: chug your full drink.",
+        "Game ends when the agreed duration ends or all players have failed."
+      ],
+      "houseRules": [
+        "Dominant-hand-only: reverse the rule.",
+        "Cane mode: must hold your drink with a 'cane' or umbrella.",
+        "Long-form: lifetime version (you're a buffalo for life)."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "ongoing",
+        "no_equipment"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 55,
+      "source": "curated"
+    },
+    {
+      "id": "game_paf",
+      "name": "Captain Paf",
+      "aliases": [
+        "Three Strikes Paf"
+      ],
+      "playersMin": 4,
+      "playersMax": 12,
+      "equipment": [
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 30
+      },
+      "description": "French verbal game. Each player has a number. The Captain says 'Paf 5!' (or any number). That player must say 'Paf 7!' or any number — but instantly. Hesitate, repeat your own number, or call yourself, and you drink.",
+      "setup": [
+        "Players sit in a circle.",
+        "Number off (1, 2, 3, ...).",
+        "Pick a starter (the Captain)."
+      ],
+      "rules": [
+        "Captain says 'Paf [number]!' calling another player by their number.",
+        "That player MUST say 'Paf [different number]!' calling someone else within 2 seconds.",
+        "Failures:",
+        "• Hesitating > 2 seconds: drink.",
+        "• Calling your own number: drink.",
+        "• Repeating someone else's last call: drink.",
+        "• Calling a non-existent number: drink.",
+        "Game continues until everyone collapses laughing."
+      ],
+      "houseRules": [
+        "Speed Paf: 1-second timer.",
+        "Renumber: every 5 minutes, swap numbers around.",
+        "Two-Paf: must say 'Paf X! Paf Y!' calling two people in one turn."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "no_equipment",
+        "international",
+        "memory"
+      ],
+      "matureFlag": true,
+      "skillType": "memory",
+      "popularityScore": 52,
+      "source": "curated"
+    },
+    {
+      "id": "game_snakes_ladders",
+      "name": "Snakes and Ladders",
+      "aliases": [
+        "Drunk Chutes"
+      ],
+      "playersMin": 2,
+      "playersMax": 6,
+      "equipment": [
+        "Snakes & Ladders board",
+        "Dice",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 20,
+        "max": 45
+      },
+      "description": "The childhood board game with drink stakes. Going up a ladder = give drinks based on squares climbed. Going down a snake = drink yourself based on squares fallen. The Hamming distance from start to end determines your final tally.",
+      "setup": [
+        "Set up Snakes & Ladders.",
+        "Each player picks a token."
+      ],
+      "rules": [
+        "Roll, move, follow ladders/snakes as normal.",
+        "Up a ladder: give drinks equal to (squares climbed) divided among other players.",
+        "Down a snake: drink (squares fallen) yourself.",
+        "First to 100: gives 10 sips. Loser: chugs."
+      ],
+      "houseRules": [
+        "Doubled chutes: snakes are double penalty.",
+        "Mercy mode: split snake penalty among all players.",
+        "Bonus rolls: doubles = roll again, but drink 1 first."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "board_game",
+        "luck",
+        "novelty"
+      ],
+      "matureFlag": true,
+      "skillType": "luck",
+      "popularityScore": 52,
+      "source": "curated"
+    },
+    {
+      "id": "game_drunk_monopoly",
+      "name": "Drunk Monopoly",
+      "aliases": [
+        "Boozeopoly"
+      ],
+      "playersMin": 2,
+      "playersMax": 8,
+      "equipment": [
+        "Monopoly",
+        "Drinks",
+        "Patience"
+      ],
+      "durationMinutes": {
+        "min": 120,
+        "max": 300
+      },
+      "description": "Monopoly with drink rules per square color and event. Pay rent? Drink. Go to jail? Chug. Land on free parking? Everyone drinks. Predictably ends in chaos and ruined friendships.",
+      "setup": [
+        "Standard Monopoly setup.",
+        "Drinks at the ready."
+      ],
+      "rules": [
+        "Standard Monopoly rules.",
+        "Drinking layers:",
+        "• Pay rent: drink the digits of the rent amount (e.g., $200 = 2 sips).",
+        "• Buy a property: take 1 sip.",
+        "• Mortgage a property: drink 3.",
+        "• Land on free parking: everyone drinks.",
+        "• Go to jail: chug a beer.",
+        "• Pass go: give 1 drink to anyone.",
+        "• Bankrupt: chug + you're out."
+      ],
+      "houseRules": [
+        "Speed Monopoly: skip auctions, fixed turn limit.",
+        "House rule generator: roll 2 dice each turn for special events.",
+        "Tax dodge: pay drinks instead of money for any tax."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "board_game",
+        "long_form",
+        "extreme"
+      ],
+      "matureFlag": true,
+      "skillType": "mixed",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_drunken_twister",
+      "name": "Drunk Twister",
+      "aliases": [
+        "Slippery Twister"
+      ],
+      "playersMin": 2,
+      "playersMax": 4,
+      "equipment": [
+        "Twister mat",
+        "Spinner",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 15,
+        "max": 30
+      },
+      "description": "Standard Twister with drink rules. Land on a circle and call your color/limb; failed pose = drink. Last person standing assigns drinks.",
+      "setup": [
+        "Lay out Twister mat.",
+        "One person operates spinner.",
+        "Players stand on the mat with drinks within reach."
+      ],
+      "rules": [
+        "Standard Twister: spin spinner, place limb on assigned color circle.",
+        "Drinking layers:",
+        "• Fall: drink a beer.",
+        "• Skip a turn (overwhelmed): drink 3.",
+        "• Touch the floor with anything but feet/hands during the move: drink 2.",
+        "• Cause your opponent to fall: assign 5 sips.",
+        "• Last person standing: gives out 10 sips."
+      ],
+      "houseRules": [
+        "Spilled drink penalty: chug a fresh one.",
+        "Reverse Twister: avoid the assigned color.",
+        "Naked Twister: optional and at-your-own-risk."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "physical",
+        "social",
+        "novelty",
+        "embarrassment"
+      ],
+      "matureFlag": true,
+      "skillType": "physical",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_chickenshit",
+      "name": "Chickenshit",
+      "aliases": [
+        "Stranger Dares"
+      ],
+      "playersMin": 3,
+      "playersMax": 10,
+      "equipment": [
+        "Chickenshit deck (or homemade dare cards)",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 30,
+        "max": 120
+      },
+      "description": "Card-based dare game where the dares involve interacting with strangers in public. Played at bars. Cards specify a dare worth a certain number of points. Highest points wins; lowest chugs.",
+      "setup": [
+        "Buy or print Chickenshit deck (homemade works).",
+        "Players draw cards in turn.",
+        "Played in a public place — bar or restaurant."
+      ],
+      "rules": [
+        "Each card has a dare and point value.",
+        "Examples: 'Get a stranger to compliment your outfit (5 pts)', 'Get a phone number (10 pts)', 'Buy a stranger a drink and ask if they believe in ghosts (8 pts)'.",
+        "Refuse a dare: drink the point value.",
+        "Complete the dare with witnesses: assign the points to anyone.",
+        "Most points wins; least drinks for the rest of the night."
+      ],
+      "houseRules": [
+        "Self-dare: write 5 of your own dares.",
+        "Group bonus: if everyone completes a dare, double points.",
+        "Veto cards: each player gets 1 free veto."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "embarrassment",
+        "bar_friendly",
+        "novelty"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 58,
+      "source": "curated"
+    },
+    {
+      "id": "game_zoom_schwartz",
+      "name": "Zoom Schwartz Profigliano",
+      "aliases": [
+        "ZSP",
+        "Eye-Contact Hell"
+      ],
+      "playersMin": 4,
+      "playersMax": 10,
+      "equipment": [
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 10,
+        "max": 20
+      },
+      "description": "Notoriously confusing eye-contact-based verbal game. Players use 'zoom', 'schwartz', and 'profigliano' to pass attention around the circle. Mistakes happen constantly. Cult favorite among college students.",
+      "setup": [
+        "Players sit in a circle.",
+        "Pick a starter."
+      ],
+      "rules": [
+        "Three commands:",
+        "• 'Zoom': pass attention to anyone by making eye contact and saying 'zoom'.",
+        "• 'Schwartz': bounce attention back to the person who just zoomed you.",
+        "• 'Profigliano': skip the schwartz, attention transfers to anyone.",
+        "Add-ons (advanced): 'figliano' (next player), 'vrabajo' (everyone drinks except caller), etc.",
+        "Mistake (wrong word, wrong target, hesitate): drink.",
+        "Game ends when everyone gives up."
+      ],
+      "houseRules": [
+        "Add a 4th word: 'spinkleberg' (reverse direction).",
+        "Speed-rounds: 1-second turn limit.",
+        "Sudden-death: any single mistake = chug."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "no_equipment",
+        "memory",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "memory",
+      "popularityScore": 55,
+      "source": "curated"
+    },
+    {
+      "id": "game_pennying",
+      "name": "Pennying",
+      "aliases": [
+        "Sink Penny"
+      ],
+      "playersMin": 2,
+      "playersMax": 10,
+      "equipment": [
+        "Pennies",
+        "Drinks"
+      ],
+      "durationMinutes": {
+        "min": 60,
+        "max": 240
+      },
+      "description": "British university tradition. Drop a penny into someone's drink — they must chug it before the penny reaches the bottom. All-night, all-event mechanic. Some pubs ban it.",
+      "setup": [
+        "Players carry pennies discreetly.",
+        "No formal start."
+      ],
+      "rules": [
+        "Drop a penny into someone's drink while they're not looking.",
+        "If they notice: they must chug the entire drink before the penny reaches the bottom.",
+        "If they DON'T notice and drink it: they pay you a penny + a forfeit.",
+        "Counter-pennying: if you spot a penny dropping into your drink, you can hand the drink to the dropper.",
+        "Continues throughout the night."
+      ],
+      "houseRules": [
+        "Coin-of-realm: only authentic pennies (no foreign coins).",
+        "Double penny: 2 pennies = chug + drink the next round.",
+        "Pennying-free zones: agree on certain spaces (the kitchen, etc.) that are pennying-safe."
+      ],
+      "relatedBetTemplateIds": [],
+      "tags": [
+        "weekend",
+        "social",
+        "ongoing",
+        "international",
+        "classic"
+      ],
+      "matureFlag": true,
+      "skillType": "social",
+      "popularityScore": 55,
+      "source": "curated"
+    }
+  ]
+}

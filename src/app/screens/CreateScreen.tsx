@@ -31,15 +31,38 @@ import { Perforation, SuggestionCarousel, CategoryPillBar } from '@/components/l
 import {
   getAllTemplates,
   getTemplatesByCategory,
+  getTemplateById,
   CATEGORY_META,
   type BetCategory,
   type BetTemplate,
   type RankedSuggestion,
 } from '@/lib/suggestions'
+import drinkingGamesData from '@/data/drinking_games.json'
 
 // ---------------------------------------------------------------------------
 // Types & constants
 // ---------------------------------------------------------------------------
+
+interface DrinkingGame {
+  id: string
+  name: string
+  aliases: string[]
+  playersMin: number
+  playersMax: number
+  equipment: string[]
+  durationMinutes: { min: number; max: number }
+  description: string
+  setup: string[]
+  rules: string[]
+  houseRules: string[]
+  relatedBetTemplateIds: string[]
+  tags: string[]
+  matureFlag: boolean
+  skillType: string
+  popularityScore: number
+}
+
+const ALL_GAMES: DrinkingGame[] = (drinkingGamesData as { games: DrinkingGame[] }).games
 
 type FormatType = 'group' | 'select' | 'self'
 type Participation = 'whole' | 'pick' | 'open'
@@ -112,6 +135,32 @@ function daysToPreset(days: number): DurationPreset {
 // Browse suggestions dialog
 // ---------------------------------------------------------------------------
 
+/** Render a template title with {slot} placeholders shown as green chips */
+function TemplateTitleWithSlots({ template }: { template: BetTemplate }) {
+  if (!template.templateSlots?.length) return <>{template.title}</>
+  const source = template.template ?? template.title
+  const parts = source.split(/(\{[^}]+\})/)
+  return (
+    <>
+      {parts.map((part, i) => {
+        const match = part.match(/^\{(.+)\}$/)
+        if (!match) return <span key={i}>{part}</span>
+        const key = match[1]
+        const slot = template.templateSlots!.find((s) => s.key === key)
+        const val = slot ? String(slot.default) : key
+        return (
+          <span
+            key={i}
+            className="inline-block bg-accent-green/15 text-accent-green font-black px-1.5 rounded-md border border-dashed border-accent-green/40 mx-0.5 font-mono text-xs"
+          >
+            {val}
+          </span>
+        )
+      })}
+    </>
+  )
+}
+
 function BrowseSuggestionsDialog({
   open,
   onOpenChange,
@@ -163,7 +212,9 @@ function BrowseSuggestionsDialog({
             >
               <span className="text-lg shrink-0">{t.emoji}</span>
               <div className="min-w-0 flex-1">
-                <p className="font-bold text-sm text-text-primary group-hover:text-accent-green leading-tight">{t.title}</p>
+                <p className="font-bold text-sm text-text-primary group-hover:text-accent-green leading-tight">
+                  <TemplateTitleWithSlots template={t} />
+                </p>
                 <p className="text-xs text-text-muted mt-0.5">
                   {CATEGORY_META[t.category].label} · ${t.suggestedStakeCents / 100} · {t.suggestedDurationDays}d
                 </p>
@@ -171,6 +222,150 @@ function BrowseSuggestionsDialog({
             </button>
           ))}
         </div>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Games library dialog
+// ---------------------------------------------------------------------------
+
+function GamesLibraryDialog({
+  open,
+  onOpenChange,
+  onSelectBet,
+}: {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  onSelectBet: (title: string, template: BetTemplate) => void
+}) {
+  const [query, setQuery] = useState('')
+  const [expandedId, setExpandedId] = useState<string | null>(null)
+  const preferences = useSuggestionStore((s) => s.preferences)
+
+  const filtered = useMemo(() => {
+    let pool = ALL_GAMES
+    if (preferences?.punishmentVibe === 'tame') pool = pool.filter((g) => !g.matureFlag)
+    if (query.trim()) {
+      const words = query.toLowerCase().split(/\s+/)
+      pool = pool.filter((g) => {
+        const hay = `${g.name} ${g.aliases.join(' ')} ${g.tags.join(' ')} ${g.skillType}`.toLowerCase()
+        return words.some((w) => hay.includes(w))
+      })
+    }
+    return pool.sort((a, b) => b.popularityScore - a.popularityScore)
+  }, [query, preferences])
+
+  const expanded = expandedId ? ALL_GAMES.find((g) => g.id === expandedId) : null
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-md max-h-[85vh] flex flex-col overflow-hidden">
+        <DialogHeader><DialogTitle>{'\u{1F3B2}'} Drinking Games</DialogTitle></DialogHeader>
+
+        {!expanded ? (
+          <>
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search games..."
+              className="w-full rounded-lg bg-bg-elevated border border-border-subtle px-3 py-2 text-sm text-text-primary placeholder:text-text-muted outline-none mb-2"
+            />
+            <div className="flex-1 overflow-y-auto space-y-1.5">
+              {filtered.length === 0 ? (
+                <p className="text-sm text-text-muted text-center py-6">No games found.</p>
+              ) : filtered.map((g) => (
+                <button
+                  key={g.id}
+                  onClick={() => setExpandedId(g.id)}
+                  className="w-full text-left p-3 rounded-xl bg-bg-elevated hover:bg-accent-green/10 transition-colors flex items-center gap-2.5"
+                >
+                  <span className="text-lg shrink-0">{'\u{1F3B2}'}</span>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-bold text-sm text-text-primary leading-tight">{g.name}</p>
+                    <p className="text-xs text-text-muted mt-0.5">
+                      {g.playersMin}-{g.playersMax} players · {g.durationMinutes.min}-{g.durationMinutes.max}min · {g.skillType}
+                    </p>
+                  </div>
+                  <span className="text-text-muted text-xs">{'\u203A'}</span>
+                </button>
+              ))}
+            </div>
+          </>
+        ) : (
+          /* Expanded game detail */
+          <div className="flex-1 overflow-y-auto">
+            <button onClick={() => setExpandedId(null)} className="text-xs text-accent-green font-bold mb-3">
+              {'\u2190'} Back to games
+            </button>
+            <h3 className="font-black text-lg text-white mb-1">{expanded.name}</h3>
+            <p className="text-xs text-text-muted mb-3">
+              {expanded.playersMin}-{expanded.playersMax} players · {expanded.durationMinutes.min}-{expanded.durationMinutes.max}min · {expanded.skillType}
+            </p>
+            <p className="text-sm text-text-primary mb-4 leading-relaxed">{expanded.description}</p>
+
+            {expanded.equipment.length > 0 && (
+              <div className="mb-3">
+                <p className="text-[10px] font-black uppercase tracking-[0.12em] text-text-muted mb-1">Equipment</p>
+                <ul className="text-xs text-text-primary space-y-0.5">
+                  {expanded.equipment.map((e, i) => <li key={i}>· {e}</li>)}
+                </ul>
+              </div>
+            )}
+
+            {expanded.rules.length > 0 && (
+              <div className="mb-3">
+                <p className="text-[10px] font-black uppercase tracking-[0.12em] text-text-muted mb-1">Rules</p>
+                <ol className="text-xs text-text-primary space-y-1 list-decimal list-inside">
+                  {expanded.rules.map((r, i) => <li key={i}>{r}</li>)}
+                </ol>
+              </div>
+            )}
+
+            {expanded.houseRules.length > 0 && (
+              <div className="mb-3">
+                <p className="text-[10px] font-black uppercase tracking-[0.12em] text-text-muted mb-1">House Rules</p>
+                <ul className="text-xs text-text-muted space-y-0.5">
+                  {expanded.houseRules.map((r, i) => <li key={i}>· {r}</li>)}
+                </ul>
+              </div>
+            )}
+
+            {/* Related bet templates */}
+            {expanded.relatedBetTemplateIds.length > 0 && (
+              <div className="mb-3">
+                <p className="text-[10px] font-black uppercase tracking-[0.12em] text-accent-green mb-2">
+                  BET ON THIS GAME
+                </p>
+                <div className="space-y-1.5">
+                  {expanded.relatedBetTemplateIds.map((tid) => {
+                    const t = getTemplateById(tid)
+                    if (!t) return null
+                    const resolved = resolveTemplateTitle(t)
+                    return (
+                      <button
+                        key={tid}
+                        onClick={() => {
+                          onSelectBet(resolved, t)
+                          onOpenChange(false)
+                          setExpandedId(null)
+                        }}
+                        className="w-full text-left p-2.5 rounded-xl bg-accent-green/10 border border-accent-green/30 hover:bg-accent-green/20 transition-colors"
+                      >
+                        <p className="font-bold text-sm text-accent-green leading-tight">{resolved}</p>
+                        <p className="text-xs text-text-muted mt-0.5">
+                          ~${t.suggestedStakeCents / 100} · {t.suggestedDurationDays}d
+                        </p>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   )
@@ -226,6 +421,7 @@ export function CreateScreen() {
   const [slotValues, setSlotValues] = useState<Record<string, string | number>>({})
   const [sourceTab, setSourceTab] = useState<SourceTab>('foryou')
   const [catalogOpen, setCatalogOpen] = useState(false)
+  const [gamesOpen, setGamesOpen] = useState(false)
 
   // ── Section 02: Who's In ──
   const [formatType, setFormatType] = useState<FormatType>('group')
@@ -610,6 +806,7 @@ export function CreateScreen() {
                 onClick={() => {
                   setSourceTab(tab.id)
                   if (tab.id === 'catalog') setCatalogOpen(true)
+                  if (tab.id === 'games') setGamesOpen(true)
                 }}
                 className={`flex-1 py-2.5 rounded-[10px] font-black text-[11px] tracking-[0.05em] transition-all ${
                   sourceTab === tab.id
@@ -1074,6 +1271,28 @@ export function CreateScreen() {
           } else {
             setSlotValues({})
           }
+          setSourceTab('foryou')
+        }}
+      />
+
+      <GamesLibraryDialog
+        open={gamesOpen}
+        onOpenChange={setGamesOpen}
+        onSelectBet={(text, template) => {
+          setClaim(text)
+          setActiveTemplate(template.templateSlots?.length ? template : null)
+          if (template.templateSlots?.length) {
+            const vals: Record<string, string | number> = {}
+            for (const slot of template.templateSlots) vals[slot.key] = slot.default
+            setSlotValues(vals)
+          } else {
+            setSlotValues({})
+          }
+          if (template.suggestedStakeCents) {
+            setStakeMoney(template.suggestedStakeCents)
+            setMoneyInput((template.suggestedStakeCents / 100).toFixed(2))
+          }
+          if (template.suggestedDurationDays) setDuration(daysToPreset(template.suggestedDurationDays))
           setSourceTab('foryou')
         }}
       />

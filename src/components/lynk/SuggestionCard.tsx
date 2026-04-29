@@ -1,6 +1,7 @@
+import { Fragment } from 'react'
 import { formatMoney } from '@/lib/utils/formatters'
 import { SignalLabel } from './SignalLabel'
-import { resolveTitle, type RankedSuggestion } from '@/lib/suggestions'
+import { type RankedSuggestion } from '@/lib/suggestions'
 
 interface SuggestionCardProps {
   suggestion: RankedSuggestion
@@ -36,7 +37,19 @@ export function SuggestionCard({ suggestion, onUse, onLongPress }: SuggestionCar
       </div>
 
       <div className="font-black text-[14px] text-text leading-[1.2] tracking-[-0.01em] mb-2">
-        {resolveTitle(template)}
+        {template.templateSlots?.length
+          ? (template.template ?? template.title).split(/(\{[^}]+\})/).map((part, i) => {
+              const match = part.match(/^\{(.+)\}$/)
+              if (!match) return <Fragment key={i}>{part}</Fragment>
+              const slot = template.templateSlots!.find((s) => s.key === match[1])
+              return (
+                <span key={i} className="inline-block bg-accent-green/15 text-accent-green px-1 rounded border border-dashed border-accent-green/40 mx-0.5 font-mono text-[13px]">
+                  {slot ? String(slot.default) : match[1]}
+                </span>
+              )
+            })
+          : template.title
+        }
       </div>
 
       {contextLine && (
