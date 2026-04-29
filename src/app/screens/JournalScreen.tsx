@@ -135,7 +135,7 @@ function CreateModal({
 }
 
 /** Map bet status to TicketStub status */
-function betToTicketStatus(
+export function betToTicketStatus(
   bet: BetWithSides,
   userId: string | undefined,
 ): 'won' | 'lost' | 'disputed' | 'live' | 'pending' {
@@ -153,7 +153,7 @@ function betToTicketStatus(
 }
 
 /** Format stake for ticket display */
-function formatTicketAmount(bet: BetWithSides, status: string): string {
+export function formatTicketAmount(bet: BetWithSides, status: string): string {
   if (!bet.stake_money) return '$0'
   const dollars = formatMoney(bet.stake_money)
   if (status === 'won') return `+${dollars}`

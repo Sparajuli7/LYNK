@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { MessageCircle, Loader2, Archive, IdCard, BookOpen, Pencil, Settings, UserPlus, Users } from 'lucide-react'
 import { useAuthStore, useChatStore, useFriendStore } from '@/stores'
-import { AddFriendsSheet } from '@/components/lynk'
+import { AddFriendsSheet, TicketStub } from '@/components/lynk'
 import { searchUsers } from '@/lib/api/friends'
 import { supabase } from '@/lib/supabase'
 import { getMyBets, getUserBetStats, getUserCurrentStreak } from '@/lib/api/bets'
@@ -11,8 +11,7 @@ import { getProfile as fetchProfile } from '@/lib/api/profiles'
 import { getPublicProofsForUser } from '@/lib/api/proofs'
 import type { PublicProof } from '@/lib/api/proofs'
 import { formatRecord } from '@/lib/utils/formatters'
-import { BET_CATEGORIES } from '@/lib/utils/constants'
-import { CircleGrid } from '@/app/components/CircleGrid'
+import { betToTicketStatus, formatTicketAmount } from '@/app/screens/JournalScreen'
 import type { BetWithSides } from '@/stores/betStore'
 import type { Profile } from '@/lib/database.types'
 
@@ -142,20 +141,7 @@ function ProfileContent({
       ? Math.round((profile.punishments_completed / profile.punishments_taken) * 100)
       : 100
 
-  const recentBetItems = recentBets.slice(0, 3).map((bet) => {
-    const category = BET_CATEGORIES[bet.category]
-    return {
-      id: bet.id,
-      icon: category?.emoji ?? '',
-      label: bet.title,
-      sublabel:
-        bet.status === 'active'
-          ? 'Live'
-          : bet.status === 'completed'
-            ? 'Done'
-            : bet.status.replace(/_/g, ' '),
-    }
-  })
+  const visibleRecentBets = recentBets.slice(0, 6)
 
   return (
     <div className="h-full bg-bg-primary overflow-y-auto pb-8">
@@ -410,11 +396,20 @@ function ProfileContent({
         {recentBets.length === 0 ? (
           <p className="text-text-muted text-sm">No bets yet.</p>
         ) : (
-          <CircleGrid
-            items={recentBetItems}
-            onItemClick={(id) => navigate(`/bet/${id}`)}
-            labelLines={2}
-          />
+          <div className="grid grid-cols-3 gap-2">
+            {visibleRecentBets.map((bet) => {
+              const status = betToTicketStatus(bet, profile.id)
+              return (
+                <TicketStub
+                  key={bet.id}
+                  status={status}
+                  title={bet.title}
+                  amountDisplay={formatTicketAmount(bet, status)}
+                  onClick={() => navigate(`/bet/${bet.id}`)}
+                />
+              )
+            })}
+          </div>
         )}
       </div>
 
