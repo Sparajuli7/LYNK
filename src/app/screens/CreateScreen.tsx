@@ -432,8 +432,10 @@ export function CreateScreen() {
   const [selectedPeople, setSelectedPeople] = useState<GroupMemberWithProfile[]>([])
   const [creatorSide, setCreatorSide] = useState<'rider' | 'doubter'>('rider')
   const [groupDropOpen, setGroupDropOpen] = useState(false)
+  const [groupSearch, setGroupSearch] = useState('')
   const [participationDropOpen, setParticipationDropOpen] = useState(false)
   const [peopleDropOpen, setPeopleDropOpen] = useState(false)
+  const [peopleSearch, setPeopleSearch] = useState('')
 
   // ── Section 03: Stakes ──
   const [stakeType, setStakeType] = useState<StakeType>('punishment')
@@ -884,27 +886,42 @@ export function CreateScreen() {
               </span>
             </button>
 
-            {/* Expanded: list of groups */}
+            {/* Expanded: search + list of groups */}
             {groupDropOpen && (
-              <div className="mt-1.5 space-y-1 bg-bg-elevated rounded-[10px] border border-border-subtle p-1.5">
-                {groups.map((g) => (
-                  <button
-                    key={g.id}
-                    onClick={() => {
-                      setSelectedGroup({ id: g.id, name: g.name, emoji: g.avatar_emoji, invite_code: g.invite_code })
-                      setGroupDropOpen(false)
-                    }}
-                    className={`w-full flex items-center gap-2.5 p-2.5 rounded-lg transition-colors ${
-                      selectedGroup?.id === g.id
-                        ? 'bg-accent-green/10'
-                        : 'hover:bg-white/5'
-                    }`}
-                  >
-                    <span className="text-base">{g.avatar_emoji}</span>
-                    <span className="font-bold text-[12px] text-white flex-1 text-left">{g.name}</span>
-                    {selectedGroup?.id === g.id && <Check className="w-3.5 h-3.5 text-accent-green" />}
-                  </button>
-                ))}
+              <div className="mt-1.5 bg-bg-elevated rounded-[10px] border border-border-subtle p-1.5">
+                {groups.length > 3 && (
+                  <input
+                    type="text"
+                    value={groupSearch}
+                    onChange={(e) => setGroupSearch(e.target.value)}
+                    placeholder="Search groups..."
+                    className="w-full bg-transparent border-b border-border-subtle px-2.5 py-2 text-[12px] text-white placeholder:text-text-muted outline-none mb-1"
+                    autoFocus
+                  />
+                )}
+                <div className="space-y-1 max-h-48 overflow-y-auto">
+                  {groups
+                    .filter((g) => !groupSearch.trim() || g.name.toLowerCase().includes(groupSearch.toLowerCase()))
+                    .map((g) => (
+                    <button
+                      key={g.id}
+                      onClick={() => {
+                        setSelectedGroup({ id: g.id, name: g.name, emoji: g.avatar_emoji, invite_code: g.invite_code })
+                        setGroupDropOpen(false)
+                        setGroupSearch('')
+                      }}
+                      className={`w-full flex items-center gap-2.5 p-2.5 rounded-lg transition-colors ${
+                        selectedGroup?.id === g.id
+                          ? 'bg-accent-green/10'
+                          : 'hover:bg-white/5'
+                      }`}
+                    >
+                      <span className="text-base">{g.avatar_emoji}</span>
+                      <span className="font-bold text-[12px] text-white flex-1 text-left">{g.name}</span>
+                      {selectedGroup?.id === g.id && <Check className="w-3.5 h-3.5 text-accent-green" />}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
           </div>
@@ -1011,10 +1028,21 @@ export function CreateScreen() {
               </div>
             )}
 
-            {/* Expanded list */}
+            {/* Expanded: search + list */}
             {peopleDropOpen && (
-              <div className="mt-1.5 bg-bg-elevated rounded-[10px] border border-border-subtle p-1.5 max-h-48 overflow-y-auto space-y-1">
-                {peopleList.map((m) => {
+              <div className="mt-1.5 bg-bg-elevated rounded-[10px] border border-border-subtle p-1.5">
+                <input
+                  type="text"
+                  value={peopleSearch}
+                  onChange={(e) => setPeopleSearch(e.target.value)}
+                  placeholder={`Search ${formatType === 'select' ? 'friends' : 'members'}...`}
+                  className="w-full bg-transparent border-b border-border-subtle px-2.5 py-2 text-[12px] text-white placeholder:text-text-muted outline-none mb-1"
+                  autoFocus
+                />
+                <div className="max-h-48 overflow-y-auto space-y-1">
+                {peopleList
+                  .filter((m) => !peopleSearch.trim() || m.profile.display_name.toLowerCase().includes(peopleSearch.toLowerCase()))
+                  .map((m) => {
                   const sel = selectedPeople.some((p) => p.user_id === m.user_id)
                   return (
                     <button
@@ -1038,6 +1066,7 @@ export function CreateScreen() {
                     </button>
                   )
                 })}
+                </div>
               </div>
             )}
           </div>
