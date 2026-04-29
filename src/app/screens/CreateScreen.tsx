@@ -431,6 +431,8 @@ export function CreateScreen() {
   const [friendsList, setFriendsList] = useState<GroupMemberWithProfile[]>([])
   const [selectedPeople, setSelectedPeople] = useState<GroupMemberWithProfile[]>([])
   const [creatorSide, setCreatorSide] = useState<'rider' | 'doubter'>('rider')
+  const [groupDropOpen, setGroupDropOpen] = useState(false)
+  const [participationDropOpen, setParticipationDropOpen] = useState(false)
 
   // ── Section 03: Stakes ──
   const [stakeType, setStakeType] = useState<StakeType>('punishment')
@@ -862,65 +864,114 @@ export function CreateScreen() {
           </p>
         </div>
 
-        {/* Group selector */}
+        {/* Group selector — dropdown */}
         {formatType === 'group' && (
           <div className="px-5 pb-2">
-            {groups.map((g) => (
-              <button
-                key={g.id}
-                onClick={() => setSelectedGroup({ id: g.id, name: g.name, emoji: g.avatar_emoji, invite_code: g.invite_code })}
-                className={`w-full flex items-center gap-2.5 p-3 rounded-[10px] mb-1.5 transition-colors ${
-                  selectedGroup?.id === g.id
-                    ? 'bg-surface border-[1.5px] border-accent-green/40'
-                    : 'bg-surface border-[1.5px] border-border-subtle'
-                }`}
-              >
-                <span className="text-lg">{g.avatar_emoji}</span>
-                <div className="flex-1 text-left">
-                  <span className="font-black text-[13px] text-white">{g.name}</span>
+            {/* Collapsed: show selected group as a tappable row */}
+            <button
+              onClick={() => setGroupDropOpen((v) => !v)}
+              className="w-full flex items-center gap-2.5 p-3 rounded-[10px] bg-surface border-[1.5px] border-accent-green/40 transition-colors"
+            >
+              <span className="text-lg">{selectedGroup?.emoji ?? '\u{1F465}'}</span>
+              <div className="flex-1 text-left">
+                <span className="font-black text-[13px] text-white">
+                  {selectedGroup?.name ?? 'Select a group'}
+                </span>
+                {selectedGroup && groupMembers.length > 0 && (
                   <span className="text-[10px] text-text-muted ml-2">
-                    {groupMembers.length > 0 && selectedGroup?.id === g.id
-                      ? `${groupMembers.length} members`
-                      : ''}
+                    {groupMembers.length} members
                   </span>
-                </div>
-                {selectedGroup?.id === g.id && <Check className="w-4 h-4 text-accent-green" />}
-              </button>
-            ))}
+                )}
+              </div>
+              <span className={`text-text-muted text-sm transition-transform ${groupDropOpen ? 'rotate-180' : ''}`}>
+                {'\u25BE'}
+              </span>
+            </button>
+
+            {/* Expanded: list of groups */}
+            {groupDropOpen && (
+              <div className="mt-1.5 space-y-1 bg-bg-elevated rounded-[10px] border border-border-subtle p-1.5">
+                {groups.map((g) => (
+                  <button
+                    key={g.id}
+                    onClick={() => {
+                      setSelectedGroup({ id: g.id, name: g.name, emoji: g.avatar_emoji, invite_code: g.invite_code })
+                      setGroupDropOpen(false)
+                    }}
+                    className={`w-full flex items-center gap-2.5 p-2.5 rounded-lg transition-colors ${
+                      selectedGroup?.id === g.id
+                        ? 'bg-accent-green/10'
+                        : 'hover:bg-white/5'
+                    }`}
+                  >
+                    <span className="text-base">{g.avatar_emoji}</span>
+                    <span className="font-bold text-[12px] text-white flex-1 text-left">{g.name}</span>
+                    {selectedGroup?.id === g.id && <Check className="w-3.5 h-3.5 text-accent-green" />}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
-        {/* Participation sub-choice (group only) */}
+        {/* Participation — dropdown */}
         {formatType === 'group' && selectedGroup && (
           <div className="px-5 pb-2">
             <p className="text-[10px] text-text-muted font-bold tracking-[0.12em] mb-1.5">PARTICIPATION</p>
-            <div className="space-y-1.5">
-              {([
-                { id: 'whole' as const, label: 'Whole group', desc: `All ${groupMembers.length} auto-enrolled` },
-                { id: 'pick' as const, label: 'Pick members', desc: 'Choose specific people' },
-                { id: 'open' as const, label: 'Open to join', desc: 'Members opt in' },
-              ]).map((opt) => (
-                <button
-                  key={opt.id}
-                  onClick={() => { setParticipation(opt.id); if (opt.id !== 'pick') setSelectedPeople([]) }}
-                  className={`w-full flex items-center gap-2.5 p-3 rounded-[10px] text-left transition-all ${
-                    participation === opt.id
-                      ? 'bg-accent-green/8 border-[1.5px] border-accent-green'
-                      : 'border-[1.5px] border-border-subtle'
-                  }`}
-                >
-                  <div className={`w-[18px] h-[18px] rounded-full border-2 flex items-center justify-center shrink-0 ${
-                    participation === opt.id ? 'border-accent-green bg-accent-green' : 'border-text-muted'
-                  }`}>
-                    {participation === opt.id && <span className="text-bg-primary text-[10px] font-black">{'\u2713'}</span>}
-                  </div>
-                  <div>
-                    <p className="font-black text-[12px] text-white">{opt.label}</p>
-                    <p className="text-[10px] text-text-muted mt-0.5">{opt.desc}</p>
-                  </div>
-                </button>
-              ))}
-            </div>
+
+            {/* Collapsed: show selected participation */}
+            <button
+              onClick={() => setParticipationDropOpen((v) => !v)}
+              className={`w-full flex items-center gap-2.5 p-3 rounded-[10px] text-left transition-all bg-accent-green/8 border-[1.5px] border-accent-green`}
+            >
+              <div className="w-[18px] h-[18px] rounded-full border-2 border-accent-green bg-accent-green flex items-center justify-center shrink-0">
+                <span className="text-bg-primary text-[10px] font-black">{'\u2713'}</span>
+              </div>
+              <div className="flex-1">
+                <p className="font-black text-[12px] text-white">
+                  {participation === 'whole' ? 'Whole group' : participation === 'pick' ? 'Pick members' : 'Open to join'}
+                </p>
+                <p className="text-[10px] text-text-muted mt-0.5">
+                  {participation === 'whole' ? `All ${groupMembers.length} auto-enrolled` : participation === 'pick' ? 'Choose specific people' : 'Members opt in'}
+                </p>
+              </div>
+              <span className={`text-text-muted text-sm transition-transform ${participationDropOpen ? 'rotate-180' : ''}`}>
+                {'\u25BE'}
+              </span>
+            </button>
+
+            {/* Expanded: all options */}
+            {participationDropOpen && (
+              <div className="mt-1.5 space-y-1 bg-bg-elevated rounded-[10px] border border-border-subtle p-1.5">
+                {([
+                  { id: 'whole' as const, label: 'Whole group', desc: `All ${groupMembers.length} auto-enrolled` },
+                  { id: 'pick' as const, label: 'Pick members', desc: 'Choose specific people' },
+                  { id: 'open' as const, label: 'Open to join', desc: 'Members opt in' },
+                ]).map((opt) => (
+                  <button
+                    key={opt.id}
+                    onClick={() => {
+                      setParticipation(opt.id)
+                      if (opt.id !== 'pick') setSelectedPeople([])
+                      setParticipationDropOpen(false)
+                    }}
+                    className={`w-full flex items-center gap-2.5 p-2.5 rounded-lg text-left transition-colors ${
+                      participation === opt.id ? 'bg-accent-green/10' : 'hover:bg-white/5'
+                    }`}
+                  >
+                    <div className={`w-[16px] h-[16px] rounded-full border-2 flex items-center justify-center shrink-0 ${
+                      participation === opt.id ? 'border-accent-green bg-accent-green' : 'border-text-muted'
+                    }`}>
+                      {participation === opt.id && <span className="text-bg-primary text-[8px] font-black">{'\u2713'}</span>}
+                    </div>
+                    <div>
+                      <p className="font-bold text-[11px] text-white">{opt.label}</p>
+                      <p className="text-[9px] text-text-muted">{opt.desc}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
