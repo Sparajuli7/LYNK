@@ -27,7 +27,7 @@ export function RepBadge({ score, name, size = 'sm' }: RepBadgeProps) {
 
   const sizeClass = size === 'sm' ? 'w-5 h-5 text-[8px]' : 'w-7 h-7 text-[10px]'
 
-  const tooltip = name ? `${name} completes ${score}% of punishments` : undefined
+  const tooltip = name ? `${name} completes ${score}% of forfeits` : undefined
 
   const badge = (
     <div

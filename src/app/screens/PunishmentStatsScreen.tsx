@@ -48,7 +48,7 @@ export function PunishmentStatsScreen() {
 
       <div className="px-6 pt-12 pb-6">
         <p className="text-xs font-bold uppercase tracking-wider text-text-muted mb-2">
-          Punishment
+          Forfeit
         </p>
         <p className="text-lg font-bold text-text-primary mb-6 line-clamp-2">{cardText}</p>
 

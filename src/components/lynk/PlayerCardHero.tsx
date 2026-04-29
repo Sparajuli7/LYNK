@@ -106,13 +106,13 @@ export function PlayerCardHero({
             </div>
           </div>
 
-          {/* PUNISH */}
+          {/* FORFEIT */}
           <div>
             <div className="font-black font-mono text-[22px] tracking-[-0.02em] text-doubter">
               {punishments}
             </div>
             <div className="text-[9px] tracking-[0.12em] text-text-mute font-bold">
-              PUNISH
+              FORFEIT
             </div>
           </div>
 

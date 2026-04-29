@@ -43,7 +43,7 @@ const DEFAULT_AVATAR = 'https://images.unsplash.com/photo-1535713875002-d1d0cf37
 function formatStake(bet: { stake_money: number | null; stake_custom_punishment: string | null; stake_punishment_id: string | null }, punishmentCardText?: string | null) {
   if (bet.stake_money) return formatMoney(bet.stake_money)
   if (bet.stake_custom_punishment) return bet.stake_custom_punishment
-  if (bet.stake_punishment_id) return punishmentCardText ?? 'Punishment'
+  if (bet.stake_punishment_id) return punishmentCardText ?? 'Forfeit'
   return '—'
 }
 
@@ -782,7 +782,7 @@ export function BetDetail({ onBack }: BetDetailProps) {
               {(activeBet.stake_custom_punishment || activeBet.stake_punishment_id) && (
                 <div className="mt-2 px-3 py-2 rounded-lg bg-orange-500/10 border border-orange-500/20">
                   <p className="text-sm font-bold text-orange-400">
-                    Punishment: {punishmentCardText ?? activeBet.stake_custom_punishment ?? 'Forfeit'}
+                    Forfeit: {punishmentCardText ?? activeBet.stake_custom_punishment ?? 'Forfeit'}
                   </p>
                 </div>
               )}
@@ -806,7 +806,7 @@ export function BetDetail({ onBack }: BetDetailProps) {
                   ) : isWinner ? (
                     <p className="text-sm font-bold text-accent-green">You're in the clear</p>
                   ) : isLoser ? (
-                    <p className="text-sm font-bold text-accent-coral">You owe the punishment</p>
+                    <p className="text-sm font-bold text-accent-coral">You owe the forfeit</p>
                   ) : null}
                 </div>
               )}
@@ -824,7 +824,7 @@ export function BetDetail({ onBack }: BetDetailProps) {
                   onClick={() => navigate(`${basePath}/${id}/shame-proof`)}
                   className="mt-3 w-full py-3 rounded-xl bg-accent-coral text-white font-bold text-sm btn-pressed"
                 >
-                  I did the punishment — Submit Proof
+                  I did the forfeit — Submit Proof
                 </button>
               )}
             </div>
@@ -833,10 +833,10 @@ export function BetDetail({ onBack }: BetDetailProps) {
             {isCompleted && hasPunishment && (
               <div className="bg-bg-card rounded-2xl border border-accent-coral/30 p-4">
                 <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-accent-coral mb-1.5">
-                  Punishment Due
+                  Forfeit Due
                 </p>
                 <p className="text-sm font-bold text-white mb-1">
-                  {punishmentCardText ?? activeBet.stake_custom_punishment ?? 'Punishment'}
+                  {punishmentCardText ?? activeBet.stake_custom_punishment ?? 'Forfeit'}
                 </p>
                 <p className="text-xs text-text-muted">
                   Owed by: {punishmentOwerNames.join(', ')}
