@@ -23,7 +23,7 @@ import { GroupJoinByCodeScreen } from './screens/GroupJoinByCodeScreen'
 import { GroupDetailScreen } from './screens/GroupDetailScreen'
 import { ProfileEditScreen } from './screens/ProfileEditScreen'
 import { SettingsScreen } from './screens/SettingsScreen'
-import { CompetitionCreateScreen } from './screens/CompetitionCreateScreen'
+import { CreateScreen } from './screens/CreateScreen'
 import { PunishmentStatsScreen } from './screens/PunishmentStatsScreen'
 import { PlayerCardScreen } from './screens/PlayerCardScreen'
 import { RematchScreen } from './screens/RematchScreen'
@@ -54,8 +54,7 @@ function SplashRoute() {
 }
 
 function BetCreateRoute() {
-  // /bet/create redirects to /compete/create so location.state (templateBetId) is preserved
-  return <CompetitionCreateScreen />
+  return <CreateScreen />
 }
 
 function ProfileScreenWithId() {
@@ -174,7 +173,7 @@ export function AppRouter() {
 
             {/* Competition (merged with former H2H) */}
             <Route path="compete" element={<Competitions />} />
-            <Route path="compete/create" element={<CompetitionCreateScreen />} />
+            <Route path="compete/create" element={<CreateScreen />} />
             <Route path="compete/:id" element={<BetDetailRoute />} />
             <Route path="compete/:id/proof" element={<CompeteProofSubmissionRoute />} />
             <Route path="compete/:id/shame-proof" element={<ShameProofSubmission />} />

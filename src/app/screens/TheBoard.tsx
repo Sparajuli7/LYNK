@@ -12,7 +12,7 @@ import { getProfilesByIds } from '@/lib/api/profiles'
 import { formatMoney } from '@/lib/utils/formatters'
 import { formatOdds } from '@/lib/utils/formatters'
 import { loadPinned, togglePin, PIN_BETS_KEY } from '@/lib/utils/pinStorage'
-import { SectionHeader, ReceiptCard, GroupRow, FABGlow, QuickBetSheet, AddFriendsSheet, SuggestionEmptyState } from '@/components/lynk'
+import { SectionHeader, ReceiptCard, GroupRow, FABGlow, AddFriendsSheet, SuggestionEmptyState } from '@/components/lynk'
 import type { RankedSuggestion } from '@/lib/suggestions'
 import { searchUsers } from '@/lib/api/friends'
 import { useFriendStore } from '@/stores'
@@ -161,14 +161,9 @@ export function TheBoard() {
   const bets = useBetStore((s) => s.bets)
   const fetchBetsForGroupIds = useBetStore((s) => s.fetchBetsForGroupIds)
   const isLoading = useBetStore((s) => s.isLoading)
-  const updateWizardStep = useBetStore((s) => s.updateWizardStep)
-  const resetWizard = useBetStore((s) => s.resetWizard)
-  const createBet = useBetStore((s) => s.createBet)
-
   const unreadCount = useNotificationStore((s) => s.unreadCount)
   const chatUnreadCount = useChatStore((s) => s.totalUnreadCount)
 
-  const [quickBetOpen, setQuickBetOpen] = useState(false)
   const [addFriendsOpen, setAddFriendsOpen] = useState(false)
   const [addSearchResults, setAddSearchResults] = useState<{ id: string; displayName: string; username: string; avatarUrl?: string; mutualCount: number }[]>([])
   const [isAddSearching, setIsAddSearching] = useState(false)
@@ -185,35 +180,6 @@ export function TheBoard() {
       else next.delete(betId)
       return next
     })
-  }
-
-  const handleQuickBet = async (data: {
-    title: string
-    stakeCents: number
-    groupId: string
-    deadline: Date
-    joinMode: 'open' | 'auto_all' | 'auto_selected'
-    selectedMemberIds: string[]
-  }) => {
-    const group = groups.find((g) => g.id === data.groupId) ?? null
-    resetWizard()
-    updateWizardStep(1, {
-      claim: data.title,
-      creatorSide: 'rider',
-      category: 'wildcard',
-      betType: 'quick',
-      deadline: data.deadline.toISOString(),
-      stakeType: 'money',
-      stakeMoney: data.stakeCents,
-      selectedGroup: group,
-      joinMode: data.joinMode,
-      selectedMemberIds: data.selectedMemberIds,
-    })
-    const bet = await createBet()
-    setQuickBetOpen(false)
-    if (bet && groups.length > 0) {
-      fetchBetsForGroupIds(groups.map((g) => g.id))
-    }
   }
 
   useEffect(() => { fetchGroups() }, [fetchGroups])
@@ -407,7 +373,7 @@ export function TheBoard() {
                 <div className="w-8 h-8 border-2 border-rider border-t-transparent rounded-full animate-spin" />
               </div>
             ) : stripBets.length === 0 ? (
-              <EmptyBetsState onPlaceBet={() => setShowQuickBet(true)} />
+              <EmptyBetsState onPlaceBet={() => navigate('/compete/create')} />
             ) : (
               stripBets.map((bet, i) => {
                 const claimant = claimantMap.get(bet.claimant_id)
@@ -529,16 +495,8 @@ export function TheBoard() {
 
       {/* ── 4. FAB ── */}
       <div className="absolute bottom-[84px] right-[22px] z-20">
-        <FABGlow onClick={() => setQuickBetOpen(true)} />
+        <FABGlow onClick={() => navigate('/compete/create')} />
       </div>
-
-      {/* ── 5. Quick Bet Sheet ── */}
-      <QuickBetSheet
-        open={quickBetOpen}
-        onClose={() => setQuickBetOpen(false)}
-        groups={groups.map((g) => ({ id: g.id, name: g.name, emoji: g.avatar_emoji }))}
-        onSubmit={handleQuickBet}
-      />
 
       {/* ── 6. Add Friends Sheet ── */}
       <AddFriendsSheet

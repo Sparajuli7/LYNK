@@ -12,7 +12,7 @@ export function FABGlow({ onClick }: FABGlowProps) {
     <div className="relative">
       {/* Label */}
       <div className="absolute -top-9 right-0 text-[9px] font-black tracking-widest bg-surface-3 text-text px-2 py-0.5 rounded-full">
-        QUICK BET
+        CREATE
       </div>
 
       {/* Breathing ring */}
@@ -30,7 +30,7 @@ export function FABGlow({ onClick }: FABGlowProps) {
       <button
         onClick={onClick}
         className="relative w-14 h-14 rounded-full bg-rider text-bg text-3xl font-light flex items-center justify-center"
-        aria-label="Quick Bet"
+        aria-label="Create"
       >
         +
       </button>

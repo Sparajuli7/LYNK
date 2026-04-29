@@ -12,7 +12,6 @@ export { ShameTile } from "./ShameTile";
 export { PlayerCardHero } from "./PlayerCardHero";
 export { OutcomeStamp } from "./OutcomeStamp";
 export { PunishmentCard } from "./PunishmentCard";
-export { QuickBetSheet } from "./QuickBetSheet";
 export { FriendRow } from "./FriendRow";
 export { FriendRequestCard } from "./FriendRequestCard";
 export { SelectableFriendRow } from "./SelectableFriendRow";
