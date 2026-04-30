@@ -308,7 +308,7 @@ function GamesLibraryDialog({
 
             {expanded.equipment.length > 0 && (
               <div className="mb-3">
-                <p className="text-[10px] font-black uppercase tracking-[0.12em] text-text-muted mb-1">Equipment</p>
+                <p className="text-[13px] font-black uppercase tracking-[0.12em] text-text-muted mb-1">Equipment</p>
                 <ul className="text-xs text-text-primary space-y-0.5">
                   {expanded.equipment.map((e, i) => <li key={i}>· {e}</li>)}
                 </ul>
@@ -317,7 +317,7 @@ function GamesLibraryDialog({
 
             {expanded.rules.length > 0 && (
               <div className="mb-3">
-                <p className="text-[10px] font-black uppercase tracking-[0.12em] text-text-muted mb-1">Rules</p>
+                <p className="text-[13px] font-black uppercase tracking-[0.12em] text-text-muted mb-1">Rules</p>
                 <ol className="text-xs text-text-primary space-y-1 list-decimal list-inside">
                   {expanded.rules.map((r, i) => <li key={i}>{r}</li>)}
                 </ol>
@@ -326,7 +326,7 @@ function GamesLibraryDialog({
 
             {expanded.houseRules.length > 0 && (
               <div className="mb-3">
-                <p className="text-[10px] font-black uppercase tracking-[0.12em] text-text-muted mb-1">House Rules</p>
+                <p className="text-[13px] font-black uppercase tracking-[0.12em] text-text-muted mb-1">House Rules</p>
                 <ul className="text-xs text-text-muted space-y-0.5">
                   {expanded.houseRules.map((r, i) => <li key={i}>· {r}</li>)}
                 </ul>
@@ -336,7 +336,7 @@ function GamesLibraryDialog({
             {/* Related bet templates */}
             {expanded.relatedBetTemplateIds.length > 0 && (
               <div className="mb-3">
-                <p className="text-[10px] font-black uppercase tracking-[0.12em] text-accent-green mb-2">
+                <p className="text-[13px] font-black uppercase tracking-[0.12em] text-accent-green mb-2">
                   BET ON THIS GAME
                 </p>
                 <div className="space-y-1.5">
@@ -393,7 +393,7 @@ function SearchableDropdown({
         value={search}
         onChange={(e) => onSearchChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full bg-transparent border-b border-border-subtle px-2.5 py-2 text-[12px] text-white placeholder:text-text-muted outline-none mb-1"
+        className="w-full bg-transparent border-b border-border-subtle px-2.5 py-2 text-[14px] text-white placeholder:text-text-muted outline-none mb-1"
         autoFocus
       />
       <div className="space-y-1 max-h-48 overflow-y-auto">
@@ -412,12 +412,12 @@ function SectionLabel({ num, label, right }: { num: string; label: string; right
     <div className="flex items-center justify-between px-5 pt-3 pb-2">
       <div className="flex items-center gap-1.5">
         <span className="w-1.5 h-1.5 rounded-full bg-accent-green" />
-        <span className="font-black italic text-[11px] text-accent-green tracking-[0.18em]">
+        <span className="font-black italic text-[13px] text-accent-green tracking-[0.18em]">
           {num} · {label}
         </span>
       </div>
       {right && (
-        <span className="text-[10px] text-text-muted font-bold tracking-[0.12em]">{right}</span>
+        <span className="text-[13px] text-text-muted font-bold tracking-[0.12em]">{right}</span>
       )}
     </div>
   )
@@ -743,12 +743,12 @@ export function CreateScreen() {
           <X className="w-4 h-4 text-text-muted" />
         </button>
         <div className="flex-1">
-          <h1 className="font-black italic text-[22px] text-white leading-none tracking-[-0.04em]">NEW BET</h1>
-          <p className="text-[10px] text-text-muted font-bold tracking-[0.1em] mt-0.5">DRAFT · AUTOSAVED</p>
+          <h1 className="font-black italic text-[24px] text-white leading-none tracking-[-0.04em]">NEW BET</h1>
+          <p className="text-[13px] text-text-muted font-bold tracking-[0.1em] mt-0.5">DRAFT · AUTOSAVED</p>
         </div>
         <button
           onClick={handleSaveForLater}
-          className="bg-surface rounded-full px-3 py-1.5 text-[11px] text-text-muted font-bold"
+          className="bg-surface rounded-full px-3 py-1.5 text-[13px] text-text-muted font-bold"
         >
           Save for later
         </button>
@@ -767,7 +767,7 @@ export function CreateScreen() {
           <div className="bg-surface border-[1.5px] border-border-subtle rounded-[14px] p-3.5">
             {activeTemplate?.templateSlots?.length ? (
               <>
-                <div className="font-black text-[16px] text-white leading-snug">
+                <div className="font-black text-[18px] text-white leading-snug">
                   {(() => {
                     const source = activeTemplate.template ?? activeTemplate.title
                     return source.split(/(\{[^}]+\})/).map((part, i) => {
@@ -792,7 +792,7 @@ export function CreateScreen() {
                             }
                             handleSlotChange(key, v)
                           }}
-                          className="inline-block bg-accent-green/15 text-accent-green font-black text-center text-[16px] border border-dashed border-accent-green/40 rounded-md px-2 py-0.5 mx-0.5 outline-none focus:border-accent-green font-mono"
+                          className="inline-block bg-accent-green/15 text-accent-green font-black text-center text-[18px] border border-dashed border-accent-green/40 rounded-md px-2 py-0.5 mx-0.5 outline-none focus:border-accent-green font-mono"
                           style={{ width: `${Math.max(String(val).length * 12 + 20, 44)}px` }}
                         />
                       )
@@ -800,10 +800,10 @@ export function CreateScreen() {
                   })()}
                 </div>
                 <div className="flex justify-between mt-2">
-                  <button onClick={() => { setActiveTemplate(null); setSlotValues({}) }} className="text-[10px] text-text-muted">
+                  <button onClick={() => { setActiveTemplate(null); setSlotValues({}) }} className="text-[13px] text-text-muted">
                     Switch to free text
                   </button>
-                  <span className="text-[10px] text-text-muted font-mono">{claim.length}/120</span>
+                  <span className="text-[13px] text-text-muted font-mono">{claim.length}/120</span>
                 </div>
               </>
             ) : (
@@ -813,12 +813,12 @@ export function CreateScreen() {
                   onChange={(e) => setClaim(e.target.value.slice(0, 120))}
                   placeholder="What's the bet?"
                   rows={2}
-                  className="w-full bg-transparent font-black text-[16px] text-white placeholder:text-text-muted outline-none resize-none leading-snug"
+                  className="w-full bg-transparent font-black text-[18px] text-white placeholder:text-text-muted outline-none resize-none leading-snug"
                   maxLength={120}
                 />
                 <div className="flex justify-between mt-1">
-                  <span className="text-[10px] text-text-muted">Tap chips to edit</span>
-                  <span className="text-[10px] text-text-muted font-mono">{claim.length}/120</span>
+                  <span className="text-[13px] text-text-muted">Tap chips to edit</span>
+                  <span className="text-[13px] text-text-muted font-mono">{claim.length}/120</span>
                 </div>
               </>
             )}
@@ -840,7 +840,7 @@ export function CreateScreen() {
                   if (tab.id === 'catalog') setCatalogOpen(true)
                   if (tab.id === 'games') setGamesOpen(true)
                 }}
-                className={`flex-1 py-2.5 rounded-[10px] font-black text-[11px] tracking-[0.05em] transition-all ${
+                className={`flex-1 py-2.5 rounded-[10px] font-black text-[13px] tracking-[0.05em] transition-all ${
                   sourceTab === tab.id
                     ? 'bg-accent-green/8 border-[1.5px] border-accent-green/40 text-accent-green'
                     : 'bg-surface border-[1.5px] border-border-subtle text-text-muted'
@@ -879,7 +879,7 @@ export function CreateScreen() {
               <button
                 key={f}
                 onClick={() => { setFormatType(f); setSelectedPeople([]) }}
-                className={`flex-1 py-2 rounded-lg text-center text-[11px] font-black tracking-[0.08em] transition-all ${
+                className={`flex-1 py-2 rounded-lg text-center text-[13px] font-black tracking-[0.08em] transition-all ${
                   formatType === f
                     ? 'bg-accent-green text-bg-primary'
                     : 'text-text-muted'
@@ -889,7 +889,7 @@ export function CreateScreen() {
               </button>
             ))}
           </div>
-          <p className="text-[10px] text-text-muted mt-1.5">
+          <p className="text-[13px] text-text-muted mt-1.5">
             Group = pick a group · Select = specific friends · Self = just you
           </p>
         </div>
@@ -904,11 +904,11 @@ export function CreateScreen() {
             >
               <span className="text-lg">{selectedGroup?.emoji ?? '\u{1F465}'}</span>
               <div className="flex-1 text-left">
-                <span className="font-black text-[13px] text-white">
+                <span className="font-black text-[15px] text-white">
                   {selectedGroup?.name ?? 'Select a group'}
                 </span>
                 {selectedGroup && groupMembers.length > 0 && (
-                  <span className="text-[10px] text-text-muted ml-2">
+                  <span className="text-[13px] text-text-muted ml-2">
                     {groupMembers.length} members
                   </span>
                 )}
@@ -942,7 +942,7 @@ export function CreateScreen() {
                     }`}
                   >
                     <span className="text-base">{g.avatar_emoji}</span>
-                    <span className="font-bold text-[12px] text-white flex-1 text-left">{g.name}</span>
+                    <span className="font-bold text-[14px] text-white flex-1 text-left">{g.name}</span>
                     {selectedGroup?.id === g.id && <Check className="w-3.5 h-3.5 text-accent-green" />}
                   </button>
                 ))}
@@ -954,7 +954,7 @@ export function CreateScreen() {
         {/* Participation — dropdown */}
         {formatType === 'group' && selectedGroup && (
           <div className="px-5 pb-2">
-            <p className="text-[10px] text-text-muted font-bold tracking-[0.12em] mb-1.5">PARTICIPATION</p>
+            <p className="text-[13px] text-text-muted font-bold tracking-[0.12em] mb-1.5">PARTICIPATION</p>
 
             {/* Collapsed: show selected participation */}
             <button
@@ -962,13 +962,13 @@ export function CreateScreen() {
               className={`w-full flex items-center gap-2.5 p-3 rounded-[10px] text-left transition-all bg-accent-green/8 border-[1.5px] border-accent-green`}
             >
               <div className="w-[18px] h-[18px] rounded-full border-2 border-accent-green bg-accent-green flex items-center justify-center shrink-0">
-                <span className="text-bg-primary text-[10px] font-black">{'\u2713'}</span>
+                <span className="text-bg-primary text-[13px] font-black">{'\u2713'}</span>
               </div>
               <div className="flex-1">
-                <p className="font-black text-[12px] text-white">
+                <p className="font-black text-[14px] text-white">
                   {participation === 'whole' ? 'Whole group' : participation === 'pick' ? 'Pick members' : 'Open to join'}
                 </p>
-                <p className="text-[10px] text-text-muted mt-0.5">
+                <p className="text-[13px] text-text-muted mt-0.5">
                   {participation === 'whole' ? `All ${groupMembers.length} auto-enrolled` : participation === 'pick' ? 'Choose specific people' : 'Members opt in'}
                 </p>
               </div>
@@ -999,11 +999,11 @@ export function CreateScreen() {
                     <div className={`w-[16px] h-[16px] rounded-full border-2 flex items-center justify-center shrink-0 ${
                       participation === opt.id ? 'border-accent-green bg-accent-green' : 'border-text-muted'
                     }`}>
-                      {participation === opt.id && <span className="text-bg-primary text-[8px] font-black">{'\u2713'}</span>}
+                      {participation === opt.id && <span className="text-bg-primary text-[9px] font-black">{'\u2713'}</span>}
                     </div>
                     <div>
-                      <p className="font-bold text-[11px] text-white">{opt.label}</p>
-                      <p className="text-[9px] text-text-muted">{opt.desc}</p>
+                      <p className="font-bold text-[13px] text-white">{opt.label}</p>
+                      <p className="text-[13px] text-text-muted">{opt.desc}</p>
                     </div>
                   </button>
                 ))}
@@ -1015,7 +1015,7 @@ export function CreateScreen() {
         {/* Pick members / Select friends — dropdown */}
         {((formatType === 'group' && participation === 'pick') || formatType === 'select') && (
           <div className="px-5 pb-2">
-            <p className="text-[10px] text-text-muted font-bold tracking-[0.12em] mb-1.5">
+            <p className="text-[13px] text-text-muted font-bold tracking-[0.12em] mb-1.5">
               {formatType === 'select' ? 'FRIENDS' : 'MEMBERS'}
             </p>
 
@@ -1026,7 +1026,7 @@ export function CreateScreen() {
             >
               <span className="text-lg">{'\u{1F465}'}</span>
               <div className="flex-1 text-left">
-                <span className="font-black text-[13px] text-white">
+                <span className="font-black text-[15px] text-white">
                   {selectedPeople.length === 0
                     ? `Tap to pick ${formatType === 'select' ? 'friends' : 'members'}`
                     : `${selectedPeople.length} selected`}
@@ -1044,9 +1044,9 @@ export function CreateScreen() {
                   <button
                     key={p.user_id}
                     onClick={() => togglePerson(p)}
-                    className="flex items-center gap-1 bg-accent-green/15 text-accent-green text-[11px] font-bold px-2 py-0.5 rounded-full border border-accent-green/30"
+                    className="flex items-center gap-1 bg-accent-green/15 text-accent-green text-[13px] font-bold px-2 py-0.5 rounded-full border border-accent-green/30"
                   >
-                    {p.profile.display_name} <span className="text-accent-green/60 text-[10px]">&times;</span>
+                    {p.profile.display_name} <span className="text-accent-green/60 text-[13px]">&times;</span>
                   </button>
                 ))}
               </div>
@@ -1078,7 +1078,7 @@ export function CreateScreen() {
                           <div className="w-full h-full bg-gradient-to-br from-accent-green/30 to-accent-green/10" />
                         )}
                       </div>
-                      <span className="font-bold text-[12px] text-white flex-1 text-left">{m.profile.display_name}</span>
+                      <span className="font-bold text-[14px] text-white flex-1 text-left">{m.profile.display_name}</span>
                       <span className={`text-sm font-black ${sel ? 'text-accent-green' : 'text-text-muted'}`}>
                         {sel ? '\u2713' : '+'}
                       </span>
@@ -1093,13 +1093,13 @@ export function CreateScreen() {
         {/* Solo message */}
         {formatType === 'self' && (
           <div className="px-5 pb-2">
-            <p className="text-[10px] text-text-muted">Solo bet. You're betting against yourself.</p>
+            <p className="text-[13px] text-text-muted">Solo bet. You're betting against yourself.</p>
           </div>
         )}
 
         {/* Your side */}
         <div className="px-5 pb-2">
-          <p className="text-[10px] text-text-muted font-bold tracking-[0.12em] mb-1.5">YOUR SIDE</p>
+          <p className="text-[13px] text-text-muted font-bold tracking-[0.12em] mb-1.5">YOUR SIDE</p>
           <div className="flex gap-1.5">
             {(['rider', 'doubter'] as const).map((side) => (
               <button
@@ -1115,7 +1115,7 @@ export function CreateScreen() {
               >
                 <div className="flex items-center gap-1.5 mb-0.5">
                   <span className={`w-2 h-2 rounded-full ${side === 'rider' ? 'bg-accent-green' : 'bg-accent-coral'}`} />
-                  <span className={`font-black italic text-[12px] tracking-[0.05em] ${
+                  <span className={`font-black italic text-[14px] tracking-[0.05em] ${
                     creatorSide === side
                       ? side === 'rider' ? 'text-accent-green' : 'text-accent-coral'
                       : 'text-text-muted'
@@ -1123,7 +1123,7 @@ export function CreateScreen() {
                     {side === 'rider' ? 'RIDER' : 'DOUBTER'}
                   </span>
                 </div>
-                <p className={`text-[10px] ${creatorSide === side ? 'text-white/80' : 'text-text-muted'}`}>
+                <p className={`text-[13px] ${creatorSide === side ? 'text-white/80' : 'text-text-muted'}`}>
                   {side === 'rider' ? 'I believe this happens' : "I don't think so"}
                 </p>
               </button>
@@ -1145,7 +1145,7 @@ export function CreateScreen() {
               <button
                 key={t}
                 onClick={() => setStakeType(t)}
-                className={`flex-1 py-2.5 rounded-lg text-center text-[11px] font-black tracking-[0.08em] transition-all ${
+                className={`flex-1 py-2.5 rounded-lg text-center text-[13px] font-black tracking-[0.08em] transition-all ${
                   stakeType === t ? 'bg-accent-green text-bg-primary' : 'text-text-muted'
                 }`}
               >
@@ -1165,20 +1165,20 @@ export function CreateScreen() {
                   onChange={(e) => { setForfeitText(e.target.value.slice(0, 200)); setStakePunishmentId(null) }}
                   placeholder="What does the loser do?"
                   rows={2}
-                  className="w-full bg-transparent text-[13px] text-white font-bold placeholder:text-text-muted outline-none resize-none leading-relaxed"
+                  className="w-full bg-transparent text-[15px] text-white font-bold placeholder:text-text-muted outline-none resize-none leading-relaxed"
                   maxLength={200}
                 />
                 <div className="flex justify-between mt-1.5">
                   <div className="flex items-center gap-3">
-                    <button onClick={() => setLibraryOpen(true)} className="text-[10px] text-accent-green font-bold tracking-[0.05em]">
+                    <button onClick={() => setLibraryOpen(true)} className="text-[13px] text-accent-green font-bold tracking-[0.05em]">
                       Library
                     </button>
-                    <span className="text-text-muted text-[10px]">·</span>
-                    <button onClick={randomizeForfeit} className="text-[10px] text-accent-green font-bold tracking-[0.05em]">
+                    <span className="text-text-muted text-[13px]">·</span>
+                    <button onClick={randomizeForfeit} className="text-[13px] text-accent-green font-bold tracking-[0.05em]">
                       Randomize
                     </button>
                   </div>
-                  <span className="text-[10px] text-text-muted font-mono">{forfeitText.length}/200</span>
+                  <span className="text-[13px] text-text-muted font-mono">{forfeitText.length}/200</span>
                 </div>
               </div>
             </div>
@@ -1189,7 +1189,7 @@ export function CreateScreen() {
                 <button
                   key={chip.text}
                   onClick={() => { setForfeitText(chip.text); setStakePunishmentId(null) }}
-                  className={`flex-none px-3 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap transition-all ${
+                  className={`flex-none px-3 py-1.5 rounded-full text-[13px] font-bold whitespace-nowrap transition-all ${
                     forfeitText === chip.text
                       ? 'bg-accent-green/10 border-[1.5px] border-accent-green/30 text-accent-green'
                       : 'bg-surface border-[1.5px] border-border-subtle text-text-muted'
@@ -1210,7 +1210,7 @@ export function CreateScreen() {
                 <button
                   key={c}
                   onClick={() => { setStakeMoney(c); setMoneyInput((c / 100).toFixed(2)) }}
-                  className={`px-3.5 py-2 rounded-full font-bold text-[12px] font-mono ${
+                  className={`px-3.5 py-2 rounded-full font-bold text-[14px] font-mono ${
                     stakeMoney === c ? 'bg-accent-green text-bg-primary' : 'bg-surface text-white'
                   }`}
                 >
@@ -1228,7 +1228,7 @@ export function CreateScreen() {
               onClick={() => setStakeType('both')}
               className="flex items-center gap-2 w-full"
             >
-              <span className="text-[10px] text-text-muted font-bold tracking-[0.12em]">+ ADD MONEY</span>
+              <span className="text-[13px] text-text-muted font-bold tracking-[0.12em]">+ ADD MONEY</span>
               <span className="flex-1 border-b border-dashed border-border-subtle" />
             </button>
           </div>
@@ -1256,7 +1256,7 @@ export function CreateScreen() {
                 setDuration(opt.id)
                 if (opt.id === 'pick') setCalendarOpen(true)
               }}
-              className={`flex-none px-3.5 py-2 rounded-[14px] text-[11px] font-bold whitespace-nowrap transition-all ${
+              className={`flex-none px-3.5 py-2 rounded-[14px] text-[13px] font-bold whitespace-nowrap transition-all ${
                 duration === opt.id
                   ? 'bg-accent-green/12 border-[1.5px] border-accent-green text-accent-green font-black'
                   : 'border-[1.5px] border-border-subtle text-text-muted'
@@ -1270,8 +1270,8 @@ export function CreateScreen() {
         {/* Resolved preview */}
         <div className="px-5 pb-2.5">
           <div className="bg-[#0f1418] border border-accent-green/15 rounded-lg py-2 px-3 flex items-center gap-2">
-            <span className="text-accent-green text-[11px]">{'\u2713'}</span>
-            <span className="text-[11px] text-text-muted">{formatDeadlinePreview(duration, customDate)}</span>
+            <span className="text-accent-green text-[13px]">{'\u2713'}</span>
+            <span className="text-[13px] text-text-muted">{formatDeadlinePreview(duration, customDate)}</span>
           </div>
         </div>
 
@@ -1282,8 +1282,8 @@ export function CreateScreen() {
            ================================================================ */}
         <div className="px-5 pt-3 pb-3">
           <div className="bg-surface rounded-xl p-4 border-t-2 border-accent-green/30">
-            <p className="font-black italic text-[10px] text-text-muted tracking-[0.18em] mb-2.5">YOUR BET</p>
-            <p className="font-black text-[15px] text-white leading-snug mb-3">
+            <p className="font-black italic text-[13px] text-text-muted tracking-[0.18em] mb-2.5">YOUR BET</p>
+            <p className="font-black text-[17px] text-white leading-snug mb-3">
               {claim.trim() ? `"${claim.trim()}"` : <span className="text-text-muted italic font-normal">"(enter your bet above)"</span>}
             </p>
             <div className="space-y-1.5">
@@ -1293,7 +1293,7 @@ export function CreateScreen() {
                 { label: 'Stakes', value: stakeSummary },
                 { label: 'Settles', value: deadlineSummary },
               ].map((row) => (
-                <div key={row.label} className="flex justify-between text-[11px]">
+                <div key={row.label} className="flex justify-between text-[13px]">
                   <span className="text-text-muted">{row.label}</span>
                   <span className="text-white font-bold flex items-center gap-1">
                     {'dot' in row && row.dot && <span className={`w-1.5 h-1.5 rounded-full ${row.dot}`} />}
@@ -1307,11 +1307,11 @@ export function CreateScreen() {
 
         {/* ── CTA ── */}
         <div className="px-5 pb-4">
-          {error && <p className="text-destructive text-[12px] font-bold mb-2">{error}</p>}
+          {error && <p className="text-destructive text-[14px] font-bold mb-2">{error}</p>}
           <button
             onClick={handleSubmit}
             disabled={!canSubmit}
-            className={`w-full py-4 rounded-[14px] font-black italic text-[15px] tracking-[0.12em] transition-all ${
+            className={`w-full py-4 rounded-[14px] font-black italic text-[17px] tracking-[0.12em] transition-all ${
               canSubmit
                 ? 'bg-accent-green text-bg-primary shadow-[0_0_0_5px_rgba(0,230,118,0.15)]'
                 : 'bg-accent-green text-bg-primary opacity-40'
@@ -1319,7 +1319,7 @@ export function CreateScreen() {
           >
             {isSubmitting ? 'PLACING...' : 'PLACE BET'}
           </button>
-          <p className="text-center text-[10px] text-text-muted mt-1.5">
+          <p className="text-center text-[13px] text-text-muted mt-1.5">
             {missingField
               ? `Fill in ${missingField} to continue`
               : 'Friends will be notified to accept or counter'}
