@@ -406,7 +406,7 @@ const useChatStore = create<ChatStore>()(
             })
 
             // User is viewing this conversation, so mark as read immediately
-            await apiMarkRead(conversationId).catch(() => {})
+            await apiMarkRead(conversationId)
           },
         )
         .subscribe()
@@ -544,14 +544,10 @@ const useChatStore = create<ChatStore>()(
     fetchParticipants: async () => {
       const activeConv = get().activeConversation
       if (!activeConv) return
-      try {
-        const participants = await getConversationParticipants(activeConv.id)
-        set((draft) => {
-          draft.participants = participants
-        })
-      } catch {
-        // Silently fail — mention suggestions just won't work
-      }
+      const participants = await getConversationParticipants(activeConv.id)
+      set((draft) => {
+        draft.participants = participants
+      })
     },
   })),
 )

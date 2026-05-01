@@ -512,7 +512,7 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
       setStats(betStats)
       setProfileProofs(proofs)
       setLoading(false)
-    }).catch(() => setLoading(false))
+    })
   }, [targetUserId, isOwnProfile, authLoading, currentUser?.id])
 
   if (loading && !profile) {

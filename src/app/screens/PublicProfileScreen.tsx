@@ -69,55 +69,47 @@ export function PublicProfileScreen({ username }: PublicProfileScreenProps) {
         }
 
         // 3. Fetch public proofs (shame)
-        try {
-          const proofs = await getPublicProofsForUser(p.id)
-          if (!cancelled) {
-            setShameProofs(
-              proofs
-                .filter((pr) => pr.kind === 'punishment_proof')
-                .map((pr) => ({
-                  thumbnailUrl: pr.primaryImageUrl,
-                  title: pr.betTitle,
-                })),
-            )
-          }
-        } catch {
-          // Proofs may fail if bets table lacks is_public column — graceful fallback
+        const proofs = await getPublicProofsForUser(p.id)
+        if (!cancelled) {
+          setShameProofs(
+            proofs
+              .filter((pr) => pr.kind === 'punishment_proof')
+              .map((pr) => ({
+                thumbnailUrl: pr.primaryImageUrl,
+                title: pr.betTitle,
+              })),
+          )
         }
 
         // 4. Fetch public bets for tickets
-        try {
-          const bets = await getMyBets(p.id)
-          if (!cancelled) {
-            const tickets = bets.slice(0, 9).map((bet) => {
-              const isClaimant = bet.claimant_id === p.id
-              const userSide = bet.bet_sides.find((s) => s.user_id === p.id)
-              const side = userSide?.side ?? (isClaimant ? 'rider' : 'doubter')
+        const bets = await getMyBets(p.id)
+        if (!cancelled) {
+          const tickets = bets.slice(0, 9).map((bet) => {
+            const isClaimant = bet.claimant_id === p.id
+            const userSide = bet.bet_sides.find((s) => s.user_id === p.id)
+            const side = userSide?.side ?? (isClaimant ? 'rider' : 'doubter')
 
-              let status: 'won' | 'lost' | 'live' | 'pending' | 'private' = 'pending'
-              if (bet.status === 'active') status = 'live'
-              else if (bet.status === 'completed') {
-                // We don't have the outcome here so show as pending for non-friends
-                status = 'pending'
-              }
+            let status: 'won' | 'lost' | 'live' | 'pending' | 'private' = 'pending'
+            if (bet.status === 'active') status = 'live'
+            else if (bet.status === 'completed') {
+              // We don't have the outcome here so show as pending for non-friends
+              status = 'pending'
+            }
 
-              const stake = bet.stake_money ?? 0
-              const amountDisplay = stake > 0 ? formatMoney(stake) : '$0'
+            const stake = bet.stake_money ?? 0
+            const amountDisplay = stake > 0 ? formatMoney(stake) : '$0'
 
-              return {
-                status: (user?.id && localRel !== 'stranger') ? status : 'private' as const,
-                title: bet.title,
-                amountDisplay,
-                onClick: () => navigate(`/bet/${bet.id}`),
-              }
-            })
-            setPublicTickets(tickets)
-          }
-        } catch {
-          // Graceful fallback
+            return {
+              status: (user?.id && localRel !== 'stranger') ? status : 'private' as const,
+              title: bet.title,
+              amountDisplay,
+              onClick: () => navigate(`/bet/${bet.id}`),
+            }
+          })
+          setPublicTickets(tickets)
         }
-      } catch {
-        // Profile not found or error
+      } catch (err) {
+        console.error('Failed to load public profile:', err)
       } finally {
         if (!cancelled) setLoading(false)
       }

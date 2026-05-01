@@ -257,7 +257,7 @@ export function CompetitionCreateScreen() {
 
   useEffect(() => {
     if (!templateBetId) return
-    getBetDetail(templateBetId).then(setTemplateBet).catch(() => {})
+    getBetDetail(templateBetId).then(setTemplateBet)
   }, [templateBetId])
 
   useEffect(() => {

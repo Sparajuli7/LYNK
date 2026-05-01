@@ -115,27 +115,22 @@ export function SettingsScreen() {
     setInviteLinkLoading(true)
     getOrCreateInviteLink(userId, profile.username)
       .then((link) => setInviteLink(link))
-      .catch(() => {})
       .finally(() => setInviteLinkLoading(false))
   }, [userId, profile?.username])
 
   const handleRegenerateLink = async () => {
     if (!userId) return
     setInviteLinkLoading(true)
-    try {
-      const link = await regenerateInviteLink(userId)
-      setInviteLink(link)
-    } catch { /* silently fail */ }
+    const link = await regenerateInviteLink(userId)
+    setInviteLink(link)
     setInviteLinkLoading(false)
   }
 
   const handleRevokeLink = async () => {
     if (!inviteLink) return
     setInviteLinkLoading(true)
-    try {
-      await revokeInviteLink(inviteLink.code)
-      setInviteLink(null)
-    } catch { /* silently fail */ }
+    await revokeInviteLink(inviteLink.code)
+    setInviteLink(null)
     setInviteLinkLoading(false)
   }
 

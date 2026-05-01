@@ -39,7 +39,6 @@ export function GroupJournalScreen() {
     setLoading(true)
     getGroupBets(groupId)
       .then(setBets)
-      .catch(() => setBets([]))
       .finally(() => setLoading(false))
   }, [groupId])
 

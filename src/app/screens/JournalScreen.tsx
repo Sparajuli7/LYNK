@@ -193,7 +193,6 @@ export function JournalScreen() {
     setBetsLoading(true)
     getMyBets(user.id)
       .then(setPersonalBets)
-      .catch(() => setPersonalBets([]))
       .finally(() => setBetsLoading(false))
   }, [user?.id])
 

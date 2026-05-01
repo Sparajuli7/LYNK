@@ -84,10 +84,6 @@ export function FeedbackScreen() {
         submitted_at: new Date().toISOString(),
       })
       setSubmitted(true)
-    } catch (err) {
-      console.error('Feedback submit failed:', err)
-      // Still show success to user — don't block on analytics
-      setSubmitted(true)
     } finally {
       setSubmitting(false)
     }
