@@ -95,8 +95,9 @@ export function useProofUpload() {
           const previewUrl = URL.createObjectURL(blob)
           setUploadFiles((prev) => [...prev, { file, type: source === CameraSource.Camera ? 'camera' : 'screenshot', previewUrl }])
           setError(null)
-        } catch (err: any) {
-          if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
+        } catch (err: unknown) {
+          const msg = err instanceof Error ? err.message : ''
+          if (!(msg.includes('cancelled') || msg.includes('cancel'))) {
             setError('Failed to capture photo. Please try again.')
           }
         } finally {
@@ -147,8 +148,9 @@ export function useProofUpload() {
         const previewUrl = URL.createObjectURL(blob)
         setUploadFiles((prev) => [...prev, { file, type: 'screenshot', previewUrl }])
         setError(null)
-      } catch (err: any) {
-        if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : ''
+        if (!(msg.includes('cancelled') || msg.includes('cancel'))) {
           setError('Failed to pick photo. Please try again.')
         }
       } finally {

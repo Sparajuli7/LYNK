@@ -193,8 +193,9 @@ export function ChatInput({
       if (imagePreview) URL.revokeObjectURL(imagePreview.url)
       setImagePreview({ file, url: photo.webPath! })
       setCameraError(null)
-    } catch (err: any) {
-      if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : ''
+      if (!(msg.includes('cancelled') || msg.includes('cancel'))) {
         setCameraError('Failed to capture photo. Please try again.')
       }
     }
@@ -224,8 +225,9 @@ export function ChatInput({
       if (imagePreview) URL.revokeObjectURL(imagePreview.url)
       setImagePreview({ file, url: photo.webPath! })
       setCameraError(null)
-    } catch (err: any) {
-      if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : ''
+      if (!(msg.includes('cancelled') || msg.includes('cancel'))) {
         setCameraError('Failed to capture photo. Please try again.')
       }
     }

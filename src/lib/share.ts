@@ -129,8 +129,8 @@ export async function shareToInstagramStories(
     try {
       await navigator.share({ files: [file], text: caption })
       return true
-    } catch (e) {
-      if ((e as Error).name === 'AbortError') return true
+    } catch (e: unknown) {
+      if (e instanceof Error && e.name === 'AbortError') return true
     }
   }
 
@@ -211,8 +211,8 @@ export async function shareWithNative(payload: SharePayload): Promise<boolean> {
     }
     await navigator.share(shareData)
     return true
-  } catch (e) {
-    if ((e as Error).name === 'AbortError') return true
+  } catch (e: unknown) {
+    if (e instanceof Error && e.name === 'AbortError') return true
     return false
   }
 }
