@@ -41,3 +41,4 @@ Thumbs.db
 # Design package sources (large, not needed in repo)
 lynk_package/
 lynk_redesign_package.zip
+.claude/worktrees/
