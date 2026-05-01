@@ -47,7 +47,6 @@ export function LoginScreen() {
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
       if (profile) {
-        // Check for pending competition invite
         const pending = loadPendingInvite()
         if (pending) {
           const params = pending.groupInviteCode ? `?group=${pending.groupInviteCode}` : ''

@@ -81,14 +81,10 @@ export function BetDetail({ onBack }: BetDetailProps) {
   const [outcome, setOutcome] = useState<Outcome | null>(null)
   const [punishmentCardText, setPunishmentCardText] = useState<string | null>(null)
 
-  // Always call useCountdown (Rules of Hooks). Use current time as fallback when no bet so countdown is expired.
+  // Hooks must be called unconditionally; fall back to "now" when no bet
   const countdown = useCountdown(activeBet?.deadline ?? new Date().toISOString())
-
-  // Ruling proof: the single proof with a verdict declared (set by claimant)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const rulingProof = useMemo(() => proofs.find((p) => p.ruling != null) ?? null, [proofs])
-
-  // Separate countdown for the 24h vote window
   const rulingCountdown = useCountdown(rulingProof?.ruling_deadline ?? new Date().toISOString())
 
   const riders = activeBetSides.filter((s) => s.side === 'rider')
@@ -98,7 +94,6 @@ export function BetDetail({ onBack }: BetDetailProps) {
   const doubterPct = 100 - riderPct
   const mySide = activeBetSides.find((s) => s.user_id === user?.id)?.side ?? null
   const canJoin = !mySide && (activeBet?.status === 'pending' || activeBet?.status === 'active')
-  // Any participant can submit evidence; claimant can also submit ruling (handled inside ProofSubmission)
   const showSubmitProof = !!mySide && activeBet?.status === 'active'
 
   const [shareOpen, setShareOpen] = useState(false)
@@ -115,7 +110,6 @@ export function BetDetail({ onBack }: BetDetailProps) {
       (activeBet?.status === 'completed' || activeBet?.status === 'voided') &&
       id
     ) {
-      // Delay so user sees the resolution before navigating
       const timer = setTimeout(() => navigate(`${basePath}/${id}/outcome`), 1500)
       return () => clearTimeout(timer)
     }
@@ -138,14 +132,12 @@ export function BetDetail({ onBack }: BetDetailProps) {
     }
   }, [id, fetchBetDetail, fetchProofs])
 
-  // Check if 24h ruling deadline has passed when viewing a proof_submitted bet
   useEffect(() => {
     if (id && activeBet?.status === 'proof_submitted') {
       checkDeadlineResolution(id).catch(() => {})
     }
   }, [id, activeBet?.status, checkDeadlineResolution])
 
-  // Fetch outcome + punishment proof (hall_of_shame) for completed bets
   useEffect(() => {
     if (id && (activeBet?.status === 'completed' || activeBet?.status === 'voided')) {
       getShamePostByBetId(id).then(setShamePost).catch(() => {})
@@ -153,7 +145,6 @@ export function BetDetail({ onBack }: BetDetailProps) {
     }
   }, [id, activeBet?.status])
 
-  // Resolve punishment card text when bet has a stake_punishment_id
   useEffect(() => {
     if (activeBet?.stake_punishment_id) {
       getPunishmentText(activeBet.stake_punishment_id).then(setPunishmentCardText).catch(() => {})

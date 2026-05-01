@@ -171,7 +171,6 @@ export function CompetitionCreateScreen() {
 
   const [step, setStep] = useState(1)
 
-  // Step 1
   const [title, setTitle] = useState('')
   const [metric, setMetric] = useState('')
   const [creatorSide, setCreatorSide] = useState<'rider' | 'doubter' | null>(null)
@@ -181,7 +180,6 @@ export function CompetitionCreateScreen() {
   const [activeTemplate, setActiveTemplate] = useState<BetTemplate | null>(null)
   const [slotValues, setSlotValues] = useState<Record<string, string | number>>({})
 
-  // Step 2
   const [selectedGroup, setSelectedGroup] = useState<{ id: string; name: string; invite_code: string } | null>(null)
   const [groupMembers, setGroupMembers] = useState<GroupMemberWithProfile[]>([])
   const [friendsList, setFriendsList] = useState<GroupMemberWithProfile[]>([])
@@ -189,7 +187,6 @@ export function CompetitionCreateScreen() {
   const [peopleTab, setPeopleTab] = useState<'friends' | 'group'>('friends')
   const [inviteCopied, setInviteCopied] = useState(false)
 
-  // Join mode
   const [joinMode, setJoinMode] = useState<JoinMode>('open')
   const [joinSelectedMemberIds, setJoinSelectedMemberIds] = useState<string[]>([])
 
@@ -200,7 +197,6 @@ export function CompetitionCreateScreen() {
     return d
   })
 
-  // Step 3
   const [scoringMethod, setScoringMethod] = useState<'self_reported' | 'group_verified'>('self_reported')
   const [stakeType, setStakeType] = useState<StakeType>('punishment')
   const [stakeMoney, setStakeMoney] = useState(2000)

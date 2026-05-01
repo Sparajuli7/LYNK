@@ -40,7 +40,6 @@ export function AddFriendsSheet({
   const [query, setQuery] = useState("");
   const debounceRef = React.useRef<ReturnType<typeof setTimeout>>();
 
-  // Reset query when sheet closes
   React.useEffect(() => {
     if (!open) setQuery("");
   }, [open]);
@@ -55,7 +54,6 @@ export function AddFriendsSheet({
     }, 250);
   };
 
-  // Split link into base + username for coloring
   const linkBase = `lynk.app/add/`;
 
   return (

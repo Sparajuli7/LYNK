@@ -76,7 +76,6 @@ function ClaimWithSlots({
   onSlotChange: (key: string, value: string | number, slot: TemplateSlot) => void
   slots: TemplateSlot[]
 }) {
-  // Split template into text and slot tokens
   const parts = template.split(/(\{[^}]+\})/)
   return (
     <span>
@@ -117,7 +116,6 @@ export function QuickBetSheet({ open, onClose, groups, onSubmit, prefillTemplate
   const [slotValues, setSlotValues] = useState<Record<string, string | number>>({})
   const [isWritingOwn, setIsWritingOwn] = useState(false)
 
-  // Join mode state
   const [joinMode, setJoinMode] = useState<JoinMode>('open')
   const [selectedMemberIds, setSelectedMemberIds] = useState<string[]>([])
   const [groupMembers, setGroupMembers] = useState<{ id: string; displayName: string; avatarUrl?: string; role: string }[]>([])
@@ -125,26 +123,22 @@ export function QuickBetSheet({ open, onClose, groups, onSubmit, prefillTemplate
   const myRole = groupMembers.find((m) => m.id === currentUserId)?.role ?? 'member'
   const canCreateBet = ['owner', 'admin', 'bet_maker'].includes(myRole)
 
-  // Load suggestions on open
   useEffect(() => {
     if (open) {
       refreshSuggestions()
     }
   }, [open, refreshSuggestions])
 
-  // Prefill from template prop
   useEffect(() => {
     if (prefillTemplate && open) {
       applyTemplate(prefillTemplate)
     }
   }, [prefillTemplate, open])
 
-  // Auto-select group
   useEffect(() => {
     if (groups.length === 1) setSelectedGroupId(groups[0].id)
   }, [groups])
 
-  // Fetch group members
   useEffect(() => {
     if (!selectedGroupId) {
       setGroupMembers([])
@@ -162,7 +156,6 @@ export function QuickBetSheet({ open, onClose, groups, onSubmit, prefillTemplate
     })
   }, [selectedGroupId])
 
-  // Reset on close
   useEffect(() => {
     if (!open) {
       const t = setTimeout(() => {
@@ -184,7 +177,6 @@ export function QuickBetSheet({ open, onClose, groups, onSubmit, prefillTemplate
   }, [open, groups, setActiveCategory])
 
   const applyTemplate = useCallback((template: BetTemplate) => {
-    // Build the claim text, replacing slots with defaults
     let text = template.title
     const vals: Record<string, string | number> = {}
     if (template.templateSlots) {
@@ -206,7 +198,6 @@ export function QuickBetSheet({ open, onClose, groups, onSubmit, prefillTemplate
   }, [applyTemplate])
 
   const handleLongPress = useCallback((suggestion: RankedSuggestion) => {
-    // Simple action: dismiss
     if (confirm('Remove this suggestion?')) {
       dismissTemplate(suggestion.template.id)
     }
@@ -214,7 +205,6 @@ export function QuickBetSheet({ open, onClose, groups, onSubmit, prefillTemplate
 
   const handleSlotChange = useCallback((key: string, value: string | number) => {
     setSlotValues((prev) => ({ ...prev, [key]: value }))
-    // Rebuild claim text
     if (usedTemplate?.template) {
       let text = usedTemplate.template
       const newVals = { ...slotValues, [key]: value }

@@ -23,12 +23,10 @@ export function GroupCreateMembersScreen() {
   const friends = useFriendStore((s) => s.friends)
   const fetchFriends = useFriendStore((s) => s.fetchFriends)
 
-  // Read group info passed from step 1
   const locationState = (location.state ?? {}) as Partial<GroupCreateState>
   const groupName = locationState.groupName ?? 'New Group'
   const groupEmoji = locationState.groupEmoji ?? '🔥'
 
-  // Member selection state, initialized from location.state if navigating back from step 3
   const [selectedMembers, setSelectedMembers] = useState<SelectedMember[]>(
     locationState.selectedMembers ?? [],
   )
@@ -40,7 +38,6 @@ export function GroupCreateMembersScreen() {
     }
   }, [friends.length, fetchFriends])
 
-  // Map FriendProfile[] to the shape GroupCreateMemberPicker expects
   const mappedFriends = useMemo(
     () =>
       friends

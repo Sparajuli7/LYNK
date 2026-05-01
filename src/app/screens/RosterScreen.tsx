@@ -24,7 +24,6 @@ export function RosterScreen() {
   const [searchQuery, setSearchQuery] = useState('')
   const [addSheetOpen, setAddSheetOpen] = useState(false)
 
-  // Track which request IDs are animating out (for accept animation)
   const [dismissingIds, setDismissingIds] = useState<Set<string>>(new Set())
 
   const handleAcceptAnimated = useCallback(
@@ -34,7 +33,6 @@ export function RosterScreen() {
         return
       }
       setDismissingIds((prev) => new Set(prev).add(requestId))
-      // Delay the actual accept to let the exit animation play (240ms)
       setTimeout(() => {
         acceptRequest(requestId)
         setDismissingIds((prev) => {
@@ -47,7 +45,6 @@ export function RosterScreen() {
     [acceptRequest, prefersReducedMotion],
   )
 
-  // AddFriendsSheet search state
   const [addSearchResults, setAddSearchResults] = useState<
     { id: string; displayName: string; username: string; avatarUrl?: string; mutualCount: number }[]
   >([])
@@ -58,13 +55,11 @@ export function RosterScreen() {
     fetchPendingRequests()
   }, [fetchFriends, fetchPendingRequests])
 
-  // Computed stats
   const friendsCount = friends.length
   const requestsCount = pendingRequests.length
   const h2hWins = friends.reduce((sum, f) => sum + (f.h2h?.viewerWins ?? 0), 0)
   const rivalsCount = friends.filter((f) => f.relationship === 'rival').length
 
-  // Filtered friends list
   const filteredFriends = useMemo(() => {
     if (!searchQuery.trim()) return friends
     const q = searchQuery.toLowerCase()
@@ -75,14 +70,12 @@ export function RosterScreen() {
     )
   }, [friends, searchQuery])
 
-  // Build owes display from h2h balance
   const getOwesDisplay = (balanceCents: number | undefined): string | undefined => {
     if (!balanceCents || balanceCents === 0) return undefined
     if (balanceCents > 0) return `They owe you ${formatMoney(balanceCents)}`
     return `You owe ${formatMoney(Math.abs(balanceCents))}`
   }
 
-  // AddFriendsSheet search handler
   const handleAddSearch = async (query: string) => {
     if (!user?.id || query.trim().length < 2) {
       setAddSearchResults([])
@@ -113,15 +106,12 @@ export function RosterScreen() {
   }
 
   const handleSyncContacts = async () => {
-    // Contacts sync requires the @capacitor-community/contacts plugin
-    // on native. For now, check if we're on native and prompt appropriately.
     try {
       const { Capacitor } = await import('@capacitor/core')
       if (!Capacitor.isNativePlatform()) {
         alert('Contacts sync is only available on mobile devices.')
         return
       }
-      // On native without the contacts plugin installed, show coming soon
       alert('Contacts sync coming soon! We\'ll find friends already on Lynk.')
     } catch {
       alert('Contacts sync is only available on mobile devices.')

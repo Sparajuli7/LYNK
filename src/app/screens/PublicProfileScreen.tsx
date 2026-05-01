@@ -36,7 +36,6 @@ export function PublicProfileScreen({ username }: PublicProfileScreenProps) {
     async function load() {
       setLoading(true)
       try {
-        // 1. Fetch profile by username
         const p = await getProfileByUsername(username)
         if (cancelled || !p) {
           if (!cancelled) setLoading(false)
@@ -44,7 +43,6 @@ export function PublicProfileScreen({ username }: PublicProfileScreenProps) {
         }
         setProfile(p)
 
-        // 2. Fetch relationship, H2H, mutual friends (if logged in)
         let localRel: Relationship = 'stranger'
         if (user?.id && user.id !== p.id) {
           const [rel, h2hData, mutuals] = await Promise.all([
@@ -63,12 +61,10 @@ export function PublicProfileScreen({ username }: PublicProfileScreenProps) {
             })
           }
         } else if (user?.id === p.id) {
-          // Viewing own profile — redirect to own player card
           navigate('/profile/card', { replace: true })
           return
         }
 
-        // 3. Fetch public proofs (shame)
         try {
           const proofs = await getPublicProofsForUser(p.id)
           if (!cancelled) {
@@ -82,10 +78,8 @@ export function PublicProfileScreen({ username }: PublicProfileScreenProps) {
             )
           }
         } catch {
-          // Proofs may fail if bets table lacks is_public column — graceful fallback
         }
 
-        // 4. Fetch public bets for tickets
         try {
           const bets = await getMyBets(p.id)
           if (!cancelled) {
@@ -97,7 +91,6 @@ export function PublicProfileScreen({ username }: PublicProfileScreenProps) {
               let status: 'won' | 'lost' | 'live' | 'pending' | 'private' = 'pending'
               if (bet.status === 'active') status = 'live'
               else if (bet.status === 'completed') {
-                // We don't have the outcome here so show as pending for non-friends
                 status = 'pending'
               }
 
@@ -114,10 +107,8 @@ export function PublicProfileScreen({ username }: PublicProfileScreenProps) {
             setPublicTickets(tickets)
           }
         } catch {
-          // Graceful fallback
         }
       } catch {
-        // Profile not found or error
       } finally {
         if (!cancelled) setLoading(false)
       }

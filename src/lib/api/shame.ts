@@ -129,7 +129,6 @@ export async function recordPunishmentTaken(userId: string, betId: string): Prom
     const counted: string[] = JSON.parse(localStorage.getItem(key) ?? '[]')
     if (counted.includes(betId)) return // already recorded on this device
 
-    // Mark locally first to prevent duplicate calls
     localStorage.setItem(key, JSON.stringify([...counted, betId]))
 
     const { data: prof } = await supabase
@@ -143,7 +142,6 @@ export async function recordPunishmentTaken(userId: string, betId: string): Prom
       .update({ punishments_taken: (prof?.punishments_taken ?? 0) + 1 })
       .eq('id', userId)
   } catch {
-    // Non-critical stat tracking — don't surface errors
   }
 }
 
@@ -186,7 +184,6 @@ export async function submitShameProof(
     is_public: true,
   })
 
-  // Update profile stats: increment punishments_completed and award rep points
   await incrementPunishmentStats(user.id)
 
   return post

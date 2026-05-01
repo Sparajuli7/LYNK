@@ -105,13 +105,11 @@ const useAuthStore = create<AuthStore>()((set, get) => ({
       set({ isLoading: false })
     }
 
-    // Unsubscribe previous listener if initialize is called again
     _authSubscription?.unsubscribe()
 
-    // Keep store in sync across tabs and token refreshes
+    // Sync store across tabs and token refreshes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN' && session?.user) {
-        // Avoid redundant DB round-trips if user object is unchanged
         if (get().user?.id === session.user.id && get().profile) return
 
         const profile = await loadProfile(session.user.id)
@@ -144,7 +142,6 @@ const useAuthStore = create<AuthStore>()((set, get) => ({
     set({ isLoading: true, error: null, pendingEmailConfirmation: null })
     const { data, error } = await supabase.auth.signUp({ email, password })
     if (error) {
-      // Surface a user-friendly message for the most common error cases.
       const raw = error.message.toLowerCase()
       let message = error.message
       if (raw.includes('user already registered') || raw.includes('already been registered')) {
@@ -155,14 +152,12 @@ const useAuthStore = create<AuthStore>()((set, get) => ({
     }
 
     if (!data.session) {
-      // Supabase requires email confirmation before creating a session.
-      // The SIGNED_IN event will fire once the user clicks the link in their inbox.
+      // Supabase requires email confirmation before granting a session
       set({ isLoading: false, pendingEmailConfirmation: email })
       return
     }
 
     set({ isLoading: false })
-    // Session exists → onAuthStateChange fires SIGNED_IN and updates the store
   },
 
   signIn: async (email, password) => {
@@ -180,7 +175,6 @@ const useAuthStore = create<AuthStore>()((set, get) => ({
     } else {
       set({ isLoading: false })
     }
-    // On success, onAuthStateChange fires SIGNED_IN and updates the store
   },
 
   sendOtp: async (email) => {
@@ -203,7 +197,6 @@ const useAuthStore = create<AuthStore>()((set, get) => ({
     if (error) {
       set({ error: error.message, isLoading: false })
     }
-    // On success, onAuthStateChange fires SIGNED_IN and updates the store
   },
 
   sendPhoneOtp: async (phone) => {
@@ -226,7 +219,6 @@ const useAuthStore = create<AuthStore>()((set, get) => ({
     if (error) {
       set({ error: error.message, isLoading: false })
     }
-    // On success, onAuthStateChange fires SIGNED_IN and updates the store
   },
 
   setPassword: async (password) => {
@@ -243,7 +235,6 @@ const useAuthStore = create<AuthStore>()((set, get) => ({
     set({ isLoading: true, error: null })
 
     if (Capacitor.isNativePlatform()) {
-      // In native apps, open OAuth in system browser and handle deep link callback
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -259,12 +250,9 @@ const useAuthStore = create<AuthStore>()((set, get) => ({
         const { Browser } = await import('@capacitor/browser')
         await Browser.open({ url: data.url })
       }
-      // Browser is now open — reset loading so the UI isn't stuck while user
-      // completes OAuth in the external browser. onAuthStateChange will fire
-      // SIGNED_IN when the deep link callback returns with tokens.
+      // Reset loading — user completes OAuth in external browser; deep link callback triggers onAuthStateChange
       set({ isLoading: false })
     } else {
-      // On web, use standard redirect flow
       const redirectTo =
         typeof window !== 'undefined'
           ? `${window.location.origin}/auth/callback`
@@ -277,7 +265,6 @@ const useAuthStore = create<AuthStore>()((set, get) => ({
         set({ error: error.message, isLoading: false })
       }
     }
-    // onAuthStateChange handles the rest on return
   },
 
   signOut: async () => {
@@ -286,7 +273,6 @@ const useAuthStore = create<AuthStore>()((set, get) => ({
     if (error) {
       set({ error: error.message, isLoading: false })
     }
-    // onAuthStateChange fires SIGNED_OUT and clears the store
   },
 
   createProfile: async (data) => {

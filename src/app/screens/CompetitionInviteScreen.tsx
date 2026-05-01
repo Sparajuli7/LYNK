@@ -24,7 +24,6 @@ export function loadPendingInvite(): PendingInvite | null {
   if (!raw) return null
   try {
     const invite = JSON.parse(raw) as PendingInvite
-    // Expire after 7 days
     if (Date.now() - invite.savedAt > 7 * 24 * 60 * 60 * 1000) {
       localStorage.removeItem(PENDING_INVITE_KEY)
       return null
@@ -72,7 +71,6 @@ export function CompetitionInviteScreen() {
       })
   }, [compId])
 
-  // If not authenticated, save invite and redirect to signup
   useEffect(() => {
     if (isLoading) return
     if (!isAuthenticated) {
@@ -83,7 +81,6 @@ export function CompetitionInviteScreen() {
     }
   }, [isLoading, isAuthenticated, compId, groupCode, navigate])
 
-  // If authenticated but no profile, redirect to profile setup (invite is in localStorage)
   useEffect(() => {
     if (!isLoading && isAuthenticated && isNewUser) {
       if (compId) {

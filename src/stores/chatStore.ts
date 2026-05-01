@@ -24,7 +24,7 @@ import {
 import type { ConversationWithMeta, MessageWithSender, ParticipantProfile, ReplyPreview, ReactionSummary } from '@/lib/api/chat'
 import type { ReactionType } from '@/lib/database.types'
 
-// Module-level refs — keep channels outside React render cycles
+// Keep Realtime channels outside React render cycles
 let _globalChannel: RealtimeChannel | null = null
 let _conversationChannel: RealtimeChannel | null = null
 let _onNewMessage: ((m: Message) => void) | null = null
@@ -117,8 +117,7 @@ const useChatStore = create<ChatStore>()(
           })
           conv = conversations.find((c) => c.id === id)
         } catch {
-          // Continue anyway — we can still load messages
-        }
+          }
       }
 
       set((draft) => {
@@ -132,8 +131,7 @@ const useChatStore = create<ChatStore>()(
       try {
         const messages = await getMessages(id, MESSAGE_PAGE_SIZE)
         set((draft) => {
-          // API returns newest-first; reverse so display is oldest-first
-          draft.messages = messages.reverse()
+          draft.messages = messages.reverse() // API returns newest-first
           draft.hasMoreMessages = messages.length === MESSAGE_PAGE_SIZE
           draft.isLoading = false
         })
@@ -207,7 +205,6 @@ const useChatStore = create<ChatStore>()(
           }
         })
       } catch (e) {
-        // Rollback optimistic message
         set((draft) => {
           draft.messages = draft.messages.filter((m) => m.id !== optimisticId)
           draft.error = e instanceof Error ? e.message : 'Failed to send message'
@@ -224,7 +221,6 @@ const useChatStore = create<ChatStore>()(
       try {
         const older = await getMessages(activeConversation.id, MESSAGE_PAGE_SIZE, oldestMessage.created_at)
         set((draft) => {
-          // Prepend older messages (they come newest-first, reverse for display)
           draft.messages.unshift(...older.reverse())
           draft.hasMoreMessages = older.length === MESSAGE_PAGE_SIZE
         })
@@ -257,7 +253,6 @@ const useChatStore = create<ChatStore>()(
       const conv = await getGroupConversation(groupId)
       if (conv) return conv.id
 
-      // Lazily create for groups that existed before chat feature
       const userId = await getCurrentUserId()
       if (!userId) throw new Error('Not authenticated')
 
@@ -275,7 +270,6 @@ const useChatStore = create<ChatStore>()(
       const conv = await getCompetitionConversation(betId)
       if (conv) return conv.id
 
-      // Lazily create for competitions that existed before chat feature
       const userId = await getCurrentUserId()
       if (!userId) throw new Error('Not authenticated')
 
@@ -303,7 +297,7 @@ const useChatStore = create<ChatStore>()(
       const conversations = get().conversations
       if (conversations.length === 0) return
 
-      // Broad channel filtered client-side — cheaper than one per conversation
+      // Single channel filtered client-side (cheaper than one per conversation)
       _globalChannel = supabase
         .channel(`chat:global:${userId}`)
         .on(
@@ -319,12 +313,10 @@ const useChatStore = create<ChatStore>()(
 
             if (!convIds.has(newMessage.conversation_id)) return
 
-            // Own messages are handled optimistically
             if (newMessage.sender_id === userId) return
 
             const activeConv = get().activeConversation
 
-            // Active conversation is handled by the conversation-scoped channel
             if (activeConv && activeConv.id === newMessage.conversation_id) return
 
             set((draft) => {
@@ -373,7 +365,6 @@ const useChatStore = create<ChatStore>()(
           async (payload) => {
             const newMessage = payload.new as Message
 
-            // Own messages are handled optimistically
             if (newMessage.sender_id === userId) return
 
             const { data: profile } = await supabase
@@ -405,7 +396,6 @@ const useChatStore = create<ChatStore>()(
               }
             })
 
-            // User is viewing this conversation, so mark as read immediately
             await apiMarkRead(conversationId).catch(() => {})
           },
         )
@@ -550,7 +540,6 @@ const useChatStore = create<ChatStore>()(
           draft.participants = participants
         })
       } catch {
-        // Silently fail — mention suggestions just won't work
       }
     },
   })),

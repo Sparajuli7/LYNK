@@ -28,7 +28,6 @@ export function SettingsScreen() {
   const user = useAuthStore((s) => s.user)
   const userId = user?.id
 
-  // Push notification state
   const pushPermission = usePushStore((s) => s.permission)
   const isSubscribed = usePushStore((s) => s.isSubscribed)
   const pushSubscribe = usePushStore((s) => s.subscribe)
@@ -37,12 +36,10 @@ export function SettingsScreen() {
   const pushInitialize = usePushStore((s) => s.initialize)
   const pushLoading = usePushStore((s) => s.isLoading)
 
-  // Groups and competitions for per-entity toggles
   const groups = useGroupStore((s) => s.groups)
   const fetchGroups = useGroupStore((s) => s.fetchGroups)
   const competitions = useCompetitionStore((s) => s.competitions)
 
-  // Notification preferences
   const [preferences, setPreferences] = useState<NotificationPreferenceRow[]>([])
   const [prefLoading, setPrefLoading] = useState<string | null>(null)
 
@@ -51,7 +48,6 @@ export function SettingsScreen() {
     fetchGroups()
   }, [pushInitialize, fetchGroups])
 
-  // Fetch notification preferences
   useEffect(() => {
     if (!userId) return
     supabase
@@ -89,7 +85,7 @@ export function SettingsScreen() {
         prev.map((p) => (p.id === existing.id ? { ...p, push_enabled: newEnabled } : p)),
       )
     } else {
-      // No row = default enabled, so inserting with push_enabled=false to mute
+      // No row = default enabled; insert with push_enabled=false to mute
       const { data } = await supabase
         .from('notification_preferences')
         .insert({
@@ -105,7 +101,6 @@ export function SettingsScreen() {
     setPrefLoading(null)
   }
 
-  // Invite link state
   const [inviteLink, setInviteLink] = useState<InviteLinkRow | null>(null)
   const [inviteLinkLoading, setInviteLinkLoading] = useState(false)
   const profile = useAuthStore((s) => s.profile)
@@ -156,19 +151,15 @@ export function SettingsScreen() {
     setDeleting(true)
     setDeleteError(null)
     try {
-      // 1. proof_votes (user_id)
+      // Delete in FK-safe order (children before parents)
       const { error: pvErr } = await supabase.from('proof_votes').delete().eq('user_id', userId)
       if (pvErr) throw pvErr
-
-      // 2. proofs (submitted_by)
       const { error: prErr } = await supabase.from('proofs').delete().eq('submitted_by', userId)
       if (prErr) throw prErr
-
-      // 3. bet_sides (user_id)
       const { error: bsErr } = await supabase.from('bet_sides').delete().eq('user_id', userId)
       if (bsErr) throw bsErr
 
-      // 4. outcomes — no user_id column; delete by bet_id for bets owned by this user
+      // outcomes has no user_id — delete by bet_id for user's bets
       const { data: userBets } = await supabase.from('bets').select('id').eq('claimant_id', userId)
       const betIds = (userBets ?? []).map((b: { id: string }) => b.id)
       if (betIds.length > 0) {
@@ -176,41 +167,25 @@ export function SettingsScreen() {
         if (outErr) throw outErr
       }
 
-      // 5. bets (claimant_id)
       const { error: betErr } = await supabase.from('bets').delete().eq('claimant_id', userId)
       if (betErr) throw betErr
-
-      // 6. conversation_participants (user_id)
       const { error: cpErr } = await supabase.from('conversation_participants').delete().eq('user_id', userId)
       if (cpErr) throw cpErr
-
-      // 7. messages (sender_id)
       const { error: msgErr } = await supabase.from('messages').delete().eq('sender_id', userId)
       if (msgErr) throw msgErr
-
-      // 8. group_members (user_id)
       const { error: gmErr } = await supabase.from('group_members').delete().eq('user_id', userId)
       if (gmErr) throw gmErr
-
-      // 9. push_subscriptions (user_id)
       const { error: psErr } = await supabase.from('push_subscriptions').delete().eq('user_id', userId)
       if (psErr) throw psErr
-
-      // 10. notification_preferences (user_id)
       const { error: npErr } = await supabase.from('notification_preferences').delete().eq('user_id', userId)
       if (npErr) throw npErr
-
-      // 11. notifications (user_id)
       const { error: notifErr } = await supabase.from('notifications').delete().eq('user_id', userId)
       if (notifErr) throw notifErr
-
-      // 12. profiles (id)
       const { error: profErr } = await supabase.from('profiles').delete().eq('id', userId)
       if (profErr) throw profErr
 
       await supabase.auth.signOut()
 
-      // Clear all stores
       useBetStore.getState().clearFilters()
       useBetStore.getState().resetWizard()
       useBetStore.getState().clearError()

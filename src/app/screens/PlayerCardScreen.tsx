@@ -81,12 +81,10 @@ export function PlayerCardScreen() {
   const punishmentsTaken = Math.max(profile.punishments_taken, t.punishmentsLost)
   const pendingPunishments = Math.max(0, punishmentsTaken - profile.punishments_completed)
 
-  // Lost bets that had punishment stakes — used for Hall of Shame section
   const shameBets = stats.completedBets.filter(
     (r) => r.userResult === 'lost' && r.hadPunishmentStake,
   )
 
-  // Recent tickets — all completed bets
   const recentTickets = stats.completedBets.slice(0, 9)
 
   return (

@@ -73,7 +73,6 @@ function GroupBetCard({
         : 'completed'
   const showProofBadge = bet.status === 'proof_submitted'
 
-  // Compute punishment info for resolved bets
   const isResolved = bet.status === 'completed' || bet.status === 'voided'
   const payouts = isResolved && outcome
     ? computeBetPayouts(
@@ -168,7 +167,6 @@ export function GroupDetailScreen() {
   const [openingChat, setOpeningChat] = useState(false)
   const [shareSheetOpen, setShareSheetOpen] = useState(false)
 
-  // Invite by username state
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<Profile[]>([])
   const [searching, setSearching] = useState(false)
@@ -176,14 +174,12 @@ export function GroupDetailScreen() {
   const [invitingId, setInvitingId] = useState<string | null>(null)
   const searchTimer = useRef<ReturnType<typeof setTimeout>>(null)
 
-  // Role picker state
   const [rolePickerOpen, setRolePickerOpen] = useState(false)
   const [selectedMember, setSelectedMember] = useState<{ userId: string; name: string; role: UserRole } | null>(null)
 
   const group = groups.find((g) => g.id === id)
   const memberIds = new Set(members.map((m) => m.user_id))
 
-  // Determine current user's role in this group
   const myMembership = members.find((m) => m.user_id === user?.id)
   const myRole: UserRole = (myMembership?.role as UserRole) ?? 'member'
   const isOwnerOrAdmin = myRole === 'owner' || myRole === 'admin'
@@ -232,7 +228,6 @@ export function GroupDetailScreen() {
     getProfilesWithRepByIds(ids).then(setProfileMap)
   }, [members])
 
-  // Debounced username search
   const handleSearchChange = useCallback((value: string) => {
     setSearchQuery(value)
     if (searchTimer.current) clearTimeout(searchTimer.current)
@@ -297,10 +292,8 @@ export function GroupDetailScreen() {
     if (!id || !selectedMember) return
     try {
       await updateMemberRole(id, selectedMember.userId, newRole)
-      // Refresh members to reflect updated roles
       fetchMembers(id)
-    } catch (e) {
-      // Silently ignore — user sees stale role until refresh
+    } catch {
     }
   }
 

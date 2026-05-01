@@ -39,9 +39,7 @@ import {
 } from '@/lib/suggestions'
 import drinkingGamesData from '@/data/drinking_games.json'
 
-// ---------------------------------------------------------------------------
-// Types & constants
-// ---------------------------------------------------------------------------
+/* ── Types & constants ── */
 
 interface DrinkingGame {
   id: string
@@ -131,9 +129,7 @@ function daysToPreset(days: number): DurationPreset {
   return 'month'
 }
 
-// ---------------------------------------------------------------------------
-// Browse suggestions dialog
-// ---------------------------------------------------------------------------
+/* ── Browse suggestions dialog ── */
 
 /** Render a template title with {slot} placeholders shown as green chips */
 function TemplateTitleWithSlots({ template }: { template: BetTemplate }) {
@@ -227,9 +223,7 @@ function BrowseSuggestionsDialog({
   )
 }
 
-// ---------------------------------------------------------------------------
-// Games library dialog
-// ---------------------------------------------------------------------------
+/* ── Games library dialog ── */
 
 function GamesLibraryDialog({
   open,
@@ -371,9 +365,7 @@ function GamesLibraryDialog({
   )
 }
 
-// ---------------------------------------------------------------------------
-// Shared searchable dropdown wrapper
-// ---------------------------------------------------------------------------
+/* ── Searchable dropdown ── */
 
 function SearchableDropdown({
   search,
@@ -403,9 +395,7 @@ function SearchableDropdown({
   )
 }
 
-// ---------------------------------------------------------------------------
-// Reusable section header matching the mockup exactly
-// ---------------------------------------------------------------------------
+/* ── Section label ── */
 
 function SectionLabel({ num, label, right }: { num: string; label: string; right?: string }) {
   return (
@@ -423,9 +413,7 @@ function SectionLabel({ num, label, right }: { num: string; label: string; right
   )
 }
 
-// ---------------------------------------------------------------------------
-// Main screen
-// ---------------------------------------------------------------------------
+/* ── Main screen ── */
 
 export function CreateScreen() {
   const navigate = useNavigate()
@@ -447,7 +435,6 @@ export function CreateScreen() {
     prefillTemplate?: BetTemplate
   } | null
 
-  // ── Section 01: The Bet ──
   const [claim, setClaim] = useState('')
   const [activeTemplate, setActiveTemplate] = useState<BetTemplate | null>(null)
   const [slotValues, setSlotValues] = useState<Record<string, string | number>>({})
@@ -455,7 +442,6 @@ export function CreateScreen() {
   const [catalogOpen, setCatalogOpen] = useState(false)
   const [gamesOpen, setGamesOpen] = useState(false)
 
-  // ── Section 02: Who's In ──
   const [formatType, setFormatType] = useState<FormatType>('group')
   const [selectedGroup, setSelectedGroup] = useState<{ id: string; name: string; emoji: string; invite_code: string } | null>(null)
   const [participation, setParticipation] = useState<Participation>('whole')
@@ -469,7 +455,6 @@ export function CreateScreen() {
   const [peopleDropOpen, setPeopleDropOpen] = useState(false)
   const [peopleSearch, setPeopleSearch] = useState('')
 
-  // ── Section 03: Stakes ──
   const [stakeType, setStakeType] = useState<StakeType>('punishment')
   const [forfeitText, setForfeitText] = useState('')
   const [stakeMoney, setStakeMoney] = useState(2000)
@@ -478,24 +463,18 @@ export function CreateScreen() {
   const [stakePunishmentId, setStakePunishmentId] = useState<string | null>(null)
   const [libraryOpen, setLibraryOpen] = useState(false)
 
-  // ── Section 04: When It Ends ──
   const [duration, setDuration] = useState<DurationPreset>('week')
   const [customDate, setCustomDate] = useState<Date | undefined>(undefined)
   const [calendarOpen, setCalendarOpen] = useState(false)
 
-
-  // ── Submission ──
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [createdComp, setCreatedComp] = useState<Bet | null>(null)
   const [contractOpen, setContractOpen] = useState(false)
 
-  // Template bet prefill
   const templateBetId = locState?.templateBetId
   const [templateBet, setTemplateBet] = useState<Bet | null>(null)
   const templateAppliedRef = useRef(false)
-
-  // ── Effects ──
 
   useEffect(() => { fetchGroups() }, [fetchGroups])
   useEffect(() => { refreshSuggestions() }, [refreshSuggestions])
@@ -520,7 +499,6 @@ export function CreateScreen() {
     }
   }, [selectedGroup?.id])
 
-  // Auto-select most recent group
   useEffect(() => {
     if (groups.length > 0 && !selectedGroup) {
       const g = groups[0]
@@ -528,7 +506,6 @@ export function CreateScreen() {
     }
   }, [groups, selectedGroup])
 
-  // Template bet prefill
   useEffect(() => {
     if (!templateBetId) return
     getBetDetail(templateBetId).then(setTemplateBet).catch(() => {})
@@ -555,19 +532,17 @@ export function CreateScreen() {
     if (prevSide) setCreatorSide(prevSide)
   }, [templateBet, currentProfile?.id])
 
-  // Prefill from suggestion template via location state
   useEffect(() => {
     if (!locState?.prefillTemplate) return
     applyTemplate(locState.prefillTemplate)
   }, [locState?.prefillTemplate])
 
-  // ── Autosave ──
+  // Autosave draft to localStorage
   useEffect(() => {
     const draft = { claim, stakeType, forfeitText, stakeMoney, duration, formatType, creatorSide, selectedGroup }
     try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)) } catch {}
   }, [claim, stakeType, forfeitText, stakeMoney, duration, formatType, creatorSide, selectedGroup])
 
-  // Restore draft on mount (only if no prefill)
   useEffect(() => {
     if (locState?.prefillTemplate || locState?.templateBetId) return
     try {
@@ -583,8 +558,6 @@ export function CreateScreen() {
       if (d.creatorSide) setCreatorSide(d.creatorSide)
     } catch {}
   }, [])
-
-  // ── Handlers ──
 
   const applyTemplate = useCallback((template: BetTemplate) => {
     let text = template.title
@@ -630,8 +603,6 @@ export function CreateScreen() {
     setStakePunishmentId(r.id)
   }
 
-  // ── Validation ──
-
   const missingField = (() => {
     if (claim.trim().length < 5) return 'a claim (5+ chars)'
     if (formatType !== 'self' && !selectedGroup) return 'a group'
@@ -641,8 +612,6 @@ export function CreateScreen() {
   })()
 
   const canSubmit = !missingField && !isSubmitting
-
-  // ── Submit ──
 
   const handleSubmit = async () => {
     if (!canSubmit) return
@@ -655,7 +624,6 @@ export function CreateScreen() {
     setError(null)
 
     try {
-      // Map participation to joinMode
       let joinMode: JoinMode = 'open'
       const participantIds: string[] = []
       if (formatType === 'group') {
@@ -690,7 +658,6 @@ export function CreateScreen() {
         joinSelectedMemberIds: joinMode === 'auto_selected' ? participantIds : [],
       })
 
-      // Clear draft on success
       try { localStorage.removeItem(DRAFT_KEY) } catch {}
 
       setCreatedComp(comp)
@@ -705,11 +672,8 @@ export function CreateScreen() {
   const handleClose = () => navigate(-1)
 
   const handleSaveForLater = () => {
-    // Draft is already saved via autosave effect
     navigate(-1)
   }
-
-  // ── Derived values for summary ──
 
   const stakeSummary = (() => {
     if (stakeType === 'money') return formatMoney(stakeMoney)
@@ -730,10 +694,7 @@ export function CreateScreen() {
     ? 'Open-ended'
     : format(resolveDeadline(duration, customDate), 'EEE, MMM d')
 
-  // People list for the current mode
   const peopleList = formatType === 'select' ? friendsList : groupMembers
-
-  // ── Render ──
 
   return (
     <div className="h-full bg-bg-primary grain-texture flex flex-col">

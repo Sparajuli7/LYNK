@@ -178,7 +178,6 @@ export async function updateMemberRole(
 ): Promise<void> {
   const userId = await requireUserId()
 
-  // Verify caller is owner or admin
   const { data: callerMember } = await supabase
     .from('group_members')
     .select('role')
@@ -190,7 +189,6 @@ export async function updateMemberRole(
     throw new Error('Only owners and admins can change roles')
   }
 
-  // Can't change the owner's role
   if (newRole !== 'owner') {
     const { data: target } = await supabase
       .from('group_members')

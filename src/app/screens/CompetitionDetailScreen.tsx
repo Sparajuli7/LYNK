@@ -99,7 +99,6 @@ export function CompetitionDetailScreen() {
 
   const handleSubmitScore = async () => {
     if (!id) return
-    // Enforce deadline — don't allow score submissions after competition ends
     if (competition && new Date(competition.deadline) < new Date()) {
       setScoreError('This competition has ended. No more scores can be submitted.')
       return
@@ -123,7 +122,6 @@ export function CompetitionDetailScreen() {
       setScoreInput('')
       setProofFile(null)
       fetchLeaderboard(id)
-      // Show share prompt after successful submission
       setLastProofUrl(proofUrl)
       setLastScore(score)
       setScoreShareOpen(true)

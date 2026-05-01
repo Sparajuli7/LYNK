@@ -65,7 +65,6 @@ export function ArchiveScreen() {
       .finally(() => setBetsLoading(false))
   }, [user?.id])
 
-  // Batch-fetch punishment card texts for bets that reference one
   useEffect(() => {
     const ids = [...new Set(bets.map((b) => b.stake_punishment_id).filter((id): id is string => !!id))]
     if (ids.length === 0) return

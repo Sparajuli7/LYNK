@@ -151,7 +151,6 @@ export async function getVotes(proofId: string): Promise<ProofVote[]> {
 export async function getVotedBetIds(betIds: string[], userId: string): Promise<Set<string>> {
   if (betIds.length === 0) return new Set()
 
-  // Get proofs for those bets
   const { data: proofs } = await supabase
     .from('proofs')
     .select('id, bet_id')
@@ -162,7 +161,6 @@ export async function getVotedBetIds(betIds: string[], userId: string): Promise<
   const proofIds = proofs.map((p) => p.id)
   const proofToBet = new Map(proofs.map((p) => [p.id, p.bet_id]))
 
-  // Get user's votes on those proofs
   const { data: votes } = await supabase
     .from('proof_votes')
     .select('proof_id')

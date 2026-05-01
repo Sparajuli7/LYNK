@@ -258,7 +258,6 @@ export async function getUserCurrentStreak(userId: string): Promise<number> {
 
   const betIds = [...sideByBet.keys()]
 
-  // Completed bets ordered most-recent first
   const { data: completedBets } = await supabase
     .from('bets')
     .select('id, claimant_id')

@@ -107,12 +107,10 @@ const useSuggestionStore = create<SuggestionStore>()(
             lastUpdated: new Date(),
           },
         })
-        // Re-rank after dismissal
         get().refreshSuggestions()
       },
 
       boostTags: (_tags) => {
-        // For v1 just refresh — tag boosting would need a boostedTags field with expiry
         get().refreshSuggestions()
       },
 

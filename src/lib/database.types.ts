@@ -1,8 +1,6 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
-// ---------------------------------------------------------------------------
-// Enum-style union types (mirror Postgres CHECK constraints / enums)
-// ---------------------------------------------------------------------------
+/* ── Enum types (mirror Postgres enums) ── */
 
 export type UserRole = 'owner' | 'admin' | 'bet_maker' | 'member'
 
@@ -55,9 +53,7 @@ export type MessageType = 'text' | 'image' | 'video' | 'system'
 
 export type ReactionType = 'thumbs_up' | 'thumbs_down'
 
-// ---------------------------------------------------------------------------
-// Row types — shape of a single row returned from Supabase
-// ---------------------------------------------------------------------------
+/* ── Row types ── */
 
 export interface ProfileRow {
   id: string                        // uuid, references auth.users
@@ -265,9 +261,7 @@ export interface NotificationPreferenceRow {
   created_at: string
 }
 
-// ---------------------------------------------------------------------------
-// Insert types — required fields only (omit server-generated fields)
-// ---------------------------------------------------------------------------
+/* ── Insert types ── */
 
 export type ProfileInsert = Omit<ProfileRow, 'created_at'> &
   Partial<Pick<ProfileRow, 'avatar_url' | 'phone' | 'rep_score' | 'wins' | 'losses' | 'voids' | 'total_bets' | 'punishments_taken' | 'punishments_completed' | 'biggest_win' | 'biggest_loss' | 'current_streak'>>
@@ -315,9 +309,7 @@ export type PushSubscriptionInsert = Omit<PushSubscriptionRow, 'id' | 'created_a
 export type NotificationPreferenceInsert = Omit<NotificationPreferenceRow, 'id' | 'created_at'> &
   Partial<Pick<NotificationPreferenceRow, 'push_enabled'>>
 
-// ---------------------------------------------------------------------------
-// Update types — all fields optional except primary key
-// ---------------------------------------------------------------------------
+/* ── Update types ── */
 
 export type ProfileUpdate = Partial<Omit<ProfileRow, 'id'>>
 
@@ -341,9 +333,7 @@ export type MessageUpdate = Partial<Pick<MessageRow, 'content' | 'edited_at' | '
 
 export type NotificationPreferenceUpdate = Partial<Pick<NotificationPreferenceRow, 'push_enabled'>>
 
-// ---------------------------------------------------------------------------
-// Supabase Database generic — passed to createClient<Database>()
-// ---------------------------------------------------------------------------
+/* ── Supabase Database generic ── */
 
 export interface Database {
   public: {
@@ -471,9 +461,7 @@ export interface Database {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Convenience aliases — use these in component/hook code
-// ---------------------------------------------------------------------------
+/* ── Convenience aliases ── */
 
 export type Profile = Database['public']['Tables']['profiles']['Row']
 export type Group = Database['public']['Tables']['groups']['Row']
@@ -495,9 +483,7 @@ export type MessageReaction = Database['public']['Tables']['message_reactions'][
 export type PushSubscription = Database['public']['Tables']['push_subscriptions']['Row']
 export type NotificationPreference = Database['public']['Tables']['notification_preferences']['Row']
 
-// ---------------------------------------------------------------------------
-// Friends System
-// ---------------------------------------------------------------------------
+/* ── Friends System ── */
 
 export type FriendshipStatus = 'pending' | 'accepted' | 'blocked'
 export type FriendshipSource = 'link' | 'search' | 'contacts' | 'group_suggest'
@@ -523,7 +509,7 @@ export interface InviteLinkRow {
   revoked_at: string | null
 }
 
-// Computed type (not a DB table — assembled in API layer)
+// Computed in API layer, not a DB table
 export interface HeadToHead {
   viewerId: string
   otherId: string
@@ -535,7 +521,6 @@ export interface HeadToHead {
   isRival: boolean
 }
 
-// Profile with friendship context for roster/public card
 export interface FriendProfile extends ProfileRow {
   relationship: 'stranger' | 'pending' | 'friend' | 'rival'
   friendshipId?: string
@@ -543,9 +528,7 @@ export interface FriendProfile extends ProfileRow {
   h2h?: HeadToHead
 }
 
-// ---------------------------------------------------------------------------
-// Bet Invites (auto-join for selected members)
-// ---------------------------------------------------------------------------
+/* ── Bet Invites ── */
 
 export interface BetInviteRow {
   id: string

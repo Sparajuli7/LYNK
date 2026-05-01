@@ -124,18 +124,16 @@ async function resolveOutcome(
  *   - otherwise             → wait for more votes or deadline
  */
 async function autoResolveIfMajority(proofId: string): Promise<void> {
-  // Find the proof and confirm it has a ruling
   const { data: proofRow } = await supabase
     .from('proofs')
     .select('bet_id, ruling')
     .eq('id', proofId)
     .single() as { data: { bet_id: string; ruling: ProofRuling | null } | null }
 
-  if (!proofRow?.ruling) return // evidence-only proof — not the ruling proof
+  if (!proofRow?.ruling) return
 
   const { bet_id: betId, ruling } = proofRow
 
-  // Skip if outcome already exists
   const { data: existing } = await supabase
     .from('outcomes')
     .select('id')
@@ -143,7 +141,6 @@ async function autoResolveIfMajority(proofId: string): Promise<void> {
     .maybeSingle() as { data: { id: string } | null }
   if (existing) return
 
-  // Count bet participants
   const { data: sides } = await supabase
     .from('bet_sides')
     .select('user_id')
@@ -151,7 +148,6 @@ async function autoResolveIfMajority(proofId: string): Promise<void> {
   const participantCount = sides?.length ?? 0
   if (participantCount < 2) return
 
-  // Count votes on this ruling proof
   const { data: allVotes } = await supabase
     .from('proof_votes')
     .select('vote')
@@ -162,13 +158,10 @@ async function autoResolveIfMajority(proofId: string): Promise<void> {
   const majority = Math.floor(participantCount / 2) + 1
 
   if (confirms >= majority) {
-    // Majority validates → ruling stands
     await resolveOutcome(betId, rulingToResult(ruling))
   } else if (disputes >= majority) {
-    // Majority disputes → ruling flips
     await resolveOutcome(betId, flipRuling(ruling))
   }
-  // else: not enough votes yet — wait
 }
 
 const useProofStore = create<ProofStore>()((set, get) => ({
@@ -257,7 +250,6 @@ const useProofStore = create<ProofStore>()((set, get) => ({
       return null
     }
 
-    // When a ruling is submitted, advance the bet to proof_submitted
     if (ruling) {
       const betUpdate: BetUpdate = { status: 'proof_submitted' }
       const { error: statusError } = await supabase
@@ -349,7 +341,6 @@ const useProofStore = create<ProofStore>()((set, get) => ({
   },
 
   checkDeadlineResolution: async (betId) => {
-    // Find the ruling proof for this bet
     const { data: rulingProof } = await supabase
       .from('proofs')
       .select('id, ruling, ruling_deadline')
@@ -365,7 +356,6 @@ const useProofStore = create<ProofStore>()((set, get) => ({
     const deadlinePassed = new Date(rulingProof.ruling_deadline) < new Date()
     if (!deadlinePassed) return
 
-    // Skip if outcome already exists
     const { data: existing } = await supabase
       .from('outcomes')
       .select('id')
@@ -373,7 +363,6 @@ const useProofStore = create<ProofStore>()((set, get) => ({
       .maybeSingle() as { data: { id: string } | null }
     if (existing) return
 
-    // Get all votes on the ruling proof
     const { data: allVotes } = await supabase
       .from('proof_votes')
       .select('vote')
@@ -382,7 +371,7 @@ const useProofStore = create<ProofStore>()((set, get) => ({
     const confirms = (allVotes ?? []).filter((v) => v.vote === 'confirm').length
     const disputes = (allVotes ?? []).filter((v) => v.vote === 'dispute').length
 
-    // After deadline: disputes majority flips ruling; otherwise ruling stands
+    // After deadline: dispute majority flips ruling, otherwise it stands
     const result = disputes > confirms
       ? flipRuling(rulingProof.ruling)
       : rulingToResult(rulingProof.ruling)

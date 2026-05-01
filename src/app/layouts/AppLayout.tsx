@@ -46,13 +46,9 @@ export function AppLayout() {
   const walkthroughCompleted = useUiStore((s) => s.walkthroughCompleted)
   const startWalkthrough = useUiStore((s) => s.startWalkthrough)
 
-  // Initialize global notification subscription (updates unreadCount, shows toast on new)
   useNotifications()
-
-  // Initialize global chat subscription (updates unreadCount, shows toast on new message)
   useChat()
 
-  // Auto-start walkthrough for new users on first visit to /home
   useEffect(() => {
     if (!walkthroughCompleted && pathname === '/home') {
       startWalkthrough()

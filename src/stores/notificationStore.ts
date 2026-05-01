@@ -4,7 +4,7 @@ import { supabase, getCurrentUserId } from '@/lib/supabase'
 import type { Notification } from '@/lib/database.types'
 import type { RealtimeChannel } from '@supabase/supabase-js'
 
-// Module-level ref — keeps the channel outside React render cycles
+// Keep Realtime channel outside React render cycles
 let _channel: RealtimeChannel | null = null
 let _onNewNotification: ((n: Notification) => void) | null = null
 
@@ -65,7 +65,6 @@ const useNotificationStore = create<NotificationStore>()(
     },
 
     markAsRead: async (id) => {
-      // Optimistic update
       set((draft) => {
         const notification = draft.notifications.find((n) => n.id === id)
         if (notification && !notification.read) {
@@ -80,7 +79,6 @@ const useNotificationStore = create<NotificationStore>()(
         .eq('id', id)
 
       if (error) {
-        // Rollback
         set((draft) => {
           const notification = draft.notifications.find((n) => n.id === id)
           if (notification) {
@@ -96,7 +94,6 @@ const useNotificationStore = create<NotificationStore>()(
       const userId = await getCurrentUserId()
       if (!userId) return
 
-      // Optimistic update
       set((draft) => {
         draft.notifications.forEach((n) => {
           n.read = true
@@ -111,7 +108,6 @@ const useNotificationStore = create<NotificationStore>()(
         .eq('read', false)
 
       if (error) {
-        // Refetch to restore correct state
         set((draft) => {
           draft.error = error.message
         })
@@ -123,7 +119,6 @@ const useNotificationStore = create<NotificationStore>()(
       const userId = await getCurrentUserId()
       if (!userId) return
 
-      // Avoid duplicate channels
       if (_channel) await get().unsubscribeFromRealtime()
 
       _channel = supabase
