@@ -48,7 +48,6 @@ export function GroupCreateMemberPicker({
   const selectedIds = new Set(selectedMembers.map((m) => m.id));
   const canNext = selectedMembers.length >= 2;
 
-  // Filter friends by search query
   const filteredFriends = searchQuery.trim()
     ? friends.filter(
         (f) =>

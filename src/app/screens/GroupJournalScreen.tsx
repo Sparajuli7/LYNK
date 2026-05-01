@@ -42,7 +42,6 @@ export function GroupJournalScreen() {
       .finally(() => setLoading(false))
   }, [groupId])
 
-  // Stats
   const live = bets.filter((b) => b.status === 'active' || b.status === 'proof_submitted').length
   const done = bets.filter((b) => b.status === 'completed' || b.status === 'voided').length
 

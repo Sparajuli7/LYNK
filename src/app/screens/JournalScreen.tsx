@@ -142,11 +142,9 @@ export function betToTicketStatus(
   if (bet.status === 'active') return 'live'
   if (bet.status === 'proof_submitted' || bet.status === 'disputed') return 'disputed'
   if (bet.status === 'completed') {
-    // Try to infer win/loss from bet_sides
+    // Heuristic: riders = won, doubters = lost (real outcome data would be better)
     const userSide = bet.bet_sides.find((s) => s.user_id === userId)
     if (!userSide) return 'pending'
-    // If user was a rider and bet completed, we treat as won; doubter as lost
-    // This is a heuristic -- real outcome data would be better
     return userSide.side === 'rider' ? 'won' : 'lost'
   }
   return 'pending'
@@ -174,7 +172,7 @@ export function JournalScreen() {
   const [betsLoading, setBetsLoading] = useState(true)
   const [showCreate, setShowCreate] = useState(false)
 
-  // Pin state is localStorage-backed and shared with ArchiveScreen for bets/groups
+  // Pins are localStorage-backed and shared with ArchiveScreen
   const [pinBets, setPinBets]       = useState<Set<string>>(() => loadPinned(PIN_BETS_KEY))
   const [pinGroups, setPinGroups]   = useState<Set<string>>(() => loadPinned(PIN_GROUPS_KEY))
   const [pinJournals, setPinJournals] = useState<Set<string>>(() => loadPinned(PIN_JOURNALS_KEY))

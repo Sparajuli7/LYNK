@@ -7,18 +7,14 @@ import type {
   ProfileRow,
 } from '@/lib/database.types'
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
+/* ── Helpers ── */
 
 /** Returns [smaller, larger] UUID so user_a_id < user_b_id (canonical ordering). */
 function canonicalPair(a: string, b: string): [string, string] {
   return a < b ? [a, b] : [b, a]
 }
 
-// ---------------------------------------------------------------------------
-// Rate limiting — 20 friend requests per 24 hours (client-side)
-// ---------------------------------------------------------------------------
+/* ── Rate limiting (20 requests / 24h, client-side) ── */
 
 const RATE_LIMIT_KEY = 'lynk-friend-request-timestamps'
 const RATE_LIMIT_MAX = 20
@@ -43,9 +39,7 @@ function recordRequest(): void {
   localStorage.setItem(RATE_LIMIT_KEY, JSON.stringify(recent))
 }
 
-// ---------------------------------------------------------------------------
-// Friend Requests
-// ---------------------------------------------------------------------------
+/* ── Friend Requests ── */
 
 /**
  * Send a friend request to another user.
@@ -66,7 +60,6 @@ export async function sendFriendRequest(
 
   const [userA, userB] = canonicalPair(user.id, targetUserId)
 
-  // Check for existing friendship row
   const { data: existing } = await supabase
     .from('friendships')
     .select('*')
@@ -75,7 +68,7 @@ export async function sendFriendRequest(
     .is('deleted_at', null)
     .maybeSingle()
 
-  // If there's already a pending request FROM the target, auto-accept
+  // Pending request FROM target? Auto-accept (mutual add)
   if (existing && existing.status === 'pending' && existing.initiated_by === targetUserId) {
     const { data: updated, error } = await supabase
       .from('friendships')
@@ -87,12 +80,11 @@ export async function sendFriendRequest(
     return updated as FriendshipRow
   }
 
-  // If already accepted or we already sent a pending request, return it
   if (existing && (existing.status === 'accepted' || existing.status === 'pending')) {
     return existing as FriendshipRow
   }
 
-  // If it was soft-deleted, re-use the row
+  // Soft-deleted row: re-use it
   if (existing && existing.deleted_at) {
     const { data: revived, error } = await supabase
       .from('friendships')
@@ -109,7 +101,6 @@ export async function sendFriendRequest(
     return revived as FriendshipRow
   }
 
-  // Create a new friendship request
   const { data, error } = await supabase
     .from('friendships')
     .insert({
@@ -174,7 +165,6 @@ export async function blockUser(targetUserId: string): Promise<void> {
 
   const [userA, userB] = canonicalPair(user.id, targetUserId)
 
-  // Check for existing row
   const { data: existing } = await supabase
     .from('friendships')
     .select('id')
@@ -202,15 +192,12 @@ export async function blockUser(targetUserId: string): Promise<void> {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Friend Queries
-// ---------------------------------------------------------------------------
+/* ── Friend Queries ── */
 
 /**
  * Get accepted friends for a user, enriched with profiles and H2H data.
  */
 export async function getFriends(userId: string): Promise<FriendProfile[]> {
-  // Fetch friendships where user is on either side
   const { data: friendships, error } = await supabase
     .from('friendships')
     .select('*')
@@ -221,12 +208,10 @@ export async function getFriends(userId: string): Promise<FriendProfile[]> {
   if (error) throw error
   if (!friendships || friendships.length === 0) return []
 
-  // Extract friend IDs
   const friendIds = friendships.map((f) =>
     f.user_a_id === userId ? f.user_b_id : f.user_a_id,
   )
 
-  // Fetch friend profiles
   const { data: profiles, error: profileError } = await supabase
     .from('profiles')
     .select('*')
@@ -234,14 +219,12 @@ export async function getFriends(userId: string): Promise<FriendProfile[]> {
 
   if (profileError) throw profileError
 
-  // Build a friendship lookup by friend ID
   const friendshipByFriendId = new Map<string, FriendshipRow>()
   for (const f of friendships) {
     const friendId = f.user_a_id === userId ? f.user_b_id : f.user_a_id
     friendshipByFriendId.set(friendId, f as FriendshipRow)
   }
 
-  // Compute H2H for each friend and determine rival status
   const results: FriendProfile[] = []
   for (const profile of profiles ?? []) {
     const friendship = friendshipByFriendId.get(profile.id)
@@ -266,7 +249,6 @@ export async function getFriends(userId: string): Promise<FriendProfile[]> {
 export async function getPendingRequests(
   userId: string,
 ): Promise<{ request: FriendshipRow; profile: ProfileRow; mutualCount: number }[]> {
-  // Find pending friendships where user is a/b but NOT the initiator
   const { data: friendships, error } = await supabase
     .from('friendships')
     .select('*')
@@ -278,7 +260,6 @@ export async function getPendingRequests(
   if (error) throw error
   if (!friendships || friendships.length === 0) return []
 
-  // Extract initiator IDs
   const initiatorIds = friendships.map((f) => f.initiated_by)
 
   const { data: profiles, error: profileError } = await supabase
@@ -330,7 +311,6 @@ export async function getRelationship(
   if (data.status === 'pending') return 'pending'
   if (data.status === 'blocked') return 'stranger'
 
-  // accepted — check rival status
   const h2h = await getHeadToHead(viewerId, targetId)
   return h2h.isRival ? 'rival' : 'friend'
 }
@@ -342,11 +322,8 @@ export async function getMutualFriends(
   userA: string,
   userB: string,
 ): Promise<ProfileRow[]> {
-  // Get friend IDs for each user
   const friendIdsA = await getAcceptedFriendIds(userA)
   const friendIdsB = await getAcceptedFriendIds(userB)
-
-  // Intersection
   const mutualIds = friendIdsA.filter((id) => friendIdsB.includes(id))
   if (mutualIds.length === 0) return []
 
@@ -380,9 +357,7 @@ export async function searchUsers(
   return (data ?? []) as ProfileRow[]
 }
 
-// ---------------------------------------------------------------------------
-// Head-to-Head
-// ---------------------------------------------------------------------------
+/* ── Head-to-Head ── */
 
 /**
  * Compute head-to-head record between two users.
@@ -404,7 +379,6 @@ export async function getHeadToHead(
     isRival: false,
   }
 
-  // Find bet IDs where both users have sides
   const { data: viewerSides, error: e1 } = await supabase
     .from('bet_sides')
     .select('bet_id, side')
@@ -421,18 +395,15 @@ export async function getHeadToHead(
   if (e2) throw e2
   if (!otherSides || otherSides.length === 0) return empty
 
-  // Build maps
   const viewerSideByBet = new Map<string, string>()
   for (const s of viewerSides) viewerSideByBet.set(s.bet_id, s.side)
 
   const otherSideByBet = new Map<string, string>()
   for (const s of otherSides) otherSideByBet.set(s.bet_id, s.side)
 
-  // Shared bet IDs (both participated)
   const sharedBetIds = [...viewerSideByBet.keys()].filter((id) => otherSideByBet.has(id))
   if (sharedBetIds.length === 0) return empty
 
-  // Fetch outcomes + bet details for shared bets
   const { data: bets, error: e3 } = await supabase
     .from('bets')
     .select('id, status, stake_money, created_at, claimant_id')
@@ -467,9 +438,7 @@ export async function getHeadToHead(
     const viewerSide = viewerSideByBet.get(bet.id)
     const stake = bet.stake_money ?? 0
 
-    // Determine if the viewer's side won
-    // outcome = 'claimant_succeeded' → riders win
-    // outcome = 'claimant_failed' → doubters win
+    // claimant_succeeded → riders win, claimant_failed → doubters win
     const winningSide = outcome === 'claimant_succeeded' ? 'rider' : 'doubter'
 
     if (viewerSide === winningSide) {
@@ -493,9 +462,7 @@ export async function getHeadToHead(
   }
 }
 
-// ---------------------------------------------------------------------------
-// Internal helpers
-// ---------------------------------------------------------------------------
+/* ── Internal helpers ── */
 
 /** Get accepted friend IDs for a user (just IDs, no profiles). */
 async function getAcceptedFriendIds(userId: string): Promise<string[]> {

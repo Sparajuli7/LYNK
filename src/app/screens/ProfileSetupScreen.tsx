@@ -110,7 +110,6 @@ export function ProfileSetupScreen() {
     })
 
     if (success) {
-      // Check for pending competition invite from deep link
       const pending = loadPendingInvite()
       if (pending) {
         const params = pending.groupInviteCode ? `?group=${pending.groupInviteCode}` : ''

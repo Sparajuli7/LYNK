@@ -106,7 +106,6 @@ const useFriendStore = create<FriendStore>()(
 
       try {
         await acceptFriendRequestApi(friendshipId)
-        // Remove from pending and refresh friends
         set((draft) => {
           draft.pendingRequests = draft.pendingRequests.filter(
             (r) => r.request.id !== friendshipId,

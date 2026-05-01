@@ -88,14 +88,12 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
     return () => { cancelled = true }
   }, [id])
 
-  // Load shame proof for this bet
   useEffect(() => {
     if (!id || !data) return
     getShamePostByBetId(id)
       .then(setShamePost)
   }, [id, data])
 
-  // Record punishment taken once for losers on punishment bets (idempotent)
   useEffect(() => {
     if (!data || !user || !id) return
     const { outcome, bet, betSides } = data
@@ -113,7 +111,6 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
     }
   }, [data, user, id])
 
-  // Auto-advance reveal after 2.2s
   useEffect(() => {
     if (!loading && !error && data) {
       const t = setTimeout(() => setPhase('result'), 2200)

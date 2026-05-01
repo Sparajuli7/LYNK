@@ -54,11 +54,9 @@ function getBetPriority(bet: BetWithSides, userId: string | undefined): BetPrior
   const isClaimant = bet.claimant_id === userId
   const hoursLeft = (new Date(bet.deadline).getTime() - Date.now()) / (1000 * 60 * 60)
 
-  // Claimant submitted the proof — they can't vote, they wait
   if (bet.status === 'proof_submitted' && isClaimant)
     return { level: 1, label: 'Proof Out', labelColor: 'text-amber-400', urgent: true }
 
-  // Any other participant (rider OR doubter) needs to vote
   if (bet.status === 'proof_submitted' && mySide !== null)
     return { level: 0, label: 'Vote Needed', labelColor: 'text-amber-400', urgent: true }
 
@@ -221,7 +219,6 @@ export function TheBoard() {
     [stripBets]
   )
 
-  // Approximation from bet_sides user IDs across all groups
   const totalFriends = useMemo(() => {
     const uniqueUsers = new Set<string>()
     bets.forEach((b) => {

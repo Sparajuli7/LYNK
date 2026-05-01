@@ -17,7 +17,6 @@ export async function getOrCreateInviteLink(
   userId: string,
   username: string,
 ): Promise<InviteLinkRow> {
-  // Look for an existing active link
   const { data: existing, error: fetchError } = await supabase
     .from('invite_links')
     .select('*')
@@ -32,7 +31,6 @@ export async function getOrCreateInviteLink(
   if (fetchError) throw fetchError
   if (existing) return existing as InviteLinkRow
 
-  // Create a new link using the username as the code
   const { data, error } = await supabase
     .from('invite_links')
     .insert({
@@ -54,7 +52,6 @@ export async function getOrCreateInviteLink(
 export async function regenerateInviteLink(
   userId: string,
 ): Promise<InviteLinkRow> {
-  // Revoke all existing active links
   const { error: revokeError } = await supabase
     .from('invite_links')
     .update({ revoked_at: new Date().toISOString() })
@@ -63,7 +60,6 @@ export async function regenerateInviteLink(
 
   if (revokeError) throw revokeError
 
-  // Create a new link with a random code
   const { data, error } = await supabase
     .from('invite_links')
     .insert({

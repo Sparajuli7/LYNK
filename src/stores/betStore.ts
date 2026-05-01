@@ -268,16 +268,13 @@ const useBetStore = create<BetStore>()(
         return null
       }
 
-      // Creator auto-joins with their chosen side (defaults to rider if not selected)
       await supabase.from('bet_sides').insert({
         bet_id: data.id,
         user_id: userId,
         side: wizard.creatorSide ?? 'rider',
       })
 
-      // Handle auto-join modes
       if (joinMode === 'auto_all') {
-        // Fetch all group members except the creator
         const { data: members } = await supabase
           .from('group_members')
           .select('user_id')
@@ -286,7 +283,6 @@ const useBetStore = create<BetStore>()(
 
         const otherMembers = members ?? []
         if (otherMembers.length > 0) {
-          // Insert bet_sides for each member as rider
           await supabase.from('bet_sides').insert(
             otherMembers.map((m) => ({
               bet_id: data.id,
@@ -294,7 +290,6 @@ const useBetStore = create<BetStore>()(
               side: 'rider' as const,
             })),
           )
-          // Record bet_invites with auto_joined = true
           await supabase.from('bet_invites').insert(
             otherMembers.map((m) => ({
               bet_id: data.id,
@@ -304,7 +299,6 @@ const useBetStore = create<BetStore>()(
           )
         }
       } else if (joinMode === 'auto_selected' && wizard.selectedMemberIds.length > 0) {
-        // Insert bet_sides for each selected member as rider
         await supabase.from('bet_sides').insert(
           wizard.selectedMemberIds.map((memberId) => ({
             bet_id: data.id,
@@ -312,7 +306,6 @@ const useBetStore = create<BetStore>()(
             side: 'rider' as const,
           })),
         )
-        // Record bet_invites with auto_joined = true
         await supabase.from('bet_invites').insert(
           wizard.selectedMemberIds.map((memberId) => ({
             bet_id: data.id,
@@ -361,7 +354,6 @@ const useBetStore = create<BetStore>()(
         draft.error = null
       })
 
-      // Prevent duplicate joins
       const { data: existing } = await supabase
         .from('bet_sides')
         .select('id')

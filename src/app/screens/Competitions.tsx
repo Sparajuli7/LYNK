@@ -133,7 +133,6 @@ export function Competitions() {
       const challenges = myBets.filter((b) => b.bet_type !== 'competition' && !compIds.has(b.id))
       setChallengeBets(challenges)
 
-      // Check which proof_submitted bets the user has already voted on
       if (user) {
         const votingBetIds = challenges
           .filter((b) => b.status === 'proof_submitted' || b.status === 'disputed')
@@ -552,7 +551,6 @@ function VotingCard({ bet, groups, onView, alreadyVoted = false, onVoted }: Chal
       setVoted(true)
       onVoted?.()
     } catch {
-      // On error, navigate to detail page where they can retry
       onView()
     } finally {
       setVoting(false)

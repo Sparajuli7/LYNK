@@ -184,7 +184,6 @@ export async function getCompetitionConversation(betId: string): Promise<Convers
 export async function getOrCreateDMConversation(otherUserId: string): Promise<Conversation> {
   const userId = await requireUserId()
 
-  // Find existing DM between these two users
   const { data: myParticipations } = await supabase
     .from('conversation_participants')
     .select('conversation_id')
@@ -222,14 +221,13 @@ export async function getOrCreateDMConversation(otherUserId: string): Promise<Co
 
   if (convErr) throw convErr
 
-  // Add both participants so RLS SELECT policy works
+  // RLS requires participants to exist before SELECT
   const { error: partErr } = await supabase.from('conversation_participants').insert([
     { conversation_id: convId, user_id: userId },
     { conversation_id: convId, user_id: otherUserId },
   ])
   if (partErr) throw partErr
 
-  // Now we can read it back
   const { data: conv, error: readErr } = await supabase
     .from('conversations')
     .select('*')
@@ -252,7 +250,7 @@ export async function createGroupConversation(
 
   if (convErr) throw convErr
 
-  // Add participants immediately so RLS SELECT policy works
+  // RLS requires participants to exist before SELECT
   if (memberIds.length > 0) {
     const { error: partErr } = await supabase.from('conversation_participants').insert(
       memberIds.map((uid) => ({ conversation_id: convId, user_id: uid }))
@@ -260,7 +258,6 @@ export async function createGroupConversation(
     if (partErr) throw partErr
   }
 
-  // Now we can read it back (we're a participant)
   const { data: conv, error: readErr } = await supabase
     .from('conversations')
     .select('*')
@@ -283,7 +280,7 @@ export async function createCompetitionConversation(
 
   if (convErr) throw convErr
 
-  // Add participants immediately so RLS SELECT policy works
+  // RLS requires participants to exist before SELECT
   if (participantIds.length > 0) {
     const { error: partErr } = await supabase.from('conversation_participants').insert(
       participantIds.map((uid) => ({ conversation_id: convId, user_id: uid }))
@@ -291,7 +288,6 @@ export async function createCompetitionConversation(
     if (partErr) throw partErr
   }
 
-  // Now we can read it back (we're a participant)
   const { data: conv, error: readErr } = await supabase
     .from('conversations')
     .select('*')
@@ -310,7 +306,6 @@ export async function addConversationParticipant(
     conversation_id: conversationId,
     user_id: userId,
   })
-  // Ignore duplicate errors (user already a participant)
   if (error && !error.message.includes('duplicate')) throw error
 }
 
@@ -351,7 +346,6 @@ export async function getMessages(
 
   const messageIds = messages.map((m) => m.id)
 
-  // Enrich with sender profiles
   const senderIds = [...new Set(messages.map((m) => m.sender_id))]
   const { data: profiles } = await supabase
     .from('profiles')
@@ -362,7 +356,6 @@ export async function getMessages(
     (profiles ?? []).map((p) => [p.id, { name: p.display_name, username: p.username, avatar: p.avatar_url }])
   )
 
-  // Fetch reactions for all messages
   const { data: reactions } = await supabase
     .from('message_reactions')
     .select('*')
@@ -378,7 +371,6 @@ export async function getMessages(
     else if (r.reaction === 'thumbs_down') summary.thumbs_down.push(r.user_id)
   }
 
-  // Fetch reply preview data for messages that are replies
   const replyToIds = [...new Set(messages.filter((m) => m.reply_to_id).map((m) => m.reply_to_id!))]
   const replyMap = new Map<string, ReplyPreview>()
   if (replyToIds.length > 0) {
@@ -388,7 +380,6 @@ export async function getMessages(
       .in('id', replyToIds)
 
     if (replyMsgs) {
-      // Get sender profiles for replied messages
       const replySenderIds = [...new Set(replyMsgs.map((m) => m.sender_id))]
       const { data: replyProfiles } = await supabase
         .from('profiles')
@@ -516,7 +507,6 @@ export async function addReaction(
     .from('message_reactions')
     .insert({ message_id: messageId, user_id: userId, reaction })
 
-  // Ignore duplicate errors (already reacted)
   if (error && !error.message.includes('duplicate')) throw error
 }
 

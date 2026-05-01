@@ -40,7 +40,6 @@ const useGroupStore = create<GroupStore>()((set, get) => ({
 
     set({ isLoading: true, error: null })
 
-    // Join through group_members to only return groups user belongs to
     const { data, error } = await supabase
       .from('group_members')
       .select('groups(*)')

@@ -441,7 +441,6 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
       return
     }
 
-    // For own profile: show cached value instantly while re-fetching
     if (isOwnProfile) {
       if (authLoading) return
       const cached = useAuthStore.getState().profile
@@ -451,7 +450,6 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
       }
     }
 
-    // Count unique friends across all user's groups
     const fetchFriendCount = async (uid: string): Promise<number> => {
       const { data: myGroups } = await supabase
         .from('group_members').select('group_id').eq('user_id', uid)
@@ -465,7 +463,6 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
       return unique.size
     }
 
-    // Fetch everything in parallel (public proofs alongside existing calls)
     Promise.all([
       fetchProfile(targetUserId),
       getMyBets(targetUserId),
@@ -482,7 +479,7 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
           useAuthStore.getState().setProfile(freshProfile)
         }
       }
-      // Visitors only see public bets; private bets are hidden unless viewer is a participant
+      // Non-owners only see public bets or bets they participate in
       const filtered = isOwnProfile
         ? bets
         : bets.filter((b) => {

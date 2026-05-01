@@ -66,14 +66,12 @@ export function InviteAcceptScreen({ code }: InviteAcceptScreenProps) {
   const [accepting, setAccepting] = useState(false)
 
   useEffect(() => {
-    // Wait for auth to finish initializing
     if (isLoading) return
 
     let cancelled = false
 
     async function load() {
       try {
-        // 1. Resolve the invite code
         const result = await resolveInviteCode(code)
         if (cancelled) return
 
@@ -84,7 +82,6 @@ export function InviteAcceptScreen({ code }: InviteAcceptScreenProps) {
 
         const { link, profile } = result
 
-        // 2. If not logged in, show the invite with a login CTA
         if (!isAuthenticated || !user) {
           setState({
             kind: 'logged_out',
@@ -95,13 +92,11 @@ export function InviteAcceptScreen({ code }: InviteAcceptScreenProps) {
           return
         }
 
-        // 3. If viewing own invite link, redirect home
         if (user.id === profile.id) {
           navigate('/home', { replace: true })
           return
         }
 
-        // 4. Check relationship
         const [relationship, mutuals] = await Promise.all([
           getRelationship(user.id, profile.id),
           getMutualFriends(user.id, profile.id),
@@ -119,8 +114,7 @@ export function InviteAcceptScreen({ code }: InviteAcceptScreenProps) {
           return
         }
 
-        // 5. If we already sent them a pending request, auto-accept via sendFriendRequest
-        //    (which detects the cross-request and upgrades to accepted)
+        // Pending request from us? sendFriendRequest detects the cross-request and auto-accepts.
         if (relationship === 'pending') {
           try {
             await sendFriendRequest(profile.id, 'link')
@@ -146,8 +140,6 @@ export function InviteAcceptScreen({ code }: InviteAcceptScreenProps) {
     }
   }, [code, isAuthenticated, isLoading, user, navigate, fetchFriends])
 
-  // --- Handlers ---
-
   const handleAccept = async (profile: ProfileRow) => {
     if (accepting) return
     setAccepting(true)
@@ -169,9 +161,6 @@ export function InviteAcceptScreen({ code }: InviteAcceptScreenProps) {
     navigate('/auth/login')
   }
 
-  // --- Render ---
-
-  // Loading
   if (state.kind === 'loading') {
     return (
       <div className="h-full bg-bg flex items-center justify-center">
@@ -182,7 +171,6 @@ export function InviteAcceptScreen({ code }: InviteAcceptScreenProps) {
     )
   }
 
-  // Expired / invalid
   if (state.kind === 'expired') {
     return (
       <div className="h-full bg-bg flex flex-col items-center justify-center px-6 relative">
@@ -212,7 +200,6 @@ export function InviteAcceptScreen({ code }: InviteAcceptScreenProps) {
     )
   }
 
-  // Already friends
   if (state.kind === 'already_friends') {
     const { profile } = state
     return (
@@ -240,7 +227,6 @@ export function InviteAcceptScreen({ code }: InviteAcceptScreenProps) {
     )
   }
 
-  // Logged out — show invite with login CTA
   if (state.kind === 'logged_out') {
     const { profile } = state
     const totalBets = profile.total_bets ?? 0
@@ -265,7 +251,6 @@ export function InviteAcceptScreen({ code }: InviteAcceptScreenProps) {
     )
   }
 
-  // Normal accept state (authenticated)
   const { profile, mutualFriends } = state
   const totalBets = profile.total_bets ?? 0
   const winPct = totalBets > 0 ? Math.round((profile.wins / totalBets) * 100) : 0
