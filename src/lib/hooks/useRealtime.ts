@@ -4,7 +4,7 @@ import type { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/
 
 type RealtimeEvent = 'INSERT' | 'UPDATE' | 'DELETE' | '*'
 
-export type RealtimeSubscriptionStatus = 'subscribing' | 'subscribed' | 'error'
+type RealtimeSubscriptionStatus = 'subscribing' | 'subscribed' | 'error'
 
 interface UseRealtimeOptions {
   event?: RealtimeEvent
@@ -22,7 +22,7 @@ interface UseRealtimeOptions {
  * @param callback - Called on INSERT/UPDATE/DELETE
  * @param filter - Optional filter (e.g. "group_id=eq.xxx")
  */
-export function useRealtimeSubscription<T extends Record<string, unknown>>(
+function useRealtimeSubscription<T extends Record<string, unknown>>(
   table: string,
   callback: (payload: RealtimePostgresChangesPayload<T>) => void,
   filter?: string,

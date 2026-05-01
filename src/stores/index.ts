@@ -16,27 +16,3 @@ export { default as usePushStore } from './pushStore'
 export { default as useFriendStore } from './friendStore'
 export { default as useSuggestionStore } from './suggestionStore'
 
-// Re-export computed selectors so consumers can import everything from one place
-export { selectOdds, selectMySide } from './betStore'
-
-// Re-export UI constants
-export { MODALS, SHEETS } from './uiStore'
-
-// Re-export types that component code needs
-export type { AuthStore } from './authStore'
-export type { GroupStore } from './groupStore'
-export type { BetStore, BetWithSides, WizardFields, BetFilters } from './betStore'
-export type { ProofStore, ProofFiles, VoteCounts } from './proofStore'
-export type { ShameStore, PostShameData, GroupShameStats } from './shameStore'
-export type { NotificationStore } from './notificationStore'
-export type { UiStore, Theme } from './uiStore'
-export type {
-  CompetitionStore,
-  Competition,
-  LeaderboardEntry,
-  CompetitionData,
-} from './competitionStore'
-export type { ChatStore } from './chatStore'
-export type { PushStore } from './pushStore'
-export type { FriendStore } from './friendStore'
-export type { SuggestionStore } from './suggestionStore'

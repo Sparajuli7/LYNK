@@ -5,7 +5,7 @@ import type { Bet, BetSideEntry, BetInsert, BetSide, BetCategory, BetType, BetSt
 export type RematchStakeOption = 'double_or_nothing' | 'double_wager' | 'worse_punishment'
 
 /** Reusable: participant IDs = claimant + everyone who had a side */
-export function getBetParticipantIds(
+function getBetParticipantIds(
   bet: { claimant_id: string },
   sides: { user_id: string }[],
 ): string[] {
@@ -24,7 +24,7 @@ export function isParticipantInBet(
 
 export type BetWithSides = Bet & { bet_sides: BetSideEntry[] }
 
-export interface BetFilters {
+interface BetFilters {
   category?: BetCategory
   type?: BetType
   status?: BetStatus
@@ -62,7 +62,7 @@ export async function getBetDetail(betId: string): Promise<BetWithSides> {
   return data as BetWithSides
 }
 
-export async function createBet(
+async function createBet(
   data: Omit<BetInsert, 'claimant_id' | 'status'>,
 ): Promise<Bet> {
   const {
@@ -85,42 +85,6 @@ export async function createBet(
   })
 
   return bet
-}
-
-export async function joinBetSide(betId: string, side: BetSide): Promise<BetSideEntry> {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) throw new Error('Not authenticated')
-
-  const { data: existing } = await supabase
-    .from('bet_sides')
-    .select('id')
-    .eq('bet_id', betId)
-    .eq('user_id', user.id)
-    .single()
-
-  if (existing) throw new Error('You have already joined this bet.')
-
-  const { data: entry, error } = await supabase
-    .from('bet_sides')
-    .insert({ bet_id: betId, user_id: user.id, side })
-    .select()
-    .single()
-
-  if (error || !entry) throw error ?? new Error('Failed to join bet')
-  return entry
-}
-
-export async function getBetParticipants(betId: string): Promise<BetSideEntry[]> {
-  const { data, error } = await supabase
-    .from('bet_sides')
-    .select('*')
-    .eq('bet_id', betId)
-    .order('joined_at', { ascending: true })
-
-  if (error) throw error
-  return data ?? []
 }
 
 export async function getMyBets(userId: string): Promise<BetWithSides[]> {

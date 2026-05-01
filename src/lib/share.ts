@@ -12,11 +12,6 @@ export function getBetShareUrl(betId: string): string {
   return `${APP_ORIGIN}/bet/${betId}`
 }
 
-/** Build full URL for a competition. */
-export function getCompetitionShareUrl(compId: string): string {
-  return `${APP_ORIGIN}/compete/${compId}`
-}
-
 /**
  * Build full URL for a competition invite.
  * Includes the group invite code so new users auto-join both.
@@ -63,33 +58,6 @@ export function getOutcomeShareText(params: {
     return `LYNK: ${claimantName} lost "${title}" — owes ${riderNames.length ? riderNames.join(', ') : 'the group'}. Bet on your friends in LYNK`
   }
   return `NO CONTEST: "${title}" was voided. Bet on your friends in LYNK`
-}
-
-/** Build share text for personal stats / record. */
-export function getRecordShareText(params: {
-  wins: number
-  losses: number
-  winRate: number
-}): string {
-  return `I'm ${params.wins}W-${params.losses}L on LYNK with a ${params.winRate}% win rate. Think you can beat that?`
-}
-
-/** Build share text for a competition leaderboard. */
-export function getCompetitionShareText(params: {
-  title: string
-  rank?: number
-}): string {
-  const rankStr = params.rank ? ` — I'm ranked #${params.rank}!` : ''
-  return `${params.title} competition on LYNK${rankStr} Join and compete`
-}
-
-/** Build share text for a punishment receipt. */
-export function getPunishmentShareText(params: {
-  loserName: string
-  punishment: string
-  betTitle: string
-}): string {
-  return `LYNK RECEIPT: ${params.loserName} owes ${params.punishment} for losing "${params.betTitle}". No refunds.`
 }
 
 /** Build share text for a proof image. */
@@ -212,7 +180,7 @@ function tryOpenDeepLink(url: string): boolean {
   }
 }
 
-export interface SharePayload {
+interface SharePayload {
   title?: string
   text: string
   url: string

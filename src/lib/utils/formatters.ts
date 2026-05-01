@@ -1,5 +1,3 @@
-import { REP_THRESHOLDS } from './constants'
-
 export function formatMoney(cents: number): string {
   const dollars = cents / 100
   return new Intl.NumberFormat('en-US', {
@@ -7,29 +5,6 @@ export function formatMoney(cents: number): string {
     currency: 'USD',
     minimumFractionDigits: 2,
   }).format(dollars)
-}
-
-export function formatCountdown(deadline: Date | string): string {
-  const target = typeof deadline === 'string' ? new Date(deadline) : deadline
-  const now = Date.now()
-  const diff = target.getTime() - now
-
-  if (diff <= 0) return 'EXPIRED'
-
-  const totalSeconds = Math.floor(diff / 1000)
-  const days = Math.floor(totalSeconds / 86400)
-  const hours = Math.floor((totalSeconds % 86400) / 3600)
-  const minutes = Math.floor((totalSeconds % 3600) / 60)
-  const seconds = totalSeconds % 60
-
-  if (diff < 24 * 60 * 60 * 1000) {
-    const hh = String(hours).padStart(2, '0')
-    const mm = String(minutes).padStart(2, '0')
-    const ss = String(seconds).padStart(2, '0')
-    return `${hh}:${mm}:${ss}`
-  }
-
-  return `${days}D ${hours}H`
 }
 
 export function formatOdds(
@@ -46,19 +21,6 @@ export function formatOdds(
 
 export function formatRecord(wins: number, losses: number, voids: number): string {
   return `${wins}W · ${losses}L · ${voids}V`
-}
-
-export function formatRepBadge(repScore: number): {
-  color: 'gold' | 'green' | 'coral'
-  label: string
-} {
-  if (repScore >= REP_THRESHOLDS.gold) {
-    return { color: 'gold', label: 'Legendary' }
-  }
-  if (repScore >= REP_THRESHOLDS.green) {
-    return { color: 'green', label: 'Reliable' }
-  }
-  return { color: 'coral', label: 'Sketchy' }
 }
 
 export function relativeTime(date: Date | string): string {

@@ -1,7 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import type { Profile, ProfileUpdate } from '@/lib/database.types'
 
-export type ProfileBasic = { display_name: string; avatar_url: string | null }
+type ProfileBasic = { display_name: string; avatar_url: string | null }
 export type ProfileWithRep = ProfileBasic & {
   rep_score: number
   username: string
@@ -56,7 +56,7 @@ export async function getProfile(userId: string): Promise<Profile | null> {
   return data
 }
 
-export async function updateProfile(
+async function updateProfile(
   userId: string,
   data: ProfileUpdate,
 ): Promise<Profile> {

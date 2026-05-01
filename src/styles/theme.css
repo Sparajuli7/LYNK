@@ -188,20 +188,6 @@
   animation: pulse-live 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Flashing indicator for proof dropped */
-@keyframes flash {
-  0%, 50%, 100% {
-    opacity: 1;
-  }
-  25%, 75% {
-    opacity: 0.3;
-  }
-}
-
-.flash {
-  animation: flash 1s ease-in-out infinite;
-}
-
 /* Marquee scroll */
 @keyframes marquee {
   0% {
@@ -246,53 +232,6 @@
   box-shadow: 0 0 28px rgba(0, 230, 118, 0.45);
 }
 
-/* Status left border */
-.border-l-status {
-  border-left-width: 3px;
-}
-
-.border-status-active {
-  border-left-color: var(--accent-green);
-}
-
-.border-status-proof {
-  border-left-color: var(--gold);
-}
-
-.border-status-completed {
-  border-left-color: var(--gold);
-}
-
-.border-status-purple {
-  border-left-color: var(--purple);
-}
-
-.border-status-disputed {
-  border-left-color: var(--accent-coral);
-}
-
-/* Dashed receipt border */
-.receipt-border {
-  border: 2px dashed currentColor;
-}
-
-/* Perforated edge effect */
-.perforated-bottom {
-  position: relative;
-}
-
-.perforated-bottom::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 8px;
-  background-image: radial-gradient(circle, transparent 40%, currentColor 40%);
-  background-size: 12px 8px;
-  background-position: 0 0;
-}
-
 /* Hide scrollbar */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -316,17 +255,6 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-/* Playing card suit symbols */
-.card-suit {
-  font-size: 1.2em;
-  line-height: 1;
-}
-
-/* Slight rotation for receipt realism */
-.rotate-slight {
-  transform: rotate(-1deg);
 }
 
 /* Inner glow for dark mode cards */
@@ -358,12 +286,6 @@
 /* Dashed receipt divider (lighter weight) */
 .perf-dashed {
   border-top: 1px dashed rgb(255 255 255 / 0.1);
-}
-
-/* Faux "glow" without filter blur (performs on Capacitor webview) */
-.glow-rider {
-  border: 4px solid var(--color-rider-ring);
-  background-color: var(--color-rider);
 }
 
 /* Safe area padding */

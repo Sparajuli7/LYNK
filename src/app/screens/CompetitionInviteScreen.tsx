@@ -7,14 +7,14 @@ import type { Bet } from '@/lib/database.types'
 
 const PENDING_INVITE_KEY = 'lynk_pending_invite'
 
-export interface PendingInvite {
+interface PendingInvite {
   compId: string
   groupInviteCode?: string
   savedAt: number
 }
 
 /** Save pending invite so it persists through signup flow */
-export function savePendingInvite(invite: PendingInvite) {
+function savePendingInvite(invite: PendingInvite) {
   localStorage.setItem(PENDING_INVITE_KEY, JSON.stringify(invite))
 }
 
@@ -36,7 +36,7 @@ export function loadPendingInvite(): PendingInvite | null {
   }
 }
 
-export function clearPendingInvite() {
+function clearPendingInvite() {
   localStorage.removeItem(PENDING_INVITE_KEY)
 }
 

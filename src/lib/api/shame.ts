@@ -54,7 +54,7 @@ export async function getShamePostByBetId(betId: string): Promise<HallOfShameEnt
   return data
 }
 
-export async function getShameFeed(
+async function getShameFeed(
   groupId: string,
   limit = 20,
   offset = 0,
@@ -74,7 +74,7 @@ export async function getShameFeed(
   )
 }
 
-export async function postShameProof(
+async function postShameProof(
   data: Omit<HallOfShameInsert, 'submitted_by'>,
 ): Promise<HallOfShameEntry> {
   const {

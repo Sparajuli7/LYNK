@@ -110,19 +110,3 @@ const useUiStore = create<UiStore>()(
 )
 
 export default useUiStore
-
-export const MODALS = {
-  BET_DETAIL: 'bet-detail',
-  CREATE_GROUP: 'create-group',
-  JOIN_GROUP: 'join-group',
-  DISPUTE_PROOF: 'dispute-proof',
-  PROFILE_EDIT: 'profile-edit',
-} as const
-
-export const SHEETS = {
-  BET_CREATION: 'bet-creation',
-  PROOF_UPLOAD: 'proof-upload',
-  PUNISHMENT_PICKER: 'punishment-picker',
-  NOTIFICATION_DRAWER: 'notification-drawer',
-  FILTER_DRAWER: 'filter-drawer',
-} as const

@@ -36,7 +36,7 @@ const PREVIEW_COUNT = 5
  * Stable sort that moves pinned items to the front, preserving relative order
  * within both the pinned and non-pinned groups.
  */
-export function sortWithPinned<T>(
+function sortWithPinned<T>(
   items: T[],
   getId: (item: T) => string,
   pins: Set<string>,
@@ -56,7 +56,7 @@ export function sortWithPinned<T>(
  *  - Remaining slots up to PREVIEW_COUNT are filled from non-pinned items.
  * When showAll=true the full sorted list is returned unchanged.
  */
-export function getVisibleItems<T>(
+function getVisibleItems<T>(
   sortedItems: T[],
   getId: (item: T) => string,
   pins: Set<string>,

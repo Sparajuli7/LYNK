@@ -9,7 +9,7 @@ export function generateInviteCode(): string {
   return Array.from(bytes, (b) => chars[b % chars.length]).join('')
 }
 
-export async function getUserGroups(): Promise<Group[]> {
+async function getUserGroups(): Promise<Group[]> {
   const userId = await requireUserId()
 
   const { data, error } = await supabase
@@ -60,7 +60,7 @@ export async function getGroupByInviteCode(code: string): Promise<Group | null> 
   return (row as Group) ?? null
 }
 
-export async function joinGroup(groupId: string): Promise<void> {
+async function joinGroup(groupId: string): Promise<void> {
   const userId = await requireUserId()
 
   const { data: existing } = await supabase
@@ -80,7 +80,7 @@ export async function joinGroup(groupId: string): Promise<void> {
   if (error) throw error
 }
 
-export async function getGroupMembers(groupId: string): Promise<GroupMember[]> {
+async function getGroupMembers(groupId: string): Promise<GroupMember[]> {
   const { data, error } = await supabase
     .from('group_members')
     .select('*')
@@ -214,7 +214,7 @@ export async function updateMemberRole(
 }
 
 /** Check whether the current user's group role permits creating bets. */
-export async function canCreateBet(groupId: string): Promise<boolean> {
+async function canCreateBet(groupId: string): Promise<boolean> {
   const userId = await requireUserId()
   const { data } = await supabase
     .from('group_members')

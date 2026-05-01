@@ -18,7 +18,7 @@ function savePendingFriendInvite(code: string) {
 }
 
 /** Load a pending friend invite (expires after 7 days). */
-export function loadPendingFriendInvite(): string | null {
+function loadPendingFriendInvite(): string | null {
   const raw = localStorage.getItem(PENDING_FRIEND_INVITE_KEY)
   if (!raw) return null
   try {
@@ -34,7 +34,7 @@ export function loadPendingFriendInvite(): string | null {
   }
 }
 
-export function clearPendingFriendInvite() {
+function clearPendingFriendInvite() {
   localStorage.removeItem(PENDING_FRIEND_INVITE_KEY)
 }
 

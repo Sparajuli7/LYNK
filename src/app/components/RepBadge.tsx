@@ -17,7 +17,7 @@ interface RepBadgeProps {
  * Small circle overlaid bottom-right of avatar.
  * Gold (#FFB800) if ≥ 90, Green (#00E676) if ≥ 70, Coral (#FF3D57) if < 70
  */
-export function RepBadge({ score, name, size = 'sm' }: RepBadgeProps) {
+function RepBadge({ score, name, size = 'sm' }: RepBadgeProps) {
   const colorClass =
     score >= 90
       ? 'bg-gold text-bg-primary'

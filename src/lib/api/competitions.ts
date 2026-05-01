@@ -106,35 +106,6 @@ export async function createCompetition(data: CompetitionData): Promise<Bet> {
   return competition
 }
 
-export async function getCompetitionDetail(betId: string): Promise<Bet> {
-  const { data, error } = await supabase
-    .from('bets')
-    .select('*')
-    .eq('id', betId)
-    .eq('bet_type', 'competition')
-    .single()
-
-  if (error) throw error
-  return data
-}
-
-export async function uploadCompetitionProof(
-  betId: string,
-  file: File,
-): Promise<string> {
-  const userId = await requireUserId()
-  const ext = file.name.split('.').pop() ?? 'jpg'
-  const path = `competition-proofs/${betId}/${userId}/${Date.now()}.${ext}`
-
-  const { error } = await supabase.storage
-    .from('proofs')
-    .upload(path, file, { upsert: true, contentType: file.type })
-  if (error) throw error
-
-  const { data } = supabase.storage.from('proofs').getPublicUrl(path)
-  return data.publicUrl
-}
-
 export async function submitScore(
   betId: string,
   score: number,
@@ -169,7 +140,7 @@ export async function submitScore(
   if (error) throw error
 }
 
-export async function toggleCompetitionVisibility(betId: string, isPublic: boolean): Promise<void> {
+async function toggleCompetitionVisibility(betId: string, isPublic: boolean): Promise<void> {
   const { error } = await supabase
     .from('bets')
     .update({ is_public: isPublic })

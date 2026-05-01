@@ -71,26 +71,6 @@ function parseReactions(raw: Json): ReactionsWithUsers {
   return result
 }
 
-/** Get count for display: reactions are { emoji: [userIds] } */
-export function getReactionCounts(reactions: Json): Record<string, number> {
-  const parsed = parseReactions(reactions)
-  const counts: Record<string, number> = {}
-  for (const [emoji, users] of Object.entries(parsed)) {
-    counts[emoji] = users.length
-  }
-  return counts
-}
-
-/** Check if current user has reacted with this emoji */
-export function hasUserReacted(
-  reactions: Json,
-  emoji: string,
-  userId: string,
-): boolean {
-  const parsed = parseReactions(reactions)
-  return (parsed[emoji] ?? []).includes(userId)
-}
-
 const useShameStore = create<ShameStore>()(
   immer((set, get) => ({
     shamePosts: [],

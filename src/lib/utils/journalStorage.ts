@@ -51,6 +51,3 @@ export function renameJournal(id: string, name: string, emoji: string): void {
   persist(all)
 }
 
-export function deleteJournal(id: string): void {
-  persist(loadJournals().filter((c) => c.id !== id))
-}

@@ -93,7 +93,7 @@ interface BetActions {
 export type BetStore = BetState & BetActions
 
 /** Returns rider/doubter counts and percentage split for the active bet */
-export function selectOdds(state: BetState) {
+function selectOdds(state: BetState) {
   const sides = state.activeBetSides
   const riderCount = sides.filter((s) => s.side === 'rider').length
   const doubterCount = sides.filter((s) => s.side === 'doubter').length
@@ -107,7 +107,7 @@ export function selectOdds(state: BetState) {
 }
 
 /** Returns the current user's side on the active bet, or null if not joined */
-export function selectMySide(
+function selectMySide(
   state: BetState,
   userId: string | undefined,
 ): BetSide | null {

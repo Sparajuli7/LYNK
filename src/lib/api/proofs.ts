@@ -39,7 +39,7 @@ export interface ProofFiles {
   documentFile?: File
 }
 
-export async function submitProof(
+async function submitProof(
   betId: string,
   files: ProofFiles,
   type: ProofType,
@@ -134,7 +134,7 @@ export async function voteOnProof(proofId: string, vote: VoteChoice): Promise<Pr
   return data
 }
 
-export async function getVotes(proofId: string): Promise<ProofVote[]> {
+async function getVotes(proofId: string): Promise<ProofVote[]> {
   const { data, error } = await supabase
     .from('proof_votes')
     .select('*')
