@@ -142,22 +142,22 @@ export function BetDetail({ onBack }: BetDetailProps) {
   // Check if 24h ruling deadline has passed when viewing a proof_submitted bet
   useEffect(() => {
     if (id && activeBet?.status === 'proof_submitted') {
-      checkDeadlineResolution(id).catch(() => {})
+      checkDeadlineResolution(id)
     }
   }, [id, activeBet?.status, checkDeadlineResolution])
 
   // Fetch outcome + punishment proof (hall_of_shame) for completed bets
   useEffect(() => {
     if (id && (activeBet?.status === 'completed' || activeBet?.status === 'voided')) {
-      getShamePostByBetId(id).then(setShamePost).catch(() => {})
-      getOutcome(id).then(setOutcome).catch(() => {})
+      getShamePostByBetId(id).then(setShamePost)
+      getOutcome(id).then(setOutcome)
     }
   }, [id, activeBet?.status])
 
   // Resolve punishment card text when bet has a stake_punishment_id
   useEffect(() => {
     if (activeBet?.stake_punishment_id) {
-      getPunishmentText(activeBet.stake_punishment_id).then(setPunishmentCardText).catch(() => {})
+      getPunishmentText(activeBet.stake_punishment_id).then(setPunishmentCardText)
     }
   }, [activeBet?.stake_punishment_id])
 

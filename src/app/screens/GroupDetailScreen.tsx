@@ -297,13 +297,9 @@ export function GroupDetailScreen() {
 
   const handleRoleChange = async (newRole: 'admin' | 'bet_maker' | 'member') => {
     if (!id || !selectedMember) return
-    try {
-      await updateMemberRole(id, selectedMember.userId, newRole)
-      // Refresh members to reflect updated roles
-      fetchMembers(id)
-    } catch (e) {
-      // Silently ignore — user sees stale role until refresh
-    }
+    await updateMemberRole(id, selectedMember.userId, newRole)
+    // Refresh members to reflect updated roles
+    fetchMembers(id)
   }
 
   if (!group) {

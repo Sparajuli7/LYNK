@@ -93,7 +93,6 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
     if (!id || !data) return
     getShamePostByBetId(id)
       .then(setShamePost)
-      .catch(() => setShamePost(null))
   }, [id, data])
 
   // Record punishment taken once for losers on punishment bets (idempotent)

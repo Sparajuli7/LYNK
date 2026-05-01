@@ -61,7 +61,6 @@ export function ArchiveScreen() {
     setBetsLoading(true)
     getMyBets(user.id)
       .then(setBets)
-      .catch(() => setBets([]))
       .finally(() => setBetsLoading(false))
   }, [user?.id])
 
