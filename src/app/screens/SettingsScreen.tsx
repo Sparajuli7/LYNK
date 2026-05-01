@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabase'
 import { Capacitor } from '@capacitor/core'
 import type { NotificationPreferenceRow, InviteLinkRow } from '@/lib/database.types'
 import { getOrCreateInviteLink, regenerateInviteLink, revokeInviteLink } from '@/lib/api/inviteLinks'
+import { copyToClipboard } from '@/lib/share'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -141,7 +142,7 @@ export function SettingsScreen() {
 
   const handleCopyLink = () => {
     if (!inviteLink) return
-    navigator.clipboard.writeText(`lynk.app/add/${inviteLink.code}`)
+    copyToClipboard(`lynk.app/add/${inviteLink.code}`)
   }
 
   const [showSignOutConfirm, setShowSignOutConfirm] = useState(false)

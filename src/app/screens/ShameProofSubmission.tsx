@@ -1,21 +1,17 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router'
-import { Camera, Image, Video, FileText, X, CheckCircle, Share2 } from 'lucide-react'
+import { Camera, Image, Video, FileText, CheckCircle, Share2 } from 'lucide-react'
 import { getOutcome } from '@/lib/api/outcomes'
 import { submitShameProof } from '@/lib/api/shame'
 import { supabase } from '@/lib/supabase'
 import { PrimaryButton } from '../components/PrimaryButton'
+import { FullScreenSpinner } from '../components/FullScreenSpinner'
+import { UploadCard, FilePreviewGrid, CameraOverlay, HiddenFileInputs } from '../components/ProofUploadUI'
 import { ShareSheet } from '../components/ShareSheet'
 import { getShameShareText, getBetShareUrl, shareWithNative } from '@/lib/share'
 import { useAuthStore } from '@/stores'
-import { Camera as CapCamera, CameraResultType, CameraSource } from '@capacitor/camera'
+import { useProofUpload } from '@/lib/hooks/useProofUpload'
 import { Capacitor } from '@capacitor/core'
-
-interface UploadEntry {
-  file: File
-  type: 'front' | 'back' | 'screenshot' | 'video' | 'document'
-  previewUrl?: string
-}
 
 export function ShameProofSubmission() {
   const { id } = useParams<{ id: string }>()
@@ -23,25 +19,13 @@ export function ShameProofSubmission() {
   const [outcomeId, setOutcomeId] = useState<string | null>(null)
   const [betTitle, setBetTitle] = useState('')
   const [loading, setLoading] = useState(true)
-  const [uploadFiles, setUploadFiles] = useState<UploadEntry[]>([])
   const [caption, setCaption] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [submitError, setSubmitError] = useState<string | null>(null)
   const [shareSheetOpen, setShareSheetOpen] = useState(false)
-  const [nativeCapturing, setNativeCapturing] = useState(false)
 
-  const photoInputRef = useRef<HTMLInputElement>(null)
-  const videoInputRef = useRef<HTMLInputElement>(null)
-  const docInputRef = useRef<HTMLInputElement>(null)
-  const cameraInputRef = useRef<HTMLInputElement>(null)
-  const nativeVideoInputRef = useRef<HTMLInputElement>(null)
-  const nativeDocInputRef = useRef<HTMLInputElement>(null)
-
-  const [cameraOpen, setCameraOpen] = useState(false)
-  const [facingMode, setFacingMode] = useState<'environment' | 'user'>('environment')
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const streamRef = useRef<MediaStream | null>(null)
+  const upload = useProofUpload()
 
   useEffect(() => {
     if (!id) return
@@ -59,181 +43,26 @@ export function ShameProofSubmission() {
     })
   }, [id])
 
-  useEffect(() => {
-    return () => {
-      uploadFiles.forEach((u) => {
-        if (u.previewUrl) URL.revokeObjectURL(u.previewUrl)
-      })
-    }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const addFiles = useCallback((e: React.ChangeEvent<HTMLInputElement>, type: UploadEntry['type']) => {
-    const fileList = e.target.files
-    if (!fileList || fileList.length === 0) return
-
-    const newEntries: UploadEntry[] = Array.from(fileList).map((file) => {
-      const entry: UploadEntry = { file, type }
-      if (file.type.startsWith('image/')) {
-        entry.previewUrl = URL.createObjectURL(file)
-      }
-      return entry
-    })
-
-    setUploadFiles((prev) => [...prev, ...newEntries])
-    setError(null)
-    e.target.value = ''
-  }, [])
-
-  const removeFile = useCallback((idx: number) => {
-    setUploadFiles((prev) => {
-      const removed = prev[idx]
-      if (removed?.previewUrl) URL.revokeObjectURL(removed.previewUrl)
-      return prev.filter((_, i) => i !== idx)
-    })
-  }, [])
-
-  const openCamera = useCallback(async () => {
-    if (Capacitor.isNativePlatform()) {
-      const permissions = await CapCamera.requestPermissions({ permissions: ['camera', 'photos'] })
-      if (permissions.camera === 'denied' && permissions.photos === 'denied') {
-        setError('Please allow camera or photo access in Settings to submit proof.')
-        return
-      }
-      setNativeCapturing(true)
-      try {
-        const photo = await CapCamera.getPhoto({
-          quality: 85,
-          allowEditing: false,
-          resultType: CameraResultType.Uri,
-          source: CameraSource.Prompt,
-        })
-        const response = await fetch(photo.webPath!)
-        const blob = await response.blob()
-        const file = new File([blob], `photo_${Date.now()}.${photo.format || 'jpg'}`, { type: blob.type })
-        const previewUrl = URL.createObjectURL(blob)
-        setUploadFiles((prev) => [...prev, { file, type: 'screenshot', previewUrl }])
-        setError(null)
-      } catch (err: any) {
-        if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
-          setError('Failed to capture photo. Please try again.')
-        }
-      } finally {
-        setNativeCapturing(false)
-      }
-      return
-    }
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode },
-      })
-      streamRef.current = stream
-      setCameraOpen(true)
-      requestAnimationFrame(() => {
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream
-          videoRef.current.play()
-        }
-      })
-    } catch {
-      cameraInputRef.current?.click()
-    }
-  }, [facingMode])
-
-  const handlePhotosPick = useCallback(async () => {
-    if (!Capacitor.isNativePlatform()) {
-      // Must click synchronously — no await before this on web (Safari requirement)
-      photoInputRef.current?.click()
-      return
-    }
-    const permissions = await CapCamera.requestPermissions({ permissions: ['camera', 'photos'] })
-    if (permissions.camera === 'denied' && permissions.photos === 'denied') {
-      setError('Please allow camera or photo access in Settings to submit proof.')
-      return
-    }
-    setNativeCapturing(true)
-    try {
-      const photo = await CapCamera.getPhoto({
-        quality: 85,
-        allowEditing: false,
-        resultType: CameraResultType.Uri,
-        source: CameraSource.Prompt,
-      })
-      const response = await fetch(photo.webPath!)
-      const blob = await response.blob()
-      const file = new File([blob], `photo_${Date.now()}.${photo.format || 'jpg'}`, { type: blob.type })
-      const previewUrl = URL.createObjectURL(blob)
-      setUploadFiles((prev) => [...prev, { file, type: 'screenshot', previewUrl }])
-      setError(null)
-    } catch (err: any) {
-      if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
-        setError('Failed to pick photo. Please try again.')
-      }
-    } finally {
-      setNativeCapturing(false)
-    }
-  }, [])
-
-  const closeCamera = useCallback(() => {
-    streamRef.current?.getTracks().forEach((t) => t.stop())
-    streamRef.current = null
-    setCameraOpen(false)
-  }, [])
-
-  const capturePhoto = useCallback(() => {
-    const video = videoRef.current
-    if (!video) return
-    const canvas = document.createElement('canvas')
-    canvas.width = video.videoWidth
-    canvas.height = video.videoHeight
-    canvas.getContext('2d')!.drawImage(video, 0, 0)
-    canvas.toBlob((blob) => {
-      if (!blob) return
-      const file = new File([blob], `photo_${Date.now()}.jpg`, { type: 'image/jpeg' })
-      const previewUrl = URL.createObjectURL(blob)
-      setUploadFiles((prev) => [...prev, { file, type: 'screenshot', previewUrl }])
-      setError(null)
-      closeCamera()
-    }, 'image/jpeg', 0.9)
-  }, [closeCamera])
-
-  const flipCamera = useCallback(() => {
-    const next = facingMode === 'environment' ? 'user' : 'environment'
-    setFacingMode(next)
-    streamRef.current?.getTracks().forEach((t) => t.stop())
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: next } }).then((stream) => {
-      streamRef.current = stream
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream
-        videoRef.current.play()
-      }
-    }).catch(() => {})
-  }, [facingMode])
-
-  useEffect(() => {
-    return () => {
-      streamRef.current?.getTracks().forEach((t) => t.stop())
-    }
-  }, [])
-
   const handleSubmit = async () => {
     if (!id || !outcomeId) return
 
-    const hasFiles = uploadFiles.length > 0
+    const hasFiles = upload.uploadFiles.length > 0
     const hasCaption = caption.trim().length > 0
 
     if (!hasFiles && !hasCaption) {
-      setError('Add proof media or a text description.')
+      upload.setError('Add proof media or a text description.')
       return
     }
 
     setSubmitting(true)
-    setError(null)
+    setSubmitError(null)
+    upload.clearError()
     try {
-      const frontFile = uploadFiles.find((u) => u.type === 'front')?.file
-      const backFile = uploadFiles.find((u) => u.type === 'back')?.file
-      const videoFile = uploadFiles.find((u) => u.type === 'video')?.file
-      const documentFile = uploadFiles.find((u) => u.type === 'document')?.file
-      const screenshotFiles = uploadFiles.filter((u) => u.type === 'screenshot').map((u) => u.file)
+      const frontFile = upload.uploadFiles.find((u) => u.type === 'front')?.file
+      const backFile = upload.uploadFiles.find((u) => u.type === 'back')?.file
+      const videoFile = upload.uploadFiles.find((u) => u.type === 'video')?.file
+      const documentFile = upload.uploadFiles.find((u) => u.type === 'document')?.file
+      const screenshotFiles = upload.uploadFiles.filter((u) => u.type === 'screenshot').map((u) => u.file)
 
       await submitShameProof(id, outcomeId, {
         frontFile,
@@ -245,25 +74,18 @@ export function ShameProofSubmission() {
       })
       setSubmitted(true)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Upload failed. Please try again.')
+      setSubmitError(err instanceof Error ? err.message : 'Upload failed. Please try again.')
     } finally {
       setSubmitting(false)
     }
   }
 
   const handleBack = () => navigate(-1)
-  const hasProof = uploadFiles.length > 0 || caption.trim().length > 0
-
-  const photoCount = uploadFiles.filter((u) => u.type === 'screenshot' || u.type === 'front' || u.type === 'back').length
-  const videoCount = uploadFiles.filter((u) => u.type === 'video').length
-  const docCount = uploadFiles.filter((u) => u.type === 'document').length
+  const hasProof = upload.uploadFiles.length > 0 || caption.trim().length > 0
+  const error = submitError || upload.error
 
   if (loading) {
-    return (
-      <div className="h-full bg-bg-primary flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-accent-green border-t-transparent rounded-full animate-spin" />
-      </div>
-    )
+    return <FullScreenSpinner />
   }
 
   if (!outcomeId) {
@@ -281,12 +103,12 @@ export function ShameProofSubmission() {
     const shareText = getShameShareText({ loserName, betTitle })
     const shareUrl = id ? getBetShareUrl(id) : ''
 
-    const proofImageFiles = uploadFiles
+    const proofImageFiles = upload.uploadFiles
       .filter((u) => u.file.type.startsWith('image/'))
       .slice(0, 1)
       .map((u) => u.file)
 
-    const firstPreviewUrl = uploadFiles.find((u) => u.previewUrl)?.previewUrl ?? null
+    const firstPreviewUrl = upload.uploadFiles.find((u) => u.previewUrl)?.previewUrl ?? null
 
     const handleShareAfterSubmit = async () => {
       const usedNative = await shareWithNative({
@@ -318,7 +140,7 @@ export function ShameProofSubmission() {
           className="flex items-center gap-2 px-4 py-2 rounded-full mb-4"
           style={{ background: 'rgba(0,230,118,0.12)', border: '1px solid rgba(0,230,118,0.3)' }}
         >
-          <span className="text-lg"></span>
+          <span className="text-lg">{'\u2B50'}</span>
           <span className="text-sm font-black text-accent-green">+10 REP earned</span>
         </div>
 
@@ -388,123 +210,54 @@ export function ShameProofSubmission() {
             <UploadCard
               icon={<Image className="w-8 h-8 text-accent-green" />}
               label="Photos"
-              count={photoCount}
-              onClick={handlePhotosPick}
+              count={upload.photoCount}
+              onClick={upload.handlePhotosPick}
             />
             <UploadCard
               icon={<Video className="w-8 h-8 text-accent-green" />}
               label="Video"
-              count={videoCount}
-              onClick={() => Capacitor.isNativePlatform() ? nativeVideoInputRef.current?.click() : videoInputRef.current?.click()}
+              count={upload.videoCount}
+              onClick={() => Capacitor.isNativePlatform() ? upload.nativeVideoInputRef.current?.click() : upload.videoInputRef.current?.click()}
             />
             <UploadCard
               icon={<FileText className="w-8 h-8 text-accent-green" />}
               label="Document"
-              count={docCount}
-              onClick={() => Capacitor.isNativePlatform() ? nativeDocInputRef.current?.click() : docInputRef.current?.click()}
+              count={upload.docCount}
+              onClick={() => Capacitor.isNativePlatform() ? upload.nativeDocInputRef.current?.click() : upload.docInputRef.current?.click()}
             />
             <UploadCard
               icon={<Camera className="w-8 h-8 text-accent-green" />}
               label="Take Photo"
               count={0}
-              onClick={openCamera}
+              onClick={upload.openCamera}
             />
           </div>
 
-          {/* Hidden file inputs */}
-          <input
-            ref={photoInputRef}
-            type="file"
-            accept="image/*"
-            multiple
-            className="hidden"
-            onChange={(e) => addFiles(e, 'screenshot')}
-          />
-          <input
-            ref={videoInputRef}
-            type="file"
-            accept="video/*"
-            className="hidden"
-            onChange={(e) => addFiles(e, 'video')}
-          />
-          <input
-            ref={docInputRef}
-            type="file"
-            accept=".pdf,.doc,.docx,.txt,.csv,.xls,.xlsx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"
-            className="hidden"
-            onChange={(e) => addFiles(e, 'document')}
-          />
-          <input
-            ref={cameraInputRef}
-            type="file"
-            accept="image/*"
-            capture="environment"
-            className="hidden"
-            onChange={(e) => addFiles(e, 'screenshot')}
-          />
-          <input
-            ref={nativeVideoInputRef}
-            type="file"
-            accept="video/*"
-            capture="environment"
-            className="hidden"
-            onChange={(e) => addFiles(e, 'video')}
-          />
-          <input
-            ref={nativeDocInputRef}
-            type="file"
-            accept=".pdf,.doc,.docx,image/*"
-            className="hidden"
-            onChange={(e) => addFiles(e, 'document')}
+          <HiddenFileInputs
+            photoInputRef={upload.photoInputRef}
+            videoInputRef={upload.videoInputRef}
+            docInputRef={upload.docInputRef}
+            cameraInputRef={upload.cameraInputRef}
+            nativeVideoInputRef={upload.nativeVideoInputRef}
+            nativeDocInputRef={upload.nativeDocInputRef}
+            addFiles={upload.addFiles}
           />
         </div>
 
-        {/* File previews */}
-        {uploadFiles.length > 0 && (
-          <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-text-muted mb-2">
-              {uploadFiles.length} FILE{uploadFiles.length !== 1 ? 'S' : ''} SELECTED
-            </p>
-            <div className="flex gap-2 flex-wrap">
-              {uploadFiles.map((u, i) => (
-                <div key={i} className="relative w-20 h-20 rounded-lg overflow-hidden border border-accent-green/50 bg-bg-elevated">
-                  {u.previewUrl ? (
-                    <img src={u.previewUrl} alt="" className="w-full h-full object-cover" />
-                  ) : u.file.type.startsWith('video/') ? (
-                    <div className="w-full h-full flex flex-col items-center justify-center">
-                      <Video className="w-5 h-5 text-accent-green mb-1" />
-                      <span className="text-[10px] text-text-muted truncate max-w-full px-1">{u.file.name}</span>
-                    </div>
-                  ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center">
-                      <FileText className="w-5 h-5 text-accent-green mb-1" />
-                      <span className="text-[10px] text-text-muted truncate max-w-full px-1">{u.file.name}</span>
-                    </div>
-                  )}
-                  <button
-                    onClick={() => removeFile(i)}
-                    className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-accent-coral text-white flex items-center justify-center z-10"
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        <FilePreviewGrid files={upload.uploadFiles} onRemove={upload.removeFile} />
 
         {/* Caption / text proof */}
         <div>
           <label className="text-[11px] font-bold uppercase tracking-[0.1em] text-text-muted mb-2 block">
-            DESCRIPTION {uploadFiles.length === 0 ? '' : '(OPTIONAL)'}
+            DESCRIPTION {upload.uploadFiles.length === 0 ? '' : '(OPTIONAL)'}
           </label>
           <textarea
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
-            placeholder={uploadFiles.length === 0 ? 'Describe what happened as proof...' : 'Add context...'}
+            placeholder={upload.uploadFiles.length === 0 ? 'Describe what happened as proof...' : 'Add context...'}
             className="w-full h-24 bg-bg-card border border-border-subtle rounded-xl p-3 text-text-primary placeholder:text-text-muted resize-none"
           />
-          {uploadFiles.length === 0 && caption.trim().length > 0 && (
+          {upload.uploadFiles.length === 0 && caption.trim().length > 0 && (
             <p className="text-xs text-text-muted mt-1">Text-only proof will be submitted</p>
           )}
         </div>
@@ -513,80 +266,23 @@ export function ShameProofSubmission() {
 
         <PrimaryButton
           onClick={handleSubmit}
-          disabled={!hasProof || submitting || nativeCapturing}
+          disabled={!hasProof || submitting || upload.nativeCapturing}
           className="w-full"
         >
-          {nativeCapturing ? 'Uploading...' : submitting ? 'Submitting...' : 'Submit Proof'}
+          {upload.nativeCapturing ? 'Uploading...' : submitting ? 'Submitting...' : 'Submit Proof'}
         </PrimaryButton>
       </div>
 
       {/* Camera viewfinder overlay */}
-      {cameraOpen && (
-        <div className="fixed inset-0 z-50 bg-black flex flex-col">
-          <video
-            ref={videoRef}
-            autoPlay
-            playsInline
-            muted
-            className="flex-1 object-cover w-full"
-            style={{ transform: facingMode === 'user' ? 'scaleX(-1)' : undefined }}
-          />
-          <div className="absolute top-safe top-4 right-4 flex gap-3 z-10">
-            <button
-              onClick={flipCamera}
-              className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center"
-              aria-label="Flip camera"
-            >
-              <span className="text-white text-lg"></span>
-            </button>
-            <button
-              onClick={closeCamera}
-              className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center"
-              aria-label="Close camera"
-            >
-              <X className="w-5 h-5 text-white" />
-            </button>
-          </div>
-          <div className="absolute bottom-8 left-0 right-0 flex justify-center pb-safe">
-            <button
-              onClick={capturePhoto}
-              className="w-18 h-18 rounded-full border-4 border-white bg-white/30 backdrop-blur-sm flex items-center justify-center active:scale-90 transition-transform"
-              style={{ width: 72, height: 72 }}
-              aria-label="Take photo"
-            >
-              <div className="w-14 h-14 rounded-full bg-white" />
-            </button>
-          </div>
-        </div>
+      {upload.cameraOpen && (
+        <CameraOverlay
+          videoRef={upload.videoRef}
+          facingMode={upload.facingMode}
+          onCapture={upload.capturePhoto}
+          onFlip={upload.flipCamera}
+          onClose={upload.closeCamera}
+        />
       )}
     </div>
-  )
-}
-
-function UploadCard({
-  icon,
-  label,
-  count,
-  onClick,
-}: {
-  icon: React.ReactNode
-  label: string
-  count: number
-  onClick: () => void
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="relative bg-bg-card border border-border-subtle rounded-xl p-4 flex flex-col items-center gap-2 hover:border-accent-green active:scale-95 transition-all cursor-pointer min-h-[100px]"
-    >
-      {icon}
-      <span className="text-xs font-bold text-text-primary">{label}</span>
-      {count > 0 && (
-        <span className="absolute top-2 right-2 w-5 h-5 rounded-full bg-accent-green text-white text-[10px] font-bold flex items-center justify-center">
-          {count}
-        </span>
-      )}
-    </button>
   )
 }

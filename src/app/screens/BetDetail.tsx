@@ -15,6 +15,7 @@ import { computeBetPayouts } from '@/lib/api/betPayouts'
 import { toggleBetVisibility } from '@/lib/api/competitions'
 import type { HallOfShameEntry, Outcome } from '@/lib/database.types'
 import { PrimaryButton } from '../components/PrimaryButton'
+import { FullScreenSpinner } from '../components/FullScreenSpinner'
 import { ShareSheet } from '../components/ShareSheet'
 import { MediaGallery } from '../components/MediaGallery'
 import type { MediaItem } from '../components/MediaGallery'
@@ -178,11 +179,7 @@ export function BetDetail({ onBack }: BetDetailProps) {
   if (!id) return null
 
   if (isLoading && !activeBet) {
-    return (
-      <div className="h-full bg-bg-primary flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-accent-green border-t-transparent rounded-full animate-spin" />
-      </div>
-    )
+    return <FullScreenSpinner />
   }
 
   if (!activeBet) {

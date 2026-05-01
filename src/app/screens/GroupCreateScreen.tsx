@@ -8,6 +8,7 @@ import { GROUP_EMOJIS } from '@/lib/utils/constants'
 import { ShareSheet } from '@/app/components/ShareSheet'
 import { BackButton } from '@/app/components/BackButton'
 import {
+  copyToClipboard,
   getGroupInviteUrl,
   getGroupInviteShareText,
   shareWithNative,
@@ -53,7 +54,7 @@ export function GroupCreateScreen() {
 
   const handleCopyLink = () => {
     if (inviteLink) {
-      navigator.clipboard.writeText(inviteLink)
+      copyToClipboard(inviteLink)
       setLinkCopied(true)
       setTimeout(() => setLinkCopied(false), 2000)
     }

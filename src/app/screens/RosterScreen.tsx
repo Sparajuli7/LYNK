@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 import { motion, AnimatePresence } from 'motion/react'
 import { useAuthStore, useFriendStore } from '@/stores'
 import { SectionHeader, FriendRow, FriendRequestCard, AddFriendsSheet } from '@/components/lynk'
-import { searchUsers } from '@/lib/api/friends'
+import { useAddFriends } from '@/lib/hooks/useAddFriends'
 import { formatMoney } from '@/lib/utils/formatters'
 import { usePrefersReducedMotion } from '@/lib/hooks/usePrefersReducedMotion'
 
@@ -22,7 +22,7 @@ export function RosterScreen() {
 
   const prefersReducedMotion = usePrefersReducedMotion()
   const [searchQuery, setSearchQuery] = useState('')
-  const [addSheetOpen, setAddSheetOpen] = useState(false)
+  const addFriends = useAddFriends()
 
   // Track which request IDs are animating out (for accept animation)
   const [dismissingIds, setDismissingIds] = useState<Set<string>>(new Set())
@@ -46,12 +46,6 @@ export function RosterScreen() {
     },
     [acceptRequest, prefersReducedMotion],
   )
-
-  // AddFriendsSheet search state
-  const [addSearchResults, setAddSearchResults] = useState<
-    { id: string; displayName: string; username: string; avatarUrl?: string; mutualCount: number }[]
-  >([])
-  const [isSearching, setIsSearching] = useState(false)
 
   useEffect(() => {
     fetchFriends()
@@ -82,36 +76,6 @@ export function RosterScreen() {
     return `You owe ${formatMoney(Math.abs(balanceCents))}`
   }
 
-  // AddFriendsSheet search handler
-  const handleAddSearch = async (query: string) => {
-    if (!user?.id || query.trim().length < 2) {
-      setAddSearchResults([])
-      return
-    }
-    setIsSearching(true)
-    try {
-      const results = await searchUsers(query, user.id)
-      setAddSearchResults(
-        results.map((r) => ({
-          id: r.id,
-          displayName: r.display_name,
-          username: r.username,
-          avatarUrl: r.avatar_url ?? undefined,
-          mutualCount: 0,
-        })),
-      )
-    } catch {
-      setAddSearchResults([])
-    } finally {
-      setIsSearching(false)
-    }
-  }
-
-  const handleAddUser = async (userId: string) => {
-    await sendRequest(userId, 'search')
-    setAddSearchResults((prev) => prev.filter((r) => r.id !== userId))
-  }
-
   const handleSyncContacts = async () => {
     // Contacts sync requires the @capacitor-community/contacts plugin
     // on native. For now, check if we're on native and prompt appropriately.
@@ -127,10 +91,6 @@ export function RosterScreen() {
       alert('Contacts sync is only available on mobile devices.')
     }
   }
-
-  const inviteLink = profile?.username
-    ? `${window.location.origin}/add/${profile.username}`
-    : ''
 
   return (
     <div className="h-full bg-bg overflow-y-auto pb-8">
@@ -152,7 +112,7 @@ export function RosterScreen() {
           </div>
         </div>
         <button
-          onClick={() => setAddSheetOpen(true)}
+          onClick={() => addFriends.setOpen(true)}
           className="bg-rider text-bg font-black text-[11px] px-3 py-2 rounded-full tracking-[0.08em]"
         >
           + ADD
@@ -273,7 +233,7 @@ export function RosterScreen() {
             <div className="text-center py-8">
               <p className="text-[13px] text-text-mute">No friends yet.</p>
               <button
-                onClick={() => setAddSheetOpen(true)}
+                onClick={() => addFriends.setOpen(true)}
                 className="mt-3 bg-rider text-bg font-black text-[11px] px-4 py-2 rounded-full tracking-[0.08em]"
               >
                 + ADD FRIENDS
@@ -285,27 +245,17 @@ export function RosterScreen() {
 
       {/* -- AddFriendsSheet -- */}
       <AddFriendsSheet
-        open={addSheetOpen}
-        onClose={() => setAddSheetOpen(false)}
-        inviteLink={inviteLink}
-        username={profile?.username ?? ''}
-        onCopyLink={() => {
-          navigator.clipboard.writeText(inviteLink)
-        }}
-        onShareMessages={() => {
-          if (navigator.share) {
-            navigator.share({ title: 'Add me on LYNK', text: `Add me on LYNK: ${inviteLink}`, url: inviteLink })
-          }
-        }}
-        onShareGeneral={() => {
-          if (navigator.share) {
-            navigator.share({ title: 'Add me on LYNK', text: `Add me on LYNK: ${inviteLink}`, url: inviteLink })
-          }
-        }}
-        searchResults={addSearchResults}
-        onSearch={handleAddSearch}
-        onAddUser={handleAddUser}
-        isSearching={isSearching}
+        open={addFriends.open}
+        onClose={() => addFriends.setOpen(false)}
+        inviteLink={addFriends.inviteLink}
+        username={addFriends.username}
+        onCopyLink={addFriends.handleCopyLink}
+        onShareMessages={addFriends.handleShareMessages}
+        onShareGeneral={addFriends.handleShareGeneral}
+        searchResults={addFriends.searchResults}
+        onSearch={addFriends.handleSearch}
+        onAddUser={addFriends.handleAddUser}
+        isSearching={addFriends.isSearching}
         onSyncContacts={handleSyncContacts}
       />
     </div>
