@@ -115,8 +115,9 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
         const previewUrl = URL.createObjectURL(blob)
         setUploadFiles((prev) => [...prev, { file, type: 'camera', previewUrl }])
         setLocalError(null)
-      } catch (err: any) {
-        if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : ''
+        if (!(msg.includes('cancelled') || msg.includes('cancel'))) {
           setLocalError('Failed to capture photo. Please try again.')
         }
       } finally {
@@ -164,8 +165,9 @@ export function ProofSubmission({ onSubmit, onBack }: ProofSubmissionProps) {
       const previewUrl = URL.createObjectURL(blob)
       setUploadFiles((prev) => [...prev, { file, type: 'screenshot', previewUrl }])
       setLocalError(null)
-    } catch (err: any) {
-      if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : ''
+      if (!(msg.includes('cancelled') || msg.includes('cancel'))) {
         setLocalError('Failed to pick photo. Please try again.')
       }
     } finally {

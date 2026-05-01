@@ -45,9 +45,10 @@ export function ProfileEditScreen() {
         if (!user) return
         const url = await uploadAvatar(user.id, file)
         setProfile({ ...profile!, avatar_url: url })
-      } catch (err: any) {
-        if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
-          setError(err instanceof Error ? err.message : 'Failed to upload photo')
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : ''
+        if (!(msg.includes('cancelled') || msg.includes('cancel'))) {
+          setError(msg || 'Failed to upload photo')
         }
       } finally {
         setAvatarUploading(false)

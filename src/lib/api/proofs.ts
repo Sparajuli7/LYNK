@@ -232,25 +232,25 @@ export async function getPublicProofsForUser(userId: string): Promise<PublicProo
   }>) {
     // Pick the best still-image URL; skip if no image available
     const primaryImageUrl: string | null =
-      (row.front_camera_url as string | null) ??
-      (row.back_camera_url as string | null) ??
+      row.front_camera_url ??
+      row.back_camera_url ??
       (Array.isArray(row.screenshot_urls)
-        ? ((row.screenshot_urls as string[])[0] ?? null)
+        ? (row.screenshot_urls[0] ?? null)
         : null)
 
     if (!primaryImageUrl) continue
 
-    const bet = row.bets as { id: string; title: string; is_public: boolean }
+    const bet = row.bets
     const kind: PublicProof['kind'] =
-      (row.proof_type as string) === 'punishment' ? 'punishment_proof' : 'evidence'
+      row.proof_type === 'punishment' ? 'punishment_proof' : 'evidence'
 
     results.push({
-      id: row.id as string,
+      id: row.id,
       betId: bet.id,
       betTitle: bet.title,
       kind,
       primaryImageUrl,
-      submittedAt: row.submitted_at as string,
+      submittedAt: row.submitted_at,
     })
   }
 

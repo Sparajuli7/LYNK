@@ -79,8 +79,8 @@ export function OutcomeReveal({ onShare, onBack }: OutcomeRevealProps) {
         const map = await getProfilesByIds([...ids])
         if (!cancelled) setProfiles(map)
       })
-      .catch((e) => {
-        if (!cancelled) setError(e?.message ?? 'Failed to load outcome')
+      .catch((e: unknown) => {
+        if (!cancelled) setError(e instanceof Error ? e.message : 'Failed to load outcome')
       })
       .finally(() => {
         if (!cancelled) setLoading(false)

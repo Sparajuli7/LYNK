@@ -3,6 +3,16 @@ import { useNavigate } from 'react-router'
 import { ChevronLeft, Check } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
+/** Shape of a row in the `feedback` table (not in generated DB types). */
+interface FeedbackInsert {
+  user_id: string | null
+  rating: number | null
+  loves: string[] | null
+  improve: string[] | null
+  thoughts: string | null
+  submitted_at: string
+}
+
 const LOVE_OPTIONS = [
   'Betting with friends',
   'Punishment cards',
@@ -74,15 +84,17 @@ export function FeedbackScreen() {
     setSubmitting(true)
     try {
       const { data: { user } } = await supabase.auth.getUser()
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (supabase.from as any)('feedback').insert({
+      const insert: FeedbackInsert = {
         user_id: user?.id ?? null,
         rating: rating > 0 ? rating : null,
         loves: loves.size > 0 ? [...loves] : null,
         improve: improve.size > 0 ? [...improve] : null,
         thoughts: thoughts.trim() || null,
         submitted_at: new Date().toISOString(),
-      })
+      }
+      // `feedback` table exists in DB but is not in generated types
+      // @ts-expect-error — table not in Database type definition
+      await supabase.from('feedback').insert(insert)
       setSubmitted(true)
     } catch (err) {
       console.error('Feedback submit failed:', err)

@@ -59,8 +59,8 @@ export async function shareImage(
         files: [file],
       })
       return true
-    } catch (e) {
-      if ((e as Error).name === 'AbortError') return true
+    } catch (e: unknown) {
+      if (e instanceof Error && e.name === 'AbortError') return true
     }
   }
 

@@ -70,8 +70,9 @@ export function ProfileSetupScreen() {
         setAvatarFile(file)
         setAvatarPreview(photo.webPath!)
         setCaptureError(null)
-      } catch (err: any) {
-        if (!(err?.message?.includes('cancelled') || err?.message?.includes('cancel'))) {
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : ''
+        if (!(msg.includes('cancelled') || msg.includes('cancel'))) {
           setCaptureError('Failed to capture photo. Please try again.')
         }
       } finally {
