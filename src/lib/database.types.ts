@@ -502,6 +502,9 @@ export type NotificationPreference = Database['public']['Tables']['notification_
 export type FriendshipStatus = 'pending' | 'accepted' | 'blocked'
 export type FriendshipSource = 'link' | 'search' | 'contacts' | 'group_suggest'
 
+/** UI-level relationship classification between two users */
+export type Relationship = 'stranger' | 'pending' | 'friend' | 'rival'
+
 export interface FriendshipRow {
   id: string
   user_a_id: string

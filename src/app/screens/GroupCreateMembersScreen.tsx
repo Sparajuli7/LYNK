@@ -2,12 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { useNavigate, useLocation } from 'react-router'
 import { useFriendStore, useAuthStore } from '@/stores'
 import { GroupCreateMemberPicker } from '@/components/lynk'
-
-interface SelectedMember {
-  id: string
-  displayName: string
-  avatarUrl?: string
-}
+import type { SelectedMember } from '@/components/lynk'
 
 interface GroupCreateState {
   groupName: string

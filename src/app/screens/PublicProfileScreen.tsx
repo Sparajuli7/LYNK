@@ -7,13 +7,11 @@ import { getRelationship, getHeadToHead, getMutualFriends } from '@/lib/api/frie
 import { getPublicProofsForUser } from '@/lib/api/proofs'
 import { getMyBets } from '@/lib/api/bets'
 import { formatMoney } from '@/lib/utils/formatters'
-import type { ProfileRow, HeadToHead as HeadToHeadType } from '@/lib/database.types'
+import type { ProfileRow, HeadToHead as HeadToHeadType, Relationship } from '@/lib/database.types'
 
 interface PublicProfileScreenProps {
   username: string
 }
-
-type Relationship = 'stranger' | 'pending' | 'friend' | 'rival'
 
 export function PublicProfileScreen({ username }: PublicProfileScreenProps) {
   const navigate = useNavigate()

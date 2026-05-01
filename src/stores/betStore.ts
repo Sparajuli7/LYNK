@@ -1,14 +1,13 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 import { supabase, getCurrentUserId } from '@/lib/supabase'
-import { createRematchBet as createRematchBetApi, type RematchStakeOption, type BetWithSides } from '@/lib/api/bets'
+import { createRematchBet as createRematchBetApi, type RematchStakeOption, type BetWithSides, type BetFilters } from '@/lib/api/bets'
 import type {
   Bet,
   BetSideEntry,
   BetInsert,
   BetCategory,
   BetType,
-  BetStatus,
   BetSide,
   StakeType,
   PunishmentCard,
@@ -17,7 +16,7 @@ import type {
 } from '@/lib/database.types'
 
 /** Re-export so existing import paths (`@/stores/betStore`, `@/stores`) keep working. */
-export type { BetWithSides }
+export type { BetWithSides, BetFilters }
 
 export interface WizardFields {
   claim: string
@@ -47,12 +46,6 @@ const WIZARD_DEFAULTS: WizardFields = {
   selectedGroup: null,
   joinMode: null,
   selectedMemberIds: [],
-}
-
-export interface BetFilters {
-  category: BetCategory | null
-  type: BetType | null
-  status: BetStatus | null
 }
 
 interface BetState {
@@ -125,7 +118,7 @@ const useBetStore = create<BetStore>()(
     activeBetSides: [],
     isLoading: false,
     error: null,
-    filters: { category: null, type: null, status: null },
+    filters: {},
     currentStep: 1,
     wizard: { ...WIZARD_DEFAULTS },
 
@@ -413,7 +406,7 @@ const useBetStore = create<BetStore>()(
 
     clearFilters: () =>
       set((draft) => {
-        draft.filters = { category: null, type: null, status: null }
+        draft.filters = {}
       }),
 
     resetWizard: () =>

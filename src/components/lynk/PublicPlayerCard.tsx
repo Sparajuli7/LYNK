@@ -1,3 +1,4 @@
+import type { Relationship } from "@/lib/database.types";
 import { PlayerCardHero } from "./PlayerCardHero";
 import { RelationshipStatusChips } from "./RelationshipStatusChips";
 import { HeadToHeadReceipt } from "./HeadToHeadReceipt";
@@ -6,8 +7,6 @@ import { StrangerPrivacyNudge } from "./StrangerPrivacyNudge";
 import { LockedTicketStub } from "./LockedTicketStub";
 import { TicketStub } from "./TicketStub";
 import { SectionHeader } from "./SectionHeader";
-
-type Relationship = "stranger" | "pending" | "friend" | "rival";
 
 interface PublicPlayerCardProps {
   profile: {
