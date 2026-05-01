@@ -14,7 +14,7 @@ export type RealtimeSubscriptionStatus = 'subscribing' | 'subscribed' | 'error'
  * @param callback - Called on INSERT/UPDATE/DELETE
  * @param filter - Optional filter (e.g. "group_id=eq.xxx")
  */
-function useRealtimeSubscription<T extends Record<string, unknown>>(
+export function useRealtimeSubscription<T extends Record<string, unknown>>(
   table: string,
   callback: (payload: RealtimePostgresChangesPayload<T>) => void,
   filter?: string,
