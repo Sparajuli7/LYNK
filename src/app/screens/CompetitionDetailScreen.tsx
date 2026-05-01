@@ -7,6 +7,7 @@ import { submitScore, uploadCompetitionProof, toggleCompetitionVisibility } from
 import { useRealtimeSubscription } from '@/lib/hooks/useRealtime'
 import { AvatarWithRepBadge } from '@/app/components/RepBadge'
 import { PrimaryButton } from '@/app/components/PrimaryButton'
+import { FullScreenSpinner } from '@/app/components/FullScreenSpinner'
 import {
   Sheet,
   SheetContent,
@@ -137,11 +138,7 @@ export function CompetitionDetailScreen() {
   if (!id) return null
 
   if (isLoading && leaderboard.length === 0) {
-    return (
-      <div className="h-full bg-bg-primary flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-accent-green border-t-transparent rounded-full animate-spin" />
-      </div>
-    )
+    return <FullScreenSpinner />
   }
 
   return (

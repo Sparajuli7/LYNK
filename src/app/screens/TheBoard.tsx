@@ -14,8 +14,7 @@ import { formatOdds } from '@/lib/utils/formatters'
 import { loadPinned, togglePin, PIN_BETS_KEY } from '@/lib/utils/pinStorage'
 import { SectionHeader, ReceiptCard, GroupRow, FABGlow, AddFriendsSheet, SuggestionEmptyState } from '@/components/lynk'
 import type { RankedSuggestion } from '@/lib/suggestions'
-import { searchUsers } from '@/lib/api/friends'
-import { useFriendStore } from '@/stores'
+import { useAddFriends } from '@/lib/hooks/useAddFriends'
 import type { BetWithSides } from '@/stores/betStore'
 
 const DEFAULT_AVATAR = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop'
@@ -164,10 +163,7 @@ export function TheBoard() {
   const unreadCount = useNotificationStore((s) => s.unreadCount)
   const chatUnreadCount = useChatStore((s) => s.totalUnreadCount)
 
-  const [addFriendsOpen, setAddFriendsOpen] = useState(false)
-  const [addSearchResults, setAddSearchResults] = useState<{ id: string; displayName: string; username: string; avatarUrl?: string; mutualCount: number }[]>([])
-  const [isAddSearching, setIsAddSearching] = useState(false)
-  const sendFriendRequest = useFriendStore((s) => s.sendRequest)
+  const addFriends = useAddFriends()
   const [notificationOpen, setNotificationOpen] = useState(false)
   const [claimantMap, setClaimantMap] = useState<Map<string, { display_name: string; avatar_url: string | null }>>(new Map())
   const [pinBets, setPinBets] = useState<Set<string>>(() => loadPinned(PIN_BETS_KEY))
@@ -420,16 +416,13 @@ export function TheBoard() {
             </div>
             <div className="flex gap-2">
               <button
-                onClick={() => setAddFriendsOpen(true)}
+                onClick={() => addFriends.setOpen(true)}
                 className="flex-1 bg-rider-dim border-[1.5px] border-rider text-rider font-black text-[10px] py-2.5 rounded-xl tracking-[0.08em]"
               >
                 FIND BY USERNAME
               </button>
               <button
-                onClick={() => {
-                  const link = `${window.location.origin}/add/${profile?.username ?? ''}`
-                  navigator.clipboard.writeText(link)
-                }}
+                onClick={addFriends.handleCopyLink}
                 className="flex-1 bg-transparent border-[1.5px] border-[#333] text-[#ccc] font-bold text-[10px] py-2.5 rounded-xl tracking-[0.08em]"
               >
                 COPY INVITE LINK
@@ -500,28 +493,17 @@ export function TheBoard() {
 
       {/* ── 6. Add Friends Sheet ── */}
       <AddFriendsSheet
-        open={addFriendsOpen}
-        onClose={() => setAddFriendsOpen(false)}
-        inviteLink={`${window.location.origin}/add/${profile?.username ?? ''}`}
-        username={profile?.username ?? ''}
-        onCopyLink={() => navigator.clipboard.writeText(`${window.location.origin}/add/${profile?.username ?? ''}`)}
-        onShareMessages={() => { if (navigator.share) navigator.share({ title: 'Add me on LYNK', url: `${window.location.origin}/add/${profile?.username ?? ''}` }) }}
-        onShareGeneral={() => { if (navigator.share) navigator.share({ title: 'Add me on LYNK', url: `${window.location.origin}/add/${profile?.username ?? ''}` }) }}
-        searchResults={addSearchResults}
-        onSearch={async (q) => {
-          if (!profile?.id || q.trim().length < 2) { setAddSearchResults([]); return }
-          setIsAddSearching(true)
-          try {
-            const results = await searchUsers(q, profile.id)
-            setAddSearchResults(results.map((r) => ({ id: r.id, displayName: r.display_name, username: r.username, avatarUrl: r.avatar_url ?? undefined, mutualCount: 0 })))
-          } catch { setAddSearchResults([]) }
-          finally { setIsAddSearching(false) }
-        }}
-        onAddUser={async (userId) => {
-          await sendFriendRequest(userId, 'search')
-          setAddSearchResults((prev) => prev.filter((r) => r.id !== userId))
-        }}
-        isSearching={isAddSearching}
+        open={addFriends.open}
+        onClose={() => addFriends.setOpen(false)}
+        inviteLink={addFriends.inviteLink}
+        username={addFriends.username}
+        onCopyLink={addFriends.handleCopyLink}
+        onShareMessages={addFriends.handleShareMessages}
+        onShareGeneral={addFriends.handleShareGeneral}
+        searchResults={addFriends.searchResults}
+        onSearch={addFriends.handleSearch}
+        onAddUser={addFriends.handleAddUser}
+        isSearching={addFriends.isSearching}
       />
     </div>
   )

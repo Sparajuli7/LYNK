@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { Copy, Check, LogOut, MessageCircle, Share2, Search, UserPlus, Plus } from 'lucide-react'
 import { BackButton } from '@/app/components/BackButton'
+import { FullScreenSpinner } from '@/app/components/FullScreenSpinner'
 import { useGroupStore, useAuthStore, useChatStore } from '@/stores'
 import { getGroupBets } from '@/lib/api/bets'
 import { searchProfiles, getProfilesWithRepByIds } from '@/lib/api/profiles'
@@ -27,6 +28,7 @@ import { useCountdown } from '@/lib/hooks/useCountdown'
 import { formatMoney, formatOdds } from '@/lib/utils/formatters'
 import { ShareSheet } from '@/app/components/ShareSheet'
 import {
+  copyToClipboard,
   getGroupInviteUrl,
   getGroupInviteShareText,
   shareWithNative,
@@ -270,7 +272,7 @@ export function GroupDetailScreen() {
 
   const handleCopyInvite = () => {
     if (group?.invite_code) {
-      navigator.clipboard.writeText(getGroupInviteUrl(group.invite_code))
+      copyToClipboard(getGroupInviteUrl(group.invite_code))
       setInviteCopied(true)
       setTimeout(() => setInviteCopied(false), 2000)
     }
@@ -305,14 +307,7 @@ export function GroupDetailScreen() {
   }
 
   if (!group) {
-    return (
-      <div className="h-full bg-bg-primary flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-8 h-8 border-2 border-accent-green border-t-transparent rounded-full animate-spin" />
-          <p className="text-text-muted text-sm">Loading group...</p>
-        </div>
-      </div>
-    )
+    return <FullScreenSpinner message="Loading group..." />
   }
 
   const inviteLink = getGroupInviteUrl(group.invite_code)

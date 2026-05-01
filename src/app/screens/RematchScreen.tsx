@@ -6,6 +6,7 @@ import { getOutcome } from '@/lib/api/outcomes'
 import { useBetStore } from '@/stores'
 import { useAuthStore } from '@/stores'
 import { PrimaryButton } from '../components/PrimaryButton'
+import { FullScreenSpinner } from '../components/FullScreenSpinner'
 import type { BetWithSides } from '@/lib/api/bets'
 import type { RematchStakeOption } from '@/lib/api/bets'
 import { formatMoney } from '@/lib/utils/formatters'
@@ -69,11 +70,7 @@ export function RematchScreen() {
   }
 
   if (loading) {
-    return (
-      <div className="h-full bg-bg-primary flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-accent-green border-t-transparent rounded-full animate-spin" />
-      </div>
-    )
+    return <FullScreenSpinner />
   }
 
   if (notParticipant || !originalBet) {

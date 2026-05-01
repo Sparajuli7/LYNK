@@ -3,6 +3,7 @@ import { useNavigate, useParams, useSearchParams } from 'react-router'
 import { useAuthStore, useGroupStore } from '@/stores'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/app/components/ui/button'
+import { FullScreenSpinner } from '@/app/components/FullScreenSpinner'
 import type { Bet } from '@/lib/database.types'
 
 const PENDING_INVITE_KEY = 'lynk_pending_invite'
@@ -139,14 +140,7 @@ export function CompetitionInviteScreen() {
   }
 
   if (isLoading || loadingComp) {
-    return (
-      <div className="h-full bg-bg-primary flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-8 h-8 border-2 border-accent-green border-t-transparent rounded-full animate-spin" />
-          <p className="text-text-muted text-sm">Loading...</p>
-        </div>
-      </div>
-    )
+    return <FullScreenSpinner message="Loading..." />
   }
 
   if (!comp) {

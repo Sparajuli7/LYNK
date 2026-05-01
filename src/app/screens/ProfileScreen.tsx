@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { MessageCircle, Loader2, Archive, IdCard, BookOpen, Pencil, Settings, UserPlus, Users } from 'lucide-react'
-import { useAuthStore, useChatStore, useFriendStore } from '@/stores'
+import { useAuthStore, useChatStore } from '@/stores'
 import { AddFriendsSheet, TicketStub } from '@/components/lynk'
-import { searchUsers } from '@/lib/api/friends'
+import { useAddFriends } from '@/lib/hooks/useAddFriends'
 import { supabase } from '@/lib/supabase'
 import { getMyBets, getUserBetStats, getUserCurrentStreak } from '@/lib/api/bets'
 import type { UserBetStats } from '@/lib/api/bets'
@@ -11,6 +11,7 @@ import { getProfile as fetchProfile } from '@/lib/api/profiles'
 import { getPublicProofsForUser } from '@/lib/api/proofs'
 import type { PublicProof } from '@/lib/api/proofs'
 import { formatRecord } from '@/lib/utils/formatters'
+import { FullScreenSpinner } from '@/app/components/FullScreenSpinner'
 import { betToTicketStatus, formatTicketAmount } from '@/app/screens/JournalScreen'
 import type { BetWithSides } from '@/stores/betStore'
 import type { Profile } from '@/lib/database.types'
@@ -109,27 +110,7 @@ function ProfileContent({
 }) {
   const navigate = useNavigate()
   const [openingDM, setOpeningDM] = useState(false)
-  const [addFriendsOpen, setAddFriendsOpen] = useState(false)
-  const [addSearchResults, setAddSearchResults] = useState<{ id: string; displayName: string; username: string; avatarUrl?: string; mutualCount: number }[]>([])
-  const [isSearching, setIsSearching] = useState(false)
-  const sendRequest = useFriendStore((s) => s.sendRequest)
-
-  const handleAddSearch = async (query: string) => {
-    if (!profile?.id || query.trim().length < 2) { setAddSearchResults([]); return }
-    setIsSearching(true)
-    try {
-      const results = await searchUsers(query, profile.id)
-      setAddSearchResults(results.map((r) => ({ id: r.id, displayName: r.display_name, username: r.username, avatarUrl: r.avatar_url ?? undefined, mutualCount: 0 })))
-    } catch { setAddSearchResults([]) }
-    finally { setIsSearching(false) }
-  }
-
-  const handleAddUser = async (userId: string) => {
-    await sendRequest(userId, 'search')
-    setAddSearchResults((prev) => prev.filter((r) => r.id !== userId))
-  }
-
-  const inviteLink = profile?.username ? `${window.location.origin}/add/${profile.username}` : ''
+  const addFriends = useAddFriends()
 
   const pendingPunishments = Math.max(0, profile.punishments_taken - profile.punishments_completed)
   const completionRate = formatCompletionRate(profile.punishments_completed, profile.punishments_taken)
@@ -302,7 +283,7 @@ function ProfileContent({
             ))}
             {/* Add Friends button — green accent */}
             <button
-              onClick={() => setAddFriendsOpen(true)}
+              onClick={() => addFriends.setOpen(true)}
               className="w-12 h-12 rounded-xl bg-rider/15 border border-rider/40 flex items-center justify-center text-rider hover:bg-rider/25 transition-colors active:scale-95"
               aria-label="Add Friends"
               title="Add Friends"
@@ -416,17 +397,17 @@ function ProfileContent({
       {/* AddFriendsSheet */}
       {isOwnProfile && (
         <AddFriendsSheet
-          open={addFriendsOpen}
-          onClose={() => setAddFriendsOpen(false)}
-          inviteLink={inviteLink}
-          username={profile?.username ?? ''}
-          onCopyLink={() => navigator.clipboard.writeText(inviteLink)}
-          onShareMessages={() => { if (navigator.share) navigator.share({ title: 'Add me on LYNK', url: inviteLink }) }}
-          onShareGeneral={() => { if (navigator.share) navigator.share({ title: 'Add me on LYNK', url: inviteLink }) }}
-          searchResults={addSearchResults}
-          onSearch={handleAddSearch}
-          onAddUser={handleAddUser}
-          isSearching={isSearching}
+          open={addFriends.open}
+          onClose={() => addFriends.setOpen(false)}
+          inviteLink={addFriends.inviteLink}
+          username={addFriends.username}
+          onCopyLink={addFriends.handleCopyLink}
+          onShareMessages={addFriends.handleShareMessages}
+          onShareGeneral={addFriends.handleShareGeneral}
+          searchResults={addFriends.searchResults}
+          onSearch={addFriends.handleSearch}
+          onAddUser={addFriends.handleAddUser}
+          isSearching={addFriends.isSearching}
         />
       )}
     </div>
@@ -516,14 +497,7 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
   }, [targetUserId, isOwnProfile, authLoading, currentUser?.id])
 
   if (loading && !profile) {
-    return (
-      <div className="h-full bg-bg-primary flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-8 h-8 border-2 border-accent-green border-t-transparent rounded-full animate-spin" />
-          <p className="text-text-muted text-sm">Loading profile…</p>
-        </div>
-      </div>
-    )
+    return <FullScreenSpinner message="Loading profile..." />
   }
 
   if (!profile) {

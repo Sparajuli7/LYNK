@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from 'react-router'
 import { useAuthStore } from '@/stores'
+import { FullScreenSpinner } from '@/app/components/FullScreenSpinner'
 
 export function AuthGuard() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
@@ -7,11 +8,7 @@ export function AuthGuard() {
   const isLoading = useAuthStore((s) => s.isLoading)
 
   if (isLoading) {
-    return (
-      <div className="h-full bg-bg-primary flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-accent-green border-t-transparent rounded-full animate-spin" />
-      </div>
-    )
+    return <FullScreenSpinner />
   }
 
   if (!isAuthenticated) {

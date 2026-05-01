@@ -3,6 +3,7 @@ import { useParams } from 'react-router'
 import { getPunishmentStats } from '@/lib/api/punishments'
 import { supabase } from '@/lib/supabase'
 import { BackButton } from '@/app/components/BackButton'
+import { FullScreenSpinner } from '@/app/components/FullScreenSpinner'
 import type { PunishmentStats } from '@/lib/api/punishments'
 
 export function PunishmentStatsScreen() {
@@ -28,11 +29,7 @@ export function PunishmentStatsScreen() {
   if (!id) return null
 
   if (loading || !stats) {
-    return (
-      <div className="h-full bg-bg-primary flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-accent-green border-t-transparent rounded-full animate-spin" />
-      </div>
-    )
+    return <FullScreenSpinner />
   }
 
   const completionRate = stats.completionRate
