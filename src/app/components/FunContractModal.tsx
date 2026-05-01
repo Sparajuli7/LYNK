@@ -93,7 +93,7 @@ export function FunContractModal({
           {/* Header stamp */}
           <div className="text-center space-y-2">
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted">
-              Official Forfeit Contract
+              Official LYNK Contract
             </p>
             <div className="h-px bg-[#2a2a2a]" />
           </div>

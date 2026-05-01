@@ -6,7 +6,7 @@ import { NotificationPanel } from '../components/NotificationPanel'
 import { PushPermissionBanner } from '../components/PushPermissionBanner'
 import { useGroupStore, useBetStore, useAuthStore, useNotificationStore, useChatStore, useSuggestionStore } from '@/stores'
 import { useCountdown } from '@/lib/hooks/useCountdown'
-import { useRealtime } from '@/lib/hooks/useRealtime'
+import { useRealtimeSubscription } from '@/lib/hooks/useRealtime'
 import { usePrefersReducedMotion } from '@/lib/hooks/usePrefersReducedMotion'
 import { getProfilesByIds } from '@/lib/api/profiles'
 import { formatMoney } from '@/lib/utils/formatters'
@@ -195,10 +195,10 @@ export function TheBoard() {
     getProfilesByIds(ids).then(setClaimantMap)
   }, [bets])
 
-  useRealtime('bets', () => {
+  useRealtimeSubscription('bets', () => {
     if (groups.length > 0) fetchBetsForGroupIds(groups.map((g) => g.id))
   })
-  useRealtime('bet_sides', () => {
+  useRealtimeSubscription('bet_sides', () => {
     if (groups.length > 0) fetchBetsForGroupIds(groups.map((g) => g.id))
   })
 

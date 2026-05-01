@@ -97,7 +97,7 @@ const useUiStore = create<UiStore>()(
       resetWalkthrough: () => set({ walkthroughCompleted: false }),
     }),
     {
-      name: 'forfeit-ui',
+      name: 'lynk-ui',
       partialize: (state) => ({
         theme: state.theme,
         walkthroughCompleted: state.walkthroughCompleted,

@@ -2,15 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/supabase-js'
 
-type RealtimeEvent = 'INSERT' | 'UPDATE' | 'DELETE' | '*'
-
 export type RealtimeSubscriptionStatus = 'subscribing' | 'subscribed' | 'error'
-
-interface UseRealtimeOptions {
-  event?: RealtimeEvent
-  schema?: string
-  filter?: string
-}
 
 /**
  * Subscribe to Supabase Realtime postgres_changes on a table.
@@ -60,16 +52,3 @@ export function useRealtimeSubscription<T extends Record<string, unknown>>(
   return status
 }
 
-/**
- * @deprecated Use useRealtimeSubscription instead.
- * Subscribe to Supabase Realtime postgres_changes on a table.
- * Auto-unsubscribes on unmount.
- */
-export function useRealtime<T extends Record<string, unknown>>(
-  table: string,
-  callback: (payload: RealtimePostgresChangesPayload<T>) => void,
-  options: UseRealtimeOptions = {},
-) {
-  const { filter } = options
-  useRealtimeSubscription(table, callback, filter)
-}

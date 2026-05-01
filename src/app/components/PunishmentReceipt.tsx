@@ -28,7 +28,7 @@ export const PunishmentReceipt = forwardRef<HTMLDivElement, PunishmentReceiptPro
 
     const handleShare = async (e: React.MouseEvent) => {
       e.stopPropagation();
-      const usedNative = await shareWithNative({ title: 'Forfeit Receipt', text: shareText, url: shareUrl });
+      const usedNative = await shareWithNative({ title: 'LYNK Receipt', text: shareText, url: shareUrl });
       if (!usedNative) setShareOpen(true);
     };
 

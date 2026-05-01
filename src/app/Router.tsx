@@ -142,7 +142,6 @@ export function AppRouter() {
           <Route path="auth/signup" element={<SignUpScreen />} />
           <Route path="auth/login" element={<LoginScreen />} />
           <Route path="auth/email" element={<Navigate to="/auth/login" replace />} />
-          <Route path="auth/phone" element={<Navigate to="/auth/login" replace />} />
           <Route path="auth/callback" element={<AuthCallbackScreen />} />
           <Route path="auth/otp" element={<OTPScreen />} />
           <Route path="auth/profile-setup" element={<ProfileSetupScreen />} />
