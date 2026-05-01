@@ -1,32 +1,18 @@
 import { create } from 'zustand'
 import { supabase, getCurrentUserId } from '@/lib/supabase'
-import { getLeaderboard, type LeaderboardEntry } from '@/lib/api/competitions'
+import { getLeaderboard, type LeaderboardEntry, type CompetitionData } from '@/lib/api/competitions'
 import { createCompetitionConversation, getCompetitionConversation, addConversationParticipant } from '@/lib/api/chat'
 import type {
   Bet,
   BetInsert,
   BetSide,
-  StakeType,
 } from '@/lib/database.types'
 
 /** A competition is a bet with bet_type = 'competition' */
 export type Competition = Bet
 
 /** Re-export so existing import paths (`@/stores/competitionStore`, `@/stores`) keep working. */
-export type { LeaderboardEntry }
-
-/** Data required to create a new competition bet */
-export interface CompetitionData {
-  title: string
-  description?: string
-  groupId: string
-  deadline: string        // ISO 8601
-  metric: string          // e.g. "push-ups", "miles run", "books read"
-  stakeType: StakeType
-  stakeMoney?: number     // cents
-  stakePunishmentId?: string
-  isPublic?: boolean      // defaults to true
-}
+export type { LeaderboardEntry, CompetitionData }
 
 interface CompetitionState {
   competitions: Competition[]

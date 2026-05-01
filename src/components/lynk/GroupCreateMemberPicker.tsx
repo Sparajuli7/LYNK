@@ -2,7 +2,7 @@ import { GroupRow } from "./GroupRow";
 import { SelectedPillsRow } from "./SelectedPillsRow";
 import { SelectableFriendRow } from "./SelectableFriendRow";
 
-interface SelectedMember {
+export interface SelectedMember {
   id: string;
   displayName: string;
   avatarUrl?: string;
