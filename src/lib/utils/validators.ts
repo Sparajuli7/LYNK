@@ -16,27 +16,6 @@ export function validateEmail(email: string): ValidationResult {
   return { valid: true }
 }
 
-export function validatePhone(phone: string): { valid: boolean; formatted: string; error?: string } {
-  const digits = phone.replace(/\D/g, '')
-
-  if (digits.length < 10) {
-    return { valid: false, formatted: phone, error: 'Phone number must be at least 10 digits.' }
-  }
-
-  let formatted: string
-  if (digits.startsWith('1') && digits.length === 11) {
-    formatted = `+${digits}`
-  } else if (digits.length === 10) {
-    formatted = `+1${digits}`
-  } else if (phone.startsWith('+')) {
-    formatted = `+${digits}`
-  } else {
-    formatted = `+${digits}`
-  }
-
-  return { valid: true, formatted }
-}
-
 export function validatePassword(password: string): ValidationResult {
   if (!password) {
     return { valid: false, error: 'Password is required.' }

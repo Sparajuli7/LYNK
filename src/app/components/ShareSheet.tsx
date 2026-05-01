@@ -98,7 +98,7 @@ export function ShareSheet({
     setTiktokLoading(true)
     try {
       if (imageUrl) {
-        const file = await fetchImageAsFile(imageUrl, 'forfeit-tiktok.png')
+        const file = await fetchImageAsFile(imageUrl, 'lynk-tiktok.png')
         if (file) {
           await shareToTikTok(file, fullText)
           closeAndNotify()

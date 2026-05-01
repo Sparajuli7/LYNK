@@ -125,7 +125,7 @@ function getExt(file: File): string {
  */
 export async function recordPunishmentTaken(userId: string, betId: string): Promise<void> {
   try {
-    const key = `forfeit_pt_${userId}`
+    const key = `lynk_pt_${userId}`
     const counted: string[] = JSON.parse(localStorage.getItem(key) ?? '[]')
     if (counted.includes(betId)) return // already recorded on this device
 

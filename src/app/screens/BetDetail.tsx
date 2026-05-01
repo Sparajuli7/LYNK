@@ -5,7 +5,7 @@ import { useBetStore, useChatStore } from '@/stores'
 import { useProofStore } from '@/stores'
 import { useAuthStore } from '@/stores'
 import { useCountdown } from '@/lib/hooks/useCountdown'
-import { useRealtime } from '@/lib/hooks/useRealtime'
+import { useRealtimeSubscription } from '@/lib/hooks/useRealtime'
 import { getProfilesByIds } from '@/lib/api/profiles'
 import { formatMoney } from '@/lib/utils/formatters'
 import { getShamePostByBetId } from '@/lib/api/shame'
@@ -169,10 +169,10 @@ export function BetDetail({ onBack }: BetDetailProps) {
     getProfilesByIds([...ids]).then(setProfileMap)
   }, [activeBet, activeBetSides])
 
-  useRealtime('bets', () => id && fetchBetDetail(id), { filter: id ? `id=eq.${id}` : undefined })
-  useRealtime('bet_sides', () => id && fetchBetDetail(id), { filter: id ? `bet_id=eq.${id}` : undefined })
-  useRealtime('proofs', () => id && fetchProofs(id), { filter: id ? `bet_id=eq.${id}` : undefined })
-  useRealtime('proof_votes', () => id && fetchProofs(id))
+  useRealtimeSubscription('bets', () => id && fetchBetDetail(id), id ? `id=eq.${id}` : undefined)
+  useRealtimeSubscription('bet_sides', () => id && fetchBetDetail(id), id ? `bet_id=eq.${id}` : undefined)
+  useRealtimeSubscription('proofs', () => id && fetchProofs(id), id ? `bet_id=eq.${id}` : undefined)
+  useRealtimeSubscription('proof_votes', () => id && fetchProofs(id))
 
   const handleBack = () => (onBack ? onBack() : navigate(-1))
 
