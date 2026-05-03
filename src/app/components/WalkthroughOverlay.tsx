@@ -60,10 +60,12 @@ export function WalkthroughOverlay() {
       }
     : null
 
+  const isLast = step === WALKTHROUGH_STEPS.length - 1
+
   const handleCta = () => {
-    if (current.navigateTo) {
-      skip() // close walkthrough
-      navigate(current.navigateTo)
+    if (isLast) {
+      skip()
+      if (current.navigateTo) navigate(current.navigateTo)
     } else {
       next()
     }
@@ -120,20 +122,20 @@ export function WalkthroughOverlay() {
         {/* Click blocker (except the spotlight area) */}
         <div className="absolute inset-0" onClick={(e) => e.stopPropagation()} />
 
-        {/* Tooltip card */}
+        {/* Tooltip card — always positioned in a safe zone for mobile */}
         <motion.div
           key={current.id}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           transition={{ type: 'spring', stiffness: 400, damping: 30, delay: 0.1 }}
-          className="absolute left-5 right-5 z-[61]"
+          className="absolute left-4 right-4 z-[61]"
           style={
             isCentered
-              ? { top: '50%', transform: 'translateY(-50%)' }
+              ? { top: '40%', transform: 'translateY(-50%)' }
               : current.placement === 'top'
-                ? { bottom: `${window.innerHeight - (targetRect?.top ?? 0) + 16}px` }
-                : { top: `${(targetRect?.bottom ?? 0) + 16}px` }
+                ? { top: '12%' }
+                : { bottom: '12%' }
           }
         >
           <div className="bg-surface border border-rider/30 rounded-2xl p-5 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
@@ -167,7 +169,7 @@ export function WalkthroughOverlay() {
               >
                 {current.cta ?? 'Next'}
               </button>
-              {step < WALKTHROUGH_STEPS.length - 1 && (
+              {!isLast && (
                 <button
                   onClick={skip}
                   className="text-text-mute text-[12px] font-bold px-3 py-3"
